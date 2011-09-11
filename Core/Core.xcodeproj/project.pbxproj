@@ -12,6 +12,8 @@
 		C72BFF00141CB15E004F0E00 /* NudeCore-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = C72BFEFF141CB15E004F0E00 /* NudeCore-Prefix.pch */; };
 		C72BFF06141CB5D2004F0E00 /* nuDebug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C72BFF04141CB5D2004F0E00 /* nuDebug.cpp */; };
 		C72BFF07141CB5D2004F0E00 /* nuDebug.h in Headers */ = {isa = PBXBuildFile; fileRef = C72BFF05141CB5D2004F0E00 /* nuDebug.h */; };
+		C79FC5B3141D02C7005C6C70 /* nuObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C79FC5B1141D02C7005C6C70 /* nuObject.cpp */; };
+		C79FC5B4141D02C7005C6C70 /* nuObject.h in Headers */ = {isa = PBXBuildFile; fileRef = C79FC5B2141D02C7005C6C70 /* nuObject.h */; };
 		C7AB2A23141CCE74001F8EE5 /* nuMemory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7AB2A21141CCE74001F8EE5 /* nuMemory.cpp */; };
 		C7AB2A24141CCE74001F8EE5 /* nuMemory.h in Headers */ = {isa = PBXBuildFile; fileRef = C7AB2A22141CCE74001F8EE5 /* nuMemory.h */; };
 /* End PBXBuildFile section */
@@ -23,9 +25,11 @@
 		C72BFEFF141CB15E004F0E00 /* NudeCore-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NudeCore-Prefix.pch"; sourceTree = "<group>"; };
 		C72BFF04141CB5D2004F0E00 /* nuDebug.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuDebug.cpp; sourceTree = "<group>"; };
 		C72BFF05141CB5D2004F0E00 /* nuDebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuDebug.h; sourceTree = "<group>"; };
-		C7AB2A10141CC3DF001F8EE5 /* Release.xcconfig */ = {isa = PBXFileReference; name = Release.xcconfig; path = ../Configurations/Release.xcconfig; sourceTree = "<group>"; };
+		C79FC5B1141D02C7005C6C70 /* nuObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuObject.cpp; sourceTree = "<group>"; };
+		C79FC5B2141D02C7005C6C70 /* nuObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuObject.h; sourceTree = "<group>"; };
+		C7AB2A10141CC3DF001F8EE5 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = ../Configurations/Release.xcconfig; sourceTree = "<group>"; };
 		C7AB2A11141CC3DF001F8EE5 /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = ../Configurations/Debug.xcconfig; sourceTree = "<group>"; };
-		C7AB2A12141CC3DF001F8EE5 /* Profile.xcconfig */ = {isa = PBXFileReference; name = Profile.xcconfig; path = ../Configurations/Profile.xcconfig; sourceTree = "<group>"; };
+		C7AB2A12141CC3DF001F8EE5 /* Profile.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Profile.xcconfig; path = ../Configurations/Profile.xcconfig; sourceTree = "<group>"; };
 		C7AB2A21141CCE74001F8EE5 /* nuMemory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuMemory.cpp; sourceTree = "<group>"; };
 		C7AB2A22141CCE74001F8EE5 /* nuMemory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuMemory.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -63,6 +67,7 @@
 		C72BFEF9141CB008004F0E00 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				C79FC5B1141D02C7005C6C70 /* nuObject.cpp */,
 				C7AB2A21141CCE74001F8EE5 /* nuMemory.cpp */,
 				C72BFF04141CB5D2004F0E00 /* nuDebug.cpp */,
 				C72BFEFB141CB0BB004F0E00 /* nuType.cpp */,
@@ -73,6 +78,7 @@
 		C72BFEFA141CB018004F0E00 /* Headers */ = {
 			isa = PBXGroup;
 			children = (
+				C79FC5B2141D02C7005C6C70 /* nuObject.h */,
 				C7AB2A22141CCE74001F8EE5 /* nuMemory.h */,
 				C72BFF05141CB5D2004F0E00 /* nuDebug.h */,
 				C72BFEFD141CB0D1004F0E00 /* nuType.h */,
@@ -101,6 +107,7 @@
 				C72BFF00141CB15E004F0E00 /* NudeCore-Prefix.pch in Headers */,
 				C72BFF07141CB5D2004F0E00 /* nuDebug.h in Headers */,
 				C7AB2A24141CCE74001F8EE5 /* nuMemory.h in Headers */,
+				C79FC5B4141D02C7005C6C70 /* nuObject.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -154,6 +161,7 @@
 				C72BFEFC141CB0BB004F0E00 /* nuType.cpp in Sources */,
 				C72BFF06141CB5D2004F0E00 /* nuDebug.cpp in Sources */,
 				C7AB2A23141CCE74001F8EE5 /* nuMemory.cpp in Sources */,
+				C79FC5B3141D02C7005C6C70 /* nuObject.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

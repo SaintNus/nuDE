@@ -10,12 +10,14 @@
 // Allocate memory.
 void* nude::Alloc(size_t size)
 {
+  //! \todo Add memory header info.
   return malloc(size);
 }
 
 // Deallocate memory.
 void nude::Dealloc(void* p_addr)
 {
+  //! \todo Leak check.
   free(p_addr);
 }
 

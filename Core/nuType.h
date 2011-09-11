@@ -23,6 +23,11 @@ typedef int32_t i32;
 //! \brief Unsigned integer.
 typedef uint32_t ui32;
 
+//! \brief 64-bit integer.
+typedef int64_t i64;
+//! \brief 64-bit unsigned integer.
+typedef uint64_t ui64;
+
 //! \brief Float.
 typedef float f32;
 //! \brief Double.

@@ -10,7 +10,7 @@
 
 #include "Core/nuType.h"
 #include "Core/nuDebug.h"
-
 #include "Core/nuMemory.h"
+#include "Core/nuObject.h"
 
 #endif
