@@ -23,9 +23,9 @@
 		C72BFEFF141CB15E004F0E00 /* NudeCore-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NudeCore-Prefix.pch"; sourceTree = "<group>"; };
 		C72BFF04141CB5D2004F0E00 /* nuDebug.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuDebug.cpp; sourceTree = "<group>"; };
 		C72BFF05141CB5D2004F0E00 /* nuDebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuDebug.h; sourceTree = "<group>"; };
-		C7AB2A10141CC3DF001F8EE5 /* Archive.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Archive.xcconfig; path = ../Configurations/Archive.xcconfig; sourceTree = "<group>"; };
+		C7AB2A10141CC3DF001F8EE5 /* Release.xcconfig */ = {isa = PBXFileReference; name = Release.xcconfig; path = ../Configurations/Release.xcconfig; sourceTree = "<group>"; };
 		C7AB2A11141CC3DF001F8EE5 /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = ../Configurations/Debug.xcconfig; sourceTree = "<group>"; };
-		C7AB2A12141CC3DF001F8EE5 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = ../Configurations/Release.xcconfig; sourceTree = "<group>"; };
+		C7AB2A12141CC3DF001F8EE5 /* Profile.xcconfig */ = {isa = PBXFileReference; name = Profile.xcconfig; path = ../Configurations/Profile.xcconfig; sourceTree = "<group>"; };
 		C7AB2A21141CCE74001F8EE5 /* nuMemory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuMemory.cpp; sourceTree = "<group>"; };
 		C7AB2A22141CCE74001F8EE5 /* nuMemory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuMemory.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -83,9 +83,9 @@
 		C7AB2A13141CC3E5001F8EE5 /* Configurations */ = {
 			isa = PBXGroup;
 			children = (
-				C7AB2A10141CC3DF001F8EE5 /* Archive.xcconfig */,
+				C7AB2A10141CC3DF001F8EE5 /* Release.xcconfig */,
 				C7AB2A11141CC3DF001F8EE5 /* Debug.xcconfig */,
-				C7AB2A12141CC3DF001F8EE5 /* Release.xcconfig */,
+				C7AB2A12141CC3DF001F8EE5 /* Profile.xcconfig */,
 			);
 			name = Configurations;
 			sourceTree = "<group>";
@@ -169,14 +169,14 @@
 			};
 			name = Debug;
 		};
-		C72BFEEF141CAFB9004F0E00 /* Release */ = {
+		C72BFEEF141CAFB9004F0E00 /* Profile */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C7AB2A12141CC3DF001F8EE5 /* Release.xcconfig */;
+			baseConfigurationReference = C7AB2A12141CC3DF001F8EE5 /* Profile.xcconfig */;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NudeCore-Prefix.pch";
 			};
-			name = Release;
+			name = Profile;
 		};
 		C72BFEF1141CAFB9004F0E00 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -186,30 +186,30 @@
 			};
 			name = Debug;
 		};
-		C72BFEF2141CAFB9004F0E00 /* Release */ = {
+		C72BFEF2141CAFB9004F0E00 /* Profile */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = lib;
+				PRODUCT_NAME = "Nude$(TARGET_NAME)";
+			};
+			name = Profile;
+		};
+		C7AB2A0D141CC30E001F8EE5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C7AB2A10141CC3DF001F8EE5 /* Release.xcconfig */;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "NudeCore-Prefix.pch";
+			};
+			name = Release;
+		};
+		C7AB2A0E141CC30E001F8EE5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				EXECUTABLE_PREFIX = lib;
 				PRODUCT_NAME = "Nude$(TARGET_NAME)";
 			};
 			name = Release;
-		};
-		C7AB2A0D141CC30E001F8EE5 /* Archive */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = C7AB2A10141CC3DF001F8EE5 /* Archive.xcconfig */;
-			buildSettings = {
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "NudeCore-Prefix.pch";
-			};
-			name = Archive;
-		};
-		C7AB2A0E141CC30E001F8EE5 /* Archive */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				EXECUTABLE_PREFIX = lib;
-				PRODUCT_NAME = "Nude$(TARGET_NAME)";
-			};
-			name = Archive;
 		};
 /* End XCBuildConfiguration section */
 
@@ -218,21 +218,21 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C72BFEEE141CAFB9004F0E00 /* Debug */,
-				C72BFEEF141CAFB9004F0E00 /* Release */,
-				C7AB2A0D141CC30E001F8EE5 /* Archive */,
+				C72BFEEF141CAFB9004F0E00 /* Profile */,
+				C7AB2A0D141CC30E001F8EE5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Profile;
 		};
 		C72BFEF0141CAFB9004F0E00 /* Build configuration list for PBXNativeTarget "Core" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C72BFEF1141CAFB9004F0E00 /* Debug */,
-				C72BFEF2141CAFB9004F0E00 /* Release */,
-				C7AB2A0E141CC30E001F8EE5 /* Archive */,
+				C72BFEF2141CAFB9004F0E00 /* Profile */,
+				C7AB2A0E141CC30E001F8EE5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Profile;
 		};
 /* End XCConfigurationList section */
 	};

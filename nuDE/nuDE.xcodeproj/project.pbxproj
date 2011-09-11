@@ -46,7 +46,7 @@
 		C7AB29F2141CC006001F8EE5 /* nuDEAppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = nuDEAppDelegate.mm; sourceTree = SOURCE_ROOT; };
 		C7AB29F7141CC012001F8EE5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = SOURCE_ROOT; };
 		C7AB29F9141CC012001F8EE5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = SOURCE_ROOT; };
-		C7AB2A15141CC772001F8EE5 /* Archive.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Archive.xcconfig; path = ../Configurations/Archive.xcconfig; sourceTree = "<group>"; };
+		C7AB2A15141CC772001F8EE5 /* Profile.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Profile.xcconfig; path = ../Configurations/Profile.xcconfig; sourceTree = "<group>"; };
 		C7AB2A16141CC772001F8EE5 /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = ../Configurations/Debug.xcconfig; sourceTree = "<group>"; };
 		C7AB2A17141CC772001F8EE5 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = ../Configurations/Release.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -146,9 +146,9 @@
 		C7AB2A14141CC759001F8EE5 /* Configurations */ = {
 			isa = PBXGroup;
 			children = (
-				C7AB2A15141CC772001F8EE5 /* Archive.xcconfig */,
-				C7AB2A16141CC772001F8EE5 /* Debug.xcconfig */,
 				C7AB2A17141CC772001F8EE5 /* Release.xcconfig */,
+				C7AB2A16141CC772001F8EE5 /* Debug.xcconfig */,
+				C7AB2A15141CC772001F8EE5 /* Profile.xcconfig */,
 			);
 			name = Configurations;
 			sourceTree = "<group>";
@@ -274,15 +274,15 @@
 			};
 			name = Debug;
 		};
-		C72BFEDD141CACC9004F0E00 /* Release */ = {
+		C72BFEDD141CACC9004F0E00 /* Profile */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C7AB2A17141CC772001F8EE5 /* Release.xcconfig */;
+			baseConfigurationReference = C7AB2A15141CC772001F8EE5 /* Profile.xcconfig */;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "nuDE-Prefix.pch";
 				USER_HEADER_SEARCH_PATHS = ..;
 			};
-			name = Release;
+			name = Profile;
 		};
 		C72BFEDF141CACC9004F0E00 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -293,7 +293,26 @@
 			};
 			name = Debug;
 		};
-		C72BFEE0141CACC9004F0E00 /* Release */ = {
+		C72BFEE0141CACC9004F0E00 /* Profile */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "nuDE-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Profile;
+		};
+		C7AB2A01141CC176001F8EE5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C7AB2A17141CC772001F8EE5 /* Release.xcconfig */;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "nuDE-Prefix.pch";
+				USER_HEADER_SEARCH_PATHS = ..;
+			};
+			name = Release;
+		};
+		C7AB2A02141CC176001F8EE5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INFOPLIST_FILE = "nuDE-Info.plist";
@@ -302,25 +321,6 @@
 			};
 			name = Release;
 		};
-		C7AB2A01141CC176001F8EE5 /* Archive */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = C7AB2A15141CC772001F8EE5 /* Archive.xcconfig */;
-			buildSettings = {
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "nuDE-Prefix.pch";
-				USER_HEADER_SEARCH_PATHS = ..;
-			};
-			name = Archive;
-		};
-		C7AB2A02141CC176001F8EE5 /* Archive */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				INFOPLIST_FILE = "nuDE-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = app;
-			};
-			name = Archive;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -328,21 +328,21 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C72BFEDC141CACC9004F0E00 /* Debug */,
-				C72BFEDD141CACC9004F0E00 /* Release */,
-				C7AB2A01141CC176001F8EE5 /* Archive */,
+				C72BFEDD141CACC9004F0E00 /* Profile */,
+				C7AB2A01141CC176001F8EE5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Profile;
 		};
 		C72BFEDE141CACC9004F0E00 /* Build configuration list for PBXNativeTarget "nuDE" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C72BFEDF141CACC9004F0E00 /* Debug */,
-				C72BFEE0141CACC9004F0E00 /* Release */,
-				C7AB2A02141CC176001F8EE5 /* Archive */,
+				C72BFEE0141CACC9004F0E00 /* Profile */,
+				C7AB2A02141CC176001F8EE5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Profile;
 		};
 /* End XCConfigurationList section */
 	};
