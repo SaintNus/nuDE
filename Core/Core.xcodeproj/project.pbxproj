@@ -1,0 +1,232 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		C72BFEFC141CB0BB004F0E00 /* nuType.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C72BFEFB141CB0BB004F0E00 /* nuType.cpp */; };
+		C72BFEFE141CB0D1004F0E00 /* nuType.h in Headers */ = {isa = PBXBuildFile; fileRef = C72BFEFD141CB0D1004F0E00 /* nuType.h */; };
+		C72BFF00141CB15E004F0E00 /* NudeCore-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = C72BFEFF141CB15E004F0E00 /* NudeCore-Prefix.pch */; };
+		C72BFF06141CB5D2004F0E00 /* nuDebug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C72BFF04141CB5D2004F0E00 /* nuDebug.cpp */; };
+		C72BFF07141CB5D2004F0E00 /* nuDebug.h in Headers */ = {isa = PBXBuildFile; fileRef = C72BFF05141CB5D2004F0E00 /* nuDebug.h */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		C72BFEEC141CAFB9004F0E00 /* libNudeCore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libNudeCore.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C72BFEFB141CB0BB004F0E00 /* nuType.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuType.cpp; sourceTree = "<group>"; };
+		C72BFEFD141CB0D1004F0E00 /* nuType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuType.h; sourceTree = "<group>"; };
+		C72BFEFF141CB15E004F0E00 /* NudeCore-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NudeCore-Prefix.pch"; sourceTree = "<group>"; };
+		C72BFF04141CB5D2004F0E00 /* nuDebug.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuDebug.cpp; sourceTree = "<group>"; };
+		C72BFF05141CB5D2004F0E00 /* nuDebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuDebug.h; sourceTree = "<group>"; };
+		C7AB2A10141CC3DF001F8EE5 /* Archive.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Archive.xcconfig; path = ../Configurations/Archive.xcconfig; sourceTree = "<group>"; };
+		C7AB2A11141CC3DF001F8EE5 /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = ../Configurations/Debug.xcconfig; sourceTree = "<group>"; };
+		C7AB2A12141CC3DF001F8EE5 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = ../Configurations/Release.xcconfig; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C72BFEE9141CAFB9004F0E00 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		C72BFEE1141CAFB9004F0E00 = {
+			isa = PBXGroup;
+			children = (
+				C7AB2A13141CC3E5001F8EE5 /* Configurations */,
+				C72BFEFF141CB15E004F0E00 /* NudeCore-Prefix.pch */,
+				C72BFEFA141CB018004F0E00 /* Headers */,
+				C72BFEF9141CB008004F0E00 /* Sources */,
+				C72BFEED141CAFB9004F0E00 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		C72BFEED141CAFB9004F0E00 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C72BFEEC141CAFB9004F0E00 /* libNudeCore.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C72BFEF9141CB008004F0E00 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				C72BFF04141CB5D2004F0E00 /* nuDebug.cpp */,
+				C72BFEFB141CB0BB004F0E00 /* nuType.cpp */,
+			);
+			name = Sources;
+			sourceTree = "<group>";
+		};
+		C72BFEFA141CB018004F0E00 /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+				C72BFF05141CB5D2004F0E00 /* nuDebug.h */,
+				C72BFEFD141CB0D1004F0E00 /* nuType.h */,
+			);
+			name = Headers;
+			sourceTree = "<group>";
+		};
+		C7AB2A13141CC3E5001F8EE5 /* Configurations */ = {
+			isa = PBXGroup;
+			children = (
+				C7AB2A10141CC3DF001F8EE5 /* Archive.xcconfig */,
+				C7AB2A11141CC3DF001F8EE5 /* Debug.xcconfig */,
+				C7AB2A12141CC3DF001F8EE5 /* Release.xcconfig */,
+			);
+			name = Configurations;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		C72BFEEA141CAFB9004F0E00 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C72BFEFE141CB0D1004F0E00 /* nuType.h in Headers */,
+				C72BFF00141CB15E004F0E00 /* NudeCore-Prefix.pch in Headers */,
+				C72BFF07141CB5D2004F0E00 /* nuDebug.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		C72BFEEB141CAFB9004F0E00 /* Core */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C72BFEF0141CAFB9004F0E00 /* Build configuration list for PBXNativeTarget "Core" */;
+			buildPhases = (
+				C72BFEE8141CAFB9004F0E00 /* Sources */,
+				C72BFEE9141CAFB9004F0E00 /* Frameworks */,
+				C72BFEEA141CAFB9004F0E00 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Core;
+			productName = NudeCore;
+			productReference = C72BFEEC141CAFB9004F0E00 /* libNudeCore.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C72BFEE3141CAFB9004F0E00 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = C72BFEE6141CAFB9004F0E00 /* Build configuration list for PBXProject "Core" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = C72BFEE1141CAFB9004F0E00;
+			productRefGroup = C72BFEED141CAFB9004F0E00 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C72BFEEB141CAFB9004F0E00 /* Core */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C72BFEE8141CAFB9004F0E00 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C72BFEFC141CB0BB004F0E00 /* nuType.cpp in Sources */,
+				C72BFF06141CB5D2004F0E00 /* nuDebug.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		C72BFEEE141CAFB9004F0E00 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C7AB2A11141CC3DF001F8EE5 /* Debug.xcconfig */;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "NudeCore-Prefix.pch";
+			};
+			name = Debug;
+		};
+		C72BFEEF141CAFB9004F0E00 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C7AB2A12141CC3DF001F8EE5 /* Release.xcconfig */;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "NudeCore-Prefix.pch";
+			};
+			name = Release;
+		};
+		C72BFEF1141CAFB9004F0E00 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = lib;
+				PRODUCT_NAME = "Nude$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		C72BFEF2141CAFB9004F0E00 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = lib;
+				PRODUCT_NAME = "Nude$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		C7AB2A0D141CC30E001F8EE5 /* Archive */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C7AB2A10141CC3DF001F8EE5 /* Archive.xcconfig */;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "NudeCore-Prefix.pch";
+			};
+			name = Archive;
+		};
+		C7AB2A0E141CC30E001F8EE5 /* Archive */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = lib;
+				PRODUCT_NAME = "Nude$(TARGET_NAME)";
+			};
+			name = Archive;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C72BFEE6141CAFB9004F0E00 /* Build configuration list for PBXProject "Core" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C72BFEEE141CAFB9004F0E00 /* Debug */,
+				C72BFEEF141CAFB9004F0E00 /* Release */,
+				C7AB2A0D141CC30E001F8EE5 /* Archive */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C72BFEF0141CAFB9004F0E00 /* Build configuration list for PBXNativeTarget "Core" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C72BFEF1141CAFB9004F0E00 /* Debug */,
+				C72BFEF2141CAFB9004F0E00 /* Release */,
+				C7AB2A0E141CC30E001F8EE5 /* Archive */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = C72BFEE3141CAFB9004F0E00 /* Project object */;
+}
