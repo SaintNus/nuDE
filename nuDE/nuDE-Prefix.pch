@@ -10,3 +10,16 @@
 #import <Cocoa/Cocoa.h>
 
 #endif
+
+#include <stddef.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdarg.h>
+#include <stdlib.h>
+
+#include <assert.h>
+
+#include <cstring>
+#include <new>
+
+#include "nude.h"

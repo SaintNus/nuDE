@@ -7,9 +7,20 @@
  
 #include "Core/nuDebug.h"
 
+class Nus
+{
+public:
+  Nus() {
+    NU_TRACE("Nus::Nus()\n");
+  }
+  ~Nus() {
+    NU_TRACE("Nus::~Nus()\n");
+  }
+};
+
 int main(int argc, const char** argv)
 {
-  NU_ASSERT(false, "Test");
-  NU_ASSERT_C(false);
+  Nus* p_nus = new Nus;
+  delete p_nus;
   return NSApplicationMain(argc, argv);
 }
