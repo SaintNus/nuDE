@@ -8,6 +8,9 @@
 #ifndef __NUOBJECT_H__
 #define __NUOBJECT_H__
 
+#include "nuMemory.h"
+#include "nuTypeInfo.h"
+
 /*!
  * \class nuObject
  * \brief Base class.
@@ -15,6 +18,8 @@
 class nuObject
 {
 public:
+  DECLARE_TYPE_INFO;
+
   //! \brief Default constructor.
   nuObject() { /* None... */ }
   //! \brief Default destructor.
@@ -22,14 +27,22 @@ public:
 
   //! \brief Operator new.
   //! \{
-  void* operator new(std::size_t size);
-  void* operator new[](std::size_t size);
+  void* operator new(std::size_t size) {
+    return nude::Alloc(size);
+  }
+  void* operator new[](std::size_t size) {
+    return nude::Alloc(size);
+  }
   //! \}
 
   //! \brief Operator delete.
   //! \{
-  void operator delete(void* ptr);
-  void operator delete[](void* ptr);
+  void operator delete(void* ptr) {
+    nude::Dealloc(ptr);
+  }
+  void operator delete[](void* ptr) {
+    nude::Dealloc(ptr);
+  }
   //! \}
 
 protected:

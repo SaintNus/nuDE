@@ -5,8 +5,6 @@
  * \date 2011/09/11 17:53
  */
  
-#include "Core/nuDebug.h"
-
 class Nus
 {
 public:

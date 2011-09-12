@@ -5,8 +5,6 @@
  * \date 2011/09/11 17:49
  */
 
-#import <Cocoa/Cocoa.h>
-
 @interface nuDEAppDelegate : NSObject <NSApplicationDelegate>
 {
   NSWindow* window;
