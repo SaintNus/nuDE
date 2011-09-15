@@ -79,6 +79,8 @@ void nuTypeInfo::TypeInfoMgr::registerTypeInfo(nuTypeInfo* type_info)
 // Print all type infos.
 void nuTypeInfo::listAll(void)
 {
+  if(!mManager.getRoot())
+    return;
   NU_TRACE("Listing type info...\n");
   printTree(mManager.getRoot(), 0);
 }
@@ -99,14 +101,14 @@ void nuTypeInfo::printTree(const nuTypeInfo* type_info, ui32 lv)
 
 #endif
 
-// Is kind of.
+// Is derived from.
 bool nuTypeInfo::isDerivedFrom(ccstr parent_name) const
 {
   ui32 id = nuCRC::calculate(parent_name);
   return internalIsDerivedFrom(id);
 }
 
-// Is kind of.
+// Is derived from.
 bool nuTypeInfo::isDerivedFrom(const nuTypeInfo& parent) const
 {
   return internalIsDerivedFrom(parent.mID);

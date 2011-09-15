@@ -15,4 +15,12 @@
 #include "Core/nuObject.h"
 #include "Core/nuTypeInfo.h"
 
+#ifdef __OBJC__
+
+#import "OS/nuMachAppDelegate.h"
+#import "OS/nuMachWindow.h"
+#import "OS/nuMachView.h"
+
+#endif
+
 #endif

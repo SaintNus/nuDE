@@ -29,7 +29,7 @@ ui32 nuCRC::calculate(ccstr p_str)
 // Initialize CRC table.
 void nuCRC::initialize(void)
 {
-  NU_TRACE("Initializing CRC...\n");
+  NU_TRACE("Initializing CRC.\n");
   // 0x04C11DB7 is the official polynomial used by PKZip, WinZip and Ethernet.
   const ui32 polynom = 0x04c11dB7;
   // 256 values representing ASCII character codes.
@@ -44,7 +44,7 @@ void nuCRC::initialize(void)
 // Terminate CRC table.
 void nuCRC::terminate(void)
 {
-  NU_TRACE("Terminating CRC...\n");
+  NU_TRACE("Terminating CRC.\n");
 }
 
 

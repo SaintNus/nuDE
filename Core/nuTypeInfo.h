@@ -83,13 +83,6 @@ protected:
     mManager.registerTypeInfo(this);
   }
 
-  //! \brief Operator new.
-  //! \warning Do not use.
-  void* operator new(size_t sz);
-  //! \brief Operator new.
-  //! \warning Do not use.
-  void* operator new[](size_t sz);
-
 #if !NDEBUG
   //! \brief Print all type infos.
   static void printTree(const nuTypeInfo* type_info, ui32 lv);
@@ -143,6 +136,13 @@ private:
   //! \warning Do not use.
   nuTypeInfo();
 
+  //! \brief Operator new.
+  //! \warning Do not use.
+  void* operator new(size_t sz);
+  //! \brief Operator new.
+  //! \warning Do not use.
+  void* operator new[](size_t sz);
+  
   //! \brief Is kind of.
   bool internalIsDerivedFrom(ui32 id) const {
     const nuTypeInfo* p_curr = this;
@@ -169,7 +169,7 @@ private:
       nuObject* createInstance(void) const __attribute__((used, always_inline)); \
     }; \
   protected: \
-    static PrivateTypeInfo mTypeInfo; \
+    static PrivateTypeInfo mTypeInfo __attribute__((used)); \
   public: \
     static const nuTypeInfo& TypeInfo(void) __attribute__((used, always_inline))
 

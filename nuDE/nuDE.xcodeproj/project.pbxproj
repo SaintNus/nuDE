@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		C72BFEC5141CACC9004F0E00 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C72BFEC4141CACC9004F0E00 /* Cocoa.framework */; };
+		C794E85A1422786F004D90DD /* libMach.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C794E84B141F975D004D90DD /* libMach.a */; };
 		C7AB29F3141CC006001F8EE5 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = C7AB29EE141CC006001F8EE5 /* main.mm */; };
 		C7AB29F5141CC006001F8EE5 /* nuDEAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = C7AB29F2141CC006001F8EE5 /* nuDEAppDelegate.mm */; };
 		C7AB29FA141CC012001F8EE5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C7AB29F6141CC012001F8EE5 /* InfoPlist.strings */; };
@@ -16,6 +17,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		C794E84A141F975D004D90DD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C794E823141F9507004D90DD /* OS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C794E82D141F9543004D90DD;
+			remoteInfo = Mach;
+		};
+		C794E8581422784E004D90DD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C794E823141F9507004D90DD /* OS.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C794E82C141F9543004D90DD;
+			remoteInfo = Mach;
+		};
 		C7AB29DF141CBD60001F8EE5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C72BFEF3141CAFB9004F0E00 /* Core.xcodeproj */;
@@ -39,6 +54,7 @@
 		C72BFEC8141CACC9004F0E00 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		C72BFEC9141CACC9004F0E00 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C72BFEF3141CAFB9004F0E00 /* Core.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Core.xcodeproj; path = ../Core/Core.xcodeproj; sourceTree = "<group>"; };
+		C794E823141F9507004D90DD /* OS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OS.xcodeproj; path = ../OS/OS.xcodeproj; sourceTree = "<group>"; };
 		C79FC5B5141D0631005C6C70 /* nude.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = nude.h; path = ../nude.h; sourceTree = "<group>"; };
 		C7AB29EE141CC006001F8EE5 /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = SOURCE_ROOT; };
 		C7AB29EF141CC006001F8EE5 /* nuDE-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "nuDE-Info.plist"; sourceTree = SOURCE_ROOT; };
@@ -57,6 +73,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C794E85A1422786F004D90DD /* libMach.a in Frameworks */,
 				C7AB29FE141CC065001F8EE5 /* libNudeCore.a in Frameworks */,
 				C72BFEC5141CACC9004F0E00 /* Cocoa.framework in Frameworks */,
 			);
@@ -69,6 +86,7 @@
 			isa = PBXGroup;
 			children = (
 				C72BFEF3141CAFB9004F0E00 /* Core.xcodeproj */,
+				C794E823141F9507004D90DD /* OS.xcodeproj */,
 				C7AB2A14141CC759001F8EE5 /* Configurations */,
 				C79FC5B5141D0631005C6C70 /* nude.h */,
 				C7AB29F0141CC006001F8EE5 /* nuDE-Prefix.pch */,
@@ -116,6 +134,14 @@
 			);
 			name = Resources;
 			path = nuDE;
+			sourceTree = "<group>";
+		};
+		C794E824141F9507004D90DD /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C794E84B141F975D004D90DD /* libMach.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		C7AB29DC141CBD60001F8EE5 /* Products */ = {
@@ -169,6 +195,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				C794E8591422784E004D90DD /* PBXTargetDependency */,
 				C7AB29FD141CC05F001F8EE5 /* PBXTargetDependency */,
 			);
 			name = nuDE;
@@ -196,6 +223,10 @@
 					ProductGroup = C7AB29DC141CBD60001F8EE5 /* Products */;
 					ProjectRef = C72BFEF3141CAFB9004F0E00 /* Core.xcodeproj */;
 				},
+				{
+					ProductGroup = C794E824141F9507004D90DD /* Products */;
+					ProjectRef = C794E823141F9507004D90DD /* OS.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -205,6 +236,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		C794E84B141F975D004D90DD /* libMach.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libMach.a;
+			remoteRef = C794E84A141F975D004D90DD /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		C7AB29E0141CBD60001F8EE5 /* libNudeCore.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -239,6 +277,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		C794E8591422784E004D90DD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Mach;
+			targetProxy = C794E8581422784E004D90DD /* PBXContainerItemProxy */;
+		};
 		C7AB29FD141CC05F001F8EE5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = Core;

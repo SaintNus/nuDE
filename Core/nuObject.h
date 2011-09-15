@@ -8,6 +8,7 @@
 #ifndef __NUOBJECT_H__
 #define __NUOBJECT_H__
 
+#include "nuDebug.h"
 #include "nuMemory.h"
 #include "nuTypeInfo.h"
 

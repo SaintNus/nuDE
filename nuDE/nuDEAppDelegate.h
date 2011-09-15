@@ -5,11 +5,9 @@
  * \date 2011/09/11 17:49
  */
 
-@interface nuDEAppDelegate : NSObject <NSApplicationDelegate>
+@interface nuDEAppDelegate : nuMachAppDelegate
 {
-  NSWindow* window;
-}
 
-@property (assign) IBOutlet NSWindow* window;
+}
 
 @end
