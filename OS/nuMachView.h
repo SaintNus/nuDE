@@ -9,11 +9,12 @@
  * \class nuMachView
  * \brief View class.
  */
-@interface nuMachView : NSView
+@interface nuMachView : NSOpenGLView
 {
-
-  // Not yet...
-
+	CVDisplayLinkRef displayLink;
 }
+
+//! \brief Initialize with NSWindow.
+- (id) initWithWindow: (NSWindow*) window;
 
 @end

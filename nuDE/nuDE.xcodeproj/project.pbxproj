@@ -14,6 +14,8 @@
 		C7AB29FA141CC012001F8EE5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C7AB29F6141CC012001F8EE5 /* InfoPlist.strings */; };
 		C7AB29FB141CC012001F8EE5 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = C7AB29F8141CC012001F8EE5 /* MainMenu.xib */; };
 		C7AB29FE141CC065001F8EE5 /* libNudeCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7AB29E0141CBD60001F8EE5 /* libNudeCore.a */; };
+		C7BB68A91424C52800B4899C /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7BB68A81424C52800B4899C /* OpenGL.framework */; };
+		C7BB68B81424D2AB00B4899C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7BB68B71424D2AB00B4899C /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +68,8 @@
 		C7AB2A15141CC772001F8EE5 /* Profile.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Profile.xcconfig; path = ../Configurations/Profile.xcconfig; sourceTree = "<group>"; };
 		C7AB2A16141CC772001F8EE5 /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = ../Configurations/Debug.xcconfig; sourceTree = "<group>"; };
 		C7AB2A17141CC772001F8EE5 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = ../Configurations/Release.xcconfig; sourceTree = "<group>"; };
+		C7BB68A81424C52800B4899C /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		C7BB68B71424D2AB00B4899C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +80,8 @@
 				C794E85A1422786F004D90DD /* libMach.a in Frameworks */,
 				C7AB29FE141CC065001F8EE5 /* libNudeCore.a in Frameworks */,
 				C72BFEC5141CACC9004F0E00 /* Cocoa.framework in Frameworks */,
+				C7BB68A91424C52800B4899C /* OpenGL.framework in Frameworks */,
+				C7BB68B81424D2AB00B4899C /* QuartzCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -110,6 +116,8 @@
 		C72BFEC3141CACC9004F0E00 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C7BB68B71424D2AB00B4899C /* QuartzCore.framework */,
+				C7BB68A81424C52800B4899C /* OpenGL.framework */,
 				C72BFEC4141CACC9004F0E00 /* Cocoa.framework */,
 				C72BFEC6141CACC9004F0E00 /* Other Frameworks */,
 			);
@@ -333,6 +341,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INFOPLIST_FILE = "nuDE-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -342,6 +351,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INFOPLIST_FILE = "nuDE-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -361,6 +371,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INFOPLIST_FILE = "nuDE-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

@@ -14,4 +14,6 @@
   // Not yet.
 }
 
+- (id) initWithName: (NSString*) name;
+
 @end

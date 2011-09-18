@@ -22,11 +22,11 @@
 		C794E845141F95D0004D90DD /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = ../Configurations/Debug.xcconfig; sourceTree = "<group>"; };
 		C794E846141F95D0004D90DD /* Profile.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Profile.xcconfig; path = ../Configurations/Profile.xcconfig; sourceTree = "<group>"; };
 		C794E847141F9730004D90DD /* OS-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OS-Prefix.pch"; sourceTree = "<group>"; };
-		C794E84C141F9E4A004D90DD /* nuMachAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = nuMachAppDelegate.h; path = ../nuMachAppDelegate.h; sourceTree = "<group>"; };
+		C794E84C141F9E4A004D90DD /* nuMachAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuMachAppDelegate.h; sourceTree = "<group>"; };
 		C794E84D141F9E4A004D90DD /* nuMachAppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = nuMachAppDelegate.mm; sourceTree = "<group>"; };
-		C794E84E141F9E4A004D90DD /* nuMachView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = nuMachView.h; path = ../nuMachView.h; sourceTree = "<group>"; };
+		C794E84E141F9E4A004D90DD /* nuMachView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuMachView.h; sourceTree = "<group>"; };
 		C794E84F141F9E4A004D90DD /* nuMachView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = nuMachView.mm; sourceTree = "<group>"; };
-		C794E850141F9E4A004D90DD /* nuMachWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = nuMachWindow.h; path = ../nuMachWindow.h; sourceTree = "<group>"; };
+		C794E850141F9E4A004D90DD /* nuMachWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuMachWindow.h; sourceTree = "<group>"; };
 		C794E851141F9E4A004D90DD /* nuMachWindow.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = nuMachWindow.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -68,7 +68,6 @@
 				C794E850141F9E4A004D90DD /* nuMachWindow.h */,
 			);
 			name = Headers;
-			path = Mach;
 			sourceTree = "<group>";
 		};
 		C794E842141F9593004D90DD /* Sources */ = {
@@ -182,6 +181,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "OS-Prefix.pch";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = ..;
 			};
 			name = Debug;
 		};
@@ -192,6 +192,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "OS-Prefix.pch";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = ..;
 			};
 			name = Release;
 		};
@@ -209,6 +210,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "OS-Prefix.pch";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = ..;
 			};
 			name = Profile;
 		};
@@ -233,6 +235,7 @@
 				C794E841141F9554004D90DD /* Profile */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

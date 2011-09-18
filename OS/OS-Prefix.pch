@@ -10,3 +10,10 @@
 #import <Cocoa/Cocoa.h>
 
 #endif
+
+#include <QuartzCore/CVDisplayLink.h>
+
+#include <OpenGL/OpenGL.h>
+#include <OpenGL/gl3.h>
+
+#include "Core/nuDebug.h"

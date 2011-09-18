@@ -18,5 +18,6 @@
 @property (readonly) nuMachView* view;
 
 + (id) instance;
+- (NSString*) windowTitle;
 
 @end

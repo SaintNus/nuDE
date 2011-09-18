@@ -19,9 +19,30 @@ static nuMachAppDelegate* gpAppDelegate = nil;
   return gpAppDelegate;
 }
 
+- (NSString*) windowTitle
+{
+  return @"nuDE";
+}
+
 - (void) applicationDidFinishLaunching: (NSNotification*) notification
 {
+  NU_TRACE("Application launching!\n");
   gpAppDelegate = self;
+  window = [[nuMachWindow alloc] initWithName: [self windowTitle]];
+  view = [[nuMachView alloc] initWithWindow: window];
+  if(window && view) {
+    [window center];
+    [window makeKeyAndOrderFront: self];
+  }
+}
+
+- (void) applicationWillTerminate:(NSNotification *)notification
+{
+  NU_TRACE("Application terminating!\n");
+  [view release];
+  view = nil;
+  [window release];
+  window = nil;
 }
 
 @end

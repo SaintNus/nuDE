@@ -8,6 +8,22 @@
 #ifndef __NUDE_H__
 #define __NUDE_H__
 
+#include <stddef.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdarg.h>
+#include <stdlib.h>
+
+#include <assert.h>
+
+#include <cstring>
+#include <new>
+
+#include <QuartzCore/CVDisplayLink.h>
+
+#include <OpenGL/OpenGL.h>
+#include <OpenGL/gl3.h>
+
 #include "Core/nuType.h"
 #include "Core/nuDebug.h"
 #include "Core/nuCRC.h"
