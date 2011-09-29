@@ -31,6 +31,8 @@
 #include "Core/nuObject.h"
 #include "Core/nuTypeInfo.h"
 
+#include "Core/nuFile.h"
+
 #ifdef __OBJC__
 
 #import "OS/nuMachAppDelegate.h"

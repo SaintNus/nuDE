@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C7707766142749B200163779 /* nuMachFile.h in Headers */ = {isa = PBXBuildFile; fileRef = C7707764142749B200163779 /* nuMachFile.h */; };
+		C7707767142749B200163779 /* nuMachFile.mm in Sources */ = {isa = PBXBuildFile; fileRef = C7707765142749B200163779 /* nuMachFile.mm */; };
 		C794E848141F9730004D90DD /* OS-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = C794E847141F9730004D90DD /* OS-Prefix.pch */; };
 		C794E852141F9E4A004D90DD /* nuMachAppDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = C794E84C141F9E4A004D90DD /* nuMachAppDelegate.h */; };
 		C794E853141F9E4A004D90DD /* nuMachAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = C794E84D141F9E4A004D90DD /* nuMachAppDelegate.mm */; };
@@ -17,6 +19,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C7707764142749B200163779 /* nuMachFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuMachFile.h; sourceTree = "<group>"; };
+		C7707765142749B200163779 /* nuMachFile.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = nuMachFile.mm; sourceTree = "<group>"; };
 		C794E82D141F9543004D90DD /* libMach.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMach.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C794E844141F95D0004D90DD /* Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = ../Configurations/Release.xcconfig; sourceTree = "<group>"; };
 		C794E845141F95D0004D90DD /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = ../Configurations/Debug.xcconfig; sourceTree = "<group>"; };
@@ -63,6 +67,7 @@
 		C794E836141F9543004D90DD /* Headers */ = {
 			isa = PBXGroup;
 			children = (
+				C7707764142749B200163779 /* nuMachFile.h */,
 				C794E84C141F9E4A004D90DD /* nuMachAppDelegate.h */,
 				C794E84E141F9E4A004D90DD /* nuMachView.h */,
 				C794E850141F9E4A004D90DD /* nuMachWindow.h */,
@@ -73,6 +78,7 @@
 		C794E842141F9593004D90DD /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				C7707765142749B200163779 /* nuMachFile.mm */,
 				C794E84D141F9E4A004D90DD /* nuMachAppDelegate.mm */,
 				C794E84F141F9E4A004D90DD /* nuMachView.mm */,
 				C794E851141F9E4A004D90DD /* nuMachWindow.mm */,
@@ -101,6 +107,7 @@
 				C794E852141F9E4A004D90DD /* nuMachAppDelegate.h in Headers */,
 				C794E854141F9E4A004D90DD /* nuMachView.h in Headers */,
 				C794E856141F9E4A004D90DD /* nuMachWindow.h in Headers */,
+				C7707766142749B200163779 /* nuMachFile.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -154,6 +161,7 @@
 				C794E853141F9E4A004D90DD /* nuMachAppDelegate.mm in Sources */,
 				C794E855141F9E4A004D90DD /* nuMachView.mm in Sources */,
 				C794E857141F9E4A004D90DD /* nuMachWindow.mm in Sources */,
+				C7707767142749B200163779 /* nuMachFile.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
