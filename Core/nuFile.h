@@ -12,35 +12,42 @@
 
 namespace nude {
 
+  enum FILE_ERROR {
+    FERROR_CRITICAL = -1,
+    FERROR_NONE = 0,
+    FERROR_CANNOT_OPEN,
+    FERROR_INVALID_OPERATION,
+  };
+  
+  enum FILE_SEEK {
+    FSEEK_SET = SEEK_SET,
+    FSEEK_CURRENT = SEEK_CUR,
+    FSEEK_END = SEEK_END,
+  };
+
+  enum FILE_ATTRIBUTE {
+    FATTR_READ = 0,
+    FATTR_WRITE,
+    FATTR_UPDATE,
+  };
+  
   template< class T >
   class File
   {
   public:
-    enum ERROR_CODE {
-      CRITICAL = -1,
-      NO_ERROR = 0,
-    };
-
-    enum SEEK {
-      SET = SEEK_SET,
-      CURRENT = SEEK_CUR,
-      END = SEEK_END,
-    };
-    
-    File() {
-      // None...
+    File() {}
+    File(FILE_ATTRIBUTE attr, ccstr name) {
+      mFileHandler.open(attr, name);
     }
-    ~File() {
-      close();
-    }
+    ~File() {}
 
-    ERROR_CODE open(ccstr name) {
-      return mFileHandler.open(name);
+    FILE_ERROR open(FILE_ATTRIBUTE attr, ccstr name) {
+      return mFileHandler.open(attr, name);
     }
     bool isOpened(void) const {
-      return mFileHandler.getFileHandle() != NULL;
+      return mFileHandler.getHandle() != NULL;
     }
-    ERROR_CODE close(void) {
+    FILE_ERROR close(void) {
       return mFileHandler.close();
     }
     size_t read(void* ptr, size_t bytes) {
@@ -49,11 +56,11 @@ namespace nude {
     size_t write(void* ptr, size_t bytes) {
       return mFileHandler.write(ptr, bytes);
     }
-    ERROR_CODE seek(i64 pos, SEEK whence) {
+    FILE_ERROR seek(i64 pos, FILE_SEEK whence) {
       return mFileHandler.seek(pos, whence);
     }
-    ERROR_CODE rewind(void) {
-      seek(0, SET);
+    FILE_ERROR rewind(void) {
+      seek(0, FSEEK_SET);
     }
     i64 tell(void) const {
       return mFileHandler.tell();
