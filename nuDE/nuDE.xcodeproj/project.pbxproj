@@ -72,7 +72,6 @@
 		C7AB2A17141CC772001F8EE5 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = ../Configurations/Release.xcconfig; sourceTree = "<group>"; };
 		C7BB68A81424C52800B4899C /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		C7BB68B71424D2AB00B4899C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		C7DEFBD4144C76250032BEDD /* Resources */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Resources; path = ../Resources; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,7 +139,6 @@
 		C72BFECB141CACC9004F0E00 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				C7DEFBD4144C76250032BEDD /* Resources */,
 				C796666D1444910000E540CD /* nuDE.icns */,
 				C7AB29F6141CC012001F8EE5 /* InfoPlist.strings */,
 				C7AB29F8141CC012001F8EE5 /* MainMenu.xib */,
