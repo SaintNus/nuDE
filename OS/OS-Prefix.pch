@@ -11,6 +11,8 @@
 
 #endif
 
+#include <string.h>
+
 #include <QuartzCore/CVDisplayLink.h>
 
 #include <OpenGL/OpenGL.h>

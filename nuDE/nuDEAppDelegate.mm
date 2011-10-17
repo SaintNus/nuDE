@@ -9,4 +9,9 @@
 
 @implementation nuDEAppDelegate
 
+- (void) applicationDidFinishLaunching: (NSNotification*) notification
+{
+  [super applicationDidFinishLaunching: notification];
+}
+
 @end

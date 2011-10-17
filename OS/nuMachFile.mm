@@ -9,6 +9,49 @@
 
 nude::FILE_ERROR nuMachFile::open(nude::FILE_ATTRIBUTE attr, ccstr name)
 {
+  nude::FILE_ERROR ret = nude::FERROR_NONE;
+
+  i32 protocol_id = -1;
+  NSString* path = nil;
+
+  ccstr protocol[] = {
+    "res://",
+    "home://",
+    "file://",
+  };
+
+  for(i32 ii = 0; ii < sizeof(protocol) / sizeof(ccstr); ii++) {
+    size_t len = strlen(protocol[ii]);
+    if(strncmp(protocol[ii], name, len) == 0) {
+      protocol_id = ii;
+      break;
+    }
+  }
+
+  switch(protocol_id) {
+  case 0:
+    {
+      ccstr f_name = name + strlen(protocol[protocol_id]);
+      NSBundle* bundle = [NSBundle mainBundle];
+      path = [[NSString alloc] initWithFormat: @"%@/@s", [bundle resourcePath], f_name];
+    }
+    break;
+  case 1:
+    {
+      ccstr f_name = name + strlen(protocol[protocol_id]);
+      path = [[NSString alloc] initWithFormat: @"~/@s", f_name];
+    }
+    break;
+  case 2:
+    {
+      ccstr f_name = name + strlen(protocol[protocol_id]);
+      path = [[NSString alloc] initWithCString: f_name encoding: NSASCIIStringEncoding];
+    }
+    break;
+  default:
+    path = [[NSString alloc] initWithCString: name encoding: NSASCIIStringEncoding];
+  }
+
   if(mFileHandle) {
     NSFileHandle* fh = static_cast< NSFileHandle* >(mFileHandle);
     [fh release];
@@ -21,43 +64,48 @@ nude::FILE_ERROR nuMachFile::open(nude::FILE_ATTRIBUTE attr, ccstr name)
   switch(mAttribute) {
   case nude::FATTR_READ:
     {
-      NSString* path = [NSString stringWithCString: name encoding:NSASCIIStringEncoding];
       NSFileHandle* fh = [NSFileHandle fileHandleForReadingAtPath: path];
-      if(!fh)
-        return nude::FERROR_CANNOT_OPEN;
-      [fh retain];
-      mFileSize = [fh seekToEndOfFile];
-      [fh seekToFileOffset: 0];
-      mFileHandle = fh;
+      if(!fh) {
+        ret = nude::FERROR_CANNOT_OPEN;
+      } else {
+        [fh retain];
+        mFileSize = [fh seekToEndOfFile];
+        [fh seekToFileOffset: 0];
+        mFileHandle = fh;
+      }
     }
     break;
   case nude::FATTR_WRITE:
     {
-      NSString* path = [NSString stringWithCString: name encoding:NSASCIIStringEncoding];
       NSFileHandle* fh = [NSFileHandle fileHandleForWritingAtPath: path];
-      if(!fh)
-        return nude::FERROR_CANNOT_OPEN;
-      [fh retain];
-      mFileHandle = fh;
+      if(!fh) {
+        ret = nude::FERROR_CANNOT_OPEN;
+      } else {
+        [fh retain];
+        mFileHandle = fh;
+      }
     }
     break;
   case nude::FATTR_UPDATE:
     {
-      NSString* path = [NSString stringWithCString: name encoding:NSASCIIStringEncoding];
       NSFileHandle* fh = [NSFileHandle fileHandleForUpdatingAtPath: path];
-      if(!fh)
-        return nude::FERROR_CANNOT_OPEN;
-      [fh retain];
-      mFileSize = [fh seekToEndOfFile];
-      [fh seekToFileOffset: 0];
-      mFileHandle = fh;
+      if(!fh) {
+        ret = nude::FERROR_CANNOT_OPEN;
+      } else {
+        [fh retain];
+        mFileSize = [fh seekToEndOfFile];
+        [fh seekToFileOffset: 0];
+        mFileHandle = fh;
+      }
     }
     break;
   default:
-    return nude::FERROR_CRITICAL;
+    ret = nude::FERROR_CRITICAL;
   }
-  
-  return nude::FERROR_NONE;
+
+  [path release];
+
+  return ret;
 }
 
 nude::FILE_ERROR nuMachFile::close(void)

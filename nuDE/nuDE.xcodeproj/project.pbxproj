@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		C72BFEC5141CACC9004F0E00 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C72BFEC4141CACC9004F0E00 /* Cocoa.framework */; };
 		C794E85A1422786F004D90DD /* libMach.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C794E84B141F975D004D90DD /* libMach.a */; };
+		C796666E1444910000E540CD /* nuDE.icns in Resources */ = {isa = PBXBuildFile; fileRef = C796666D1444910000E540CD /* nuDE.icns */; };
 		C7AB29F3141CC006001F8EE5 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = C7AB29EE141CC006001F8EE5 /* main.mm */; };
 		C7AB29F5141CC006001F8EE5 /* nuDEAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = C7AB29F2141CC006001F8EE5 /* nuDEAppDelegate.mm */; };
 		C7AB29FA141CC012001F8EE5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C7AB29F6141CC012001F8EE5 /* InfoPlist.strings */; };
@@ -57,6 +58,7 @@
 		C72BFEC9141CACC9004F0E00 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C72BFEF3141CAFB9004F0E00 /* Core.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Core.xcodeproj; path = ../Core/Core.xcodeproj; sourceTree = "<group>"; };
 		C794E823141F9507004D90DD /* OS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OS.xcodeproj; path = ../OS/OS.xcodeproj; sourceTree = "<group>"; };
+		C796666D1444910000E540CD /* nuDE.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = nuDE.icns; sourceTree = SOURCE_ROOT; };
 		C79FC5B5141D0631005C6C70 /* nude.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = nude.h; path = ../nude.h; sourceTree = "<group>"; };
 		C7AB29EE141CC006001F8EE5 /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = SOURCE_ROOT; };
 		C7AB29EF141CC006001F8EE5 /* nuDE-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "nuDE-Info.plist"; sourceTree = SOURCE_ROOT; };
@@ -70,6 +72,7 @@
 		C7AB2A17141CC772001F8EE5 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = ../Configurations/Release.xcconfig; sourceTree = "<group>"; };
 		C7BB68A81424C52800B4899C /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		C7BB68B71424D2AB00B4899C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		C7DEFBD4144C76250032BEDD /* Resources */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Resources; path = ../Resources; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,6 +140,8 @@
 		C72BFECB141CACC9004F0E00 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C7DEFBD4144C76250032BEDD /* Resources */,
+				C796666D1444910000E540CD /* nuDE.icns */,
 				C7AB29F6141CC012001F8EE5 /* InfoPlist.strings */,
 				C7AB29F8141CC012001F8EE5 /* MainMenu.xib */,
 			);
@@ -199,6 +204,7 @@
 				C72BFEBC141CACC9004F0E00 /* Sources */,
 				C72BFEBD141CACC9004F0E00 /* Frameworks */,
 				C72BFEBE141CACC9004F0E00 /* Resources */,
+				C7DEFBD3144AE42B0032BEDD /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -216,6 +222,9 @@
 /* Begin PBXProject section */
 		C72BFEB7141CACC8004F0E00 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
 			buildConfigurationList = C72BFEBA141CACC8004F0E00 /* Build configuration list for PBXProject "nuDE" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
@@ -267,10 +276,27 @@
 			files = (
 				C7AB29FA141CC012001F8EE5 /* InfoPlist.strings in Resources */,
 				C7AB29FB141CC012001F8EE5 /* MainMenu.xib in Resources */,
+				C796666E1444910000E540CD /* nuDE.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		C7DEFBD3144AE42B0032BEDD /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Create resource link.\n\nRES_DIR=$BUILT_PRODUCTS_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH\nNUDE_RES_DIR=$RES_DIR/Resources\n\nif [ -d $NUDE_RES_DIR ]\nthen\n    echo $NUDE_RES_DIR exists!\nelse\n    echo Creating link to resource directory.\n    ln -s $PROJECT_DIR/../Resources $NUDE_RES_DIR\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		C72BFEBC141CACC9004F0E00 /* Sources */ = {
