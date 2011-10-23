@@ -12,6 +12,7 @@
 - (void) applicationDidFinishLaunching: (NSNotification*) notification
 {
   [super applicationDidFinishLaunching: notification];
+  NU_TRACE("Application launched.\n");
 }
 
 @end

@@ -33,13 +33,14 @@ nude::FILE_ERROR nuMachFile::open(nude::FILE_ATTRIBUTE attr, ccstr name)
     {
       ccstr f_name = name + strlen(protocol[protocol_id]);
       NSBundle* bundle = [NSBundle mainBundle];
-      path = [[NSString alloc] initWithFormat: @"%@/@s", [bundle resourcePath], f_name];
+      path = [[NSString alloc] initWithFormat: @"%@/%s", [bundle resourcePath], f_name];
     }
     break;
   case 1:
     {
       ccstr f_name = name + strlen(protocol[protocol_id]);
-      path = [[NSString alloc] initWithFormat: @"~/@s", f_name];
+      NSString* t_path = [NSString stringWithFormat: @"~/%s", f_name];
+      path = [[t_path stringByExpandingTildeInPath] retain];
     }
     break;
   case 2:

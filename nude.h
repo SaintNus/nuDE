@@ -42,4 +42,6 @@
 
 #endif
 
+#include "OS/nuMachFile.h"
+
 #endif
