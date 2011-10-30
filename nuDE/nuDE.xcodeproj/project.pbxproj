@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		C72BFEC5141CACC9004F0E00 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C72BFEC4141CACC9004F0E00 /* Cocoa.framework */; };
+		C785D081145D42F500E64F10 /* libGraphics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C785D080145D42D000E64F10 /* libGraphics.a */; };
 		C794E85A1422786F004D90DD /* libMach.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C794E84B141F975D004D90DD /* libMach.a */; };
 		C796666E1444910000E540CD /* nuDE.icns in Resources */ = {isa = PBXBuildFile; fileRef = C796666D1444910000E540CD /* nuDE.icns */; };
 		C7AB29F3141CC006001F8EE5 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = C7AB29EE141CC006001F8EE5 /* main.mm */; };
@@ -20,6 +21,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		C785D07C145D42D000E64F10 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C785D064145D415600E64F10 /* Graphics.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C785D073145D421D00E64F10;
+			remoteInfo = Graphics;
+		};
+		C785D07F145D42D000E64F10 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C785D064145D415600E64F10 /* Graphics.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C785D074145D421D00E64F10;
+			remoteInfo = Graphics;
+		};
 		C794E84A141F975D004D90DD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C794E823141F9507004D90DD /* OS.xcodeproj */;
@@ -57,6 +72,7 @@
 		C72BFEC8141CACC9004F0E00 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		C72BFEC9141CACC9004F0E00 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C72BFEF3141CAFB9004F0E00 /* Core.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Core.xcodeproj; path = ../Core/Core.xcodeproj; sourceTree = "<group>"; };
+		C785D064145D415600E64F10 /* Graphics.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Graphics.xcodeproj; path = ../Graphics/Graphics.xcodeproj; sourceTree = "<group>"; };
 		C794E823141F9507004D90DD /* OS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OS.xcodeproj; path = ../OS/OS.xcodeproj; sourceTree = "<group>"; };
 		C796666D1444910000E540CD /* nuDE.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = nuDE.icns; sourceTree = SOURCE_ROOT; };
 		C79FC5B5141D0631005C6C70 /* nude.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = nude.h; path = ../nude.h; sourceTree = "<group>"; };
@@ -79,11 +95,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C794E85A1422786F004D90DD /* libMach.a in Frameworks */,
-				C7AB29FE141CC065001F8EE5 /* libNudeCore.a in Frameworks */,
 				C72BFEC5141CACC9004F0E00 /* Cocoa.framework in Frameworks */,
 				C7BB68A91424C52800B4899C /* OpenGL.framework in Frameworks */,
 				C7BB68B81424D2AB00B4899C /* QuartzCore.framework in Frameworks */,
+				C7AB29FE141CC065001F8EE5 /* libNudeCore.a in Frameworks */,
+				C785D081145D42F500E64F10 /* libGraphics.a in Frameworks */,
+				C794E85A1422786F004D90DD /* libMach.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -94,6 +111,7 @@
 			isa = PBXGroup;
 			children = (
 				C72BFEF3141CAFB9004F0E00 /* Core.xcodeproj */,
+				C785D064145D415600E64F10 /* Graphics.xcodeproj */,
 				C794E823141F9507004D90DD /* OS.xcodeproj */,
 				C7AB2A14141CC759001F8EE5 /* Configurations */,
 				C79FC5B5141D0631005C6C70 /* nude.h */,
@@ -145,6 +163,14 @@
 			);
 			name = Resources;
 			path = nuDE;
+			sourceTree = "<group>";
+		};
+		C785D065145D415600E64F10 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C785D080145D42D000E64F10 /* libGraphics.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		C794E824141F9507004D90DD /* Products */ = {
@@ -207,8 +233,9 @@
 			buildRules = (
 			);
 			dependencies = (
-				C794E8591422784E004D90DD /* PBXTargetDependency */,
 				C7AB29FD141CC05F001F8EE5 /* PBXTargetDependency */,
+				C785D07D145D42D000E64F10 /* PBXTargetDependency */,
+				C794E8591422784E004D90DD /* PBXTargetDependency */,
 			);
 			name = nuDE;
 			productName = nuDE;
@@ -239,6 +266,10 @@
 					ProjectRef = C72BFEF3141CAFB9004F0E00 /* Core.xcodeproj */;
 				},
 				{
+					ProductGroup = C785D065145D415600E64F10 /* Products */;
+					ProjectRef = C785D064145D415600E64F10 /* Graphics.xcodeproj */;
+				},
+				{
 					ProductGroup = C794E824141F9507004D90DD /* Products */;
 					ProjectRef = C794E823141F9507004D90DD /* OS.xcodeproj */;
 				},
@@ -251,6 +282,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		C785D080145D42D000E64F10 /* libGraphics.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libGraphics.a;
+			remoteRef = C785D07F145D42D000E64F10 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		C794E84B141F975D004D90DD /* libMach.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -309,6 +347,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		C785D07D145D42D000E64F10 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Graphics;
+			targetProxy = C785D07C145D42D000E64F10 /* PBXContainerItemProxy */;
+		};
 		C794E8591422784E004D90DD /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = Mach;

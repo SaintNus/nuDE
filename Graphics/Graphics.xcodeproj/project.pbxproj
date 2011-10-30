@@ -1,0 +1,221 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		C785D083145D433000E64F10 /* NudeGraphics-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = C785D082145D433000E64F10 /* NudeGraphics-Prefix.pch */; };
+		C785D087145D44D300E64F10 /* nuRenderGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C785D085145D44D300E64F10 /* nuRenderGL.cpp */; };
+		C785D088145D44D300E64F10 /* nuRenderGL.h in Headers */ = {isa = PBXBuildFile; fileRef = C785D086145D44D300E64F10 /* nuRenderGL.h */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		C785D06C145D418E00E64F10 /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = ../Configurations/Debug.xcconfig; sourceTree = "<group>"; };
+		C785D06D145D418E00E64F10 /* Profile.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Profile.xcconfig; path = ../Configurations/Profile.xcconfig; sourceTree = "<group>"; };
+		C785D06E145D418E00E64F10 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = ../Configurations/Release.xcconfig; sourceTree = "<group>"; };
+		C785D074145D421D00E64F10 /* libGraphics.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGraphics.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C785D082145D433000E64F10 /* NudeGraphics-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NudeGraphics-Prefix.pch"; sourceTree = "<group>"; };
+		C785D085145D44D300E64F10 /* nuRenderGL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuRenderGL.cpp; sourceTree = "<group>"; };
+		C785D086145D44D300E64F10 /* nuRenderGL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuRenderGL.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C785D071145D421D00E64F10 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		C785D05B145D412100E64F10 = {
+			isa = PBXGroup;
+			children = (
+				C785D06A145D417700E64F10 /* Configurations */,
+				C785D082145D433000E64F10 /* NudeGraphics-Prefix.pch */,
+				C785D07B145D42A700E64F10 /* Headers */,
+				C785D07A145D42A300E64F10 /* Sources */,
+				C785D075145D421D00E64F10 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		C785D06A145D417700E64F10 /* Configurations */ = {
+			isa = PBXGroup;
+			children = (
+				C785D06C145D418E00E64F10 /* Debug.xcconfig */,
+				C785D06D145D418E00E64F10 /* Profile.xcconfig */,
+				C785D06E145D418E00E64F10 /* Release.xcconfig */,
+			);
+			name = Configurations;
+			sourceTree = "<group>";
+		};
+		C785D075145D421D00E64F10 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C785D074145D421D00E64F10 /* libGraphics.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C785D07A145D42A300E64F10 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				C785D085145D44D300E64F10 /* nuRenderGL.cpp */,
+			);
+			name = Sources;
+			sourceTree = "<group>";
+		};
+		C785D07B145D42A700E64F10 /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+				C785D086145D44D300E64F10 /* nuRenderGL.h */,
+			);
+			name = Headers;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		C785D072145D421D00E64F10 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C785D083145D433000E64F10 /* NudeGraphics-Prefix.pch in Headers */,
+				C785D088145D44D300E64F10 /* nuRenderGL.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		C785D073145D421D00E64F10 /* Graphics */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C785D076145D421D00E64F10 /* Build configuration list for PBXNativeTarget "Graphics" */;
+			buildPhases = (
+				C785D070145D421D00E64F10 /* Sources */,
+				C785D071145D421D00E64F10 /* Frameworks */,
+				C785D072145D421D00E64F10 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Graphics;
+			productName = Graphics;
+			productReference = C785D074145D421D00E64F10 /* libGraphics.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C785D05D145D412100E64F10 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+				ORGANIZATIONNAME = "Capcom Japan Co. Ltd.";
+			};
+			buildConfigurationList = C785D060145D412100E64F10 /* Build configuration list for PBXProject "Graphics" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = C785D05B145D412100E64F10;
+			productRefGroup = C785D075145D421D00E64F10 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C785D073145D421D00E64F10 /* Graphics */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C785D070145D421D00E64F10 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C785D087145D44D300E64F10 /* nuRenderGL.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		C785D062145D412100E64F10 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C785D06C145D418E00E64F10 /* Debug.xcconfig */;
+			buildSettings = {
+				HEADER_SEARCH_PATHS = ..;
+			};
+			name = Debug;
+		};
+		C785D063145D412100E64F10 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C785D06E145D418E00E64F10 /* Release.xcconfig */;
+			buildSettings = {
+				HEADER_SEARCH_PATHS = ..;
+			};
+			name = Release;
+		};
+		C785D06F145D41A200E64F10 /* Profile */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C785D06D145D418E00E64F10 /* Profile.xcconfig */;
+			buildSettings = {
+				HEADER_SEARCH_PATHS = ..;
+			};
+			name = Profile;
+		};
+		C785D077145D421D00E64F10 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		C785D078145D421D00E64F10 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		C785D079145D421D00E64F10 /* Profile */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Profile;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C785D060145D412100E64F10 /* Build configuration list for PBXProject "Graphics" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C785D062145D412100E64F10 /* Debug */,
+				C785D063145D412100E64F10 /* Release */,
+				C785D06F145D41A200E64F10 /* Profile */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C785D076145D421D00E64F10 /* Build configuration list for PBXNativeTarget "Graphics" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C785D077145D421D00E64F10 /* Debug */,
+				C785D078145D421D00E64F10 /* Release */,
+				C785D079145D421D00E64F10 /* Profile */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = C785D05D145D412100E64F10 /* Project object */;
+}

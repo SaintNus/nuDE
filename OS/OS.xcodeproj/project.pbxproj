@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		C7707766142749B200163779 /* nuMachFile.h in Headers */ = {isa = PBXBuildFile; fileRef = C7707764142749B200163779 /* nuMachFile.h */; };
 		C7707767142749B200163779 /* nuMachFile.mm in Sources */ = {isa = PBXBuildFile; fileRef = C7707765142749B200163779 /* nuMachFile.mm */; };
-		C794E848141F9730004D90DD /* OS-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = C794E847141F9730004D90DD /* OS-Prefix.pch */; };
+		C794E848141F9730004D90DD /* NudeOS-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = C794E847141F9730004D90DD /* NudeOS-Prefix.pch */; };
 		C794E852141F9E4A004D90DD /* nuMachAppDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = C794E84C141F9E4A004D90DD /* nuMachAppDelegate.h */; };
 		C794E853141F9E4A004D90DD /* nuMachAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = C794E84D141F9E4A004D90DD /* nuMachAppDelegate.mm */; };
 		C794E854141F9E4A004D90DD /* nuMachView.h in Headers */ = {isa = PBXBuildFile; fileRef = C794E84E141F9E4A004D90DD /* nuMachView.h */; };
@@ -25,7 +25,7 @@
 		C794E844141F95D0004D90DD /* Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = ../Configurations/Release.xcconfig; sourceTree = "<group>"; };
 		C794E845141F95D0004D90DD /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = ../Configurations/Debug.xcconfig; sourceTree = "<group>"; };
 		C794E846141F95D0004D90DD /* Profile.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Profile.xcconfig; path = ../Configurations/Profile.xcconfig; sourceTree = "<group>"; };
-		C794E847141F9730004D90DD /* OS-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OS-Prefix.pch"; sourceTree = "<group>"; };
+		C794E847141F9730004D90DD /* NudeOS-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NudeOS-Prefix.pch"; sourceTree = "<group>"; };
 		C794E84C141F9E4A004D90DD /* nuMachAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuMachAppDelegate.h; sourceTree = "<group>"; };
 		C794E84D141F9E4A004D90DD /* nuMachAppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = nuMachAppDelegate.mm; sourceTree = "<group>"; };
 		C794E84E141F9E4A004D90DD /* nuMachView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuMachView.h; sourceTree = "<group>"; };
@@ -49,7 +49,7 @@
 			isa = PBXGroup;
 			children = (
 				C794E843141F95D0004D90DD /* Configurations */,
-				C794E847141F9730004D90DD /* OS-Prefix.pch */,
+				C794E847141F9730004D90DD /* NudeOS-Prefix.pch */,
 				C794E836141F9543004D90DD /* Headers */,
 				C794E842141F9593004D90DD /* Sources */,
 				C794E82E141F9543004D90DD /* Products */,
@@ -103,7 +103,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C794E848141F9730004D90DD /* OS-Prefix.pch in Headers */,
+				C794E848141F9730004D90DD /* NudeOS-Prefix.pch in Headers */,
 				C794E852141F9E4A004D90DD /* nuMachAppDelegate.h in Headers */,
 				C794E854141F9E4A004D90DD /* nuMachView.h in Headers */,
 				C794E856141F9E4A004D90DD /* nuMachWindow.h in Headers */,
@@ -175,6 +175,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C794E845141F95D0004D90DD /* Debug.xcconfig */;
 			buildSettings = {
+				HEADER_SEARCH_PATHS = ..;
 			};
 			name = Debug;
 		};
@@ -182,6 +183,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C794E844141F95D0004D90DD /* Release.xcconfig */;
 			buildSettings = {
+				HEADER_SEARCH_PATHS = ..;
 			};
 			name = Release;
 		};
@@ -190,9 +192,8 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "OS-Prefix.pch";
+				GCC_PREFIX_HEADER = "NudeOS-Prefix.pch";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				USER_HEADER_SEARCH_PATHS = ..;
 			};
 			name = Debug;
 		};
@@ -201,9 +202,8 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "OS-Prefix.pch";
+				GCC_PREFIX_HEADER = "NudeOS-Prefix.pch";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				USER_HEADER_SEARCH_PATHS = ..;
 			};
 			name = Release;
 		};
@@ -211,6 +211,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C794E846141F95D0004D90DD /* Profile.xcconfig */;
 			buildSettings = {
+				HEADER_SEARCH_PATHS = ..;
 			};
 			name = Profile;
 		};
@@ -219,9 +220,8 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "OS-Prefix.pch";
+				GCC_PREFIX_HEADER = "NudeOS-Prefix.pch";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				USER_HEADER_SEARCH_PATHS = ..;
 			};
 			name = Profile;
 		};
