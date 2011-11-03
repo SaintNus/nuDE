@@ -45,7 +45,7 @@ namespace nude {
       return mFileHandler.open(attr, name);
     }
     bool isOpened(void) const {
-      return mFileHandler.getHandle() != NULL;
+      return mFileHandler.getHandle() != nullptr;
     }
     FILE_ERROR close(void) {
       return mFileHandler.close();

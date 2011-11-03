@@ -18,8 +18,9 @@
  */
 class nuObject
 {
-public:
   DECLARE_TYPE_INFO;
+
+public:
 
   //! \brief Default constructor.
   nuObject() { /* None... */ }

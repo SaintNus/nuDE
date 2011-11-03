@@ -7,3 +7,14 @@
 
 #include "nuRenderGL.h"
 
+IMPLEMENT_TYPE_INFO(nuRenderGL, nuObject);
+
+nuRenderGL::nuRenderGL()
+{
+
+}
+
+nuRenderGL::~nuRenderGL()
+{
+
+}

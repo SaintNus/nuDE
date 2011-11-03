@@ -12,7 +12,7 @@ class nuMachFile
 {
 public:
   nuMachFile()
-      : mFileHandle(NULL),
+      : mFileHandle(nullptr),
         mFileSize(0),
         mAttribute(nude::FATTR_READ)
   {

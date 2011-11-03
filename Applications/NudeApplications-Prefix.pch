@@ -1,8 +1,8 @@
 /*!
- * \file NudeGraphics-Prefix.pch
+ * \file NudeApplications-Prefix.pch
  * \brief Prefix header.
  * \author Nus
- * \date 2011/10/30 17:35
+ * \date 2011/09/11 17:54
  */
 
 #include <stddef.h>
@@ -16,11 +16,5 @@
 #include <cstring>
 #include <new>
 
-#include <QuartzCore/CVDisplayLink.h>
-
-#include <OpenGL/OpenGL.h>
-#include <OpenGL/gl3.h>
-
 #include "Core/nuDebug.h"
-#include "Core/nuFile.h"
 #include "Core/nuObject.h"

@@ -187,7 +187,7 @@ private:
   _class::PrivateTypeInfo::~PrivateTypeInfo() {} \
   size_t _class::PrivateTypeInfo::getSize(void) const { return sizeof(_class); } \
   nuTypeInfo::Type _class::PrivateTypeInfo::getType(void) const { return nuTypeInfo::ABSTRACT; } \
-  nuObject* _class::PrivateTypeInfo::createInstance(void) const { return NULL; } \
+  nuObject* _class::PrivateTypeInfo::createInstance(void) const { return nullptr; } \
   _class::PrivateTypeInfo _class::mTypeInfo; \
   const nuTypeInfo& _class::TypeInfo(void) { return mTypeInfo; }
 

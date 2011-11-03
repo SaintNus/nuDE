@@ -56,7 +56,7 @@ nude::FILE_ERROR nuMachFile::open(nude::FILE_ATTRIBUTE attr, ccstr name)
   if(mFileHandle) {
     NSFileHandle* fh = static_cast< NSFileHandle* >(mFileHandle);
     [fh release];
-    mFileHandle = NULL;
+    mFileHandle = nullptr;
     mFileSize = 0;
   }
 
@@ -115,7 +115,7 @@ nude::FILE_ERROR nuMachFile::close(void)
     NSFileHandle* fh = static_cast< NSFileHandle* >(mFileHandle);
 
     [fh release];
-    mFileHandle = NULL;
+    mFileHandle = nullptr;
     mFileSize = 0;
 
     return nude::FERROR_NONE;

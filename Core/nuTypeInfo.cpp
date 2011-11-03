@@ -37,7 +37,7 @@ const nuTypeInfo* nuTypeInfo::TypeInfoMgr::searchByName(ccstr class_name)
 {
   ui32 c_id = nuCRC::calculate(class_name);
   ui32 h_addr = hashAddr(c_id);
-  nuTypeInfo* ret = NULL;
+  nuTypeInfo* ret = nullptr;
   nuTypeInfo* p_curr = mTable[h_addr];
   while(p_curr) {
     if(p_curr->mID == c_id) {
@@ -55,7 +55,7 @@ void nuTypeInfo::TypeInfoMgr::registerTypeInfo(nuTypeInfo* type_info)
   ui32 h_addr = hashAddr(type_info->mID);
   nuTypeInfo* p_curr = mTable[h_addr];
 
-  if(type_info->mpSuperClass == NULL) {
+  if(type_info->mpSuperClass == nullptr) {
     // Add to root.
     nuTypeInfo* temp = mpRoot;
     type_info->mpNextClass = temp;
@@ -65,7 +65,7 @@ void nuTypeInfo::TypeInfoMgr::registerTypeInfo(nuTypeInfo* type_info)
   // Register to hash table.
   while(p_curr) {
     NU_ASSERT(p_curr->mID != type_info->mID, "Critical: Class has same CRC!\n");
-    if(p_curr->mpNextTypeInfo == NULL) {
+    if(p_curr->mpNextTypeInfo == nullptr) {
       p_curr->mpNextTypeInfo = type_info;
       return;
     }

@@ -8,6 +8,20 @@
 #ifndef __NURENDERGL_H__
 #define __NURENDERGL_H__
 
+/*!
+ * \class nuRenderGL
+ * \brief OpenGL renderer.
+ */
+class nuRenderGL : public nuObject
+{
+  DECLARE_TYPE_INFO;
 
+public:
+  nuRenderGL();
+  ~nuRenderGL();
+
+private:
+
+};
 
 #endif

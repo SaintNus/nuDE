@@ -7,10 +7,10 @@
 
 #include "nuObject.h"
 
-nuObject::PrivateTypeInfo::PrivateTypeInfo() : nuTypeInfo("nuObject", NULL) {}
+nuObject::PrivateTypeInfo::PrivateTypeInfo() : nuTypeInfo("nuObject", nullptr) {}
 nuObject::PrivateTypeInfo::~PrivateTypeInfo() {}
 size_t nuObject::PrivateTypeInfo::getSize(void) const { return sizeof(nuObject); }
 nuTypeInfo::Type nuObject::PrivateTypeInfo::getType(void) const { return nuTypeInfo::ROOT; }
-nuObject* nuObject::PrivateTypeInfo::createInstance(void) const { return NULL; }
+nuObject* nuObject::PrivateTypeInfo::createInstance(void) const { return nullptr; }
 nuObject::PrivateTypeInfo nuObject::mTypeInfo;
 const nuTypeInfo& nuObject::TypeInfo(void) { return mTypeInfo; }

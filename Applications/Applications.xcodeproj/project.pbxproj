@@ -1,0 +1,239 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		C7646DE81462CA1B0009A8B3 /* nuAppMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7646DE71462CA1B0009A8B3 /* nuAppMain.cpp */; };
+		C7A2C4C01462C1E800ACDC27 /* NudeApplications-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = C7A2C4BF1462C1E800ACDC27 /* NudeApplications-Prefix.pch */; };
+		C7A2C4C31462C3A600ACDC27 /* nuApplication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7A2C4C21462C3A600ACDC27 /* nuApplication.cpp */; };
+		C7A2C4C51462C3C200ACDC27 /* nuApplication.h in Headers */ = {isa = PBXBuildFile; fileRef = C7A2C4C41462C3C200ACDC27 /* nuApplication.h */; };
+		C7A2C4C71462C9D400ACDC27 /* nuAppMain.h in Headers */ = {isa = PBXBuildFile; fileRef = C7A2C4C61462C9D400ACDC27 /* nuAppMain.h */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		C7646DE71462CA1B0009A8B3 /* nuAppMain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuAppMain.cpp; sourceTree = "<group>"; };
+		C7A2C4B21462C04B00ACDC27 /* libApplications.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libApplications.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C7A2C4BA1462C07E00ACDC27 /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = ../Configurations/Debug.xcconfig; sourceTree = "<group>"; };
+		C7A2C4BB1462C07E00ACDC27 /* Profile.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Profile.xcconfig; path = ../Configurations/Profile.xcconfig; sourceTree = "<group>"; };
+		C7A2C4BC1462C07E00ACDC27 /* Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = ../Configurations/Release.xcconfig; sourceTree = "<group>"; };
+		C7A2C4BF1462C1E800ACDC27 /* NudeApplications-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NudeApplications-Prefix.pch"; sourceTree = "<group>"; };
+		C7A2C4C21462C3A600ACDC27 /* nuApplication.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = nuApplication.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
+		C7A2C4C41462C3C200ACDC27 /* nuApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = nuApplication.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		C7A2C4C61462C9D400ACDC27 /* nuAppMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuAppMain.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C7A2C4AF1462C04B00ACDC27 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		C7A2C4A21462BD2000ACDC27 = {
+			isa = PBXGroup;
+			children = (
+				C7A2C4B91462C06A00ACDC27 /* Configurations */,
+				C7A2C4BF1462C1E800ACDC27 /* NudeApplications-Prefix.pch */,
+				C7A2C4BE1462C18B00ACDC27 /* Headers */,
+				C7A2C4BD1462C18500ACDC27 /* Sources */,
+				C7A2C4B31462C04B00ACDC27 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		C7A2C4B31462C04B00ACDC27 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C7A2C4B21462C04B00ACDC27 /* libApplications.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C7A2C4B91462C06A00ACDC27 /* Configurations */ = {
+			isa = PBXGroup;
+			children = (
+				C7A2C4BA1462C07E00ACDC27 /* Debug.xcconfig */,
+				C7A2C4BB1462C07E00ACDC27 /* Profile.xcconfig */,
+				C7A2C4BC1462C07E00ACDC27 /* Release.xcconfig */,
+			);
+			name = Configurations;
+			sourceTree = "<group>";
+		};
+		C7A2C4BD1462C18500ACDC27 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				C7A2C4C21462C3A600ACDC27 /* nuApplication.cpp */,
+				C7646DE71462CA1B0009A8B3 /* nuAppMain.cpp */,
+			);
+			name = Sources;
+			sourceTree = "<group>";
+		};
+		C7A2C4BE1462C18B00ACDC27 /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+				C7A2C4C41462C3C200ACDC27 /* nuApplication.h */,
+				C7A2C4C61462C9D400ACDC27 /* nuAppMain.h */,
+			);
+			name = Headers;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		C7A2C4B01462C04B00ACDC27 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C7A2C4C01462C1E800ACDC27 /* NudeApplications-Prefix.pch in Headers */,
+				C7A2C4C51462C3C200ACDC27 /* nuApplication.h in Headers */,
+				C7A2C4C71462C9D400ACDC27 /* nuAppMain.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		C7A2C4B11462C04B00ACDC27 /* Applications */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C7A2C4B41462C04B00ACDC27 /* Build configuration list for PBXNativeTarget "Applications" */;
+			buildPhases = (
+				C7A2C4AE1462C04B00ACDC27 /* Sources */,
+				C7A2C4AF1462C04B00ACDC27 /* Frameworks */,
+				C7A2C4B01462C04B00ACDC27 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Applications;
+			productName = Applications;
+			productReference = C7A2C4B21462C04B00ACDC27 /* libApplications.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C7A2C4A41462BD2000ACDC27 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+				ORGANIZATIONNAME = "Capcom Japan Co. Ltd.";
+			};
+			buildConfigurationList = C7A2C4A71462BD2000ACDC27 /* Build configuration list for PBXProject "Applications" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = C7A2C4A21462BD2000ACDC27;
+			productRefGroup = C7A2C4B31462C04B00ACDC27 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C7A2C4B11462C04B00ACDC27 /* Applications */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C7A2C4AE1462C04B00ACDC27 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C7A2C4C31462C3A600ACDC27 /* nuApplication.cpp in Sources */,
+				C7646DE81462CA1B0009A8B3 /* nuAppMain.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		C7A2C4A91462BD2000ACDC27 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C7A2C4BA1462C07E00ACDC27 /* Debug.xcconfig */;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "NudeApplications-Prefix.pch";
+				HEADER_SEARCH_PATHS = ..;
+				USER_HEADER_SEARCH_PATHS = ..;
+			};
+			name = Debug;
+		};
+		C7A2C4AA1462BD2000ACDC27 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C7A2C4BC1462C07E00ACDC27 /* Release.xcconfig */;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "NudeApplications-Prefix.pch";
+				HEADER_SEARCH_PATHS = ..;
+				USER_HEADER_SEARCH_PATHS = ..;
+			};
+			name = Release;
+		};
+		C7A2C4B51462C04B00ACDC27 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		C7A2C4B61462C04B00ACDC27 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		C7A2C4B71462C05800ACDC27 /* Profile */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C7A2C4BB1462C07E00ACDC27 /* Profile.xcconfig */;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "NudeApplications-Prefix.pch";
+				HEADER_SEARCH_PATHS = ..;
+				USER_HEADER_SEARCH_PATHS = ..;
+			};
+			name = Profile;
+		};
+		C7A2C4B81462C05800ACDC27 /* Profile */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Profile;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C7A2C4A71462BD2000ACDC27 /* Build configuration list for PBXProject "Applications" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C7A2C4A91462BD2000ACDC27 /* Debug */,
+				C7A2C4AA1462BD2000ACDC27 /* Release */,
+				C7A2C4B71462C05800ACDC27 /* Profile */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C7A2C4B41462C04B00ACDC27 /* Build configuration list for PBXNativeTarget "Applications" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C7A2C4B51462C04B00ACDC27 /* Debug */,
+				C7A2C4B61462C04B00ACDC27 /* Release */,
+				C7A2C4B81462C05800ACDC27 /* Profile */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = C7A2C4A41462BD2000ACDC27 /* Project object */;
+}
