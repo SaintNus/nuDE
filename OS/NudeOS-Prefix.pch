@@ -11,12 +11,25 @@
 
 #endif
 
-#include <string.h>
+#include <stddef.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdarg.h>
+#include <stdlib.h>
+
+#include <assert.h>
+
+#include <cstring>
+#include <new>
 
 #include <QuartzCore/CVDisplayLink.h>
 
 #include <OpenGL/OpenGL.h>
 #include <OpenGL/gl3.h>
 
-#include "Core/nuDebug.h"
-#include "Core/nuFile.h"
+#include "nuDebug.h"
+#include "nuObject.h"
+#include "nuFile.h"
+
+#include "nuApplication.h"
+#include "nuAppMain.h"

@@ -177,7 +177,11 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NudeOS-Prefix.pch";
-				HEADER_SEARCH_PATHS = ..;
+				HEADER_SEARCH_PATHS = (
+					../Core,
+					../Graphics,
+					../Applications,
+				);
 			};
 			name = Debug;
 		};
@@ -187,7 +191,11 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NudeOS-Prefix.pch";
-				HEADER_SEARCH_PATHS = ..;
+				HEADER_SEARCH_PATHS = (
+					../Core,
+					../Graphics,
+					../Applications,
+				);
 			};
 			name = Release;
 		};
@@ -213,7 +221,11 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NudeOS-Prefix.pch";
-				HEADER_SEARCH_PATHS = ..;
+				HEADER_SEARCH_PATHS = (
+					../Core,
+					../Graphics,
+					../Applications,
+				);
 			};
 			name = Profile;
 		};

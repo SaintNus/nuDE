@@ -12,6 +12,7 @@
 {
   nuMachWindow* window;
   nuMachView* view;
+  NSThread* appThread;
 }
 
 @property (readonly) nuMachWindow* window;
@@ -19,5 +20,7 @@
 
 + (id) instance;
 - (NSString*) windowTitle;
+
+- (const nuTypeInfo&) appMain;
 
 @end

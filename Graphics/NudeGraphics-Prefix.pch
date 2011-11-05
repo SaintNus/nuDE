@@ -21,6 +21,6 @@
 #include <OpenGL/OpenGL.h>
 #include <OpenGL/gl3.h>
 
-#include "Core/nuDebug.h"
-#include "Core/nuFile.h"
-#include "Core/nuObject.h"
+#include "nuDebug.h"
+#include "nuFile.h"
+#include "nuObject.h"

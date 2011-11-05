@@ -25,23 +25,23 @@
 #include <OpenGL/OpenGL.h>
 #include <OpenGL/gl3.h>
 
-#include "Core/nuType.h"
-#include "Core/nuDebug.h"
-#include "Core/nuCRC.h"
-#include "Core/nuMemory.h"
-#include "Core/nuObject.h"
-#include "Core/nuTypeInfo.h"
+#include "nuType.h"
+#include "nuDebug.h"
+#include "nuCRC.h"
+#include "nuMemory.h"
+#include "nuObject.h"
+#include "nuTypeInfo.h"
 
-#include "Core/nuFile.h"
+#include "nuFile.h"
 
 #ifdef __OBJC__
 
-#import "OS/nuMachAppDelegate.h"
-#import "OS/nuMachWindow.h"
-#import "OS/nuMachView.h"
+#import "nuMachAppDelegate.h"
+#import "nuMachWindow.h"
+#import "nuMachView.h"
 
 #endif
 
-#include "OS/nuMachFile.h"
+#include "nuMachFile.h"
 
 #endif

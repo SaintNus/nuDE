@@ -433,7 +433,12 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "nuDE-Prefix.pch";
-				USER_HEADER_SEARCH_PATHS = ..;
+				HEADER_SEARCH_PATHS = (
+					../Core,
+					../Graphics,
+					../Applications,
+					../OS,
+				);
 			};
 			name = Debug;
 		};
@@ -443,7 +448,12 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "nuDE-Prefix.pch";
-				USER_HEADER_SEARCH_PATHS = ..;
+				HEADER_SEARCH_PATHS = (
+					../Core,
+					../Graphics,
+					../Applications,
+					../OS,
+				);
 			};
 			name = Profile;
 		};
@@ -473,7 +483,12 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "nuDE-Prefix.pch";
-				USER_HEADER_SEARCH_PATHS = ..;
+				HEADER_SEARCH_PATHS = (
+					../Core,
+					../Graphics,
+					../Applications,
+					../OS,
+				);
 			};
 			name = Release;
 		};

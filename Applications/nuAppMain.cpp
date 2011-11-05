@@ -19,7 +19,7 @@ nuAppMain::~nuAppMain()
 
 }
 
-i32 nuAppMain::main(i32 argc, ccstr* argv)
+i32 nuAppMain::main(void)
 {
   return 0;
 }

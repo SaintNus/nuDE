@@ -16,5 +16,5 @@
 #include <cstring>
 #include <new>
 
-#include "Core/nuDebug.h"
-#include "Core/nuObject.h"
+#include "nuDebug.h"
+#include "nuObject.h"

@@ -11,6 +11,12 @@ IMPLEMENT_TYPE_INFO(nuApplication, nuObject);
 
 nuApplication* nuApplication::mpInstance = nullptr;
 
+nuApplication::nuApplication()
+    : mpAppMain(nullptr)
+{
+  // Do not use!
+}
+
 nuApplication::nuApplication(const nuTypeInfo& type)
 {
   if(!type.isDerivedFrom(nuAppMain::TypeInfo())) {

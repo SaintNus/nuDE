@@ -6,8 +6,15 @@
  */
 
 #import "nuMachAppDelegate.h"
+#import "nuApplication.h"
 
 static nuMachAppDelegate* gpAppDelegate = nil;
+
+@interface nuMachAppDelegate(Private)
+
+- (void) appThreadProcedure: (id) sender;
+
+@end
 
 @implementation nuMachAppDelegate
 
@@ -24,15 +31,25 @@ static nuMachAppDelegate* gpAppDelegate = nil;
   return @"nuDE";
 }
 
+- (const nuTypeInfo&) appMain
+{
+  return nuAppMain::TypeInfo();
+}
+
 - (void) applicationDidFinishLaunching: (NSNotification*) notification
 {
   NU_TRACE("Application launching!\n");
   gpAppDelegate = self;
   window = [[nuMachWindow alloc] initWithName: [self windowTitle]];
   view = [[nuMachView alloc] initWithWindow: window];
-  if(window && view) {
+  appThread = [[NSThread alloc] initWithTarget: self
+                                selector: @selector(appThreadProcedure:)
+                                object: nil];
+  if(window && view && appThread) {
     [window center];
     [window makeKeyAndOrderFront: self];
+    nuApplication::createApplication([self appMain]);
+    [appThread start];
   }
 }
 
@@ -43,6 +60,14 @@ static nuMachAppDelegate* gpAppDelegate = nil;
   view = nil;
   [window release];
   window = nil;
+  [appThread release];
+  nuApplication::deleteApplication();
+}
+
+- (void) appThreadProcedure: (id) sender
+{
+  NU_TRACE("Running application thread.\n");
+  nuApplication::getCurrent()->run();
 }
 
 @end

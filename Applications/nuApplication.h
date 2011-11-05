@@ -19,12 +19,9 @@ class nuApplication : public nuObject
   DECLARE_TYPE_INFO;
 
 public:
-  static nuApplication* createApplication(i32 argc, ccstr* argv, const nuTypeInfo& main) {
-    if(!mpInstance) {
+  static nuApplication* createApplication(const nuTypeInfo& main) {
+    if(!mpInstance)
       mpInstance = new nuApplication(main);
-      mpInstance->mArgumentCount = argc;
-      mpInstance->mpArgumentValue = argv;
-    }
     return mpInstance;
   }
 
@@ -45,7 +42,7 @@ public:
 
   i32 run(void) {
     if(mpAppMain)
-      return mpAppMain->main(mArgumentCount, mpArgumentValue);
+      return mpAppMain->main();
     return -1;
   }
 
@@ -53,8 +50,6 @@ private:
   static nuApplication* mpInstance;
 
   nuAppMain* mpAppMain;
-  i32 mArgumentCount;
-  ccstr* mpArgumentValue;
 
   nuApplication();
   nuApplication(const nuTypeInfo& type);
