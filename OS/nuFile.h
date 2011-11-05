@@ -70,7 +70,9 @@ namespace nude {
     T mFileHandler;
     
   };
-  
+
 }
+
+typedef nude::File< class nuMachFile > nuFile;
 
 #endif

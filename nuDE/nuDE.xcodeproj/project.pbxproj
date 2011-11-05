@@ -115,9 +115,9 @@
 				C7BB68A91424C52800B4899C /* OpenGL.framework in Frameworks */,
 				C7BB68B81424D2AB00B4899C /* QuartzCore.framework in Frameworks */,
 				C7AB29FE141CC065001F8EE5 /* libNudeCore.a in Frameworks */,
+				C794E85A1422786F004D90DD /* libMach.a in Frameworks */,
 				C785D081145D42F500E64F10 /* libGraphics.a in Frameworks */,
 				C7646DEE1462D43F0009A8B3 /* libApplications.a in Frameworks */,
-				C794E85A1422786F004D90DD /* libMach.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -128,9 +128,9 @@
 			isa = PBXGroup;
 			children = (
 				C72BFEF3141CAFB9004F0E00 /* Core.xcodeproj */,
+				C794E823141F9507004D90DD /* OS.xcodeproj */,
 				C785D064145D415600E64F10 /* Graphics.xcodeproj */,
 				C7A2C4AB1462BD2000ACDC27 /* Applications.xcodeproj */,
-				C794E823141F9507004D90DD /* OS.xcodeproj */,
 				C7AB2A14141CC759001F8EE5 /* Configurations */,
 				C79FC5B5141D0631005C6C70 /* nude.h */,
 				C7AB29F0141CC006001F8EE5 /* nuDE-Prefix.pch */,
@@ -260,9 +260,9 @@
 			);
 			dependencies = (
 				C7AB29FD141CC05F001F8EE5 /* PBXTargetDependency */,
+				C794E8591422784E004D90DD /* PBXTargetDependency */,
 				C785D07D145D42D000E64F10 /* PBXTargetDependency */,
 				C7646DED1462D42E0009A8B3 /* PBXTargetDependency */,
-				C794E8591422784E004D90DD /* PBXTargetDependency */,
 			);
 			name = nuDE;
 			productName = nuDE;

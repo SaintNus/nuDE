@@ -7,18 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C74256AD1465B18500DE5FDA /* nuFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C74256AB1465B18500DE5FDA /* nuFile.cpp */; };
+		C74256AE1465B18500DE5FDA /* nuFile.h in Headers */ = {isa = PBXBuildFile; fileRef = C74256AC1465B18500DE5FDA /* nuFile.h */; };
 		C7707766142749B200163779 /* nuMachFile.h in Headers */ = {isa = PBXBuildFile; fileRef = C7707764142749B200163779 /* nuMachFile.h */; };
 		C7707767142749B200163779 /* nuMachFile.mm in Sources */ = {isa = PBXBuildFile; fileRef = C7707765142749B200163779 /* nuMachFile.mm */; };
 		C794E848141F9730004D90DD /* NudeOS-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = C794E847141F9730004D90DD /* NudeOS-Prefix.pch */; };
-		C794E852141F9E4A004D90DD /* nuMachAppDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = C794E84C141F9E4A004D90DD /* nuMachAppDelegate.h */; };
-		C794E853141F9E4A004D90DD /* nuMachAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = C794E84D141F9E4A004D90DD /* nuMachAppDelegate.mm */; };
-		C794E854141F9E4A004D90DD /* nuMachView.h in Headers */ = {isa = PBXBuildFile; fileRef = C794E84E141F9E4A004D90DD /* nuMachView.h */; };
-		C794E855141F9E4A004D90DD /* nuMachView.mm in Sources */ = {isa = PBXBuildFile; fileRef = C794E84F141F9E4A004D90DD /* nuMachView.mm */; };
-		C794E856141F9E4A004D90DD /* nuMachWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = C794E850141F9E4A004D90DD /* nuMachWindow.h */; };
-		C794E857141F9E4A004D90DD /* nuMachWindow.mm in Sources */ = {isa = PBXBuildFile; fileRef = C794E851141F9E4A004D90DD /* nuMachWindow.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C74256AB1465B18500DE5FDA /* nuFile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuFile.cpp; sourceTree = "<group>"; };
+		C74256AC1465B18500DE5FDA /* nuFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuFile.h; sourceTree = "<group>"; };
 		C7707764142749B200163779 /* nuMachFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = nuMachFile.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		C7707765142749B200163779 /* nuMachFile.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = nuMachFile.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		C794E82D141F9543004D90DD /* libMach.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMach.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -26,12 +24,6 @@
 		C794E845141F95D0004D90DD /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = ../Configurations/Debug.xcconfig; sourceTree = "<group>"; };
 		C794E846141F95D0004D90DD /* Profile.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Profile.xcconfig; path = ../Configurations/Profile.xcconfig; sourceTree = "<group>"; };
 		C794E847141F9730004D90DD /* NudeOS-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NudeOS-Prefix.pch"; sourceTree = "<group>"; };
-		C794E84C141F9E4A004D90DD /* nuMachAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuMachAppDelegate.h; sourceTree = "<group>"; };
-		C794E84D141F9E4A004D90DD /* nuMachAppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = nuMachAppDelegate.mm; sourceTree = "<group>"; };
-		C794E84E141F9E4A004D90DD /* nuMachView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuMachView.h; sourceTree = "<group>"; };
-		C794E84F141F9E4A004D90DD /* nuMachView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = nuMachView.mm; sourceTree = "<group>"; };
-		C794E850141F9E4A004D90DD /* nuMachWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuMachWindow.h; sourceTree = "<group>"; };
-		C794E851141F9E4A004D90DD /* nuMachWindow.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = nuMachWindow.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,10 +59,8 @@
 		C794E836141F9543004D90DD /* Headers */ = {
 			isa = PBXGroup;
 			children = (
+				C74256AC1465B18500DE5FDA /* nuFile.h */,
 				C7707764142749B200163779 /* nuMachFile.h */,
-				C794E84C141F9E4A004D90DD /* nuMachAppDelegate.h */,
-				C794E84E141F9E4A004D90DD /* nuMachView.h */,
-				C794E850141F9E4A004D90DD /* nuMachWindow.h */,
 			);
 			name = Headers;
 			sourceTree = "<group>";
@@ -78,10 +68,8 @@
 		C794E842141F9593004D90DD /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				C74256AB1465B18500DE5FDA /* nuFile.cpp */,
 				C7707765142749B200163779 /* nuMachFile.mm */,
-				C794E84D141F9E4A004D90DD /* nuMachAppDelegate.mm */,
-				C794E84F141F9E4A004D90DD /* nuMachView.mm */,
-				C794E851141F9E4A004D90DD /* nuMachWindow.mm */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -104,10 +92,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				C794E848141F9730004D90DD /* NudeOS-Prefix.pch in Headers */,
-				C794E852141F9E4A004D90DD /* nuMachAppDelegate.h in Headers */,
-				C794E854141F9E4A004D90DD /* nuMachView.h in Headers */,
-				C794E856141F9E4A004D90DD /* nuMachWindow.h in Headers */,
 				C7707766142749B200163779 /* nuMachFile.h in Headers */,
+				C74256AE1465B18500DE5FDA /* nuFile.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -161,10 +147,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C794E853141F9E4A004D90DD /* nuMachAppDelegate.mm in Sources */,
-				C794E855141F9E4A004D90DD /* nuMachView.mm in Sources */,
-				C794E857141F9E4A004D90DD /* nuMachWindow.mm in Sources */,
 				C7707767142749B200163779 /* nuMachFile.mm in Sources */,
+				C74256AD1465B18500DE5FDA /* nuFile.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -177,11 +161,7 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NudeOS-Prefix.pch";
-				HEADER_SEARCH_PATHS = (
-					../Core,
-					../Graphics,
-					../Applications,
-				);
+				HEADER_SEARCH_PATHS = ../Core;
 			};
 			name = Debug;
 		};
@@ -191,11 +171,7 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NudeOS-Prefix.pch";
-				HEADER_SEARCH_PATHS = (
-					../Core,
-					../Graphics,
-					../Applications,
-				);
+				HEADER_SEARCH_PATHS = ../Core;
 			};
 			name = Release;
 		};
@@ -221,11 +197,7 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NudeOS-Prefix.pch";
-				HEADER_SEARCH_PATHS = (
-					../Core,
-					../Graphics,
-					../Applications,
-				);
+				HEADER_SEARCH_PATHS = ../Core;
 			};
 			name = Profile;
 		};

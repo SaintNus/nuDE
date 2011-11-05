@@ -8,6 +8,8 @@
 #ifndef __NUMACHFILE_H__
 #define __NUMACHFILE_H__
 
+#include "nuFile.h"
+
 class nuMachFile
 {
 public:
@@ -44,7 +46,5 @@ private:
   nude::FILE_ATTRIBUTE mAttribute;
   
 };
-
-typedef nude::File< nuMachFile > nuFile;
 
 #endif

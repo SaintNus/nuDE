@@ -5,6 +5,17 @@
  * \date 2011/09/11 17:54
  */
 
+#ifdef __OBJC__
+
+#import <Cocoa/Cocoa.h>
+
+#endif
+
+#include <QuartzCore/CVDisplayLink.h>
+
+#include <OpenGL/OpenGL.h>
+#include <OpenGL/gl3.h>
+
 #include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>

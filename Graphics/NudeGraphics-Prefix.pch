@@ -22,5 +22,4 @@
 #include <OpenGL/gl3.h>
 
 #include "nuDebug.h"
-#include "nuFile.h"
 #include "nuObject.h"
