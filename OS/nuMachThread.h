@@ -16,9 +16,9 @@ public:
 
   void dispatch(nuObject* p_object, nuFunction func, void* param);
 
-  bool isCancelled(void);
-  bool isFinished(void);
-  bool isExecuting(void);
+  bool isCancelled(void) const;
+  bool isFinished(void) const;
+  bool isExecuting(void) const;
 
   void setName(ccstr name);
   ccstr getName(void) const;

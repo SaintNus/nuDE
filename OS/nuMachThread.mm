@@ -31,13 +31,16 @@
 - (id) init
 {
   self = [super init];
-  if(self)
+  if(self) {
+    // NU_TRACE("Creating thread handle.\n");
     thread = [[NSThread alloc] initWithTarget: self selector: @selector(execute:) object: nil];
+  }
   return self;
 }
 
 - (void) dealloc
 {
+  // NU_TRACE("Deleting thread handle.\n");
   [thread release];
   thread = nil;
 }
@@ -85,19 +88,19 @@ void nuMachThread::dispatch(nuObject* p_object, nuFunction func, void* param)
   [handle dispatchWithTarget: p_object function: func parameter: param];
 }
 
-bool nuMachThread::isCancelled(void)
+bool nuMachThread::isCancelled(void) const
 {
   _MachThreadHandle* handle = static_cast< _MachThreadHandle* >(mpHandle);
   return [[handle thread] isCancelled];
 }
 
-bool nuMachThread::isFinished(void)
+bool nuMachThread::isFinished(void) const
 {
   _MachThreadHandle* handle = static_cast< _MachThreadHandle* >(mpHandle);
   return [[handle thread] isFinished];
 }
 
-bool nuMachThread::isExecuting(void)
+bool nuMachThread::isExecuting(void) const
 {
   _MachThreadHandle* handle = static_cast< _MachThreadHandle* >(mpHandle);
   return [[handle thread] isExecuting];

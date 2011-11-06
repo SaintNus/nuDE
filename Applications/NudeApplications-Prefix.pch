@@ -31,3 +31,4 @@
 #include "nuObject.h"
 
 #include "nuFile.h"
+#include "nuThread.h"

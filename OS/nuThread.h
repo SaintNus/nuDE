@@ -16,13 +16,46 @@ namespace nude
   class Thread : public nuObject
   {
   public:
-    Thread();
-    ~Thread();
-    void dispatchThread(nuObject* p_object, nuFunction func);
+    Thread() {}
+    ~Thread() {}
+
+    void dispatchThread(nuObject* p_object, nuFunction func, void* param) {
+      mThreadHandler.dispatch(p_object, func, param);
+    }
+
+    bool isCancelled(void) const {
+      return mThreadHandler.isCancelled();
+    }
+    bool isFinished(void) const {
+      return mThreadHandler.isFinished();
+    }
+    bool isExecuting(void) const {
+      return mThreadHandler.isExecuting();
+    }
+
+    void setName(ccstr name) {
+      mThreadHandler.setName(name);
+    }
+    ccstr getName(void) const {
+      return mThreadHandler.getName();
+    }
+
+    void setStackSize(size_t stack_sz) {
+      mThreadHandler.setStackSize(stack_sz);
+    }
+    size_t getStackSize(void) const {
+      return mThreadHandler.getStackSize();
+    }
+
+    void setPriority(f64 priority) {
+      mThreadHandler.setPriority(priority);
+    }
+    f64 getPriority(void) const {
+      return mThreadHandler.getPriority();
+    }
 
   private:
     ThreadHandler mThreadHandler;
-
   };
 }
 

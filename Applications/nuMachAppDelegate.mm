@@ -56,6 +56,29 @@ static nuMachAppDelegate* gpAppDelegate = nil;
       nuFile file(nude::FATTR_READ, "home://Temp/test.cpp");
       NU_TRACE("File size: %lu\n", file.getSize());
     }
+
+    // Test thread!
+    {
+      class NusTest : public nuObject
+      {
+      public:
+        NusTest() {
+          mThread.setName("NusTest");
+          mThread.dispatchThread(this,
+                                 static_cast< nuFunction >(&NusTest::proc),
+                                 nullptr);
+        }
+        ~NusTest() {}
+        void proc(void* param) {
+          for(ui32 ui = 0; ui < 10; ui++) {
+            NU_TRACE("Count = %d\n", ui);
+            sleep(1);
+          }
+        }
+      private:
+        nuThread mThread;
+      } nus;
+    }
   }
 }
 
