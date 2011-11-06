@@ -21,6 +21,7 @@ class nuObject
   DECLARE_TYPE_INFO;
 
 public:
+  typedef void (*function)(void*);
 
   //! \brief Default constructor.
   nuObject() { /* None... */ }
@@ -54,5 +55,7 @@ private:
   // None...
   
 };
+
+typedef void (nuObject::*nuFunction)(void*);
 
 #endif

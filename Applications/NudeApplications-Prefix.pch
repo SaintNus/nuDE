@@ -29,3 +29,5 @@
 
 #include "nuDebug.h"
 #include "nuObject.h"
+
+#include "nuFile.h"

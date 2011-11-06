@@ -8,31 +8,13 @@
 #ifndef __NUFILE_H__
 #define __NUFILE_H__
 
-#include "nuType.h"
+#include "nuOS.h"
+#include "nuMachFile.h"
 
 namespace nude {
 
-  enum FILE_ERROR {
-    FERROR_CRITICAL = -1,
-    FERROR_NONE = 0,
-    FERROR_CANNOT_OPEN,
-    FERROR_INVALID_OPERATION,
-  };
-  
-  enum FILE_SEEK {
-    FSEEK_SET = SEEK_SET,
-    FSEEK_CURRENT = SEEK_CUR,
-    FSEEK_END = SEEK_END,
-  };
-
-  enum FILE_ATTRIBUTE {
-    FATTR_READ = 0,
-    FATTR_WRITE,
-    FATTR_UPDATE,
-  };
-  
-  template< class T >
-  class File
+  template< class FileHandler >
+  class File : public nuObject
   {
   public:
     File() {}
@@ -65,14 +47,18 @@ namespace nude {
     i64 tell(void) const {
       return mFileHandler.tell();
     }
+
+    size_t getSize(void) const {
+      return mFileHandler.getSize();
+    }
     
   private:
-    T mFileHandler;
+    FileHandler mFileHandler;
     
   };
 
 }
 
-typedef nude::File< class nuMachFile > nuFile;
+typedef nude::File< nuMachFile > nuFile;
 
 #endif

@@ -6,8 +6,5 @@
  */
 
 @interface nuDEAppDelegate : nuMachAppDelegate
-{
-
-}
 
 @end

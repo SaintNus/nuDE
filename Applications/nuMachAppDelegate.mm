@@ -50,6 +50,12 @@ static nuMachAppDelegate* gpAppDelegate = nil;
     [window makeKeyAndOrderFront: self];
     nuApplication::createApplication([self appMain]);
     [appThread start];
+
+    // Test file!
+    {
+      nuFile file(nude::FATTR_READ, "home://Temp/test.cpp");
+      NU_TRACE("File size: %lu\n", file.getSize());
+    }
   }
 }
 

@@ -186,7 +186,10 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NudeApplications-Prefix.pch";
-				HEADER_SEARCH_PATHS = ../Core;
+				HEADER_SEARCH_PATHS = (
+					../Core,
+					../OS,
+				);
 			};
 			name = Debug;
 		};
@@ -196,7 +199,10 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NudeApplications-Prefix.pch";
-				HEADER_SEARCH_PATHS = ../Core;
+				HEADER_SEARCH_PATHS = (
+					../Core,
+					../OS,
+				);
 			};
 			name = Release;
 		};
@@ -220,7 +226,10 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NudeApplications-Prefix.pch";
-				HEADER_SEARCH_PATHS = ../Core;
+				HEADER_SEARCH_PATHS = (
+					../Core,
+					../OS,
+				);
 			};
 			name = Profile;
 		};

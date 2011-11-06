@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C726EE481465B8160038550E /* nuThread.h in Headers */ = {isa = PBXBuildFile; fileRef = C726EE471465B8160038550E /* nuThread.h */; };
+		C726EE4B1465B8300038550E /* nuThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C726EE4A1465B8300038550E /* nuThread.cpp */; };
+		C726EE4D1465C7260038550E /* nuMachThread.h in Headers */ = {isa = PBXBuildFile; fileRef = C726EE4C1465C7260038550E /* nuMachThread.h */; };
+		C726EE4F1465C7370038550E /* nuMachThread.mm in Sources */ = {isa = PBXBuildFile; fileRef = C726EE4E1465C7370038550E /* nuMachThread.mm */; };
+		C726EE5214660CD20038550E /* nuOS.h in Headers */ = {isa = PBXBuildFile; fileRef = C726EE5114660CD20038550E /* nuOS.h */; };
 		C74256AD1465B18500DE5FDA /* nuFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C74256AB1465B18500DE5FDA /* nuFile.cpp */; };
 		C74256AE1465B18500DE5FDA /* nuFile.h in Headers */ = {isa = PBXBuildFile; fileRef = C74256AC1465B18500DE5FDA /* nuFile.h */; };
 		C7707766142749B200163779 /* nuMachFile.h in Headers */ = {isa = PBXBuildFile; fileRef = C7707764142749B200163779 /* nuMachFile.h */; };
@@ -15,6 +20,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C726EE471465B8160038550E /* nuThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuThread.h; sourceTree = "<group>"; };
+		C726EE4A1465B8300038550E /* nuThread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuThread.cpp; sourceTree = "<group>"; };
+		C726EE4C1465C7260038550E /* nuMachThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuMachThread.h; sourceTree = "<group>"; };
+		C726EE4E1465C7370038550E /* nuMachThread.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = nuMachThread.mm; sourceTree = "<group>"; };
+		C726EE5114660CD20038550E /* nuOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuOS.h; sourceTree = "<group>"; };
 		C74256AB1465B18500DE5FDA /* nuFile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuFile.cpp; sourceTree = "<group>"; };
 		C74256AC1465B18500DE5FDA /* nuFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuFile.h; sourceTree = "<group>"; };
 		C7707764142749B200163779 /* nuMachFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = nuMachFile.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -59,8 +69,11 @@
 		C794E836141F9543004D90DD /* Headers */ = {
 			isa = PBXGroup;
 			children = (
+				C726EE5114660CD20038550E /* nuOS.h */,
 				C74256AC1465B18500DE5FDA /* nuFile.h */,
 				C7707764142749B200163779 /* nuMachFile.h */,
+				C726EE471465B8160038550E /* nuThread.h */,
+				C726EE4C1465C7260038550E /* nuMachThread.h */,
 			);
 			name = Headers;
 			sourceTree = "<group>";
@@ -70,6 +83,8 @@
 			children = (
 				C74256AB1465B18500DE5FDA /* nuFile.cpp */,
 				C7707765142749B200163779 /* nuMachFile.mm */,
+				C726EE4A1465B8300038550E /* nuThread.cpp */,
+				C726EE4E1465C7370038550E /* nuMachThread.mm */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -94,6 +109,9 @@
 				C794E848141F9730004D90DD /* NudeOS-Prefix.pch in Headers */,
 				C7707766142749B200163779 /* nuMachFile.h in Headers */,
 				C74256AE1465B18500DE5FDA /* nuFile.h in Headers */,
+				C726EE481465B8160038550E /* nuThread.h in Headers */,
+				C726EE4D1465C7260038550E /* nuMachThread.h in Headers */,
+				C726EE5214660CD20038550E /* nuOS.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -149,6 +167,8 @@
 			files = (
 				C7707767142749B200163779 /* nuMachFile.mm in Sources */,
 				C74256AD1465B18500DE5FDA /* nuFile.cpp in Sources */,
+				C726EE4B1465B8300038550E /* nuThread.cpp in Sources */,
+				C726EE4F1465C7370038550E /* nuMachThread.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

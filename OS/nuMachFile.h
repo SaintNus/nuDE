@@ -8,7 +8,7 @@
 #ifndef __NUMACHFILE_H__
 #define __NUMACHFILE_H__
 
-#include "nuFile.h"
+#include "nuOS.h"
 
 class nuMachFile
 {
