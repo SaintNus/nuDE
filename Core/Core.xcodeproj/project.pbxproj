@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C726EF1B146D5C0B0038550E /* nuSingleton.h in Headers */ = {isa = PBXBuildFile; fileRef = C726EF1A146D5C0B0038550E /* nuSingleton.h */; };
+		C726EF1E146D5C220038550E /* nuSingleton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C726EF1D146D5C220038550E /* nuSingleton.cpp */; };
 		C72BFEFC141CB0BB004F0E00 /* nuType.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C72BFEFB141CB0BB004F0E00 /* nuType.cpp */; };
 		C72BFEFE141CB0D1004F0E00 /* nuType.h in Headers */ = {isa = PBXBuildFile; fileRef = C72BFEFD141CB0D1004F0E00 /* nuType.h */; };
 		C72BFF00141CB15E004F0E00 /* NudeCore-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = C72BFEFF141CB15E004F0E00 /* NudeCore-Prefix.pch */; };
@@ -23,6 +25,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C726EF1A146D5C0B0038550E /* nuSingleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuSingleton.h; sourceTree = "<group>"; };
+		C726EF1D146D5C220038550E /* nuSingleton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuSingleton.cpp; sourceTree = "<group>"; };
 		C72BFEEC141CAFB9004F0E00 /* libNudeCore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libNudeCore.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C72BFEFB141CB0BB004F0E00 /* nuType.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuType.cpp; sourceTree = "<group>"; };
 		C72BFEFD141CB0D1004F0E00 /* nuType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuType.h; sourceTree = "<group>"; };
@@ -75,6 +79,7 @@
 		C72BFEF9141CB008004F0E00 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				C726EF1D146D5C220038550E /* nuSingleton.cpp */,
 				C79FC5F4141E6F0D005C6C70 /* nuTypeInfo.cpp */,
 				C79FC5B1141D02C7005C6C70 /* nuObject.cpp */,
 				C7AB2A21141CCE74001F8EE5 /* nuMemory.cpp */,
@@ -88,6 +93,7 @@
 		C72BFEFA141CB018004F0E00 /* Headers */ = {
 			isa = PBXGroup;
 			children = (
+				C726EF1A146D5C0B0038550E /* nuSingleton.h */,
 				C79FC5F5141E6F0D005C6C70 /* nuTypeInfo.h */,
 				C79FC5B2141D02C7005C6C70 /* nuObject.h */,
 				C7AB2A22141CCE74001F8EE5 /* nuMemory.h */,
@@ -122,6 +128,7 @@
 				C79FC5B4141D02C7005C6C70 /* nuObject.h in Headers */,
 				C79FC5F2141E3B67005C6C70 /* nuCRC.h in Headers */,
 				C79FC5F7141E6F0D005C6C70 /* nuTypeInfo.h in Headers */,
+				C726EF1B146D5C0B0038550E /* nuSingleton.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -181,6 +188,7 @@
 				C79FC5B3141D02C7005C6C70 /* nuObject.cpp in Sources */,
 				C79FC5F1141E3B67005C6C70 /* nuCRC.cpp in Sources */,
 				C79FC5F6141E6F0D005C6C70 /* nuTypeInfo.cpp in Sources */,
+				C726EF1E146D5C220038550E /* nuSingleton.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,9 +1,8 @@
-//
-//  nuSingleton.cpp
-//  Core
-//
-//  Created by Nus Steve on 11/11/11.
-//  Copyright (c) 2011年 Capcom Japan Co. Ltd. All rights reserved.
-//
+/*!
+ * \file nuSingleton.cpp
+ * \brief Template class for singleton.
+ * \author Nus
+ * \date 2011/11/11 22:59
+ */
 
-#include <iostream>
+#include "nuSingleton.h"

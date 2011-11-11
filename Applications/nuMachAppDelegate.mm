@@ -8,6 +8,31 @@
 #import "nuMachAppDelegate.h"
 #import "nuApplication.h"
 
+// Test class.
+class TestClass : public nuObject
+{
+  DECLARE_SINGLETON(TestClass);
+  TestClass() {
+    mA = 0;
+    mB = 0;
+  }
+  ~TestClass() {}
+public:
+  void set(i32 a, i32 b) {
+    mA = a;
+    mB = b;
+  }
+  void print(void) {
+    NU_TRACE("mA = %d\n", mA);
+    NU_TRACE("mB = %d\n", mB);
+  }
+private:
+  i32 mA;
+  i32 mB;
+};
+
+IMPLEMENT_SINGLETON(TestClass);
+
 static nuMachAppDelegate* gpAppDelegate = nil;
 
 @interface nuMachAppDelegate(Private)
@@ -78,6 +103,16 @@ static nuMachAppDelegate* gpAppDelegate = nil;
       private:
         nuThread mThread;
       } nus;
+    }
+
+    // Test singleton.
+    {
+      nuSingleton< TestClass >::createInstance();
+      {
+        nuSingleton< TestClass >::instance()->set(7, 8);
+        nuSingleton< TestClass >::instance()->print();
+      }
+      nuSingleton< TestClass >::deleteInstance();
     }
   }
 }
