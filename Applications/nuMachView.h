@@ -15,7 +15,7 @@
   bool displaLinkStarted;
 }
 
-@property(nonatomic, readonly) bool displayLinkStarted;
+@property (nonatomic, readonly) bool displayLinkStarted;
 
 //! \brief Initialize with NSWindow.
 - (id) initWithWindow: (NSWindow*) window;

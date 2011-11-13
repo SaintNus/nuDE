@@ -16,16 +16,19 @@ template< class T >
 class nuSingleton
 {
 public:
+  //! \brief Get singleton instance.
   static T* instance(void) {
     return mpInstance;
   }
 
+  //! \brief Create singleton instance.
   static T* createInstance(void) {
     if(!mpInstance)
       mpInstance = new T;
     return mpInstance;
   }
 
+  //! \brief Delete singleton instance.
   static void deleteInstance(void) {
     if(mpInstance) {
       T* ptr = mpInstance;
@@ -35,8 +38,10 @@ public:
   }
 
 private:
-  static T* mpInstance;
+  static T* mpInstance;           //!< Singleton instance.
+  //! \brief Default constructor.
   nuSingleton() {}
+  //! \brief Default destructor.
   ~nuSingleton() {}
 
 };
