@@ -24,6 +24,11 @@ public:
     return mpAppMain;
   }
 
+  nuRenderGL* getRenderGL(void) {
+    NU_ASSERT_C(mpAppMain != NULL);
+    return mpAppMain->getRenderGL();
+  }
+
   void initialize(const nuTypeInfo& app_main);
   i32 run(void) {
     if(mpAppMain)

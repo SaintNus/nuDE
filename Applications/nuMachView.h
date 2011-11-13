@@ -12,9 +12,16 @@
 @interface nuMachView : NSOpenGLView
 {
 	CVDisplayLinkRef displayLink;
+  bool displaLinkStarted;
 }
+
+@property(nonatomic, readonly) bool displayLinkStarted;
 
 //! \brief Initialize with NSWindow.
 - (id) initWithWindow: (NSWindow*) window;
+//! \brief Stop draw procedure.
+- (void) startDraw;
+//! \brief Stop draw procedure.
+- (void) stopDraw;
 
 @end

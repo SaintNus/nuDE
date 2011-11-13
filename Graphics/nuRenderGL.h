@@ -20,6 +20,8 @@ public:
   nuRenderGL();
   ~nuRenderGL();
 
+  i32 render(void);
+
 private:
 
 };

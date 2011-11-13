@@ -5,6 +5,7 @@
  * \date 2011/09/15 23:27
  */
 
+#import "nuApplication.h"
 #import "nuMachView.h"
 
 static CVReturn DisplayLinkCallback(CVDisplayLinkRef display_link,
@@ -22,6 +23,8 @@ static CVReturn DisplayLinkCallback(CVDisplayLinkRef display_link,
 @end
 
 @implementation nuMachView
+
+@synthesize displayLinkStarted;
 
 // Initialize with NSWindow.
 - (id) initWithWindow: (NSWindow*) window
@@ -68,8 +71,8 @@ static CVReturn DisplayLinkCallback(CVDisplayLinkRef display_link,
 	CGLContextObj ctx = static_cast< CGLContextObj >([[self openGLContext] CGLContextObj]);
 	CGLPixelFormatObj pf = static_cast< CGLPixelFormatObj >([[self pixelFormat] CGLPixelFormatObj]);
 	CVDisplayLinkSetCurrentCGDisplayFromOpenGLContext(displayLink, ctx, pf);
-	
-	CVDisplayLinkStart(displayLink);
+
+  displayLinkStarted = false;
 }
 
 - (CVReturn) drawFrameForTime: (const CVTimeStamp*) output_time
@@ -96,24 +99,46 @@ static CVReturn DisplayLinkCallback(CVDisplayLinkRef display_link,
 	
 	CGLContextObj ctx = static_cast< CGLContextObj >([[self openGLContext] CGLContextObj]);
 	CGLLockContext(ctx);
+#if !NDEBUG
   {
     NSSize frame_size = [self frame].size;
     NU_TRACE("Resizing to %.1f x %.1f\n", frame_size.width, frame_size.height);
   }
+#endif
 	CGLUnlockContext(ctx);
 }
 
 - (void) dealloc
-{	
+{
+  [self stopDraw];
 	CVDisplayLinkRelease(displayLink);
 	[super dealloc];
 }
 
 - (void) drawFrame
 {
-  glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-  glClearDepth(1.0f);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  NU_ASSERT_C(INST(nuApplication)->getAppMain());
+  NU_ASSERT_C(INST(nuApplication)->getRenderGL());
+  if(INST(nuApplication)->getAppMain()->getState() == nuAppMain::RUNNING)
+    INST(nuApplication)->getRenderGL()->render();
+}
+
+// Stop draw procedure.
+- (void) startDraw
+{
+  if(!displayLinkStarted) {
+    displayLinkStarted = true;
+    CVDisplayLinkStart(displayLink);
+  }
+}
+
+// Stop draw procedure.
+- (void) stopDraw
+{
+  if(displayLinkStarted) {
+    CVDisplayLinkStop(displayLink);
+    displayLinkStarted = false;
+  }
 }
 
 @end

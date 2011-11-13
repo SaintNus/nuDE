@@ -53,6 +53,7 @@ static nuMachAppDelegate* gpAppDelegate = nil;
     INST(nuApplication)->initialize([self appMain]);
 
     [appThread start];
+    [view startDraw];
 
     // Test file!
     {
@@ -88,6 +89,7 @@ static nuMachAppDelegate* gpAppDelegate = nil;
 - (void) applicationWillTerminate: (NSNotification*) notification
 {
   NU_TRACE("Application terminating!\n");
+  [view stopDraw];
   [view release];
   view = nil;
   [window release];

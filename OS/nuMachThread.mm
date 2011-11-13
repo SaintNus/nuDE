@@ -70,8 +70,7 @@ void nude::Thread< nuMachThread >::usleep(ui32 int_useconds)
 - (void) execute: (id) sender
 {
   if(object && function) {
-    ccstr name = [[thread name] cStringUsingEncoding: NSASCIIStringEncoding];
-    NU_TRACE("Dispatching thread \"%s\"\n", name);
+    NU_TRACE("Dispatching thread \"%s\"\n", [[thread name] cStringUsingEncoding: NSASCIIStringEncoding]);
     (object->*(function))(parameter);
   }
 }
