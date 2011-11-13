@@ -16,30 +16,15 @@
  */
 class nuApplication : public nuObject
 {
+  DECLARE_SINGLETON(nuApplication);
   DECLARE_TYPE_INFO;
 
 public:
-  static nuApplication* createApplication(const nuTypeInfo& main) {
-    if(!mpInstance)
-      mpInstance = new nuApplication(main);
-    return mpInstance;
-  }
-
-  static void deleteApplication(void) {
-    if(mpInstance) {
-      delete mpInstance;
-      mpInstance = nullptr;
-    }
-  }
-
-  static nuApplication* getCurrent(void) {
-    return mpInstance;
-  }
-
   nuAppMain* getAppMain(void) {
     return mpAppMain;
   }
 
+  void initialize(const nuTypeInfo& app_main);
   i32 run(void) {
     if(mpAppMain)
       return mpAppMain->main();
@@ -47,14 +32,12 @@ public:
   }
 
 private:
-  static nuApplication* mpInstance;
-
   nuAppMain* mpAppMain;
 
   nuApplication();
-  nuApplication(const nuTypeInfo& type);
   ~nuApplication();
 
+  void terminate(void);
 };
 
 #endif

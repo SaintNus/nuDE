@@ -7,30 +7,37 @@
 
 #include "nuApplication.h"
 
+IMPLEMENT_SINGLETON(nuApplication);
 IMPLEMENT_TYPE_INFO(nuApplication, nuObject);
-
-nuApplication* nuApplication::mpInstance = nullptr;
 
 nuApplication::nuApplication()
     : mpAppMain(nullptr)
 {
-  // Do not use!
-}
-
-nuApplication::nuApplication(const nuTypeInfo& type)
-{
-  if(!type.isDerivedFrom(nuAppMain::TypeInfo())) {
-    mpAppMain = nullptr;
-    NU_ASSERT(false, "Invalid main class.");
-  } else {
-    mpAppMain = static_cast< nuAppMain* >(type.createInstance());
-  }
+  // None...
 }
 
 nuApplication::~nuApplication()
 {
+  terminate();
   if(mpAppMain) {
     delete mpAppMain;
     mpAppMain = nullptr;
   }
+}
+
+void nuApplication::initialize(const nuTypeInfo &app_main)
+{
+  if(!app_main.isDerivedFrom(nuAppMain::TypeInfo())) {
+    mpAppMain = nullptr;
+    NU_ASSERT(false, "Invalid main class.");
+  } else {
+    mpAppMain = static_cast< nuAppMain* >(app_main.createInstance());
+    mpAppMain->initialize();
+  }
+}
+
+void nuApplication::terminate(void)
+{
+  if(mpAppMain)
+    mpAppMain->terminate();
 }

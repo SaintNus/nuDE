@@ -189,6 +189,7 @@
 				HEADER_SEARCH_PATHS = (
 					../Core,
 					../OS,
+					../Graphics,
 				);
 			};
 			name = Debug;
@@ -202,6 +203,7 @@
 				HEADER_SEARCH_PATHS = (
 					../Core,
 					../OS,
+					../Graphics,
 				);
 			};
 			name = Release;
@@ -229,6 +231,7 @@
 				HEADER_SEARCH_PATHS = (
 					../Core,
 					../OS,
+					../Graphics,
 				);
 			};
 			name = Profile;

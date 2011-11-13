@@ -54,6 +54,9 @@ namespace nude
       return mThreadHandler.getPriority();
     }
 
+    static void sleep(ui32 int_seconds);
+    static void usleep(ui32 int_useconds);
+
   private:
     ThreadHandler mThreadHandler;
   };

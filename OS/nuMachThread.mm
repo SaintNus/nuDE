@@ -6,6 +6,19 @@
  */
 
 #import "nuMachThread.h"
+#import "nuThread.h"
+
+template<>
+void nude::Thread< nuMachThread >::sleep(ui32 int_seconds)
+{
+  ::sleep(int_seconds);
+}
+
+template<>
+void nude::Thread< nuMachThread >::usleep(ui32 int_useconds)
+{
+  ::usleep(int_useconds);
+}
 
 @interface _MachThreadHandle : NSObject
 {

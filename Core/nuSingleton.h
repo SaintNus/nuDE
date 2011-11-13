@@ -48,4 +48,6 @@ private:
 #define IMPLEMENT_SINGLETON(_class) \
   template<> _class* nuSingleton< _class >::mpInstance = nullptr
 
+#define INST(_class) nuSingleton< _class >::instance()
+
 #endif
