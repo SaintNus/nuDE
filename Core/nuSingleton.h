@@ -8,6 +8,8 @@
 #ifndef __NUSINGLETON_H__
 #define __NUSINGLETON_H__
 
+#include "nuTypeInfo.h"
+
 /*!
  * \class nuSingleton
  * \brief Singleton template class.
@@ -34,8 +36,14 @@ public:
     }
   }
 
+  static const nuTypeInfo& getTypeInfo(void) {
+    NU_ASSERT_C(mpInstance != nullptr);
+    return mpInstance->getTypeInfo();
+  }
+
 private:
   static T* mpInstance;
+
   nuSingleton() {}
   ~nuSingleton() {}
 
