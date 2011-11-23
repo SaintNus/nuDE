@@ -33,3 +33,4 @@
 #include "nuFile.h"
 #include "nuThread.h"
 #include "nuSingleton.h"
+#include "nuRenderGL.h"

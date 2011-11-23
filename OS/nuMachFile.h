@@ -10,9 +10,14 @@
 
 #include "nuOS.h"
 
+/*!
+ * \class nuMachFile
+ * \brief File handler for MacOSX.
+ */
 class nuMachFile
 {
 public:
+  //! \brief Default constructor.
   nuMachFile()
       : mFileHandle(nullptr),
         mFileSize(0),
@@ -20,30 +25,44 @@ public:
   {
     // None...
   }
+  //! \brief Default destructor.
   ~nuMachFile() {
     close();
   }
 
+  //! \brief Get file handle.
   void* getHandle(void) const {
     return mFileHandle;
   }
 
+  //! \brief Open a file.
   nude::FILE_ERROR open(nude::FILE_ATTRIBUTE attr, ccstr name);
+  //! \brief Close a file.
   nude::FILE_ERROR close(void);
 
+  //! \brief Read file content.
   size_t read(void* ptr, size_t bytes);
+  //! \brief Write file content.
   size_t write(void* ptr, size_t bytes);
+  //! \brief Seek file.
   nude::FILE_ERROR seek(i64 pos, nude::FILE_SEEK whence);
+  //! \brief Tell file position.
   i64 tell(void) const;
 
+  //! \brief Get file size.
   size_t getSize(void) const {
     return mFileSize;
   }
 
+  //! \brief Get file attribute.
+  nude::FILE_ATTRIBUTE getAttribute(void) const {
+    return mAttribute;
+  }
+
 private:
-  void* mFileHandle;
-  size_t mFileSize;
-  nude::FILE_ATTRIBUTE mAttribute;
+  void* mFileHandle;              //!< File handle.
+  size_t mFileSize;               //!< File size.
+  nude::FILE_ATTRIBUTE mAttribute; //!< File attribute.
   
 };
 

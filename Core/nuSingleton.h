@@ -18,16 +18,19 @@ template< class T >
 class nuSingleton
 {
 public:
+  //! \brief Get singleton instance.
   static T* instance(void) {
     return mpInstance;
   }
 
+  //! \brief Create singleton instance.
   static T* createInstance(void) {
     if(!mpInstance)
       mpInstance = new T;
     return mpInstance;
   }
 
+  //! \brief Delete singleton instance.
   static void deleteInstance(void) {
     if(mpInstance) {
       T* ptr = mpInstance;
@@ -42,9 +45,10 @@ public:
   }
 
 private:
-  static T* mpInstance;
-
+  static T* mpInstance;           //!< Singleton instance.
+  //! \brief Default constructor.
   nuSingleton() {}
+  //! \brief Default destructor.
   ~nuSingleton() {}
 
 };
@@ -55,5 +59,7 @@ private:
 
 #define IMPLEMENT_SINGLETON(_class) \
   template<> _class* nuSingleton< _class >::mpInstance = nullptr
+
+#define INST(_class) nuSingleton< _class >::instance()
 
 #endif

@@ -7,6 +7,7 @@
 
 #include "nuMachFile.h"
 
+// Open a file.
 nude::FILE_ERROR nuMachFile::open(nude::FILE_ATTRIBUTE attr, ccstr name)
 {
   nude::FILE_ERROR ret = nude::FERROR_NONE;
@@ -109,6 +110,7 @@ nude::FILE_ERROR nuMachFile::open(nude::FILE_ATTRIBUTE attr, ccstr name)
   return ret;
 }
 
+// Close a file.
 nude::FILE_ERROR nuMachFile::close(void)
 {
   if(mFileHandle) {
@@ -124,6 +126,7 @@ nude::FILE_ERROR nuMachFile::close(void)
   return nude::FERROR_INVALID_OPERATION;
 }
 
+// Read file content.
 size_t nuMachFile::read(void* ptr, size_t bytes)
 {
   if(!mFileHandle)
@@ -142,6 +145,7 @@ size_t nuMachFile::read(void* ptr, size_t bytes)
   return 0;
 }
 
+// Write file content.
 size_t nuMachFile::write(void* ptr, size_t bytes)
 {
   if(!mFileHandle || bytes == 0)
@@ -157,6 +161,7 @@ size_t nuMachFile::write(void* ptr, size_t bytes)
   return 0;
 }
 
+// Seek file.
 nude::FILE_ERROR nuMachFile::seek(i64 pos, nude::FILE_SEEK whence)
 {
   if(!mFileHandle)
@@ -190,6 +195,7 @@ nude::FILE_ERROR nuMachFile::seek(i64 pos, nude::FILE_SEEK whence)
   return nude::FERROR_NONE;
 }
 
+// Tell file position.
 i64 nuMachFile::tell(void) const
 {
   if(!mFileHandle)

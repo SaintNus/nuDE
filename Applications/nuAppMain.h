@@ -17,10 +17,32 @@ class nuAppMain : public nuObject
   DECLARE_TYPE_INFO;
 
 public:
+  enum STATE {
+    UNINITIALIZED = 0,
+    READY,
+    RUNNING,
+    TERMINATING,
+  };
+
   nuAppMain();
   virtual ~nuAppMain();
 
-  i32 main(void);
+  virtual void initialize(void);
+  virtual i32 main(void);
+  virtual void terminate(void);
+
+  nuRenderGL* getRenderGL(void) const {
+    return mpRenderGL;
+  }
+  STATE getState(void) const {
+    return mState;
+  }
+
+protected:
+  virtual nuRenderGL* createRenderGL(void) const;
+
+  STATE mState;
+  nuRenderGL* mpRenderGL;
 
 };
 

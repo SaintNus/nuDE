@@ -10,6 +10,7 @@
 
 namespace nude
 {
+  //! \brief File error.
   enum FILE_ERROR {
     FERROR_CRITICAL = -1,
     FERROR_NONE = 0,
@@ -17,12 +18,14 @@ namespace nude
     FERROR_INVALID_OPERATION,
   };
   
+  //! \brief File seek.
   enum FILE_SEEK {
     FSEEK_SET = SEEK_SET,
     FSEEK_CURRENT = SEEK_CUR,
     FSEEK_END = SEEK_END,
   };
 
+  //! \brief File attribute.
   enum FILE_ATTRIBUTE {
     FATTR_READ = 0,
     FATTR_WRITE,
@@ -30,6 +33,5 @@ namespace nude
   };
 
 }
-
 
 #endif
