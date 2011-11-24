@@ -24,7 +24,7 @@ public:
     return mpAppMain;
   }
 
-  nuRenderGL* getRenderGL(void) {
+  nuRenderGL& getRenderGL(void) {
     NU_ASSERT_C(mpAppMain != NULL);
     return mpAppMain->getRenderGL();
   }
@@ -38,6 +38,7 @@ public:
 
 private:
   nuAppMain* mpAppMain;
+  
 
   nuApplication();
   ~nuApplication();

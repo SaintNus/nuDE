@@ -31,8 +31,8 @@ public:
   virtual i32 main(void);
   virtual void terminate(void);
 
-  nuRenderGL* getRenderGL(void) const {
-    return mpRenderGL;
+  nuRenderGL& getRenderGL(void) const {
+    return *mpRenderGL;
   }
   STATE getState(void) const {
     return mState;
