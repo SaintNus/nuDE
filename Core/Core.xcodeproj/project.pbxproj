@@ -16,6 +16,8 @@
 		C72BFF07141CB5D2004F0E00 /* nuDebug.h in Headers */ = {isa = PBXBuildFile; fileRef = C72BFF05141CB5D2004F0E00 /* nuDebug.h */; };
 		C75B6363147E8ED40004C7D9 /* nuGeometry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C75B6361147E8ED40004C7D9 /* nuGeometry.cpp */; };
 		C75B6364147E8ED40004C7D9 /* nuGeometry.h in Headers */ = {isa = PBXBuildFile; fileRef = C75B6362147E8ED40004C7D9 /* nuGeometry.h */; };
+		C75B6368147E992C0004C7D9 /* nuColor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C75B6366147E992C0004C7D9 /* nuColor.cpp */; };
+		C75B6369147E992C0004C7D9 /* nuColor.h in Headers */ = {isa = PBXBuildFile; fileRef = C75B6367147E992C0004C7D9 /* nuColor.h */; };
 		C79FC5B3141D02C7005C6C70 /* nuObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C79FC5B1141D02C7005C6C70 /* nuObject.cpp */; };
 		C79FC5B4141D02C7005C6C70 /* nuObject.h in Headers */ = {isa = PBXBuildFile; fileRef = C79FC5B2141D02C7005C6C70 /* nuObject.h */; };
 		C79FC5F1141E3B67005C6C70 /* nuCRC.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C79FC5EF141E3B67005C6C70 /* nuCRC.cpp */; };
@@ -37,6 +39,8 @@
 		C72BFF05141CB5D2004F0E00 /* nuDebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuDebug.h; sourceTree = "<group>"; };
 		C75B6361147E8ED40004C7D9 /* nuGeometry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuGeometry.cpp; sourceTree = "<group>"; };
 		C75B6362147E8ED40004C7D9 /* nuGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuGeometry.h; sourceTree = "<group>"; };
+		C75B6366147E992C0004C7D9 /* nuColor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuColor.cpp; sourceTree = "<group>"; };
+		C75B6367147E992C0004C7D9 /* nuColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuColor.h; sourceTree = "<group>"; };
 		C79FC5B1141D02C7005C6C70 /* nuObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = nuObject.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		C79FC5B2141D02C7005C6C70 /* nuObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuObject.h; sourceTree = "<group>"; };
 		C79FC5EF141E3B67005C6C70 /* nuCRC.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuCRC.cpp; sourceTree = "<group>"; };
@@ -83,6 +87,7 @@
 		C72BFEF9141CB008004F0E00 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				C75B6366147E992C0004C7D9 /* nuColor.cpp */,
 				C75B6361147E8ED40004C7D9 /* nuGeometry.cpp */,
 				C726EF1D146D5C220038550E /* nuSingleton.cpp */,
 				C79FC5F4141E6F0D005C6C70 /* nuTypeInfo.cpp */,
@@ -98,6 +103,7 @@
 		C72BFEFA141CB018004F0E00 /* Headers */ = {
 			isa = PBXGroup;
 			children = (
+				C75B6367147E992C0004C7D9 /* nuColor.h */,
 				C75B6362147E8ED40004C7D9 /* nuGeometry.h */,
 				C726EF1A146D5C0B0038550E /* nuSingleton.h */,
 				C79FC5F5141E6F0D005C6C70 /* nuTypeInfo.h */,
@@ -136,6 +142,7 @@
 				C79FC5F7141E6F0D005C6C70 /* nuTypeInfo.h in Headers */,
 				C726EF1B146D5C0B0038550E /* nuSingleton.h in Headers */,
 				C75B6364147E8ED40004C7D9 /* nuGeometry.h in Headers */,
+				C75B6369147E992C0004C7D9 /* nuColor.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -197,6 +204,7 @@
 				C79FC5F6141E6F0D005C6C70 /* nuTypeInfo.cpp in Sources */,
 				C726EF1E146D5C220038550E /* nuSingleton.cpp in Sources */,
 				C75B6363147E8ED40004C7D9 /* nuGeometry.cpp in Sources */,
+				C75B6368147E992C0004C7D9 /* nuColor.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
