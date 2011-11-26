@@ -12,7 +12,7 @@
 
 namespace nude
 {
-  const f32 FloatE = 0.0000001f;
+  const f32 FloatE = 0.000001f;
 }
 
 class nuVec2
@@ -60,15 +60,13 @@ public:
 
   nuVec2& operator = (const nuVec2& vec)
   {
-    x = vec.x;
-    y = vec.y;
+    memcpy(v, vec.v, sizeof(v));
     return *this;
   }
 
   nuVec2& operator = (const f32* fv)
   {
-    x = fv[0];
-    y = fv[1];
+    memcpy(v, fv, sizeof(v));
     return *this;
   }
 
@@ -229,16 +227,12 @@ public:
   }
 
   nuVec3& operator = (const nuVec3& vec) {
-    x = vec.x;
-    y = vec.y;
-    z = vec.z;
+    memcpy(v, vec.v, sizeof(v));
     return *this;
   }
 
   nuVec3& operator = (const f32* fv) {
-    x = fv[0];
-    y = fv[1];
-    z = fv[2];
+    memcpy(v, fv, sizeof(v));
     return *this;
   }
 
@@ -452,32 +446,23 @@ public:
   }
 
   nuVec4& operator = (const nuVec4& vec) {
-    x = vec.x;
-    y = vec.y;
-    z = vec.z;
-    w = vec.w;
+    memcpy(v, vec.v, sizeof(v));
     return *this;
   }
 
   nuVec4& operator = (const f32* fv) {
-    x = fv[0];
-    y = fv[1];
-    z = fv[2];
-    w = fv[3];
+    memcpy(v, fv, sizeof(v));
     return *this;
   }
 
   nuVec4& operator = (const nuVec3& vec) {
-    x = vec.x;
-    y = vec.y;
-    z = vec.z;
+    memcpy(v, vec.v, sizeof(vec.v));
     w = 1.0f;
     return *this;
   }
 
   nuVec4& operator = (const nuVec2& vec) {
-    x = vec.x;
-    y = vec.y;
+    memcpy(v, vec.v, sizeof(vec.v));
     z = 0.0f;
     w = 1.0f;
     return *this;
@@ -1038,6 +1023,7 @@ public:
     f32 b3 = v[9] * v[14] - v[10] * v[13];
     f32 b4 = v[9] * v[15] - v[11] * v[13];
     f32 b5 = v[10] * v[15] - v[11] * v[14];
+
     return a0 * b5 - a1 * b4 + a2 * b3 + a3 * b2 - a4 * b1 + a5 * b0;
   }
 
