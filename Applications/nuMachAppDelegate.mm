@@ -74,8 +74,17 @@ static nuMachAppDelegate* gpAppDelegate = nil;
         }
         ~NusTest() {}
         void proc(void* param) {
+          nuMutex mutex;
+          nuRecursiveMutex r_mutex;
+          nuSpinLock spin_lock;
           for(ui32 ui = 0; ui < 10; ui++) {
+            mutex.lock();
+            r_mutex.lock();
+            spin_lock.lock();
             NU_TRACE("Count = %d\n", ui);
+            spin_lock.unlock();
+            r_mutex.unlock();
+            mutex.unlock();
             nuThread::usleep(33333);
           }
         }

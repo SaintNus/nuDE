@@ -8,6 +8,12 @@
 #ifndef __NUDE_H__
 #define __NUDE_H__
 
+#ifdef __OBJC__
+
+#import <Cocoa/Cocoa.h>
+
+#endif
+
 #include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -19,6 +25,8 @@
 
 #include <cstring>
 #include <new>
+
+#include <libkern/OSAtomic.h>
 
 #include <QuartzCore/CVDisplayLink.h>
 
@@ -33,6 +41,8 @@
 #include "nuTypeInfo.h"
 
 #include "nuFile.h"
+#include "nuThread.h"
+#include "nuOSType.h"
 
 #ifdef __OBJC__
 
@@ -41,7 +51,5 @@
 #import "nuMachView.h"
 
 #endif
-
-#include "nuMachFile.h"
 
 #endif

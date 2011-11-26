@@ -21,16 +21,19 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include <assert.h>
 
 #include <cstring>
 #include <new>
 
+#include <libkern/OSAtomic.h>
+
 #include "nuDebug.h"
 #include "nuObject.h"
 
-#include "nuFile.h"
-#include "nuThread.h"
+#include "nuOSType.h"
+
 #include "nuSingleton.h"
 #include "nuRenderGL.h"

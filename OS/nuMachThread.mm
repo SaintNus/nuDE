@@ -104,6 +104,8 @@ nuMachThread::nuMachThread()
 // Default destructor.
 nuMachThread::~nuMachThread()
 {
+  while(isExecuting())
+    nude::Thread< nuMachThread >::usleep(16666);
   if(mpHandle) {
     _MachThreadHandle* handle = static_cast< _MachThreadHandle* >(mpHandle);
     [handle release];

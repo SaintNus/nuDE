@@ -5,10 +5,4 @@
  * \date 2011/09/11 17:54
  */
 
-#ifdef __OBJC__
-
-#import <Cocoa/Cocoa.h>
-
-#endif
-
 #include "nude.h"

@@ -8,8 +8,6 @@
 #ifndef __NUTHREAD_H__
 #define __NUTHREAD_H__
 
-#include "nuMachThread.h"
-
 namespace nude
 {
   /*!
@@ -79,8 +77,5 @@ namespace nude
     ThreadHandler mThreadHandler; //!< Thread handler.
   };
 }
-
-//! \brief Define template specialization for thread.
-typedef nude::Thread< nuMachThread > nuThread;
 
 #endif

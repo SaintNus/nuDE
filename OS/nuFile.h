@@ -9,7 +9,6 @@
 #define __NUFILE_H__
 
 #include "nuOS.h"
-#include "nuMachFile.h"
 
 namespace nude {
 
@@ -79,8 +78,5 @@ namespace nude {
   };
 
 }
-
-//! \brief Define template specialization for file.
-typedef nude::File< nuMachFile > nuFile;
 
 #endif
