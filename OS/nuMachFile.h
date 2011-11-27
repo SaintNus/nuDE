@@ -37,6 +37,8 @@ public:
 
   //! \brief Open a file.
   nude::FILE_ERROR open(nude::FILE_ATTRIBUTE attr, ccstr name);
+  //! \brief Open a file.
+  nude::FILE_ERROR open(nude::FILE_ATTRIBUTE attr, wccstr name);
   //! \brief Close a file.
   nude::FILE_ERROR close(void);
 
@@ -63,7 +65,7 @@ private:
   void* mFileHandle;              //!< File handle.
   size_t mFileSize;               //!< File size.
   nude::FILE_ATTRIBUTE mAttribute; //!< File attribute.
-  
+
 };
 
 #endif

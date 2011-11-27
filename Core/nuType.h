@@ -41,4 +41,14 @@ typedef char* cstr;
 //! \brief String constant.
 typedef const char* ccstr;
 
+//! \brief String.
+typedef wchar_t* wcstr;
+//! \brief String constant.
+typedef const wchar_t* wccstr;
+
+//! \brief String.
+typedef char c8;
+//! \brief String.
+typedef wchar_t c32;
+
 #endif

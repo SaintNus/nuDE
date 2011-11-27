@@ -26,6 +26,8 @@
 #include <cstring>
 #include <new>
 
+#include <wchar.h>
+
 #include <libkern/OSAtomic.h>
 
 #include <QuartzCore/CVDisplayLink.h>

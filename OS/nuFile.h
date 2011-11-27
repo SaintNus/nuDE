@@ -26,11 +26,19 @@ namespace nude {
     File(FILE_ATTRIBUTE attr, ccstr name) {
       mFileHandler.open(attr, name);
     }
+    //! \brief Default constructor.
+    File(FILE_ATTRIBUTE attr, wccstr name) {
+      mFileHandler.open(attr, name);
+    }
     //! \brief Default destructor.
     ~File() {}
 
     //! \brief Open a file.
     FILE_ERROR open(FILE_ATTRIBUTE attr, ccstr name) {
+      return mFileHandler.open(attr, name);
+    }
+    //! \brief Open a file.
+    FILE_ERROR open(FILE_ATTRIBUTE attr, wccstr name) {
       return mFileHandler.open(attr, name);
     }
     //! \brief Is a file opened.

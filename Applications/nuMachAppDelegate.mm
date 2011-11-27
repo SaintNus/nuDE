@@ -57,7 +57,8 @@ static nuMachAppDelegate* gpAppDelegate = nil;
 
     // Test file!
     {
-      nuFile file(nude::FATTR_READ, "home://Temp/test.cpp");
+      ccstr path = "home://Temp/テスト.cpp";
+      nuFile file(nude::FATTR_READ, path);
       NU_TRACE("File size: %lu\n", file.getSize());
     }
 

@@ -10,7 +10,7 @@
 // Open a file.
 nude::FILE_ERROR nuMachFile::open(nude::FILE_ATTRIBUTE attr, ccstr name)
 {
-  nude::FILE_ERROR ret = nude::FERROR_NONE;
+  nude::FILE_ERROR ret;
 
   i32 protocol_id = -1;
   NSString* path = nil;
@@ -34,32 +34,32 @@ nude::FILE_ERROR nuMachFile::open(nude::FILE_ATTRIBUTE attr, ccstr name)
     {
       ccstr f_name = name + strlen(protocol[protocol_id]);
       NSBundle* bundle = [NSBundle mainBundle];
-      path = [[NSString alloc] initWithFormat: @"%@/%s", [bundle resourcePath], f_name];
+      NSString* name_str = [[NSString alloc] initWithCString: f_name encoding: NSUTF8StringEncoding];
+      path = [[NSString alloc] initWithFormat: @"%@/%@", [bundle resourcePath], name_str];
+      [name_str release];
     }
     break;
   case 1:
     {
       ccstr f_name = name + strlen(protocol[protocol_id]);
-      NSString* t_path = [NSString stringWithFormat: @"~/%s", f_name];
+      NSString* name_str = [[NSString alloc] initWithCString: f_name encoding: NSUTF8StringEncoding];
+      NSString* t_path = [[NSString alloc] initWithFormat: @"~/%@", name_str];
       path = [[t_path stringByExpandingTildeInPath] retain];
+      [name_str release];
+      [t_path release];
     }
     break;
   case 2:
     {
       ccstr f_name = name + strlen(protocol[protocol_id]);
-      path = [[NSString alloc] initWithCString: f_name encoding: NSASCIIStringEncoding];
+      path = [[NSString alloc] initWithCString: f_name encoding: NSUTF8StringEncoding];
     }
     break;
   default:
-    path = [[NSString alloc] initWithCString: name encoding: NSASCIIStringEncoding];
+    path = [[NSString alloc] initWithCString: name encoding: NSUTF8StringEncoding];
   }
 
-  if(mFileHandle) {
-    NSFileHandle* fh = static_cast< NSFileHandle* >(mFileHandle);
-    [fh release];
-    mFileHandle = nullptr;
-    mFileSize = 0;
-  }
+  close();
 
   mAttribute = attr;
 
@@ -108,6 +108,17 @@ nude::FILE_ERROR nuMachFile::open(nude::FILE_ATTRIBUTE attr, ccstr name)
   [path release];
 
   return ret;
+}
+
+// Open a file.
+nude::FILE_ERROR nuMachFile::open(nude::FILE_ATTRIBUTE attr, wccstr name)
+{
+  c8 buffer[PATH_MAX];
+
+  wcstombs(buffer, name, PATH_MAX);
+  buffer[PATH_MAX - 1] = 0x00;
+  
+  return open(attr, buffer);
 }
 
 // Close a file.

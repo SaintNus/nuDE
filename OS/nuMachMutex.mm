@@ -78,8 +78,9 @@ bool nuMachRecursiveMutex::trylock(void)
 
 
 nuMachSpinLock::nuMachSpinLock()
+    : mSpinLock(0)
 {
-  mSpinLock = 0;
+  // None...
 }
 
 nuMachSpinLock::~nuMachSpinLock()

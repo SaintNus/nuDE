@@ -32,7 +32,7 @@ typedef nude::Mutex< nuMachRecursiveMutex > nuRecursiveMutex;
 //! \brief Define template specialization for spin lock.
 typedef nude::Mutex< nuMachSpinLock > nuSpinLock;
 
-//! \brief Define template specialization for atomic.
+//! \brief Define template specialization for atomic functions.
 typedef nude::Atomic< nuMachAtomic > nuAtomic;
 
 #endif
