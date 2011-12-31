@@ -24,4 +24,7 @@
 //! \brief Stop draw procedure.
 - (void) stopDraw;
 
+- (void) lockContext;
+- (void) unlockContext;
+
 @end

@@ -4,14 +4,15 @@
  * \author Nus
  * \date 2011/11/27 08:00
  */
+#version 150
 
-attribute vec4 inPosition;
-attribute vec4 inColor;
+in vec3 inPosition;
+in vec4 inColor;
 
-varying vec4 varColor;
+out vec4 varColor;
 
 void main(void)
 {
-  gl_Position = inPosition;
+  gl_Position = vec4(inPosition, 1.0);
   varColor = inColor;
 }

@@ -51,7 +51,7 @@ namespace nude {
     }
     //! \brief Read file content.
     size_t read(void* ptr, size_t bytes) {
-      return read(ptr, bytes);
+      return mFileHandler.read(ptr, bytes);
     }
     //! \brief Write to file.
     size_t write(void* ptr, size_t bytes) {
@@ -63,7 +63,7 @@ namespace nude {
     }
     //! \brief Rewind to beginning of file.
     FILE_ERROR rewind(void) {
-      seek(0, FSEEK_SET);
+      mFileHandler.seek(0, FSEEK_SET);
     }
     //! \brief Tell current position.
     i64 tell(void) const {

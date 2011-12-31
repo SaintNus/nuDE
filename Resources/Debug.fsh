@@ -4,10 +4,13 @@
  * \author Nus
  * \date 2011/11/27 08:00
  */
+#version 150
 
-varying vec4 varColor;
+in vec4 varColor;
+
+out vec4 fragColor;
 
 void main(void)
 {
-  gl_FragColor = varColor;
+  fragColor = varColor;
 }

@@ -5,6 +5,12 @@
  * \date 2011/10/30 17:35
  */
 
+#ifdef __OBJC__
+
+#import <Cocoa/Cocoa.h>
+
+#endif
+
 #include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>

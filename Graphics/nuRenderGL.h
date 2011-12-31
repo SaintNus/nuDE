@@ -22,6 +22,9 @@ public:
 
   i32 render(void);
 
+  void initTest(void);
+  void termTest(void);
+
 private:
 
 };

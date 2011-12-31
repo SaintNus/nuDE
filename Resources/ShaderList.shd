@@ -1,0 +1,16 @@
+/*
+ * Shader list
+ */
+
+Preprocessor: _GLOBAL_;
+
+/*
+Program(Debug)
+{
+  VertexShader: "Debug.vsh";
+  VertexPreprocessor: _VS_;
+  FragmentShader: "Debug.fsh";
+  FragmentPreprocessor: _FS_;
+  Preprocessor: _PUBLIC_;
+}
+ */

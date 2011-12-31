@@ -79,15 +79,9 @@ static CVReturn DisplayLinkCallback(CVDisplayLinkRef display_link,
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
-  {
-  	CGLContextObj ctx = static_cast< CGLContextObj >([[self openGLContext] CGLContextObj]);
-
-    [[self openGLContext] makeCurrentContext];
-    CGLLockContext(ctx);
-    [self drawFrame];
-    CGLFlushDrawable(ctx);
-    CGLUnlockContext(ctx);
-  }
+  [self lockContext];
+  [self drawFrame];
+  [self unlockContext];
 
 	[pool release];
 	return kCVReturnSuccess;
@@ -96,16 +90,12 @@ static CVReturn DisplayLinkCallback(CVDisplayLinkRef display_link,
 - (void) reshape
 {	
 	[super reshape];
-	
-	CGLContextObj ctx = static_cast< CGLContextObj >([[self openGLContext] CGLContextObj]);
-	CGLLockContext(ctx);
-#if !NDEBUG
+	#if !NDEBUG
   {
     NSSize frame_size = [self frame].size;
     NU_TRACE("Resizing to %.1f x %.1f\n", frame_size.width, frame_size.height);
   }
 #endif
-	CGLUnlockContext(ctx);
 }
 
 - (void) dealloc
@@ -138,6 +128,20 @@ static CVReturn DisplayLinkCallback(CVDisplayLinkRef display_link,
     CVDisplayLinkStop(displayLink);
     displayLinkStarted = false;
   }
+}
+
+- (void) lockContext
+{
+  CGLContextObj ctx = static_cast< CGLContextObj >([[self openGLContext] CGLContextObj]);
+  [[self openGLContext] makeCurrentContext];
+  CGLLockContext(ctx);
+}
+
+- (void) unlockContext
+{
+  CGLContextObj ctx = static_cast< CGLContextObj >([[self openGLContext] CGLContextObj]);
+  CGLFlushDrawable(ctx);
+  CGLUnlockContext(ctx);
 }
 
 @end

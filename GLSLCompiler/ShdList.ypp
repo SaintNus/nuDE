@@ -1,0 +1,182 @@
+/*!
+ * \file ShdList.ypp
+ * \brief Shader list compiler.
+ * \author Nus
+ * \date 2011/12/25 21:24
+ */
+
+%{
+
+#include "Settings.h"
+#include "Utility.h"
+#include "StringTable.h"
+#include "ShaderList.h"
+
+extern "C"
+{
+
+int yywrap(void);
+int yylex(void);
+
+void yyset_in(FILE* in_str);
+FILE* yyget_in(void);
+
+#if defined(DEBUG)
+void yyset_debug(int debug_flag);
+#endif
+ 
+}
+
+%}
+
+%token PREPROCESSOR
+%token PROGRAM
+%token VERTEX_SHADER
+%token VERTEX_PREPROCESSOR
+%token FRAGMENT_SHADER
+%token FRAGMENT_PREPROCESSOR
+
+%token STRING
+
+%token QUOTE
+%token EQUAL
+
+%token COLON
+%token COMMA
+%token SEMI_COLON
+
+%token OPEN_BRACE
+%token CLOSE_BRACE
+%token OPEN_BRACKET
+%token CLOSE_BRACKET
+
+%%
+
+start:
+  // Empty.
+  |
+  start global_statement
+  ;
+
+global_statement:
+  PROGRAM bracketed_name OPEN_BRACE statements CLOSE_BRACE
+  {
+    fprintf(stdout, "Program: %s\n", StringTable::getString($2));
+  }
+  |
+  PREPROCESSOR COLON preprocessors SEMI_COLON
+  {
+    fprintf(stdout, "Preprocessor: %s\n", StringTable::getString($3));
+  }
+  ;
+
+preprocessors:
+  // Empty.
+  |
+  preprocessors COMMA definition
+  |
+  preprocessors definition
+  ;
+
+definition:
+  STRING EQUAL STRING
+  {
+    const char* def = StringTable::getString($1);
+    const char* value = StringTable::getString($3);
+    ShaderList::addPreProcScratch(new PreProcessor(def, value));
+  }
+  |
+  STRING
+  {
+    const char* def = StringTable::getString($1);
+    ShaderList::addPreProcScratch(new PreProcessor(def));
+  }
+  ;
+
+quoted_name:
+  QUOTE STRING QUOTE
+  {
+    $$ = $2;
+  }
+  ;
+
+statements:
+  |
+  statements statement
+  ;
+
+statement:
+  VERTEX_SHADER COLON quoted_name SEMI_COLON
+  {
+    $$ = $3;
+  }
+  |
+  FRAGMENT_SHADER COLON quoted_name SEMI_COLON
+  {
+    $$ = $3;
+  }
+  |
+  PREPROCESSOR COLON preprocessors SEMI_COLON
+  {
+    $$ = $3;
+  }
+  |
+  VERTEX_PREPROCESSOR COLON preprocessors SEMI_COLON
+  {
+    $$ = $3;
+  }
+  |
+  FRAGMENT_PREPROCESSOR COLON preprocessors SEMI_COLON
+  {
+    $$ = $3;
+  }
+  ;
+
+bracketed_name:
+  OPEN_BRACKET STRING CLOSE_BRACKET
+  {
+    $$ = $2;
+  }
+  ;
+
+%%
+
+int yywrap(void)
+{
+  // Do not wrap...
+  return 1;
+} 
+  
+int main(int argc, const char** argv)
+{
+  Settings setting(argc, argv);
+
+#if defined(DEBUG)
+  yyset_debug(1);
+#endif
+
+  fprintf(stdout, "GLSL Property Compiler - %s\nVersion 1.0\n", _CONFIGURATION_);
+
+  if(!setting.isValid()) {
+    fprintf(stdout, "Usage: glslpc [ --output-file=file_name ] [ --force-write ] input_file\n");
+    return 1;
+  }
+
+  {
+    FILE* file = fopen(setting.getInputName(), "r");
+
+    if(!file) {
+      fprintf(stderr, "Critical error: cannot open \"%s\"\n.", setting.getInputName());
+      return -1;
+    }
+
+    yyset_in(file);
+  }
+
+  yyparse();
+
+  fclose(yyget_in());
+  yyset_in(nullptr);
+
+  return 0;
+}

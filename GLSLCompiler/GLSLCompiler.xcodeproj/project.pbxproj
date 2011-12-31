@@ -1,0 +1,259 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		C7255469148600CC0020860B /* ShaderList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C72554521485FBA10020860B /* ShaderList.cpp */; };
+		C7E19E4B14A758B700562B5A /* Settings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7E19E4714A758B700562B5A /* Settings.cpp */; };
+		C7E19E4C14A758B700562B5A /* ShdList.l in Sources */ = {isa = PBXBuildFile; fileRef = C7E19E4914A758B700562B5A /* ShdList.l */; };
+		C7E19E4D14A758B700562B5A /* ShdList.ypp in Sources */ = {isa = PBXBuildFile; fileRef = C7E19E4A14A758B700562B5A /* ShdList.ypp */; };
+		C7E19E5314ACAC6E00562B5A /* StringTable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7E19E5214ACAC6E00562B5A /* StringTable.cpp */; };
+		C7E19E5614ACB29400562B5A /* Utility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7E19E5514ACB29400562B5A /* Utility.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		C725545D148600680020860B /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		C72554521485FBA10020860B /* ShaderList.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ShaderList.cpp; sourceTree = "<group>"; };
+		C725545F148600680020860B /* glslpc */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = glslpc; sourceTree = BUILT_PRODUCTS_DIR; };
+		C7ADC0BA14AE30CA004F5DA5 /* ShaderList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShaderList.h; sourceTree = "<group>"; };
+		C7E19E4614A758B700562B5A /* GLSLCompiler-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GLSLCompiler-Prefix.pch"; sourceTree = "<group>"; };
+		C7E19E4714A758B700562B5A /* Settings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Settings.cpp; sourceTree = "<group>"; };
+		C7E19E4814A758B700562B5A /* Settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Settings.h; sourceTree = "<group>"; };
+		C7E19E4914A758B700562B5A /* ShdList.l */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.lex; path = ShdList.l; sourceTree = "<group>"; };
+		C7E19E4A14A758B700562B5A /* ShdList.ypp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.yacc; path = ShdList.ypp; sourceTree = "<group>"; };
+		C7E19E5114ACAC4D00562B5A /* StringTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringTable.h; sourceTree = "<group>"; };
+		C7E19E5214ACAC6E00562B5A /* StringTable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringTable.cpp; sourceTree = "<group>"; };
+		C7E19E5414ACB28600562B5A /* Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utility.h; sourceTree = "<group>"; };
+		C7E19E5514ACB29400562B5A /* Utility.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Utility.cpp; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C725545C148600680020860B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		C72554431485FBA10020860B = {
+			isa = PBXGroup;
+			children = (
+				C7E19E4614A758B700562B5A /* GLSLCompiler-Prefix.pch */,
+				C7E19E5014A7687F00562B5A /* Sources */,
+				C725544F1485FBA10020860B /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		C725544F1485FBA10020860B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C725545F148600680020860B /* glslpc */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C7E19E5014A7687F00562B5A /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				C7E19E4814A758B700562B5A /* Settings.h */,
+				C7E19E4714A758B700562B5A /* Settings.cpp */,
+				C7ADC0BA14AE30CA004F5DA5 /* ShaderList.h */,
+				C72554521485FBA10020860B /* ShaderList.cpp */,
+				C7E19E4914A758B700562B5A /* ShdList.l */,
+				C7E19E4A14A758B700562B5A /* ShdList.ypp */,
+				C7E19E5114ACAC4D00562B5A /* StringTable.h */,
+				C7E19E5214ACAC6E00562B5A /* StringTable.cpp */,
+				C7E19E5414ACB28600562B5A /* Utility.h */,
+				C7E19E5514ACB29400562B5A /* Utility.cpp */,
+			);
+			name = Sources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		C725545E148600680020860B /* glslpc */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C7255466148600680020860B /* Build configuration list for PBXNativeTarget "glslpc" */;
+			buildPhases = (
+				C725545B148600680020860B /* Sources */,
+				C725545C148600680020860B /* Frameworks */,
+				C725545D148600680020860B /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = glslpc;
+			productName = GLSLCompiler;
+			productReference = C725545F148600680020860B /* glslpc */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C72554451485FBA10020860B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+				ORGANIZATIONNAME = "Capcom Japan Co. Ltd.";
+			};
+			buildConfigurationList = C72554481485FBA10020860B /* Build configuration list for PBXProject "GLSLCompiler" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = C72554431485FBA10020860B;
+			productRefGroup = C725544F1485FBA10020860B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C725545E148600680020860B /* glslpc */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C725545B148600680020860B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C7255469148600CC0020860B /* ShaderList.cpp in Sources */,
+				C7E19E4B14A758B700562B5A /* Settings.cpp in Sources */,
+				C7E19E4C14A758B700562B5A /* ShdList.l in Sources */,
+				C7E19E4D14A758B700562B5A /* ShdList.ypp in Sources */,
+				C7E19E5314ACAC6E00562B5A /* StringTable.cpp in Sources */,
+				C7E19E5614ACB29400562B5A /* Utility.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		C72554561485FBA10020860B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEPLOYMENT_LOCATION = YES;
+				DSTROOT = ../bin;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "GLSLCompiler-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"_CONFIGURATION_='\"$(CONFIGURATION)\"'",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INSTALL_PATH = /.;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				STRIP_INSTALLED_PRODUCT = NO;
+				SYMROOT = ../build;
+				YACCFLAGS = "--verbose --debug";
+				YACC_GENERATED_FILE_STEM = InputFileStem;
+			};
+			name = Debug;
+		};
+		C72554571485FBA10020860B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				DSTROOT = ../bin;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "GLSLCompiler-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"NDEBUG=1",
+					"_CONFIGURATION_='\"$(CONFIGURATION)\"'",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INSTALL_PATH = /.;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				SDKROOT = macosx;
+				SYMROOT = ../build;
+				YACC_GENERATED_FILE_STEM = InputFileStem;
+			};
+			name = Release;
+		};
+		C7255467148600680020860B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				PRODUCT_NAME = glslpc;
+			};
+			name = Debug;
+		};
+		C7255468148600680020860B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				PRODUCT_NAME = glslpc;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C72554481485FBA10020860B /* Build configuration list for PBXProject "GLSLCompiler" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C72554561485FBA10020860B /* Debug */,
+				C72554571485FBA10020860B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C7255466148600680020860B /* Build configuration list for PBXNativeTarget "glslpc" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C7255467148600680020860B /* Debug */,
+				C7255468148600680020860B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = C72554451485FBA10020860B /* Project object */;
+}

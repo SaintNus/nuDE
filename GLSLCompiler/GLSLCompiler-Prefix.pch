@@ -1,0 +1,16 @@
+/*!
+ * \file GLSLCompiler-Prefix.pch
+ * \brief GLSL compiler prefix.
+ * \author Nus
+ * \date 2011/12/25 21:40
+ */
+
+#ifndef __GLSLCOMPILER_PREFIX_H__
+#define __GLSLCOMPILER_PREFIX_H__
+
+#include <stdio.h>
+#include <assert.h>
+#include <string.h>
+#include <stdlib.h>
+
+#endif
