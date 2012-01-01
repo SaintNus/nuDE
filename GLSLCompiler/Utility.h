@@ -16,6 +16,8 @@ extern "C"
 void yyerror(const char* err_string);
 int yyaddstr(const char* string);
 
+void DumpList(void);
+
 #if defined(__cplusplus)
 }
 #endif

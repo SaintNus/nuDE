@@ -20,13 +20,15 @@ int yylex(void);
 
 void yyset_in(FILE* in_str);
 FILE* yyget_in(void);
+int yyget_lineno(void);
 
-#if defined(DEBUG)
-void yyset_debug(int debug_flag);
-#endif
- 
 }
 
+#if defined(DEBUG)
+extern "C" void yyset_debug(int debug_flag);
+extern int yydebug;
+#endif
+ 
 %}
 
 %token PREPROCESSOR
@@ -61,12 +63,16 @@ start:
 global_statement:
   PROGRAM bracketed_name OPEN_BRACE statements CLOSE_BRACE
   {
-    fprintf(stdout, "Program: %s\n", StringTable::getString($2));
+    ShaderList::getProgramScratch()->setName(StringTable::getString($2)->lineNo(),
+                                             StringTable::getString($2)->string());
+    ShaderList::instance()->addProgram(ShaderList::getProgramScratch());
+    ShaderList::setProgramScratch(nullptr);
   }
   |
   PREPROCESSOR COLON preprocessors SEMI_COLON
   {
-    fprintf(stdout, "Preprocessor: %s\n", StringTable::getString($3));
+    ShaderList::instance()->addGlobalPreproc(ShaderList::getPreprocScratch());
+    ShaderList::setPreprocScratch(nullptr);
   }
   ;
 
@@ -81,15 +87,18 @@ preprocessors:
 definition:
   STRING EQUAL STRING
   {
-    const char* def = StringTable::getString($1);
-    const char* value = StringTable::getString($3);
-    ShaderList::addPreProcScratch(new PreProcessor(def, value));
+    const char* def = StringTable::getString($1)->string();
+    const char* value = StringTable::getString($3)->string();
+    ShaderList::addPreprocScratch(new PreProcessor(StringTable::getString($1)->lineNo(),
+                                                   def,
+                                                   value));
   }
   |
   STRING
   {
-    const char* def = StringTable::getString($1);
-    ShaderList::addPreProcScratch(new PreProcessor(def));
+    const char* def = StringTable::getString($1)->string();
+    ShaderList::addPreprocScratch(new PreProcessor(StringTable::getString($1)->lineNo(),
+                                                   def));
   }
   ;
 
@@ -108,27 +117,36 @@ statements:
 statement:
   VERTEX_SHADER COLON quoted_name SEMI_COLON
   {
-    $$ = $3;
+    Shader* p_shd = ShaderList::getProgramScratch()->createVertexShader();
+    p_shd->setFileName(StringTable::getString($3)->lineNo(),
+                       StringTable::getString($3)->string());
   }
   |
   FRAGMENT_SHADER COLON quoted_name SEMI_COLON
   {
-    $$ = $3;
+    Shader* p_shd = ShaderList::getProgramScratch()->createFragmentShader();
+    p_shd->setFileName(StringTable::getString($3)->lineNo(),
+                       StringTable::getString($3)->string());
   }
   |
   PREPROCESSOR COLON preprocessors SEMI_COLON
   {
-    $$ = $3;
+    ShaderList::getProgramScratch()->addPreproc(ShaderList::getPreprocScratch());
+    ShaderList::setPreprocScratch(nullptr);
   }
   |
   VERTEX_PREPROCESSOR COLON preprocessors SEMI_COLON
   {
-    $$ = $3;
+    Shader* p_shd = ShaderList::getProgramScratch()->createVertexShader();
+    p_shd->addPreproc(ShaderList::getPreprocScratch());
+    ShaderList::setPreprocScratch(nullptr);
   }
   |
   FRAGMENT_PREPROCESSOR COLON preprocessors SEMI_COLON
   {
-    $$ = $3;
+    Shader* p_shd = ShaderList::getProgramScratch()->createFragmentShader();
+    p_shd->addPreproc(ShaderList::getPreprocScratch());
+    ShaderList::setPreprocScratch(nullptr);
   }
   ;
 
@@ -152,18 +170,26 @@ int main(int argc, const char** argv)
   Settings setting(argc, argv);
 
 #if defined(DEBUG)
-  yyset_debug(1);
+  yydebug = setting.isDebug() ? 1 : 0;
+  yyset_debug(yydebug);
 #endif
 
-  fprintf(stdout, "GLSL Property Compiler - %s\nVersion 1.0\n", _CONFIGURATION_);
+  if(setting.isVersion() || setting.isVerbose() || setting.isHelp())
+    fprintf(stdout, "GLSL Property Compiler - %s\nVersion 1.0\n", _CONFIGURATION_);
 
-  if(!setting.isValid()) {
-    fprintf(stdout, "Usage: glslpc [ --output-file=file_name ] [ --force-write ] input_file\n");
+  if(setting.isVersion())
+    return 1;
+
+  if(setting.isHelp()) {
+    fprintf(stdout, "Usage: glslpc [ --output-file=file_name ] [ --force-write ]\n");
+    fprintf(stdout, "              [ --verbose ] input_file\n");
+    fprintf(stdout, "       glslpc --version\n");
+    fprintf(stdout, "       glslpc --help\n");
     return 1;
   }
 
   {
-    FILE* file = fopen(setting.getInputName(), "r");
+    FILE* file = fopen(setting.getInputName(), "rb");
 
     if(!file) {
       fprintf(stderr, "Critical error: cannot open \"%s\"\n.", setting.getInputName());
@@ -173,10 +199,17 @@ int main(int argc, const char** argv)
     yyset_in(file);
   }
 
+  ShaderList::createInstance();
+
   yyparse();
 
   fclose(yyget_in());
   yyset_in(nullptr);
+
+  if(setting.isVerbose())
+    DumpList();
+
+  ShaderList::deleteInstance();
 
   return 0;
 }

@@ -22,7 +22,8 @@ void EliminateCommentLine(void);
 "/*"                    EliminateCommentRegion();
 "//"                    EliminateCommentLine();
 
-[\n|\r]                 /* Ignore line feed & carriage return */
+\n                      yylineno++;
+\r\n?                   yylineno++;
 
 "\""                    return QUOTE;
 
@@ -66,6 +67,12 @@ void EliminateCommentRegion(void)
         if(ch == '/') {
           end = 1;
           break;
+        } else if(ch == '\n') {
+          yylineno++;
+        } else if(ch == '\r') {
+          yylineno++;
+          if(input() != '\n')
+            unput(yytext[yyleng-1]);
         }
       } while(ch == '*');
       if(end == 1)
@@ -73,6 +80,12 @@ void EliminateCommentRegion(void)
     } else if(ch == EOF) {
       yyerror("EOF in comment.");
       break;
+    } else if(ch == '\n') {
+      yylineno++;
+    } else if(ch == '\r') {
+      yylineno++;
+      if(input() != '\n')
+        unput(yytext[yyleng-1]);
     }
   }
 }
@@ -83,7 +96,13 @@ void EliminateCommentLine(void)
   int ch;
   while(1) {
     ch = input();
-    if(ch == EOF) {
+    if(ch == '\n') {
+      yylineno++;
+      break;
+    } else if(ch == '\r') {
+      yylineno++;
+      if(input() != '\n')
+        unput(yytext[yyleng-1]);
       break;
     }
   }

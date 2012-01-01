@@ -15,6 +15,10 @@ private:
   const char* mpInputName;
   bool mValid;
   bool mForceWrite;
+  bool mVerbose;
+  bool mVersion;
+  bool mHelp;
+  bool mDebug;
 
   Settings();
 
@@ -36,6 +40,22 @@ public:
 
   bool isForceWrite(void) const {
     return mForceWrite;
+  }
+
+  bool isVerbose(void) const {
+    return mVerbose;
+  }
+
+  bool isVersion(void) const {
+    return mVersion;
+  }
+
+  bool isHelp(void) const {
+    return mHelp;
+  }
+
+  bool isDebug(void) const {
+    return mDebug;
   }
 
 };
