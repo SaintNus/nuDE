@@ -37,7 +37,6 @@ static CVReturn DisplayLinkCallback(CVDisplayLinkRef display_link,
     NSOpenGLPFADepthSize, 24,
     NSOpenGLPFAStencilSize, 8,
     NSOpenGLPFAOpenGLProfile,
-    NSOpenGLProfileVersion3_2Core,
     0,
   };
   
@@ -59,38 +58,38 @@ static CVReturn DisplayLinkCallback(CVDisplayLinkRef display_link,
 
 - (void) prepareOpenGL
 {
-	GLint swapInt = 1;
+  GLint swapInt = 1;
 
-	[[self openGLContext] makeCurrentContext];
-	[[self openGLContext] setValues: &swapInt forParameter: NSOpenGLCPSwapInterval];
+  [[self openGLContext] makeCurrentContext];
+  [[self openGLContext] setValues: &swapInt forParameter: NSOpenGLCPSwapInterval];
 
-	CVDisplayLinkCreateWithActiveCGDisplays(&displayLink);
-	
-	CVDisplayLinkSetOutputCallback(displayLink, &DisplayLinkCallback, self);
-	
-	CGLContextObj ctx = static_cast< CGLContextObj >([[self openGLContext] CGLContextObj]);
-	CGLPixelFormatObj pf = static_cast< CGLPixelFormatObj >([[self pixelFormat] CGLPixelFormatObj]);
-	CVDisplayLinkSetCurrentCGDisplayFromOpenGLContext(displayLink, ctx, pf);
+  CVDisplayLinkCreateWithActiveCGDisplays(&displayLink);
+  
+  CVDisplayLinkSetOutputCallback(displayLink, &DisplayLinkCallback, self);
+  
+  CGLContextObj ctx = static_cast< CGLContextObj >([[self openGLContext] CGLContextObj]);
+  CGLPixelFormatObj pf = static_cast< CGLPixelFormatObj >([[self pixelFormat] CGLPixelFormatObj]);
+  CVDisplayLinkSetCurrentCGDisplayFromOpenGLContext(displayLink, ctx, pf);
 
   displayLinkStarted = false;
 }
 
 - (CVReturn) drawFrameForTime: (const CVTimeStamp*) output_time
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+  NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
   [self lockContext];
   [self drawFrame];
   [self unlockContext];
 
-	[pool release];
-	return kCVReturnSuccess;
+  [pool release];
+  return kCVReturnSuccess;
 }
 
 - (void) reshape
-{	
-	[super reshape];
-	#if !NDEBUG
+{ 
+  [super reshape];
+  #if !NDEBUG
   {
     NSSize frame_size = [self frame].size;
     NU_TRACE("Resizing to %.1f x %.1f\n", frame_size.width, frame_size.height);
@@ -101,8 +100,8 @@ static CVReturn DisplayLinkCallback(CVDisplayLinkRef display_link,
 - (void) dealloc
 {
   [self stopDraw];
-	CVDisplayLinkRelease(displayLink);
-	[super dealloc];
+  CVDisplayLinkRelease(displayLink);
+  [super dealloc];
 }
 
 - (void) drawFrame

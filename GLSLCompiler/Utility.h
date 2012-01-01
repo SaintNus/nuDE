@@ -16,7 +16,10 @@ extern "C"
 void yyerror(const char* err_string);
 int yyaddstr(const char* string);
 
+int yyget_iserror(void);
+
 void DumpList(void);
+void BuildList(void);
 
 #if defined(__cplusplus)
 }

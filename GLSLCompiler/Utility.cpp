@@ -8,14 +8,18 @@
 #include "Utility.h"
 #include "StringTable.h"
 #include "ShaderList.h"
+#include "GlObject.h"
 
 extern "C" int yyget_lineno(void);
+
+int yy_iserror = 0;
 
 void yyerror(const char* err_str)
 {
   fprintf(stderr, "Error at line-%d: %s\n", yyget_lineno(), err_str);
+  yy_iserror = 1;
 #if defined(DEBUG)
-  assert(false);
+  assert(yy_iserror == 0);
 #endif
 }
 
@@ -116,4 +120,15 @@ void DumpList(void)
       fprintf(stdout, "No program defined.\n");
     }
   }
+}
+
+int yyget_iserror(void)
+{
+  return yy_iserror;
+}
+
+void BuildList(void)
+{
+  GlObject* p_gl = new GlObject();
+  delete p_gl;
 }
