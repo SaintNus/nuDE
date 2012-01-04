@@ -13,6 +13,10 @@
 extern "C" int yyget_lineno(void);
 
 int yy_iserror = 0;
+FILE* OutputHeaderFile = nullptr;
+FILE* OutputSourceFile = nullptr;
+
+static int ProcessFile(const char* file_name);
 
 void yyerror(const char* err_str)
 {
@@ -127,8 +131,121 @@ int yyget_iserror(void)
   return yy_iserror;
 }
 
-void BuildList(void)
+int BuildList(void)
 {
+  int ret = 0;
   GlObject* p_gl = new GlObject();
+
+  // Build all program.
+  {
+    for(unsigned int ui = 0; ui < ShaderList::instance()->getProgramSize(); ui++) {
+      int err = 0;
+      const Program* p_prog = ShaderList::instance()->getProgram(ui);
+      if(p_prog->getVertexShader()) {
+        Shader* p_vsh = p_prog->getVertexShader();
+        void* file_buffer = nullptr;
+        size_t file_sz = 0;
+        FILE* vs_file = fopen(p_vsh->fileName(), "rb");
+        if(vs_file) {
+          fseek(vs_file, 0, SEEK_END);
+          file_sz = ftell(vs_file);
+          rewind(vs_file);
+          file_buffer = malloc(file_sz);
+          fread(file_buffer, 1, file_sz, vs_file);
+          free(file_buffer);
+          fclose(vs_file);
+        } else {
+          fprintf(stderr, "Error: Cannot open vertex shader \"%s\".\n", p_vsh->fileName());
+          err = -5;
+        }
+      }
+      if(p_prog->getFragmentShader()) {
+        Shader* p_fsh = p_prog->getFragmentShader();
+        void* file_buffer = nullptr;
+        size_t file_sz = 0;
+        FILE* fs_file = fopen(p_fsh->fileName(), "rb");
+        if(fs_file) {
+          fseek(fs_file, 0, SEEK_END);
+          file_sz = ftell(fs_file);
+          rewind(fs_file);
+          file_buffer = malloc(file_sz);
+          fread(file_buffer, 1, file_sz, fs_file);
+          free(file_buffer);
+          fclose(fs_file);
+        } else {
+          fprintf(stderr, "Error: Cannot open fragment shader \"%s\".\n", p_fsh->fileName());
+          err = -5;
+        }
+      }
+
+      if(err != 0)
+        continue;
+
+      // Build shader here...
+    }
+  }
+
   delete p_gl;
+  return ret;
+}
+
+FILE* OutputHeader(void)
+{
+  return OutputHeaderFile;
+}
+
+FILE* OutputSource(void)
+{
+  return OutputSourceFile;
+}
+
+void SetOutputHeader(FILE* p_file)
+{
+  OutputHeaderFile = p_file;
+}
+
+void SetOutputSource(FILE* p_file)
+{
+  OutputSourceFile = p_file;
+}
+
+int MakePath(const char* path)
+{
+  char buffer[PATH_MAX];
+  char* p_ch;
+
+  strncpy(buffer, path, PATH_MAX);
+
+  p_ch = strrchr(buffer, '/');
+  if(p_ch)
+    p_ch[1] = '\0';
+
+  if(buffer[0] == '/')
+    p_ch = strchr(&buffer[1], '/');
+  else
+    p_ch = strchr(buffer, '/');
+
+  while(p_ch) {
+    struct stat st;
+    *p_ch = '\0';
+
+    if(stat(buffer, &st) != 0) {
+      if(mkdir(buffer, 0755) != 0) 
+        return -1;
+    } else if(!S_ISDIR(st.st_mode)) {
+      return -2;
+    }
+
+    *p_ch = '/';
+    p_ch++;
+    p_ch = strchr(p_ch, '/');
+  }
+
+  return 0;
+}
+
+int ProcessFile(const char* file_name)
+{
+  
+  return 0;
 }

@@ -17,8 +17,7 @@ GlObject::GlObject()
     kCGLPFAAlphaSize, 8,
     kCGLPFADepthSize, 24,
     kCGLPFAStencilSize, 8,
-    kCGLPFAOpenGLProfile,
-    kCGLOGLPVersion_3_2_Core,
+    kCGLPFAOpenGLProfile, kCGLOGLPVersion_3_2_Core,
     0
   };
   CGLPixelFormatObj pix;
@@ -39,4 +38,24 @@ GlObject::~GlObject()
 {
   if(mContext)
     CGLReleaseContext(mContext);
+}
+
+GLint GlObject::compileShader(GLenum shader_type, void* p_buffer, size_t size)
+{
+  return 0;
+}
+
+GLint GlObject::linkProgram(GLint vs_id, GLint fs_id)
+{
+  return 0;
+}
+
+void GlObject::deleteShader(GLint shd_id)
+{
+
+}
+
+void GlObject::deleteProgram(GLint prog_id)
+{
+
 }

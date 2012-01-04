@@ -14,11 +14,3 @@ Program(Debug)
   Preprocessor: _PUBLIC_;
   Preprocessor: _LOCAL1_ = 1.0, _LOCAL2_ = 2;
 }
-
-Program(Test)
-{
-  VertexShader: "Test.vsh";
-  VertexPreprocessor: _TEST_VS0_, _TEST_VS1_;
-  Preprocessor: _PUBLIC_TEST_;
-  Preprocessor: _LOCAL3_ = 3.0, _LOCAL4_ = 4;
-}

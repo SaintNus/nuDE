@@ -182,9 +182,15 @@ int main(int argc, const char** argv)
 
   if(setting.isHelp()) {
     fprintf(stdout, "Usage: glslpc [ --output-file=file_name ] [ --force-write ]\n");
-    fprintf(stdout, "              [ --verbose ] input_file\n");
+    fprintf(stdout, "              [ --intermediate-dir=directory ] [ --verbose ]\n");
+    fprintf(stdout, "              input_file\n");
     fprintf(stdout, "       glslpc --version\n");
     fprintf(stdout, "       glslpc --help\n");
+    return 1;
+  }
+
+  if(!setting.isValid()) {
+    fprintf(stdout, "Invalid argument(s).\n");
     return 1;
   }
 
@@ -192,11 +198,106 @@ int main(int argc, const char** argv)
     FILE* file = fopen(setting.getInputName(), "rb");
 
     if(!file) {
-      fprintf(stderr, "Critical error: cannot open \"%s\"\n.", setting.getInputName());
+      fprintf(stderr, "Critical error: cannot open \"%s\".\n", setting.getInputName());
       return -1;
     }
 
     yyset_in(file);
+  }
+
+  if(!setting.isForceWrite()) {
+    int ret = 0;
+    char buffer[PATH_MAX];
+    FILE* file = nullptr;
+
+    snprintf(buffer, PATH_MAX, "%s.h", setting.getOutputName());
+    buffer[PATH_MAX - 1] = 0x00;
+    file = fopen(buffer, "rb");
+    if(file) {
+      fprintf(stderr, "Critical error: File \"%s\" exists.\n", buffer);
+      fclose(file);
+      ret = -3;
+    }
+
+    snprintf(buffer, PATH_MAX, "%s.cpp", setting.getOutputName());
+    buffer[PATH_MAX - 1] = 0x00;
+    file = fopen(buffer, "rb");
+    if(file) {
+      fprintf(stderr, "Critical error: File \"%s\" exists.\n", buffer);
+      fclose(file);
+      ret = -3;
+    }
+
+    if(ret != 0) {
+      fprintf(stderr, "Try using --force-write to rewrite existing file(s).\n");
+      return ret;
+    }
+  }
+
+  {
+    int ret = 0;
+    char buffer[PATH_MAX];
+    FILE* file = nullptr;
+
+    snprintf(buffer, PATH_MAX, "%s.h", setting.getOutputName());
+    buffer[PATH_MAX - 1] = 0x00;
+
+    if(MakePath(buffer)) {
+      fprintf(stderr, "Critical error: Create path to \"%s\".\n", buffer);
+      return -4;
+    }
+
+    file = fopen(buffer, "wb");
+    if(file) {
+      SetOutputHeader(file);
+    } else {
+      fprintf(stderr, "Critical error: Cannot write to \"%s\".\n", buffer);
+      ret = -4;
+    }
+
+    snprintf(buffer, PATH_MAX, "%s.cpp", setting.getOutputName());
+    buffer[PATH_MAX - 1] = 0x00;
+    file = fopen(buffer, "wb");
+    if(file) {
+      SetOutputSource(file);
+    } else {
+      fprintf(stderr, "Critical error: Cannot write to \"%s\".\n", buffer);
+      ret = -4;
+    }
+
+    if(ret != 0) {
+      if(OutputHeader()) {
+        fclose(OutputHeader());
+        SetOutputHeader(nullptr);
+      }
+      if(OutputSource()) {
+        fclose(OutputSource());
+        SetOutputSource(nullptr);
+      }
+      return ret;
+    }
+  }
+
+  {
+    char buffer[PATH_MAX];
+
+    strncpy(buffer, setting.getIntermediateDir(), PATH_MAX);
+    buffer[PATH_MAX - 1] = '\0';
+    if(buffer[strlen(buffer) - 1] != '/') {
+      size_t len = strlen(buffer) + 1;
+      if(len < PATH_MAX) {
+        buffer[len - 1] = '/';
+        buffer[len] = '\0';
+      } else {
+        fprintf(stderr, "Critical error: Cannot create intermediate directory.\n");
+        return -5;
+      }
+    }
+
+    if(MakePath(buffer)) {
+      fprintf(stderr, "Critical error: Cannot create intermediate directory.\n");
+      return -5;
+    }
   }
 
   ShaderList::createInstance();
@@ -214,9 +315,14 @@ int main(int argc, const char** argv)
   if(setting.isVerbose())
     DumpList();
 
-  BuildList();
+  int ret = BuildList();
+
+  fclose(OutputHeader());
+  SetOutputHeader(nullptr);
+  fclose(OutputSource());
+  SetOutputSource(nullptr);
 
   ShaderList::deleteInstance();
 
-  return 0;
+  return ret;
 }

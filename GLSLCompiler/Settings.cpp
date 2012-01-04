@@ -12,6 +12,7 @@
 Settings::Settings(int argc, const char** argv)
     : mpOutputName("ShdList"),
       mpInputName(nullptr),
+      mpIntermediateDir("glsl.intermediate"),
       mValid(false),
       mForceWrite(false),
       mVerbose(false),
@@ -31,6 +32,10 @@ Settings::Settings(int argc, const char** argv)
       const char* str = arg_str + strlen("--output-file=");
       if(*str != '\0')
         mpOutputName = str;
+    } else if(COMPARE_CSTR(arg_str, "--intermediate-dir=") == 0) {
+      const char* str = arg_str + strlen("--intermediate-dir=");
+      if(*str != '\0')
+        mpIntermediateDir = str;
     } else if(COMPARE_CSTR(arg_str, "--force-write") == 0) {
       mForceWrite = true;
     } else if(COMPARE_CSTR(arg_str, "--verbose") == 0) {

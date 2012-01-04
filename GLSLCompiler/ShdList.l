@@ -22,8 +22,7 @@ void EliminateCommentLine(void);
 "/*"                    EliminateCommentRegion();
 "//"                    EliminateCommentLine();
 
-\n                      yylineno++;
-\r\n?                   yylineno++;
+\n|\r\n?                yylineno++;
 
 "\""                    return QUOTE;
 

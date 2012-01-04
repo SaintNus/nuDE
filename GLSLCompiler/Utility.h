@@ -18,8 +18,15 @@ int yyaddstr(const char* string);
 
 int yyget_iserror(void);
 
+FILE* OutputHeader(void);
+FILE* OutputSource(void);
+void SetOutputHeader(FILE* p_file);
+void SetOutputSource(FILE* p_file);
+
 void DumpList(void);
-void BuildList(void);
+int BuildList(void);
+
+int MakePath(const char* path);
 
 #if defined(__cplusplus)
 }

@@ -13,6 +13,7 @@ class Settings
 private:
   const char* mpOutputName;
   const char* mpInputName;
+  const char* mpIntermediateDir;
   bool mValid;
   bool mForceWrite;
   bool mVerbose;
@@ -32,6 +33,10 @@ public:
 
   const char* getInputName(void) const {
     return mpInputName;
+  }
+
+  const char* getIntermediateDir(void) const {
+    return mpIntermediateDir;
   }
 
   bool isValid(void) const {

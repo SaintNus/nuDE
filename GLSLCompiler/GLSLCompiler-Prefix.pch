@@ -12,6 +12,7 @@
 #include <assert.h>
 #include <string.h>
 #include <stdlib.h>
+#include <sys/stat.h>
 
 #include <OpenGL/OpenGL.h>
 

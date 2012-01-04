@@ -17,6 +17,12 @@ public:
   GlObject();
   ~GlObject();
 
+  GLint compileShader(GLenum shader_type, void* p_buffer, size_t size);
+  GLint linkProgram(GLint vs_id, GLint fs_id);
+
+  void deleteShader(GLint shd_id);
+  void deleteProgram(GLint prog_id);
+
 };
 
 #endif

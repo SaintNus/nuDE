@@ -36,7 +36,7 @@ static CVReturn DisplayLinkCallback(CVDisplayLinkRef display_link,
     NSOpenGLPFAAlphaSize, 8,
     NSOpenGLPFADepthSize, 24,
     NSOpenGLPFAStencilSize, 8,
-    NSOpenGLPFAOpenGLProfile,
+    NSOpenGLPFAOpenGLProfile, NSOpenGLProfileVersion3_2Core,
     0,
   };
   
