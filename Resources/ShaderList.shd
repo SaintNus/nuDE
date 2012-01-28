@@ -14,3 +14,13 @@ Program(Debug)
   Preprocessor: _PUBLIC_;
   Preprocessor: _LOCAL1_ = 1.0, _LOCAL2_ = 2;
 }
+
+Program(Test)
+{
+  VertexShader: "test/Test.vsh";
+  VertexPreprocessor: _VS_;
+  FragmentShader: "test/Test.fsh";
+  FragmentPreprocessor: _FS_;
+  Preprocessor: _PUBLIC_;
+  Preprocessor: _LOCAL1_ = 1.0, _LOCAL2_ = 2;
+}

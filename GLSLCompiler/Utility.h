@@ -8,6 +8,19 @@
 #ifndef __UTILITY_H__
 #define __UTILITY_H__
 
+enum ErrorCodes
+{
+  ErrorNone = 0,
+  ErrorAppStartup,
+  ErrorIO,
+  ErrorFileSystem,
+  ErrorShdListParse,
+  ErrorMemory,
+  ErrorException,
+  ErrorShaderCompile,
+  ErrorProgramLink,
+};
+
 #if defined(__cplusplus)
 extern "C"
 {
@@ -24,9 +37,10 @@ void SetOutputHeader(FILE* p_file);
 void SetOutputSource(FILE* p_file);
 
 void DumpList(void);
-int BuildList(void);
 
 int MakePath(const char* path);
+
+int BuildList(const char* intermediate_dir);
 
 #if defined(__cplusplus)
 }

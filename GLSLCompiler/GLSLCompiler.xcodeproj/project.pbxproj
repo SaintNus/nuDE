@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C7113F1314C1D5690021C0B9 /* ShaderObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7113F1114C1D5690021C0B9 /* ShaderObject.cpp */; };
 		C7255469148600CC0020860B /* ShaderList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C72554521485FBA10020860B /* ShaderList.cpp */; };
 		C7ADC0D214B08100004F5DA5 /* GlObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7ADC0D014B08100004F5DA5 /* GlObject.cpp */; };
 		C7ADC0D514B08173004F5DA5 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7ADC0D414B08172004F5DA5 /* OpenGL.framework */; };
@@ -30,6 +31,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		C7113F1114C1D5690021C0B9 /* ShaderObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShaderObject.cpp; sourceTree = "<group>"; };
+		C7113F1214C1D5690021C0B9 /* ShaderObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShaderObject.h; sourceTree = "<group>"; };
 		C72554521485FBA10020860B /* ShaderList.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ShaderList.cpp; sourceTree = "<group>"; };
 		C725545F148600680020860B /* glslpc */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = glslpc; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7ADC0BA14AE30CA004F5DA5 /* ShaderList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShaderList.h; sourceTree = "<group>"; };
@@ -80,6 +83,8 @@
 		C7E19E5014A7687F00562B5A /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				C7113F1214C1D5690021C0B9 /* ShaderObject.h */,
+				C7113F1114C1D5690021C0B9 /* ShaderObject.cpp */,
 				C7ADC0D114B08100004F5DA5 /* GlObject.h */,
 				C7ADC0D014B08100004F5DA5 /* GlObject.cpp */,
 				C7E19E4814A758B700562B5A /* Settings.h */,
@@ -154,6 +159,7 @@
 				C7E19E5314ACAC6E00562B5A /* StringTable.cpp in Sources */,
 				C7E19E5614ACB29400562B5A /* Utility.cpp in Sources */,
 				C7ADC0D214B08100004F5DA5 /* GlObject.cpp in Sources */,
+				C7113F1314C1D5690021C0B9 /* ShaderObject.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
