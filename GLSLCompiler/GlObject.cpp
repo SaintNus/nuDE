@@ -29,15 +29,22 @@ GlObject::GlObject()
   if(pix) {
     CGLCreateContext(pix, nullptr, &mContext);
     CGLReleasePixelFormat(pix);
-    if(mContext)
-      CGLSetCurrentContext(mContext);
+    if(mContext) {
+      CGLError err = CGLSetCurrentContext(mContext);
+      if(err != kCGLNoError)
+        fprintf(stderr, "Error setting GL context.\n");
+      CGLLockContext(mContext);
+    }
   }
 }
 
 GlObject::~GlObject()
 {
-  if(mContext)
+  if(mContext) {
+    CGLFlushDrawable(mContext);
+    CGLUnlockContext(mContext);
     CGLReleaseContext(mContext);
+  }
 }
 
 GLuint GlObject::compileShader(GLenum shader_type, void* p_buffer, size_t size)
@@ -47,10 +54,10 @@ GLuint GlObject::compileShader(GLenum shader_type, void* p_buffer, size_t size)
   GLint status;
 
   glShaderSource(shd_id, 1, (const GLchar**) &p_buffer, &shd_len);
-  glCompileShader(shd_len);
+  glCompileShader(shd_id);
 
-  glGetShaderiv(shd_len, GL_COMPILE_STATUS, &status);
-  if(status == 0) {
+  glGetShaderiv(shd_id, GL_COMPILE_STATUS, &status);
+  if(status == GL_FALSE) {
     GLint log_len;
     glGetShaderiv(shd_id, GL_INFO_LOG_LENGTH, &log_len);
     if(log_len > 0) {
@@ -77,16 +84,15 @@ GLuint GlObject::compileShader(GLenum shader_type, void* p_buffer, size_t size)
 
 GLuint GlObject::linkProgram(GLuint vs_id, GLuint fs_id)
 {
-  GLuint prog_id;
+  GLuint prog_id = glCreateProgram();
   GLint status;
 
-  prog_id = glCreateProgram();
   glAttachShader(prog_id, vs_id);
   glAttachShader(prog_id, fs_id);
   glLinkProgram(prog_id);
 
   glGetProgramiv(prog_id, GL_LINK_STATUS, &status);
-  if(status == 0) {
+  if(status == GL_FALSE) {
     GLint log_len;
     glGetProgramiv(prog_id, GL_INFO_LOG_LENGTH, &log_len);
     if(log_len > 0) {

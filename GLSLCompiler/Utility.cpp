@@ -184,6 +184,9 @@ int BuildList(const char* intermediate_dir)
             p_soprog->vertex_shd.immed_name = StringTable::getString(str)->string();
           }
 
+          const char* ver = "#version 150\n\n";
+          fwrite(ver, sizeof(char), strlen(ver), immed_file);
+
           // Global preprocessor.
           const PreProcessorList* p_glist = ShaderList::instance()->getGlobalPreproc();
           if(WritePreprocessor(immed_file, p_glist)) {
@@ -236,11 +239,14 @@ int BuildList(const char* intermediate_dir)
         } else {
           std::vector< int > include_list;
 
-          p_soprog->vertex_shd.file_name = fsh_fname;
+          p_soprog->fragment_shd.file_name = fsh_fname;
           {
             int str = StringTable::addString(0, immed_fname);
-            p_soprog->vertex_shd.immed_name = StringTable::getString(str)->string();
+            p_soprog->fragment_shd.immed_name = StringTable::getString(str)->string();
           }
+
+          const char* ver = "#version 150\n\n";
+          fwrite(ver, sizeof(char), strlen(ver), immed_file);
 
           // Global preprocessor.
           const PreProcessorList* p_glist = ShaderList::instance()->getGlobalPreproc();
@@ -483,15 +489,15 @@ int WritePreprocessor(FILE* inout_file, const PreProcessorList* p_plist)
   for(it = p_plist->begin(); it < p_plist->end(); it++) {
     const PreProcessor* p_preproc = *it;
     if(p_preproc->value()) {
-      char buffer[128];
-      snprintf(buffer, 128, "#define %s %s\n",
+      char buffer[512];
+      snprintf(buffer, 512, "#define %s %s\n",
                p_preproc->definition(),
                p_preproc->value());
       if(fwrite(buffer, sizeof(char), strlen(buffer), inout_file) == 0)
         return 1;
     } else {
-      char buffer[128];
-      snprintf(buffer, 128, "#define %s\n", p_preproc->definition());
+      char buffer[512];
+      snprintf(buffer, 512, "#define %s\n", p_preproc->definition());
       if(fwrite(buffer, sizeof(char), strlen(buffer), inout_file) == 0)
         return ErrorIO;
     }
@@ -509,21 +515,25 @@ int BuildGLSLProgram(ShaderObject::Program* p_program, FILE* vsh_file, FILE* fsh
 
   // Vertex shader.
   {
-    size_t vsh_sz = fseek(vsh_file, 0, SEEK_END);
+    fseek(vsh_file, 0, SEEK_END);
+    size_t vsh_sz = ftell(vsh_file);
     void* p_buffer = malloc(vsh_sz);
     rewind(vsh_file);
     vsh_sz = fread(p_buffer, sizeof(char), vsh_sz, vsh_file);
-    vsh_id = GlObject::compileShader(GL_VERTEX_SHADER, p_buffer, vsh_sz);
+    if(vsh_sz)
+      vsh_id = GlObject::compileShader(GL_VERTEX_SHADER, p_buffer, vsh_sz);
     free(p_buffer);
   }
 
   // Fragment shader.
   {
-    size_t fsh_sz = fseek(fsh_file, 0, SEEK_END);
+    fseek(fsh_file, 0, SEEK_END);
+    size_t fsh_sz = ftell(fsh_file);
     void* p_buffer = malloc(fsh_sz);
     rewind(fsh_file);
     fsh_sz = fread(p_buffer, sizeof(char), fsh_sz, fsh_file);
-    fsh_id = GlObject::compileShader(GL_FRAGMENT_SHADER, p_buffer, fsh_sz);
+    if(fsh_sz)
+      fsh_id = GlObject::compileShader(GL_FRAGMENT_SHADER, p_buffer, fsh_sz);
     free(p_buffer);
   }
 
@@ -578,7 +588,7 @@ int BuildGLSLProgram(ShaderObject::Program* p_program, FILE* vsh_file, FILE* fsh
     GLint uniform, uniform_len;
 
     glGetProgramiv(prog_id, GL_ACTIVE_UNIFORMS, &uniform);
-    glGetProgramiv(prog_id, GL_ACTIVE_UNIFORMS, &uniform_len);
+    glGetProgramiv(prog_id, GL_ACTIVE_UNIFORM_MAX_LENGTH, &uniform_len);
 
     GLchar* p_uniform = static_cast< GLchar* >(malloc(uniform_len));
 
@@ -587,6 +597,10 @@ int BuildGLSLProgram(ShaderObject::Program* p_program, FILE* vsh_file, FILE* fsh
       GLint size;
       GLenum type;
       glGetActiveUniform(prog_id, ui, uniform_len, &len, &size, &type, p_uniform);
+      for(GLchar* pc = p_uniform; *pc != 0x00; pc++) {
+        if(*pc == '.')
+          *pc = '_';
+      }
       int str_idx = StringTable::addString(0, p_uniform);
       if(str_idx < 0) {
         fprintf(stderr, "Not enough memory for uniform \"%s\".\n", p_uniform);
@@ -610,13 +624,17 @@ int BuildGLSLProgram(ShaderObject::Program* p_program, FILE* vsh_file, FILE* fsh
     GLint uniform, uniform_len;
 
     glGetProgramiv(prog_id, GL_ACTIVE_UNIFORM_BLOCKS, &uniform);
-    glGetProgramiv(prog_id, GL_ACTIVE_UNIFORM_BLOCKS, &uniform_len);
+    glGetProgramiv(prog_id, GL_ACTIVE_UNIFORM_BLOCK_MAX_NAME_LENGTH, &uniform_len);
 
     GLchar* p_uniform = static_cast< GLchar* >(malloc(uniform_len));
 
     for(GLuint ui = 0; ui < static_cast< GLuint >(uniform); ui++) {
       GLsizei len;
       glGetActiveUniformBlockName(prog_id, ui, uniform_len, &len, p_uniform);
+      for(GLchar* pc = p_uniform; *pc != 0x00; pc++) {
+        if(*pc == '.')
+          *pc = '_';
+      }
       int str_idx = StringTable::addString(0, p_uniform);
       if(str_idx < 0) {
         fprintf(stderr, "Not enough memory for uniform block \"%s\".\n", p_uniform);

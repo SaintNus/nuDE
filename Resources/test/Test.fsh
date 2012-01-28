@@ -4,7 +4,6 @@
  * \author Nus
  * \date 2011/11/27 08:00
  */
-#version 150
 
 in vec4 varColor;
 
