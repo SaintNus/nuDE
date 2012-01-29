@@ -36,3 +36,4 @@
 #include "nuObject.h"
 
 #include "nuOSType.h"
+#include "nuResource.h"

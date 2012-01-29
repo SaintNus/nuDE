@@ -7,4 +7,4 @@
 
 #include "nuResource.h"
 
-IMPLEMENT_TYPE_INFO(nuResource, nuObject);
+IMPLEMENT_TYPE_INFO_ABSTRACT(nuResource, nuObject);

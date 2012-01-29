@@ -49,6 +49,8 @@
 		C7EE1B9E14D563FD00A9CF2B /* nuResource.h in Headers */ = {isa = PBXBuildFile; fileRef = C7EE1B8914D563FD00A9CF2B /* nuResource.h */; };
 		C7EE1B9F14D563FD00A9CF2B /* nuThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7EE1B8A14D563FD00A9CF2B /* nuThread.cpp */; };
 		C7EE1BA014D563FD00A9CF2B /* nuThread.h in Headers */ = {isa = PBXBuildFile; fileRef = C7EE1B8B14D563FD00A9CF2B /* nuThread.h */; };
+		C7EE1BA414D5973500A9CF2B /* nuHandle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7EE1BA214D5973400A9CF2B /* nuHandle.cpp */; };
+		C7EE1BA514D5973500A9CF2B /* nuHandle.h in Headers */ = {isa = PBXBuildFile; fileRef = C7EE1BA314D5973500A9CF2B /* nuHandle.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -98,6 +100,8 @@
 		C7EE1B8914D563FD00A9CF2B /* nuResource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuResource.h; sourceTree = "<group>"; };
 		C7EE1B8A14D563FD00A9CF2B /* nuThread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuThread.cpp; sourceTree = "<group>"; };
 		C7EE1B8B14D563FD00A9CF2B /* nuThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuThread.h; sourceTree = "<group>"; };
+		C7EE1BA214D5973400A9CF2B /* nuHandle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuHandle.cpp; sourceTree = "<group>"; };
+		C7EE1BA314D5973500A9CF2B /* nuHandle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuHandle.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,6 +137,7 @@
 		C72BFEF9141CB008004F0E00 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				C7EE1BA214D5973400A9CF2B /* nuHandle.cpp */,
 				C7EE1B7714D563FC00A9CF2B /* nuAtomic.cpp */,
 				C7EE1B7914D563FC00A9CF2B /* nuFile.cpp */,
 				C7EE1B7B14D563FC00A9CF2B /* nuMachAtomic.cpp */,
@@ -160,6 +165,7 @@
 		C72BFEFA141CB018004F0E00 /* Headers */ = {
 			isa = PBXGroup;
 			children = (
+				C7EE1BA314D5973500A9CF2B /* nuHandle.h */,
 				C7EE1B7814D563FC00A9CF2B /* nuAtomic.h */,
 				C7EE1B7A14D563FC00A9CF2B /* nuFile.h */,
 				C7EE1B7C14D563FC00A9CF2B /* nuMachAtomic.h */,
@@ -224,6 +230,7 @@
 				C7EE1B9C14D563FD00A9CF2B /* nuOSType.h in Headers */,
 				C7EE1B9E14D563FD00A9CF2B /* nuResource.h in Headers */,
 				C7EE1BA014D563FD00A9CF2B /* nuThread.h in Headers */,
+				C7EE1BA514D5973500A9CF2B /* nuHandle.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -297,6 +304,7 @@
 				C7EE1B9B14D563FD00A9CF2B /* nuOSType.cpp in Sources */,
 				C7EE1B9D14D563FD00A9CF2B /* nuResource.cpp in Sources */,
 				C7EE1B9F14D563FD00A9CF2B /* nuThread.cpp in Sources */,
+				C7EE1BA414D5973500A9CF2B /* nuHandle.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
