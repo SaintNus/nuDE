@@ -72,7 +72,7 @@ public:
     return p_program;
   }
 
-  int writeToFile(FILE* output_h, FILE* output_cpp);
+  int writeToFile(FILE* output_h, const char* name_space);
 
 };
 

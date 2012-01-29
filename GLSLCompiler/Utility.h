@@ -32,15 +32,13 @@ int yyaddstr(const char* string);
 int yyget_iserror(void);
 
 FILE* OutputHeader(void);
-FILE* OutputSource(void);
 void SetOutputHeader(FILE* p_file);
-void SetOutputSource(FILE* p_file);
 
 void DumpList(void);
 
 int MakePath(const char* path);
 
-int BuildList(const char* intermediate_dir);
+int BuildList(const char* intermediate_dir, const char* name_space, const char* version);
 
 #if defined(__cplusplus)
 }

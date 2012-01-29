@@ -14,6 +14,8 @@ private:
   const char* mpOutputName;
   const char* mpInputName;
   const char* mpIntermediateDir;
+  const char* mpNamespace;
+  const char* mpVersion;
   bool mValid;
   bool mForceWrite;
   bool mVerbose;
@@ -37,6 +39,14 @@ public:
 
   const char* getIntermediateDir(void) const {
     return mpIntermediateDir;
+  }
+
+  const char* getNamespace(void) const {
+    return mpNamespace;
+  }
+
+  const char* getVersion(void) const {
+    return mpVersion;
   }
 
   bool isValid(void) const {

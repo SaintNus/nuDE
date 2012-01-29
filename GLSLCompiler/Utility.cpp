@@ -16,7 +16,6 @@ extern "C" int yyget_lineno(void);
 
 int yy_iserror = 0;
 FILE* OutputHeaderFile = nullptr;
-FILE* OutputSourceFile = nullptr;
 ShaderObject ShaderObj;
 
 extern "C"
@@ -140,7 +139,7 @@ int yyget_iserror(void)
   return yy_iserror;
 }
 
-int BuildList(const char* intermediate_dir)
+int BuildList(const char* intermediate_dir, const char* name_space, const char* version)
 {
   int ret = ErrorNone;
   GlObject* p_gl = new GlObject();
@@ -184,8 +183,12 @@ int BuildList(const char* intermediate_dir)
             p_soprog->vertex_shd.immed_name = StringTable::getString(str)->string();
           }
 
-          const char* ver = "#version 150\n\n";
-          fwrite(ver, sizeof(char), strlen(ver), immed_file);
+          {
+            char ver[128];
+            snprintf(ver, 128, "#version %s\n\n", version);
+            ver[127] = 0x00;
+            fwrite(ver, sizeof(char), strlen(ver), immed_file);
+          }
 
           // Global preprocessor.
           const PreProcessorList* p_glist = ShaderList::instance()->getGlobalPreproc();
@@ -287,14 +290,8 @@ int BuildList(const char* intermediate_dir)
     fclose(fsh_file);
   }
 
-  ret = ShaderObj.writeToFile(OutputHeaderFile, OutputSourceFile);
+  ret = ShaderObj.writeToFile(OutputHeaderFile, name_space);
   if(ret) {
-    const char* err_str[] = {
-      "",
-      "header",
-      "source",
-    };
-    fprintf(stderr, "Cannot write output %s file.\n", err_str[ret]);
     ret = ErrorIO;
   } else {
     ret = ErrorNone;
@@ -309,19 +306,9 @@ FILE* OutputHeader(void)
   return OutputHeaderFile;
 }
 
-FILE* OutputSource(void)
-{
-  return OutputSourceFile;
-}
-
 void SetOutputHeader(FILE* p_file)
 {
   OutputHeaderFile = p_file;
-}
-
-void SetOutputSource(FILE* p_file)
-{
-  OutputSourceFile = p_file;
 }
 
 int MakePath(const char* path)
@@ -567,7 +554,7 @@ int BuildGLSLProgram(ShaderObject::Program* p_program, FILE* vsh_file, FILE* fsh
       glGetActiveAttrib(prog_id, ui, attrib_len, &len, &size, &type, p_attr);
       int str_idx = StringTable::addString(0, p_attr);
       if(str_idx < 0) {
-        fprintf(stderr, "Not enough memory for attribute \"%s\".\n", p_attr);
+        fprintf(stderr, "Error: Not enough memory for attribute \"%s\".\n", p_attr);
         continue;
       }
 
@@ -598,12 +585,12 @@ int BuildGLSLProgram(ShaderObject::Program* p_program, FILE* vsh_file, FILE* fsh
       GLenum type;
       glGetActiveUniform(prog_id, ui, uniform_len, &len, &size, &type, p_uniform);
       for(GLchar* pc = p_uniform; *pc != 0x00; pc++) {
-        if(*pc == '.')
+        if(*pc == '.' || *pc == '[' || *pc == ']')
           *pc = '_';
       }
       int str_idx = StringTable::addString(0, p_uniform);
       if(str_idx < 0) {
-        fprintf(stderr, "Not enough memory for uniform \"%s\".\n", p_uniform);
+        fprintf(stderr, "Error: Not enough memory for uniform \"%s\".\n", p_uniform);
         continue;
       }
 
@@ -632,12 +619,12 @@ int BuildGLSLProgram(ShaderObject::Program* p_program, FILE* vsh_file, FILE* fsh
       GLsizei len;
       glGetActiveUniformBlockName(prog_id, ui, uniform_len, &len, p_uniform);
       for(GLchar* pc = p_uniform; *pc != 0x00; pc++) {
-        if(*pc == '.')
+        if(*pc == '.' || *pc == '[' || *pc == ']')
           *pc = '_';
       }
       int str_idx = StringTable::addString(0, p_uniform);
       if(str_idx < 0) {
-        fprintf(stderr, "Not enough memory for uniform block \"%s\".\n", p_uniform);
+        fprintf(stderr, "Error: Not enough memory for uniform block \"%s\".\n", p_uniform);
         continue;
       }
 

@@ -104,6 +104,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C785D076145D421D00E64F10 /* Build configuration list for PBXNativeTarget "Graphics" */;
 			buildPhases = (
+				C7EE1B6C14D4985500A9CF2B /* ShellScript */,
 				C785D070145D421D00E64F10 /* Sources */,
 				C785D071145D421D00E64F10 /* Frameworks */,
 				C785D072145D421D00E64F10 /* Headers */,
@@ -142,6 +143,23 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		C7EE1B6C14D4985500A9CF2B /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+				"$(SRCROOT)/ShaderInfo.h",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd $PROJECT_DIR/../Resources/Shader\n$PROJECT_DIR/../bin/glslpc --force-write --namespace=nude --output-file=$SRCROOT/nuShaderInfo.h ShaderList.shd";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		C785D070145D421D00E64F10 /* Sources */ = {
