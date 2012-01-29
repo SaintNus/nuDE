@@ -2,25 +2,25 @@
  * Shader list
  */
 
-Preprocessor: _GLOBAL0_, _GLOBAL2_ = 2;
-Preprocessor: _GLOBAL1_ = 1.0;
+// Preprocessor: _GLOBAL0_, _GLOBAL2_ = 2;
+// Preprocessor: _GLOBAL1_ = 1.0;
 
 Program(Debug)
 {
   VertexShader: "Debug.vsh";
-  VertexPreprocessor: _VS_;
+  // VertexPreprocessor: _VS_;
   FragmentShader: "Debug.fsh";
-  FragmentPreprocessor: _FS_;
-  Preprocessor: _PUBLIC_;
-  Preprocessor: _LOCAL1_ = 1.0, _LOCAL2_ = 2;
+  // FragmentPreprocessor: _FS_;
+  // Preprocessor: _PUBLIC_;
+  // Preprocessor: _LOCAL1_ = 1.0, _LOCAL2_ = 2;
 }
 
 Program(Test)
 {
   VertexShader: "test/Test.vsh";
-  VertexPreprocessor: _VS_;
+  // VertexPreprocessor: _VS_;
   FragmentShader: "test/Test.fsh";
-  FragmentPreprocessor: _FS_;
-  Preprocessor: _PUBLIC_;
-  Preprocessor: _LOCAL1_ = 1.0, _LOCAL2_ = 2;
+  // FragmentPreprocessor: _FS_;
+  // Preprocessor: _PUBLIC_;
+  // Preprocessor: _LOCAL1_ = 1.0, _LOCAL2_ = 2;
 }

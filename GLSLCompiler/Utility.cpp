@@ -47,7 +47,7 @@ void DumpList(void)
   if(p_list) {
     fprintf(stdout, "Global preprocessor:\n");
     PreProcessorList::const_iterator it;
-    for(it = p_list->begin(); it < p_list->end(); it++) {
+    for(it = p_list->begin(); it != p_list->end(); it++) {
       const PreProcessor* p_preproc = *it;
       if(p_preproc->value())
         fprintf(stdout, "  %s = %s (line-%d)\n",
@@ -57,80 +57,80 @@ void DumpList(void)
       else
         fprintf(stdout, "  %s (line-%d)\n", p_preproc->definition(), p_preproc->lineNo());
     }
+  }
 
-    // Dump program.
-    if(ShaderList::instance()->getProgramSize() > 0) {
-      for(unsigned int ui = 0; ui < ShaderList::instance()->getProgramSize(); ui++) {
-        Program* p_prog = ShaderList::instance()->getProgram(ui);
-        fprintf(stdout, "Program: %s (line-%d)\n", p_prog->name(), p_prog->lineNo());
+  // Dump program.
+  if(ShaderList::instance()->getProgramSize() > 0) {
+    for(unsigned int ui = 0; ui < ShaderList::instance()->getProgramSize(); ui++) {
+      Program* p_prog = ShaderList::instance()->getProgram(ui);
+      fprintf(stdout, "Program: %s (line-%d)\n", p_prog->name(), p_prog->lineNo());
 
-        // Dump local preprocessor.
-        if(p_prog->getPreproc()) {
+      // Dump local preprocessor.
+      if(p_prog->getPreproc()) {
+        PreProcessorList::const_iterator it;
+        fprintf(stdout, "  Local preprocessor:\n");
+        for(it = p_prog->getPreproc()->begin(); it != p_prog->getPreproc()->end(); it++) {
+          const PreProcessor* p_preproc = *it;
+          if(p_preproc->value())
+            fprintf(stdout, "    %s = %s (line-%d)\n",
+                    p_preproc->definition(),
+                    p_preproc->value(),
+                    p_preproc->lineNo());
+          else
+            fprintf(stdout, "    %s (line-%d)\n", p_preproc->definition(), p_preproc->lineNo());
+        }
+      }
+
+      // Dump vertex shader.
+      if(p_prog->getVertexShader()) {
+        Shader* p_shd = p_prog->getVertexShader();
+        fprintf(stdout, "  Vertex shader: \"%s\" (line-%d)\n",
+                p_shd->fileName(),
+                p_shd->lineNo());
+        if(p_shd->getPreproc()) {
           PreProcessorList::const_iterator it;
-          fprintf(stdout, "  Local preprocessor:\n");
-          for(it = p_prog->getPreproc()->begin(); it < p_prog->getPreproc()->end(); it++) {
+          fprintf(stdout, "    VS preprocessor:\n");
+          for(it = p_shd->getPreproc()->begin(); it != p_shd->getPreproc()->end(); it++) {
             const PreProcessor* p_preproc = *it;
             if(p_preproc->value())
-              fprintf(stdout, "    %s = %s (line-%d)\n",
+              fprintf(stdout, "      %s = %s (line-%d)\n",
                       p_preproc->definition(),
                       p_preproc->value(),
                       p_preproc->lineNo());
             else
-              fprintf(stdout, "    %s (line-%d)\n", p_preproc->definition(), p_preproc->lineNo());
+              fprintf(stdout, "      %s (line-%d)\n", p_preproc->definition(), p_preproc->lineNo());
           }
         }
-
-        // Dump vertex shader.
-        if(p_prog->getVertexShader()) {
-          Shader* p_shd = p_prog->getVertexShader();
-          fprintf(stdout, "  Vertex shader: \"%s\" (line-%d)\n",
-                  p_shd->fileName(),
-                  p_shd->lineNo());
-          if(p_shd->getPreproc()) {
-            PreProcessorList::const_iterator it;
-            fprintf(stdout, "    VS preprocessor:\n");
-            for(it = p_shd->getPreproc()->begin(); it < p_shd->getPreproc()->end(); it++) {
-              const PreProcessor* p_preproc = *it;
-              if(p_preproc->value())
-                fprintf(stdout, "      %s = %s (line-%d)\n",
-                        p_preproc->definition(),
-                        p_preproc->value(),
-                        p_preproc->lineNo());
-              else
-                fprintf(stdout, "      %s (line-%d)\n", p_preproc->definition(), p_preproc->lineNo());
-            }
-          }
-        } else {
-          fprintf(stdout, "  No vertex shader available.\n");
-        }
-
-        // Dump fragment shader.
-        if(p_prog->getFragmentShader()) {
-          Shader* p_shd = p_prog->getFragmentShader();
-          fprintf(stdout, "  Fragment shader: \"%s\" (line-%d)\n",
-                  p_shd->fileName(),
-                  p_shd->lineNo());
-          if(p_shd->getPreproc()) {
-            PreProcessorList::const_iterator it;
-            fprintf(stdout, "    FS preprocessor:\n");
-            for(it = p_shd->getPreproc()->begin(); it < p_shd->getPreproc()->end(); it++) {
-              const PreProcessor* p_preproc = *it;
-              if(p_preproc->value())
-                fprintf(stdout, "      %s = %s (line-%d)\n",
-                        p_preproc->definition(),
-                        p_preproc->value(),
-                        p_preproc->lineNo());
-              else
-                fprintf(stdout, "      %s (line-%d)\n", p_preproc->definition(), p_preproc->lineNo());
-            }
-          }
-        } else {
-          fprintf(stdout, "  No fragment shader available.\n");
-        }
+      } else {
+        fprintf(stdout, "  No vertex shader available.\n");
       }
-    } else {
-      fprintf(stdout, "No program defined.\n");
+
+      // Dump fragment shader.
+      if(p_prog->getFragmentShader()) {
+        Shader* p_shd = p_prog->getFragmentShader();
+        fprintf(stdout, "  Fragment shader: \"%s\" (line-%d)\n",
+                p_shd->fileName(),
+                p_shd->lineNo());
+        if(p_shd->getPreproc()) {
+          PreProcessorList::const_iterator it;
+          fprintf(stdout, "    FS preprocessor:\n");
+          for(it = p_shd->getPreproc()->begin(); it != p_shd->getPreproc()->end(); it++) {
+            const PreProcessor* p_preproc = *it;
+            if(p_preproc->value())
+              fprintf(stdout, "      %s = %s (line-%d)\n",
+                      p_preproc->definition(),
+                      p_preproc->value(),
+                      p_preproc->lineNo());
+            else
+              fprintf(stdout, "      %s (line-%d)\n", p_preproc->definition(), p_preproc->lineNo());
+          }
+        }
+      } else {
+        fprintf(stdout, "  No fragment shader available.\n");
+      }
     }
+  } else {
+    fprintf(stdout, "No program defined.\n");
   }
 }
 
@@ -472,8 +472,10 @@ int ParseIncludeFile(unsigned int line_no, const char* line)
 
 int WritePreprocessor(FILE* inout_file, const PreProcessorList* p_plist)
 {
+  if(!p_plist)
+    return ErrorNone;
   PreProcessorList::const_iterator it;
-  for(it = p_plist->begin(); it < p_plist->end(); it++) {
+  for(it = p_plist->begin(); it != p_plist->end(); it++) {
     const PreProcessor* p_preproc = *it;
     if(p_preproc->value()) {
       char buffer[512];
@@ -481,7 +483,7 @@ int WritePreprocessor(FILE* inout_file, const PreProcessorList* p_plist)
                p_preproc->definition(),
                p_preproc->value());
       if(fwrite(buffer, sizeof(char), strlen(buffer), inout_file) == 0)
-        return 1;
+        return ErrorIO;
     } else {
       char buffer[512];
       snprintf(buffer, 512, "#define %s\n", p_preproc->definition());
@@ -584,10 +586,6 @@ int BuildGLSLProgram(ShaderObject::Program* p_program, FILE* vsh_file, FILE* fsh
       GLint size;
       GLenum type;
       glGetActiveUniform(prog_id, ui, uniform_len, &len, &size, &type, p_uniform);
-      for(GLchar* pc = p_uniform; *pc != 0x00; pc++) {
-        if(*pc == '.' || *pc == '[' || *pc == ']')
-          *pc = '_';
-      }
       int str_idx = StringTable::addString(0, p_uniform);
       if(str_idx < 0) {
         fprintf(stderr, "Error: Not enough memory for uniform \"%s\".\n", p_uniform);
@@ -618,10 +616,6 @@ int BuildGLSLProgram(ShaderObject::Program* p_program, FILE* vsh_file, FILE* fsh
     for(GLuint ui = 0; ui < static_cast< GLuint >(uniform); ui++) {
       GLsizei len;
       glGetActiveUniformBlockName(prog_id, ui, uniform_len, &len, p_uniform);
-      for(GLchar* pc = p_uniform; *pc != 0x00; pc++) {
-        if(*pc == '.' || *pc == '[' || *pc == ']')
-          *pc = '_';
-      }
       int str_idx = StringTable::addString(0, p_uniform);
       if(str_idx < 0) {
         fprintf(stderr, "Error: Not enough memory for uniform block \"%s\".\n", p_uniform);

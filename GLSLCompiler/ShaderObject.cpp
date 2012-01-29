@@ -53,8 +53,15 @@ int ShaderObject::writeToFile(FILE* output_h, const char* name_space)
       if(p_program->attribute.size() > 0) {
         WRITE_FILE(output_h, "  enum %sAttribute {\n", p_program->program_name);
         std::vector< Variable >::const_iterator vit;
+        char buffer[256];
         for(vit = p_program->attribute.begin(); vit != p_program->attribute.end(); vit++) {
-          WRITE_FILE(output_h, "    %s_%s,\n", p_program->program_name, vit->name);
+          snprintf(buffer, 256, "%s", vit->name);
+          buffer[255] = 0x00;
+          for(char* pc = buffer; *pc != 0x00; pc++) {
+            if(*pc == '.' || *pc == '[' || *pc == ']')
+              *pc = '_';
+          }
+          WRITE_FILE(output_h, "    %s_%s,\n", p_program->program_name, buffer);
         }
         WRITE_FILE(output_h, "    %sAttribute_Num,\n", p_program->program_name);
         WRITE_FILE(output_h, "  };\n\n");
@@ -72,8 +79,15 @@ int ShaderObject::writeToFile(FILE* output_h, const char* name_space)
       if(p_program->uniform.size() > 0) {
         WRITE_FILE(output_h, "  enum %sUniform {\n", p_program->program_name);
         std::vector< Variable >::const_iterator vit;
+        char buffer[256];
         for(vit = p_program->uniform.begin(); vit != p_program->uniform.end(); vit++) {
-          WRITE_FILE(output_h, "    %s_%s,\n", p_program->program_name, vit->name);
+          snprintf(buffer, 256, "%s", vit->name);
+          buffer[255] = 0x00;
+          for(char* pc = buffer; *pc != 0x00; pc++) {
+            if(*pc == '.' || *pc == '[' || *pc == ']')
+              *pc = '_';
+          }
+          WRITE_FILE(output_h, "    %s_%s,\n", p_program->program_name, buffer);
         }
         WRITE_FILE(output_h, "    %sUniform_Num,\n", p_program->program_name);
         WRITE_FILE(output_h, "  };\n\n");
@@ -91,8 +105,15 @@ int ShaderObject::writeToFile(FILE* output_h, const char* name_space)
       if(p_program->uniform_block.size() > 0) {
         WRITE_FILE(output_h, "  enum %sUniformBlock {\n", p_program->program_name);
         std::vector< Variable >::const_iterator vit;
+        char buffer[256];
         for(vit = p_program->uniform_block.begin(); vit != p_program->uniform_block.end(); vit++) {
-          WRITE_FILE(output_h, "    %s_%s,\n", p_program->program_name, vit->name);
+          snprintf(buffer, 256, "%s", vit->name);
+          buffer[255] = 0x00;
+          for(char* pc = buffer; *pc != 0x00; pc++) {
+            if(*pc == '.' || *pc == '[' || *pc == ']')
+              *pc = '_';
+          }
+          WRITE_FILE(output_h, "    %s_%s,\n", p_program->program_name, buffer);
         }
         WRITE_FILE(output_h, "    %sUniformBlock_Num,\n", p_program->program_name);
         WRITE_FILE(output_h, "  };\n\n");
@@ -105,6 +126,7 @@ int ShaderObject::writeToFile(FILE* output_h, const char* name_space)
   WRITE_FILE(output_h, "   */\n\n");
 
   WRITE_FILE(output_h, "  struct Variable {\n");
+  WRITE_FILE(output_h, "    const char* type;\n");
   WRITE_FILE(output_h, "    GLenum type;\n");
   WRITE_FILE(output_h, "    GLint size;\n");
   WRITE_FILE(output_h, "  };\n\n");
@@ -131,8 +153,11 @@ int ShaderObject::writeToFile(FILE* output_h, const char* name_space)
         {
           std::vector< Variable >::const_iterator vit;
           for(vit = (*it)->attribute.begin(); vit != (*it)->attribute.end(); vit++) {
-            WRITE_FILE(output_h, "    // %s\n", vit->name);
-            WRITE_FILE(output_h, "    { static_cast< GLenum >(%d), %d },\n", vit->type, vit->size);
+            WRITE_FILE(output_h,
+                       "    { \"%s\", static_cast< GLenum >(%d), %d },\n",
+                       vit->name,
+                       vit->type,
+                       vit->size);
           }
         }
         WRITE_FILE(output_h, "  };\n\n");
@@ -145,8 +170,11 @@ int ShaderObject::writeToFile(FILE* output_h, const char* name_space)
         {
           std::vector< Variable >::const_iterator vit;
           for(vit = (*it)->uniform.begin(); vit != (*it)->uniform.end(); vit++) {
-            WRITE_FILE(output_h, "    // %s\n", vit->name);
-            WRITE_FILE(output_h, "    { static_cast< GLenum >(%d), %d },\n", vit->type, vit->size);
+            WRITE_FILE(output_h,
+                       "    { \"%s\", static_cast< GLenum >(%d), %d },\n",
+                       vit->name,
+                       vit->type,
+                       vit->size);
           }
         }
         WRITE_FILE(output_h, "  };\n\n");
@@ -167,8 +195,8 @@ int ShaderObject::writeToFile(FILE* output_h, const char* name_space)
     }
   }
 
-  WRITE_FILE(output_h, "  const Program GLSLPrograms[ProgramList_Num] = {\n");
-  {
+  if(mProgramList.size() > 0) {
+    WRITE_FILE(output_h, "  const Program GLSLPrograms[ProgramList_Num] = {\n");
     ProgramListConstIterator it;
     for(it = mProgramList.begin(); it != mProgramList.end(); it++) {
       WRITE_FILE(output_h, "    {\n");

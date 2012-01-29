@@ -157,7 +157,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd $PROJECT_DIR/../Resources/Shader\n$PROJECT_DIR/../bin/glslpc --force-write --namespace=nude --output-file=$SRCROOT/nuShaderInfo.h ShaderList.shd";
+			shellScript = "cd $PROJECT_DIR/../Resources/Shader\n$PROJECT_DIR/../bin/glslpc --force-write --namespace=nude --intermediate-dir=processed --output-file=$SRCROOT/nuShaderInfo.h ShaderList.shd";
 		};
 /* End PBXShellScriptBuildPhase section */
 
