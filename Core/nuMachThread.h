@@ -8,6 +8,8 @@
 #ifndef __NUMACHTHREAD_H__
 #define __NUMACHTHREAD_H__
 
+#include "nuObject.h"
+
 /*!
  * \class nuMachThread
  * \brief Thread handler for MacOSX.

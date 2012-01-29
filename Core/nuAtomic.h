@@ -8,6 +8,8 @@
 #ifndef __NUATOMIC_H__
 #define __NUATOMIC_H__
 
+#include "nuObject.h"
+
 namespace nude
 {
   template< class T >

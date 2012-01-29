@@ -20,3 +20,12 @@
 #include <math.h>
 
 #include <wchar.h>
+
+#include <libkern/OSAtomic.h>
+
+#ifdef __OBJC__
+
+#import <Cocoa/Cocoa.h>
+
+#endif
+

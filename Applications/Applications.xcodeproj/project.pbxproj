@@ -188,7 +188,6 @@
 				GCC_PREFIX_HEADER = "NudeApplications-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					../Core,
-					../OS,
 					../Graphics,
 				);
 			};
@@ -202,7 +201,6 @@
 				GCC_PREFIX_HEADER = "NudeApplications-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					../Core,
-					../OS,
 					../Graphics,
 				);
 			};
@@ -230,7 +228,6 @@
 				GCC_PREFIX_HEADER = "NudeApplications-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					../Core,
-					../OS,
 					../Graphics,
 				);
 			};

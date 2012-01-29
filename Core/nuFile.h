@@ -8,6 +8,7 @@
 #ifndef __NUFILE_H__
 #define __NUFILE_H__
 
+#include "nuObject.h"
 #include "nuOS.h"
 
 namespace nude {

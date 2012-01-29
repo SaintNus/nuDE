@@ -8,6 +8,8 @@
 #ifndef __NUTHREAD_H__
 #define __NUTHREAD_H__
 
+#include "nuObject.h"
+
 namespace nude
 {
   /*!

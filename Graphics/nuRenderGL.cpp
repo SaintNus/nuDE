@@ -35,8 +35,8 @@ nuRenderGL::~nuRenderGL()
 
 void nuRenderGL::initTest(void)
 {
-  nuFile vsh(nude::FATTR_READ, "res://Resources/glsl.intermediate/Debug.vsh");
-  nuFile fsh(nude::FATTR_READ, "res://Resources/glsl.intermediate/Debug.fsh");
+  nuFile vsh(nude::FATTR_READ, "res://Resources/Shader/processed/Debug.vsh");
+  nuFile fsh(nude::FATTR_READ, "res://Resources/Shader/processed/Debug.fsh");
   void* vsh_buffer = nude::Alloc(vsh.getSize());
   void* fsh_buffer = nude::Alloc(fsh.getSize());
 
