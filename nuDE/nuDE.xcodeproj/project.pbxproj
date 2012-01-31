@@ -11,7 +11,6 @@
 		C7646DEE1462D43F0009A8B3 /* libApplications.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7646DE41462CA0A0009A8B3 /* libApplications.a */; };
 		C785D081145D42F500E64F10 /* libGraphics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C785D080145D42D000E64F10 /* libGraphics.a */; };
 		C796666E1444910000E540CD /* nuDE.icns in Resources */ = {isa = PBXBuildFile; fileRef = C796666D1444910000E540CD /* nuDE.icns */; };
-		C7AB29F3141CC006001F8EE5 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = C7AB29EE141CC006001F8EE5 /* main.mm */; };
 		C7AB29F5141CC006001F8EE5 /* nuDEAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = C7AB29F2141CC006001F8EE5 /* nuDEAppDelegate.mm */; };
 		C7AB29FA141CC012001F8EE5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C7AB29F6141CC012001F8EE5 /* InfoPlist.strings */; };
 		C7AB29FB141CC012001F8EE5 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = C7AB29F8141CC012001F8EE5 /* MainMenu.xib */; };
@@ -76,7 +75,6 @@
 		C796666D1444910000E540CD /* nuDE.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = nuDE.icns; sourceTree = SOURCE_ROOT; };
 		C79FC5B5141D0631005C6C70 /* nude.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = nude.h; path = ../nude.h; sourceTree = "<group>"; };
 		C7A2C4AB1462BD2000ACDC27 /* Applications.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Applications.xcodeproj; path = ../Applications/Applications.xcodeproj; sourceTree = "<group>"; };
-		C7AB29EE141CC006001F8EE5 /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = SOURCE_ROOT; };
 		C7AB29EF141CC006001F8EE5 /* nuDE-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "nuDE-Info.plist"; sourceTree = SOURCE_ROOT; };
 		C7AB29F0141CC006001F8EE5 /* nuDE-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "nuDE-Prefix.pch"; sourceTree = SOURCE_ROOT; };
 		C7AB29F1141CC006001F8EE5 /* nuDEAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuDEAppDelegate.h; sourceTree = SOURCE_ROOT; };
@@ -192,7 +190,6 @@
 		C7AB29FF141CC09B001F8EE5 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				C7AB29EE141CC006001F8EE5 /* main.mm */,
 				C7AB29F2141CC006001F8EE5 /* nuDEAppDelegate.mm */,
 			);
 			name = Sources;
@@ -339,7 +336,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C7AB29F3141CC006001F8EE5 /* main.mm in Sources */,
 				C7AB29F5141CC006001F8EE5 /* nuDEAppDelegate.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
