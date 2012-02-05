@@ -12,6 +12,10 @@
 		C785D088145D44D300E64F10 /* nuRenderGL.h in Headers */ = {isa = PBXBuildFile; fileRef = C785D086145D44D300E64F10 /* nuRenderGL.h */; };
 		C7A2C49F145D7D0F00ACDC27 /* nuGContext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7A2C49D145D7D0F00ACDC27 /* nuGContext.cpp */; };
 		C7A2C4A0145D7D0F00ACDC27 /* nuGContext.h in Headers */ = {isa = PBXBuildFile; fileRef = C7A2C49E145D7D0F00ACDC27 /* nuGContext.h */; };
+		C7AB761C14DE7DFD00A42A8C /* nuGLResource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7AB761A14DE7DFD00A42A8C /* nuGLResource.cpp */; };
+		C7AB761D14DE7DFD00A42A8C /* nuGLResource.h in Headers */ = {isa = PBXBuildFile; fileRef = C7AB761B14DE7DFD00A42A8C /* nuGLResource.h */; };
+		C7AB762614DE8A7E00A42A8C /* nuGLResourceManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7AB762414DE8A7E00A42A8C /* nuGLResourceManager.cpp */; };
+		C7AB762714DE8A7E00A42A8C /* nuGLResourceManager.h in Headers */ = {isa = PBXBuildFile; fileRef = C7AB762514DE8A7E00A42A8C /* nuGLResourceManager.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +28,10 @@
 		C785D086145D44D300E64F10 /* nuRenderGL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuRenderGL.h; sourceTree = "<group>"; };
 		C7A2C49D145D7D0F00ACDC27 /* nuGContext.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuGContext.cpp; sourceTree = "<group>"; };
 		C7A2C49E145D7D0F00ACDC27 /* nuGContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuGContext.h; sourceTree = "<group>"; };
+		C7AB761A14DE7DFD00A42A8C /* nuGLResource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuGLResource.cpp; sourceTree = "<group>"; };
+		C7AB761B14DE7DFD00A42A8C /* nuGLResource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuGLResource.h; sourceTree = "<group>"; };
+		C7AB762414DE8A7E00A42A8C /* nuGLResourceManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuGLResourceManager.cpp; sourceTree = "<group>"; };
+		C7AB762514DE8A7E00A42A8C /* nuGLResourceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuGLResourceManager.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,8 +50,7 @@
 			children = (
 				C785D06A145D417700E64F10 /* Configurations */,
 				C785D082145D433000E64F10 /* NudeGraphics-Prefix.pch */,
-				C785D07B145D42A700E64F10 /* Headers */,
-				C785D07A145D42A300E64F10 /* Sources */,
+				C785D07A145D42A300E64F10 /* Source Codes */,
 				C785D075145D421D00E64F10 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -66,22 +73,19 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		C785D07A145D42A300E64F10 /* Sources */ = {
+		C785D07A145D42A300E64F10 /* Source Codes */ = {
 			isa = PBXGroup;
 			children = (
 				C7A2C49D145D7D0F00ACDC27 /* nuGContext.cpp */,
-				C785D085145D44D300E64F10 /* nuRenderGL.cpp */,
-			);
-			name = Sources;
-			sourceTree = "<group>";
-		};
-		C785D07B145D42A700E64F10 /* Headers */ = {
-			isa = PBXGroup;
-			children = (
 				C7A2C49E145D7D0F00ACDC27 /* nuGContext.h */,
+				C7AB761A14DE7DFD00A42A8C /* nuGLResource.cpp */,
+				C7AB761B14DE7DFD00A42A8C /* nuGLResource.h */,
+				C7AB762414DE8A7E00A42A8C /* nuGLResourceManager.cpp */,
+				C7AB762514DE8A7E00A42A8C /* nuGLResourceManager.h */,
+				C785D085145D44D300E64F10 /* nuRenderGL.cpp */,
 				C785D086145D44D300E64F10 /* nuRenderGL.h */,
 			);
-			name = Headers;
+			name = "Source Codes";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -94,6 +98,8 @@
 				C785D083145D433000E64F10 /* NudeGraphics-Prefix.pch in Headers */,
 				C785D088145D44D300E64F10 /* nuRenderGL.h in Headers */,
 				C7A2C4A0145D7D0F00ACDC27 /* nuGContext.h in Headers */,
+				C7AB761D14DE7DFD00A42A8C /* nuGLResource.h in Headers */,
+				C7AB762714DE8A7E00A42A8C /* nuGLResourceManager.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -168,6 +174,8 @@
 			files = (
 				C785D087145D44D300E64F10 /* nuRenderGL.cpp in Sources */,
 				C7A2C49F145D7D0F00ACDC27 /* nuGContext.cpp in Sources */,
+				C7AB761C14DE7DFD00A42A8C /* nuGLResource.cpp in Sources */,
+				C7AB762614DE8A7E00A42A8C /* nuGLResourceManager.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

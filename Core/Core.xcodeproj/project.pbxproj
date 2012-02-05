@@ -28,6 +28,10 @@
 		C79FC5F7141E6F0D005C6C70 /* nuTypeInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = C79FC5F5141E6F0D005C6C70 /* nuTypeInfo.h */; };
 		C7AB2A23141CCE74001F8EE5 /* nuMemory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7AB2A21141CCE74001F8EE5 /* nuMemory.cpp */; };
 		C7AB2A24141CCE74001F8EE5 /* nuMemory.h in Headers */ = {isa = PBXBuildFile; fileRef = C7AB2A22141CCE74001F8EE5 /* nuMemory.h */; };
+		C7D3748D14DD6E9800CADBA8 /* nuResourceManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7D3748B14DD6E9700CADBA8 /* nuResourceManager.cpp */; };
+		C7D3748E14DD6E9800CADBA8 /* nuResourceManager.h in Headers */ = {isa = PBXBuildFile; fileRef = C7D3748C14DD6E9700CADBA8 /* nuResourceManager.h */; };
+		C7D3749114DD732700CADBA8 /* nuStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7D3748F14DD732700CADBA8 /* nuStream.cpp */; };
+		C7D3749214DD732700CADBA8 /* nuStream.h in Headers */ = {isa = PBXBuildFile; fileRef = C7D3749014DD732700CADBA8 /* nuStream.h */; };
 		C7EE1B8C14D563FD00A9CF2B /* nuAtomic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7EE1B7714D563FC00A9CF2B /* nuAtomic.cpp */; };
 		C7EE1B8D14D563FD00A9CF2B /* nuAtomic.h in Headers */ = {isa = PBXBuildFile; fileRef = C7EE1B7814D563FC00A9CF2B /* nuAtomic.h */; };
 		C7EE1B8E14D563FD00A9CF2B /* nuFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7EE1B7914D563FC00A9CF2B /* nuFile.cpp */; };
@@ -79,6 +83,10 @@
 		C7AB2A12141CC3DF001F8EE5 /* Profile.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Profile.xcconfig; path = ../Configurations/Profile.xcconfig; sourceTree = "<group>"; };
 		C7AB2A21141CCE74001F8EE5 /* nuMemory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuMemory.cpp; sourceTree = "<group>"; };
 		C7AB2A22141CCE74001F8EE5 /* nuMemory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuMemory.h; sourceTree = "<group>"; };
+		C7D3748B14DD6E9700CADBA8 /* nuResourceManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuResourceManager.cpp; sourceTree = "<group>"; };
+		C7D3748C14DD6E9700CADBA8 /* nuResourceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuResourceManager.h; sourceTree = "<group>"; };
+		C7D3748F14DD732700CADBA8 /* nuStream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuStream.cpp; sourceTree = "<group>"; };
+		C7D3749014DD732700CADBA8 /* nuStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuStream.h; sourceTree = "<group>"; };
 		C7EE1B7714D563FC00A9CF2B /* nuAtomic.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuAtomic.cpp; sourceTree = "<group>"; };
 		C7EE1B7814D563FC00A9CF2B /* nuAtomic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuAtomic.h; sourceTree = "<group>"; };
 		C7EE1B7914D563FC00A9CF2B /* nuFile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuFile.cpp; sourceTree = "<group>"; };
@@ -120,8 +128,7 @@
 			children = (
 				C7AB2A13141CC3E5001F8EE5 /* Configurations */,
 				C72BFEFF141CB15E004F0E00 /* NudeCore-Prefix.pch */,
-				C72BFEFA141CB018004F0E00 /* Headers */,
-				C72BFEF9141CB008004F0E00 /* Sources */,
+				C72BFEF9141CB008004F0E00 /* Source Codes */,
 				C72BFEED141CAFB9004F0E00 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -134,61 +141,58 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		C72BFEF9141CB008004F0E00 /* Sources */ = {
+		C72BFEF9141CB008004F0E00 /* Source Codes */ = {
 			isa = PBXGroup;
 			children = (
-				C7EE1BA214D5973400A9CF2B /* nuHandle.cpp */,
 				C7EE1B7714D563FC00A9CF2B /* nuAtomic.cpp */,
-				C7EE1B7914D563FC00A9CF2B /* nuFile.cpp */,
-				C7EE1B7B14D563FC00A9CF2B /* nuMachAtomic.cpp */,
-				C7EE1B7E14D563FC00A9CF2B /* nuMachFile.mm */,
-				C7EE1B8014D563FD00A9CF2B /* nuMachMutex.mm */,
-				C7EE1B8214D563FD00A9CF2B /* nuMachThread.mm */,
-				C7EE1B8314D563FD00A9CF2B /* nuMutex.cpp */,
-				C7EE1B8614D563FD00A9CF2B /* nuOSType.cpp */,
-				C7EE1B8814D563FD00A9CF2B /* nuResource.cpp */,
-				C7EE1B8A14D563FD00A9CF2B /* nuThread.cpp */,
-				C75B636A147EA3510004C7D9 /* nuMath.cpp */,
-				C75B6366147E992C0004C7D9 /* nuColor.cpp */,
-				C75B6361147E8ED40004C7D9 /* nuGeometry.cpp */,
-				C726EF1D146D5C220038550E /* nuSingleton.cpp */,
-				C79FC5F4141E6F0D005C6C70 /* nuTypeInfo.cpp */,
-				C79FC5B1141D02C7005C6C70 /* nuObject.cpp */,
-				C7AB2A21141CCE74001F8EE5 /* nuMemory.cpp */,
-				C72BFF04141CB5D2004F0E00 /* nuDebug.cpp */,
-				C72BFEFB141CB0BB004F0E00 /* nuType.cpp */,
-				C79FC5EF141E3B67005C6C70 /* nuCRC.cpp */,
-			);
-			name = Sources;
-			sourceTree = "<group>";
-		};
-		C72BFEFA141CB018004F0E00 /* Headers */ = {
-			isa = PBXGroup;
-			children = (
-				C7EE1BA314D5973500A9CF2B /* nuHandle.h */,
 				C7EE1B7814D563FC00A9CF2B /* nuAtomic.h */,
+				C75B6366147E992C0004C7D9 /* nuColor.cpp */,
+				C75B6367147E992C0004C7D9 /* nuColor.h */,
+				C79FC5EF141E3B67005C6C70 /* nuCRC.cpp */,
+				C79FC5F0141E3B67005C6C70 /* nuCRC.h */,
+				C72BFF04141CB5D2004F0E00 /* nuDebug.cpp */,
+				C72BFF05141CB5D2004F0E00 /* nuDebug.h */,
+				C7EE1B7914D563FC00A9CF2B /* nuFile.cpp */,
 				C7EE1B7A14D563FC00A9CF2B /* nuFile.h */,
+				C75B6361147E8ED40004C7D9 /* nuGeometry.cpp */,
+				C75B6362147E8ED40004C7D9 /* nuGeometry.h */,
+				C7EE1BA214D5973400A9CF2B /* nuHandle.cpp */,
+				C7EE1BA314D5973500A9CF2B /* nuHandle.h */,
+				C7EE1B7B14D563FC00A9CF2B /* nuMachAtomic.cpp */,
 				C7EE1B7C14D563FC00A9CF2B /* nuMachAtomic.h */,
 				C7EE1B7D14D563FC00A9CF2B /* nuMachFile.h */,
+				C7EE1B7E14D563FC00A9CF2B /* nuMachFile.mm */,
 				C7EE1B7F14D563FD00A9CF2B /* nuMachMutex.h */,
+				C7EE1B8014D563FD00A9CF2B /* nuMachMutex.mm */,
 				C7EE1B8114D563FD00A9CF2B /* nuMachThread.h */,
-				C7EE1B8414D563FD00A9CF2B /* nuMutex.h */,
-				C7EE1B8514D563FD00A9CF2B /* nuOS.h */,
-				C7EE1B8714D563FD00A9CF2B /* nuOSType.h */,
-				C7EE1B8914D563FD00A9CF2B /* nuResource.h */,
-				C7EE1B8B14D563FD00A9CF2B /* nuThread.h */,
+				C7EE1B8214D563FD00A9CF2B /* nuMachThread.mm */,
+				C75B636A147EA3510004C7D9 /* nuMath.cpp */,
 				C75B636B147EA3510004C7D9 /* nuMath.h */,
-				C75B6367147E992C0004C7D9 /* nuColor.h */,
-				C75B6362147E8ED40004C7D9 /* nuGeometry.h */,
-				C726EF1A146D5C0B0038550E /* nuSingleton.h */,
-				C79FC5F5141E6F0D005C6C70 /* nuTypeInfo.h */,
-				C79FC5B2141D02C7005C6C70 /* nuObject.h */,
+				C7AB2A21141CCE74001F8EE5 /* nuMemory.cpp */,
 				C7AB2A22141CCE74001F8EE5 /* nuMemory.h */,
-				C72BFF05141CB5D2004F0E00 /* nuDebug.h */,
+				C7EE1B8314D563FD00A9CF2B /* nuMutex.cpp */,
+				C7EE1B8414D563FD00A9CF2B /* nuMutex.h */,
+				C79FC5B1141D02C7005C6C70 /* nuObject.cpp */,
+				C79FC5B2141D02C7005C6C70 /* nuObject.h */,
+				C7EE1B8514D563FD00A9CF2B /* nuOS.h */,
+				C7EE1B8614D563FD00A9CF2B /* nuOSType.cpp */,
+				C7EE1B8714D563FD00A9CF2B /* nuOSType.h */,
+				C7EE1B8814D563FD00A9CF2B /* nuResource.cpp */,
+				C7EE1B8914D563FD00A9CF2B /* nuResource.h */,
+				C7D3748B14DD6E9700CADBA8 /* nuResourceManager.cpp */,
+				C7D3748C14DD6E9700CADBA8 /* nuResourceManager.h */,
+				C726EF1D146D5C220038550E /* nuSingleton.cpp */,
+				C726EF1A146D5C0B0038550E /* nuSingleton.h */,
+				C7D3748F14DD732700CADBA8 /* nuStream.cpp */,
+				C7D3749014DD732700CADBA8 /* nuStream.h */,
+				C7EE1B8A14D563FD00A9CF2B /* nuThread.cpp */,
+				C7EE1B8B14D563FD00A9CF2B /* nuThread.h */,
+				C72BFEFB141CB0BB004F0E00 /* nuType.cpp */,
 				C72BFEFD141CB0D1004F0E00 /* nuType.h */,
-				C79FC5F0141E3B67005C6C70 /* nuCRC.h */,
+				C79FC5F4141E6F0D005C6C70 /* nuTypeInfo.cpp */,
+				C79FC5F5141E6F0D005C6C70 /* nuTypeInfo.h */,
 			);
-			name = Headers;
+			name = "Source Codes";
 			sourceTree = "<group>";
 		};
 		C7AB2A13141CC3E5001F8EE5 /* Configurations */ = {
@@ -231,6 +235,8 @@
 				C7EE1B9E14D563FD00A9CF2B /* nuResource.h in Headers */,
 				C7EE1BA014D563FD00A9CF2B /* nuThread.h in Headers */,
 				C7EE1BA514D5973500A9CF2B /* nuHandle.h in Headers */,
+				C7D3748E14DD6E9800CADBA8 /* nuResourceManager.h in Headers */,
+				C7D3749214DD732700CADBA8 /* nuStream.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -305,6 +311,8 @@
 				C7EE1B9D14D563FD00A9CF2B /* nuResource.cpp in Sources */,
 				C7EE1B9F14D563FD00A9CF2B /* nuThread.cpp in Sources */,
 				C7EE1BA414D5973500A9CF2B /* nuHandle.cpp in Sources */,
+				C7D3748D14DD6E9800CADBA8 /* nuResourceManager.cpp in Sources */,
+				C7D3749114DD732700CADBA8 /* nuStream.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

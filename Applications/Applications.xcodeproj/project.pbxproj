@@ -56,8 +56,7 @@
 			children = (
 				C7A2C4B91462C06A00ACDC27 /* Configurations */,
 				C7A2C4BF1462C1E800ACDC27 /* NudeApplications-Prefix.pch */,
-				C7A2C4BE1462C18B00ACDC27 /* Headers */,
-				C7A2C4BD1462C18500ACDC27 /* Sources */,
+				C7A2C4BD1462C18500ACDC27 /* Source Codes */,
 				C7A2C4B31462C04B00ACDC27 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -80,29 +79,22 @@
 			name = Configurations;
 			sourceTree = "<group>";
 		};
-		C7A2C4BD1462C18500ACDC27 /* Sources */ = {
+		C7A2C4BD1462C18500ACDC27 /* Source Codes */ = {
 			isa = PBXGroup;
 			children = (
 				C7D3748614D825E800CADBA8 /* main.mm */,
-				C726EE1A1465B2610038550E /* nuMachAppDelegate.mm */,
-				C726EE1C1465B2610038550E /* nuMachView.mm */,
-				C726EE1E1465B2610038550E /* nuMachWindow.mm */,
 				C7A2C4C21462C3A600ACDC27 /* nuApplication.cpp */,
-				C7646DE71462CA1B0009A8B3 /* nuAppMain.cpp */,
-			);
-			name = Sources;
-			sourceTree = "<group>";
-		};
-		C7A2C4BE1462C18B00ACDC27 /* Headers */ = {
-			isa = PBXGroup;
-			children = (
-				C726EE191465B2610038550E /* nuMachAppDelegate.h */,
-				C726EE1B1465B2610038550E /* nuMachView.h */,
-				C726EE1D1465B2610038550E /* nuMachWindow.h */,
 				C7A2C4C41462C3C200ACDC27 /* nuApplication.h */,
+				C7646DE71462CA1B0009A8B3 /* nuAppMain.cpp */,
 				C7A2C4C61462C9D400ACDC27 /* nuAppMain.h */,
+				C726EE191465B2610038550E /* nuMachAppDelegate.h */,
+				C726EE1A1465B2610038550E /* nuMachAppDelegate.mm */,
+				C726EE1B1465B2610038550E /* nuMachView.h */,
+				C726EE1C1465B2610038550E /* nuMachView.mm */,
+				C726EE1D1465B2610038550E /* nuMachWindow.h */,
+				C726EE1E1465B2610038550E /* nuMachWindow.mm */,
 			);
-			name = Headers;
+			name = "Source Codes";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

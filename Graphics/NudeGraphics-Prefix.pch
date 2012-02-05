@@ -34,6 +34,7 @@
 
 #include "nuDebug.h"
 #include "nuObject.h"
+#include "nuTypeInfo.h"
 
 #include "nuOSType.h"
 #include "nuResource.h"

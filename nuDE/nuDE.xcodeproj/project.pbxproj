@@ -115,8 +115,7 @@
 				C79FC5B5141D0631005C6C70 /* nude.h */,
 				C7AB29F0141CC006001F8EE5 /* nuDE-Prefix.pch */,
 				C7AB29EF141CC006001F8EE5 /* nuDE-Info.plist */,
-				C7AB2A00141CC0A8001F8EE5 /* Headers */,
-				C7AB29FF141CC09B001F8EE5 /* Sources */,
+				C7AB29FF141CC09B001F8EE5 /* Source Codes */,
 				C72BFECB141CACC9004F0E00 /* Resources */,
 				C72BFEC3141CACC9004F0E00 /* Frameworks */,
 				C72BFEC1141CACC9004F0E00 /* Products */,
@@ -187,21 +186,13 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		C7AB29FF141CC09B001F8EE5 /* Sources */ = {
-			isa = PBXGroup;
-			children = (
-				C7AB29F2141CC006001F8EE5 /* nuDEAppDelegate.mm */,
-			);
-			name = Sources;
-			path = nuDE;
-			sourceTree = "<group>";
-		};
-		C7AB2A00141CC0A8001F8EE5 /* Headers */ = {
+		C7AB29FF141CC09B001F8EE5 /* Source Codes */ = {
 			isa = PBXGroup;
 			children = (
 				C7AB29F1141CC006001F8EE5 /* nuDEAppDelegate.h */,
+				C7AB29F2141CC006001F8EE5 /* nuDEAppDelegate.mm */,
 			);
-			name = Headers;
+			name = "Source Codes";
 			path = nuDE;
 			sourceTree = "<group>";
 		};
