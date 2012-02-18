@@ -37,12 +37,14 @@ public:
   STATE getState(void) const {
     return mState;
   }
+  nuThreadPool& getThreadPool(void) const {
+    return *mpThreadPool;
+  }
 
 protected:
-  virtual nuRenderGL* createRenderGL(void) const;
-
   STATE mState;
   nuRenderGL* mpRenderGL;
+  nuThreadPool* mpThreadPool;
 
 };
 

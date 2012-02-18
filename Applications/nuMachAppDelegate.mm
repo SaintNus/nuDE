@@ -52,7 +52,7 @@ static nuMachAppDelegate* gpAppDelegate = nil;
     nuSingleton< nuApplication >::createInstance();
     INST(nuApplication)->initialize([self appMain]);
 
-    INST(nuApplication)->getRenderGL().initTest();
+    nuApplication::renderGL().initTest();
 
     [appThread start];
     [view startDraw];
@@ -104,7 +104,7 @@ static nuMachAppDelegate* gpAppDelegate = nil;
   [view stopDraw];
 
   [view lockContext];
-  INST(nuApplication)->getRenderGL().termTest();
+  nuApplication::renderGL().termTest();
   [view unlockContext];
 
   [view release];

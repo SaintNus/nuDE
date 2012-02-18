@@ -106,9 +106,9 @@ static CVReturn DisplayLinkCallback(CVDisplayLinkRef display_link,
 
 - (void) drawFrame
 {
-  NU_ASSERT_C(INST(nuApplication)->getAppMain());
-  if(INST(nuApplication)->getAppMain()->getState() == nuAppMain::RUNNING)
-    INST(nuApplication)->getRenderGL().render();
+  NU_ASSERT_C(nuApplication::appMain());
+  if(nuApplication::appMain()->getState() == nuAppMain::RUNNING)
+    nuApplication::renderGL().render();
 }
 
 // Stop draw procedure.

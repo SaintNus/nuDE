@@ -11,6 +11,7 @@ IMPLEMENT_TYPE_INFO(nuAppMain, nuObject);
 
 nuAppMain::nuAppMain()
     : mpRenderGL(nullptr),
+      mpThreadPool(nullptr),
       mState(UNINITIALIZED)
 {
   // None...
@@ -27,6 +28,11 @@ nuAppMain::~nuAppMain()
     mpRenderGL = nullptr;
     delete ptr;
   }
+  if(mpThreadPool) {
+    nuThreadPool* ptr = mpThreadPool;
+    mpThreadPool = nullptr;
+    delete ptr;
+  }
 }
 
 i32 nuAppMain::main(void)
@@ -41,15 +47,11 @@ i32 nuAppMain::main(void)
   return 0;
 }
 
-nuRenderGL* nuAppMain::createRenderGL(void) const
-{
-  return new nuRenderGL;
-}
-
 void nuAppMain::initialize(void)
 {
   NU_ASSERT_C(mpRenderGL == NULL);
-  mpRenderGL = createRenderGL();
+  mpRenderGL = new nuRenderGL;
+  mpThreadPool = new nuThreadPool;
   mState = READY;
 }
 

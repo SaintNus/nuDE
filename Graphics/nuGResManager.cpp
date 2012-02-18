@@ -1,8 +1,8 @@
 /*!
- * \file nuGLResourceManager.cpp
+ * \file nuGResManager.cpp
  * \brief GL resource manager.
  * \author Nus
  * \date 2012/02/05 19:09
  */
 
-#include "nuGLResourceManager.h"
+#include "nuGResManager.h"

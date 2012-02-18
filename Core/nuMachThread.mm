@@ -69,6 +69,7 @@ void nude::Thread< nuMachThread >::usleep(ui32 int_useconds)
   // NU_TRACE("Deleting thread handle.\n");
   [thread release];
   thread = nil;
+  [super dealloc];
 }
 
 // Dispatch thread.

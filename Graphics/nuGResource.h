@@ -1,19 +1,19 @@
 /*!
- * \file nuGLResource.h
- * \brief GL resource.
+ * \file nuGResource.h
+ * \brief Graphic resource.
  * \author Nus
  * \date 2012/02/05 18:07
  */
 
-#ifndef __NUGLRESOURCE_H__
-#define __NUGLRESOURCE_H__
+#ifndef __NUGRESOURCE_H__
+#define __NUGRESOURCE_H__
 
-typedef nude::Handle< class nuGLResource > nuGLResHandle;
+typedef nude::Handle< class nuGResource > nuGResourceHandle;
 
-class nuGLResource : public nuObject
+class nuGResource : public nuObject
 {
   DECLARE_TYPE_INFO;
-  friend nuGLResHandle;
+  friend nuGResourceHandle;
 
 public:
   enum RESOURCE_TYPE {
@@ -23,23 +23,27 @@ public:
     TEXTURE,
   };
 
-  nuGLResource(RESOURCE_TYPE type)
+  virtual void release(void) {
+    decRefCount();
+  }
+
+  RESOURCE_TYPE getType(void) const {
+    return mType;
+  }
+
+protected:
+  i32 mRefCount;
+
+  nuGResource(RESOURCE_TYPE type)
       : mRefCount(1),
         mType(type)
   {
     // None...
   }
 
-  virtual ~nuGLResource() = 0;
+  virtual ~nuGResource() = 0;
 
-  virtual void release(void) {
-    decRefCount();
-  }
-
-protected:
-  i32 mRefCount;
-
-  virtual nuGLResource* incRefCount(void) {
+  virtual nuGResource* incRefCount(void) {
     i32 curr = mRefCount;
     i32 res = curr + 1;
     while(1) {
@@ -84,7 +88,7 @@ protected:
 
 private:
   RESOURCE_TYPE mType;
-  nuGLResource();
+  nuGResource();
 
 };
 

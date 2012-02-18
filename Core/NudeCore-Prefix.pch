@@ -5,21 +5,22 @@
  * \date 2011/09/11 18:06
  */
 
-#include <stddef.h>
+#include <cstddef>
 #include <stdint.h>
-#include <stdio.h>
-#include <stdarg.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdarg>
+#include <cstdlib>
 
-#include <assert.h>
+#include <cassert>
 
 #include <cstring>
 #include <new>
 
 #include <algorithm>
-#include <math.h>
+#include <cmath>
 
 #include <wchar.h>
+#include <vector>
 
 #include <libkern/OSAtomic.h>
 

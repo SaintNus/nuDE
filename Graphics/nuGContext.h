@@ -15,6 +15,32 @@
 class nuGContext
 {
 public:
+  enum TYPE {
+    CLEAR = 0,
+  };
+    
+  enum CLEAR_BIT {
+    COLOR = GL_COLOR_BUFFER_BIT,
+    DEPTH = GL_DEPTH_BUFFER_BIT,
+    STENCIL = GL_STENCIL_BUFFER_BIT,
+  };
+
+private:
+  template< class T >
+  struct DrawCmd {
+    TYPE type;
+    T data;
+  };
+
+  struct Clear {
+    nuColor clear_color;
+    f32 depth_value;
+    ui32 clear_bit;
+  };
+
+  typedef DrawCmd< Clear > ClearCmd;
+
+public:
   nuGContext();
   ~nuGContext();
 

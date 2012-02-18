@@ -171,7 +171,8 @@ private:
   protected: \
     static PrivateTypeInfo mTypeInfo __attribute__((used)); \
   public: \
-    static const nuTypeInfo& TypeInfo(void) __attribute__((used, always_inline))
+    static const nuTypeInfo& TypeInfo(void) __attribute__((used, always_inline)); \
+  private: \
 
 #define IMPLEMENT_TYPE_INFO(_class, _super) \
   _class::PrivateTypeInfo::PrivateTypeInfo() : nuTypeInfo(#_class, &_super::mTypeInfo) {} \

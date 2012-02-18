@@ -18,6 +18,7 @@
 		C7A2C4C31462C3A600ACDC27 /* nuApplication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7A2C4C21462C3A600ACDC27 /* nuApplication.cpp */; };
 		C7A2C4C51462C3C200ACDC27 /* nuApplication.h in Headers */ = {isa = PBXBuildFile; fileRef = C7A2C4C41462C3C200ACDC27 /* nuApplication.h */; };
 		C7A2C4C71462C9D400ACDC27 /* nuAppMain.h in Headers */ = {isa = PBXBuildFile; fileRef = C7A2C4C61462C9D400ACDC27 /* nuAppMain.h */; };
+		C7AB762D14DEE52800A42A8C /* Applications.h in Headers */ = {isa = PBXBuildFile; fileRef = C7AB762C14DEE52800A42A8C /* Applications.h */; };
 		C7D3748714D825E800CADBA8 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = C7D3748614D825E800CADBA8 /* main.mm */; };
 /* End PBXBuildFile section */
 
@@ -35,8 +36,9 @@
 		C7A2C4BC1462C07E00ACDC27 /* Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = ../Configurations/Release.xcconfig; sourceTree = "<group>"; };
 		C7A2C4BF1462C1E800ACDC27 /* NudeApplications-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NudeApplications-Prefix.pch"; sourceTree = "<group>"; };
 		C7A2C4C21462C3A600ACDC27 /* nuApplication.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = nuApplication.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
-		C7A2C4C41462C3C200ACDC27 /* nuApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = nuApplication.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		C7A2C4C41462C3C200ACDC27 /* nuApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = nuApplication.h; sourceTree = "<group>"; };
 		C7A2C4C61462C9D400ACDC27 /* nuAppMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuAppMain.h; sourceTree = "<group>"; };
+		C7AB762C14DEE52800A42A8C /* Applications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Applications.h; sourceTree = "<group>"; };
 		C7D3748614D825E800CADBA8 /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -55,6 +57,7 @@
 			isa = PBXGroup;
 			children = (
 				C7A2C4B91462C06A00ACDC27 /* Configurations */,
+				C7AB762C14DEE52800A42A8C /* Applications.h */,
 				C7A2C4BF1462C1E800ACDC27 /* NudeApplications-Prefix.pch */,
 				C7A2C4BD1462C18500ACDC27 /* Source Codes */,
 				C7A2C4B31462C04B00ACDC27 /* Products */,
@@ -110,6 +113,7 @@
 				C726EE1F1465B2610038550E /* nuMachAppDelegate.h in Headers */,
 				C726EE211465B2610038550E /* nuMachView.h in Headers */,
 				C726EE231465B2610038550E /* nuMachWindow.h in Headers */,
+				C7AB762D14DEE52800A42A8C /* Applications.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

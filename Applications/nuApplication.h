@@ -20,13 +20,18 @@ class nuApplication : public nuObject
   DECLARE_TYPE_INFO;
 
 public:
-  nuAppMain* getAppMain(void) {
-    return mpAppMain;
+  static nuAppMain* appMain(void) {
+    return INST(nuApplication)->mpAppMain;
   }
 
-  nuRenderGL& getRenderGL(void) {
-    NU_ASSERT_C(mpAppMain != NULL);
-    return mpAppMain->getRenderGL();
+  static nuRenderGL& renderGL(void) {
+    NU_ASSERT_C(appMain() != NULL);
+    return appMain()->getRenderGL();
+  }
+
+  static nuThreadPool& threadPool(void) {
+    NU_ASSERT_C(appMain() != NULL);
+    return appMain()->getThreadPool();
   }
 
   void initialize(const nuTypeInfo& app_main);
@@ -38,7 +43,6 @@ public:
 
 private:
   nuAppMain* mpAppMain;
-  
 
   nuApplication();
   ~nuApplication();
