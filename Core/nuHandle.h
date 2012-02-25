@@ -62,8 +62,10 @@ namespace nude {
     Handle(T* p_obj)
         : mpObject(p_obj)
     {
-      // None...
+      NU_ASSERT(p_obj != nullptr, "Invalid pointer.\n");
     }
+
+    Handle();
 
   };
 

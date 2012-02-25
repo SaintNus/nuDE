@@ -21,7 +21,7 @@ typedef nude::Handle< class nuResource > nuResHandle;
 class nuResource : public nuObject
 {
   DECLARE_TYPE_INFO;
-  friend nuResHandle;
+  friend class nude::Handle< class nuResource >;
 
 public:
   enum ERROR_CODE {
@@ -54,7 +54,7 @@ public:
 
 private:
   ui32 mAttribute;
-  i32 mRefCount;
+  volatile i32 mRefCount;
   cstr mPath;
 
   void setPath(ccstr path) {

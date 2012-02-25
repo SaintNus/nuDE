@@ -47,6 +47,9 @@ public:
   //! \brief Get thread priority.
   f64 getPriority(void) const;
 
+  //! @brief Join thread.
+  void join(void);
+
 private:
   void* mpHandle;                 //!< Thread handle.
 

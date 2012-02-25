@@ -17,6 +17,23 @@ namespace nude
   class Mutex : public nuObject
   {
   public:
+    class Autolock {
+      Mutex& mMutex;
+      Autolock();
+
+    public:
+      Autolock(Mutex& mutex)
+          : mMutex(mutex)
+      {
+        mMutex.lock();
+      }
+
+      ~Autolock() {
+        mMutex.unlock();
+      }
+
+    };
+
     Mutex() {}
     ~Mutex() {}
 

@@ -105,8 +105,7 @@ nuMachThread::nuMachThread()
 // Default destructor.
 nuMachThread::~nuMachThread()
 {
-  while(isExecuting())
-    nude::Thread< nuMachThread >::usleep(16666);
+  join();
   if(mpHandle) {
     _MachThreadHandle* handle = static_cast< _MachThreadHandle* >(mpHandle);
     [handle release];
@@ -184,4 +183,11 @@ f64 nuMachThread::getPriority(void) const
 {
   _MachThreadHandle* handle = static_cast< _MachThreadHandle* >(mpHandle);
   return [[handle thread] threadPriority];
+}
+
+// Join thread.
+void nuMachThread::join(void)
+{
+  while(isExecuting())
+    nude::Thread< nuMachThread >::usleep(16666);
 }

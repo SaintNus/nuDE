@@ -24,6 +24,7 @@
 
 #include <wchar.h>
 #include <vector>
+#include <list>
 
 #include <libkern/OSAtomic.h>
 
@@ -50,5 +51,6 @@
 #include "nuThreadPool.h"
 
 #include "nuColor.h"
+#include "nuHandle.h"
 
 #endif

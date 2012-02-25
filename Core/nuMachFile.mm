@@ -20,8 +20,10 @@ nude::FILE_ERROR nuMachFile::open(nude::FILE_ATTRIBUTE attr, ccstr name)
     "home://",
     "file://",
   };
+  
+  const i32 sz = static_cast< i32 >(sizeof(protocol) / sizeof(ccstr));
 
-  for(i32 ii = 0; ii < sizeof(protocol) / sizeof(ccstr); ii++) {
+  for(i32 ii = 0; ii < sz; ii++) {
     size_t len = strlen(protocol[ii]);
     if(strncmp(protocol[ii], name, len) == 0) {
       protocol_id = ii;

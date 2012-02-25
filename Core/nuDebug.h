@@ -11,7 +11,7 @@
 #include "nuType.h"
 
 //! \brief Assert.
-#if NDEBUG
+#if NDEBUG || !DEBUG
 #define NU_ASSERT(_cond, ...)
 #else
 #define NU_ASSERT(_cond, ...) \
@@ -19,7 +19,7 @@
 #endif
 
 //! \brief Assert.
-#if NDEBUG
+#if NDEBUG || !DEBUG
 #define NU_ASSERT_C(_cond)
 #else
 #define NU_ASSERT_C(_cond) \
@@ -27,7 +27,7 @@
 #endif
 
 //! \brief Verify.
-#if NDEBUG
+#if NDEBUG || !DEBUG
 #define NU_VERIFY(_cond)
 #else
 #define NU_VERIFY(_cond) \

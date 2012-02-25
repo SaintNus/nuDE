@@ -69,11 +69,16 @@ namespace nude
     f64 getPriority(void) const {
       return mThreadHandler.getPriority();
     }
+    
+    //! \brief Join.
+    void join(void) {
+      mThreadHandler.join();
+    }
 
     //! \brief Sleep (in seconds).
-    static void sleep(ui32 int_seconds);
+    static void sleep(ui32 int_seconds) {}
     //! \brief Sleep (in μseconds).
-    static void usleep(ui32 int_useconds);
+    static void usleep(ui32 int_useconds) {}
 
   private:
     ThreadHandler mThreadHandler; //!< Thread handler.

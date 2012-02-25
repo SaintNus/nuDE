@@ -32,11 +32,12 @@ void nuCRC::initialize(void)
   NU_TRACE("Initializing CRC.\n");
   // 0x04C11DB7 is the official polynomial used by PKZip, WinZip and Ethernet.
   const ui32 polynom = 0x04c11dB7;
+  const ui32 mask = static_cast< ui32 >(1 << 31);
   // 256 values representing ASCII character codes.
   for(ui32 ii = 0; ii < 256; ii++) {
     mCrcTable[ii] = reflect(ii, 8) << 24;
     for(ui32 jj = 0; jj < 8; jj++)
-      mCrcTable[ii] = (mCrcTable[ii] << 1) ^ ((mCrcTable[ii] & (1 << 31)) ? polynom : 0);
+      mCrcTable[ii] = (mCrcTable[ii] << 1) ^ ((mCrcTable[ii] & mask) ? polynom : 0);
     mCrcTable[ii] = reflect(mCrcTable[ii], 32);
   }
 }

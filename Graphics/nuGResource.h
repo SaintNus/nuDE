@@ -13,7 +13,7 @@ typedef nude::Handle< class nuGResource > nuGResourceHandle;
 class nuGResource : public nuObject
 {
   DECLARE_TYPE_INFO;
-  friend nuGResourceHandle;
+  friend class nude::Handle< class nuGResource >;
 
 public:
   enum RESOURCE_TYPE {
@@ -32,7 +32,7 @@ public:
   }
 
 protected:
-  i32 mRefCount;
+  volatile i32 mRefCount;
 
   nuGResource(RESOURCE_TYPE type)
       : mRefCount(1),
