@@ -13,9 +13,13 @@ namespace nude {
   template< class T >
   class Handle
   {
-    friend T;
-
   public:
+    Handle()
+        : mpObject(nullptr)
+    {
+      // None...
+    }
+
     Handle(const Handle& handle)
         : mpObject(nullptr)
     {
@@ -23,11 +27,15 @@ namespace nude {
         mpObject = handle.mpObject->incRefCount();
     }
 
+    Handle(T* p_obj)
+        : mpObject(nullptr)
+    {
+      NU_ASSERT(p_obj != nullptr, "Invalid pointer.\n");
+      mpObject = p_obj->incRefCount();
+    }
+
     ~Handle() {
-      if(mpObject) {
-        mpObject->decRefCount();
-        mpObject = nullptr;
-      }
+      release();
     }
 
     const Handle& operator = (const Handle& handle) {
@@ -38,6 +46,23 @@ namespace nude {
       if(handle.isValid())
         mpObject = handle.mpObject->incRefCount();
       return *this;
+    }
+
+    const Handle& operator = (T* p_obj) {
+      if(mpObject) {
+        mpObject->decRefCount();
+        mpObject = nullptr;
+      }
+      if(p_obj)
+        mpObject = p_obj->incRefCount();
+      return *this;
+    }
+
+    void release(void) {
+      if(mpObject) {
+        mpObject->decRefCount();
+        mpObject = nullptr;
+      }
     }
 
     bool isValid() const {
@@ -58,14 +83,6 @@ namespace nude {
 
   private:
     T* mpObject;
-
-    Handle(T* p_obj)
-        : mpObject(p_obj)
-    {
-      NU_ASSERT(p_obj != nullptr, "Invalid pointer.\n");
-    }
-
-    Handle();
 
   };
 

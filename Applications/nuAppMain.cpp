@@ -39,6 +39,7 @@ i32 nuAppMain::main(void)
 {
   mState = RUNNING;
   while(mState != TERMINATING) {
+    nuAutoReleasePool pool;
     NU_TRACE("Main loop is running...\n");
     nuThread::sleep(1);
   }
