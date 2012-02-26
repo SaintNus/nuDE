@@ -12,7 +12,7 @@
 @interface nuMachView : NSOpenGLView
 {
   CVDisplayLinkRef displayLink;
-  bool displaLinkStarted;
+  bool displayLinkStarted;
 }
 
 @property (nonatomic, readonly) bool displayLinkStarted;
