@@ -23,6 +23,9 @@
 #include "nuCondition.h"
 #include "nuMachCondition.h"
 
+#include "nuConditionLock.h"
+#include "nuMachConditionLock.h"
+
 #include "nuAutoReleasePool.h"
 #include "nuMachAutoReleasePool.h"
 
@@ -49,5 +52,8 @@ typedef nude::Condition< nuMachCondition > nuCondition;
 
 //! \brief Define template specialization for auto-release pool.
 typedef nude::AutoReleasePool< nuMachAutoReleasePool > nuAutoReleasePool;
+
+//! \brief Define template specialization for condition lock.
+typedef nude::ConditionLock< nuMachConditionLock > nuConditionLock;
 
 #endif

@@ -8,7 +8,8 @@
 #ifndef __NUCONDITION_H__
 #define __NUCONDITION_H__
 
-namespace nude {
+namespace nude
+{
 
   template< class T >
   class Condition
