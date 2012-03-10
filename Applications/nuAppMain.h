@@ -46,6 +46,8 @@ protected:
   nuRenderGL* mpRenderGL;
   nuThreadPool* mpThreadPool;
 
+  virtual void update(void) {}
+
 };
 
 #endif

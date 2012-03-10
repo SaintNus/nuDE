@@ -10,7 +10,7 @@
 // Open a file.
 nude::FILE_ERROR nuMachFile::open(nude::FILE_ATTRIBUTE attr, ccstr name)
 {
-  nude::FILE_ERROR ret;
+  nude::FILE_ERROR ret = nude::FERROR_NONE;
 
   i32 protocol_id = -1;
   NSString* path = nil;

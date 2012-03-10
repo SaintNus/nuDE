@@ -6,8 +6,14 @@
  */
 
 #import "nuDEAppDelegate.h"
+#import "nuDEMain.h"
 
 @implementation nuDEAppDelegate
+
+- (const nuTypeInfo&) appMain
+{
+  return nuDEMain::TypeInfo();
+}
 
 - (void) applicationDidFinishLaunching: (NSNotification*) notification
 {

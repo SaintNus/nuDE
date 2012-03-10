@@ -172,13 +172,15 @@ private:
       ui32 mAttribute;
       struct {
         ui32 mRegistered: 1;
-        ui32 mFinished: 1;
         ui32 mApproved: 1;
+        ui32 mEndTaskEnable: 1;
         ui32 mReserved: 29;
       };
     };
 
     volatile i32 mRefCount;
+    volatile i32 mFinishedTask;
+    volatile i32 mAssignedTask;
 
     ui32 mNumTask;
     Task* mpTaskList;
@@ -190,7 +192,9 @@ private:
     Job(const nuTaskSet& task_set)
         : mNumTask(task_set.getTaskNum()),
           mAttribute(0),
-          mRefCount(1)
+          mRefCount(0),
+          mFinishedTask(0),
+          mAssignedTask(0)
     {
       NU_ASSERT_C(mNumTask > 0);
       mpTaskList = static_cast< Task* >(nude::Alloc(sizeof(Task) * mNumTask));
@@ -202,6 +206,7 @@ private:
       if(!task_set.mEndTask.isEmpty()) {
         mEndTask = task_set.mEndTask;
         mEndTask.p_job = this;
+        mEndTaskEnable = 1;
       } else {
         mEndTask.p_job = nullptr;
       }
@@ -209,6 +214,91 @@ private:
 
     ~Job() {
       nude::Dealloc(mpTaskList);
+    }
+
+    bool isFinished(void) const {
+      i32 finish_cnt = mNumTask;
+      if(mEndTaskEnable)
+        finish_cnt++;
+      return finish_cnt == mFinishedTask;
+    }
+
+    bool isTaskAvailable(void) const {
+      return static_cast< i32 >(mNumTask) > mAssignedTask;
+    }
+
+    Task* getTask(void) {
+      i32 curr = mAssignedTask;
+      i32 res = curr + 1;
+      while(res < static_cast< i32 >(mNumTask)) {
+        bool ret = nuAtomic::cas(curr, res, &mAssignedTask);
+        if(!ret) {
+          curr = mAssignedTask;
+          res = curr + 1;
+        } else {
+          return &mpTaskList[curr];
+        }
+      }
+      return nullptr;
+    }
+
+    Task* stealTask(void) {
+      if(mEndTaskEnable) {
+        i32 curr = mFinishedTask;
+        i32 res = curr + 1;
+        while(1) {
+          bool end_task = (res == static_cast< i32 >(mNumTask + 1));
+          bool ret = nuAtomic::cas(curr, res, &mFinishedTask);
+          if(!ret) {
+            curr = mFinishedTask;
+            res = curr + 1;
+          } else {
+            if(res < static_cast< i32 >(mNumTask)) {
+              curr = mAssignedTask;
+              res = curr + 1;
+              while(res <= static_cast< i32 >(mNumTask)) {
+                ret = nuAtomic::cas(curr, res, &mAssignedTask);
+                if(!ret) {
+                  curr = mAssignedTask;
+                  res = curr + 1;
+                } else {
+                  return &mpTaskList[curr];
+                }
+              }
+            } else if(res == static_cast< i32 >(mNumTask)) {
+              return &mEndTask;
+            } else if(end_task) {
+              return nullptr;
+            }
+          }
+        }
+      } else {
+        i32 curr = mFinishedTask;
+        i32 res = curr + 1;
+        while(1) {
+          bool ret = nuAtomic::cas(curr, res, &mFinishedTask);
+          if(!ret) {
+            curr = mFinishedTask;
+            res = curr + 1;
+          } else {
+            if(res < static_cast< i32 >(mNumTask)) {
+              curr = mAssignedTask;
+              res = curr + 1;
+              while(res < static_cast< i32 >(mNumTask)) {
+                ret = nuAtomic::cas(curr, res, &mAssignedTask);
+                if(!ret) {
+                  curr = mAssignedTask;
+                  res = curr + 1;
+                } else {
+                  return &mpTaskList[curr];
+                }
+              }
+            } else {
+              return nullptr;
+            }
+          }
+        }
+      }
     }
 
     Job* incRefCount(void) {
@@ -261,7 +351,7 @@ private:
     typedef JobList::iterator JobIterator;
     typedef JobList::const_iterator JobConstIterator;
 
-    bool mExit;
+    ui32 mExit;
 
     JobList mJobList;
 
@@ -274,9 +364,20 @@ private:
       mEntryList.push_back(p_job->incRefCount());
     }
 
+    Task* getAvailableTask(void) {
+      JobIterator it = mJobList.begin();
+      while(it != mJobList.end()) {
+        Job* p_job = *it;
+        if(p_job->isTaskAvailable())
+          return p_job->getTask();
+        ++it;
+      }
+      return nullptr;
+    }
+
   public:
     JobArena()
-        : mExit(false)
+        : mExit(0)
     {
       // None...
     }
@@ -299,13 +400,67 @@ private:
     void schedulerProc(void* param);
 
     void exit(void) {
-      mExit = true;
+      mExit = 1;
     }
 
   };
 
+  class Worker : public nuObject {
+    Task* mpTask;
+    nuThread mThread;
+    nuCondition mCondition;
+
+    union {
+      ui32 mAttribute;
+      struct {
+        ui32 mExit: 1;
+        ui32 mState: 3;
+        ui32 mReserved: 28;
+      };
+    };
+
+  public:
+    enum State {
+      STATE_UNINITIALIZED = 0,
+      STATE_IDLE,
+      STATE_EXECUTING,
+      STATE_TERMINATING,
+      STATE_TERMINATED,
+    };
+
+    Worker()
+        : mAttribute(0),
+          mpTask(nullptr)
+    {
+      // None...
+    }
+
+    ~Worker();
+
+    void dispatchWorker(ui32 worker_id, JobArena& job_arena);
+    void workerProcedure(void* param);
+    void assignTask(Task* p_task);
+
+    void exit(void) {
+      if(mExit == 0) {
+        mExit = 1;
+        mCondition.signal();
+        while(mState != STATE_TERMINATED)
+          nuThread::usleep(1000);
+      }
+    }
+
+    State getState(void) const {
+      return static_cast< State >(mState);
+    }
+
+  };
+
+  static const ui32 MAX_WORKER = 16;
+
   JobArena mJobArena;
   nuThread mJobArenaThread;
+  Worker mWorker[MAX_WORKER];
 
 public:
   class JobTicket {

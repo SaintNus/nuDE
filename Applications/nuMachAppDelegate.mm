@@ -56,45 +56,6 @@ static nuMachAppDelegate* gpAppDelegate = nil;
 
     [appThread start];
     [view startDraw];
-
-    // Test file!
-    {
-      ccstr path = "home://Temp/テスト.cpp";
-      nuFile file(nude::FATTR_READ, path);
-      NU_TRACE("File size: %lu\n", file.getSize());
-    }
-
-    // Test thread!
-    {
-      class NusTest : public nuObject
-      {
-      public:
-        NusTest() {
-          mThread.setName("NusTest");
-          mThread.dispatchThread(this,
-                                 static_cast< nuFunction >(&NusTest::proc),
-                                 nullptr);
-        }
-        ~NusTest() {}
-        void proc(void* param) {
-          nuMutex mutex;
-          nuRecursiveMutex r_mutex;
-          nuSpinLock spin_lock;
-          for(ui32 ui = 0; ui < 10; ui++) {
-            mutex.lock();
-            r_mutex.lock();
-            spin_lock.lock();
-            NU_TRACE("Count = %d\n", ui);
-            spin_lock.unlock();
-            r_mutex.unlock();
-            mutex.unlock();
-            nuThread::usleep(33333);
-          }
-        }
-      private:
-        nuThread mThread;
-      } nus;
-    }
   }
 }
 

@@ -48,11 +48,10 @@ static CVReturn DisplayLinkCallback(CVDisplayLinkRef display_link,
   
   NSRect content_rect = [window contentRectForFrameRect: [window frame]];
   self = [super initWithFrame: content_rect pixelFormat: pf];
-  if(self) {
+  if(self)
     [window setContentView: self];
-    [pf release];
-    pf = nil;
-  }
+  [pf release];
+  pf = nil;
   return self;
 }
 
