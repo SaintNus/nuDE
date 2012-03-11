@@ -61,18 +61,18 @@ void nuThreadPool::JobArena::schedulerProc(void* param)
       mEntryList.clear();
     }
 
-    for(ui32 ui = 0; ui < MAX_WORKER; ui++) {
-      Worker& worker = p_pool->mWorker[ui];
-      if(worker.getState() == Worker::STATE_IDLE) {
-        Task* p_task = getAvailableTask();
-        if(p_task)
-          worker.assignTask(p_task);
-        else
-          break;
+    if(!mJobList.empty()) {
+      for(ui32 ui = 0; ui < MAX_WORKER; ui++) {
+        Worker& worker = p_pool->mWorker[ui];
+        if(worker.isIdling()) {
+          Task* p_task = getAvailableTask();
+          if(p_task)
+            worker.assignTask(p_task);
+          else
+            break;
+        }
       }
     }
-
-    nuThread::usleep(1);
   }
   NU_TRACE("Closing job arena.\n");
 }

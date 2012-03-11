@@ -368,8 +368,11 @@ private:
       JobIterator it = mJobList.begin();
       while(it != mJobList.end()) {
         Job* p_job = *it;
-        if(p_job->isTaskAvailable())
-          return p_job->getTask();
+        if(p_job->isTaskAvailable()) {
+          Task* ret = p_job->getTask();
+          if(ret)
+            return ret;
+        }
         ++it;
       }
       return nullptr;
@@ -452,6 +455,10 @@ private:
 
     State getState(void) const {
       return static_cast< State >(mState);
+    }
+
+    bool isIdling(void) const {
+      return mState == STATE_IDLE && mpTask == nullptr;
     }
 
   };
