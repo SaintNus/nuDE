@@ -73,6 +73,7 @@
 		C72BFEC9141CACC9004F0E00 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C72BFEF3141CAFB9004F0E00 /* Core.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Core.xcodeproj; path = ../Core/Core.xcodeproj; sourceTree = "<group>"; };
 		C785D064145D415600E64F10 /* Graphics.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Graphics.xcodeproj; path = ../Graphics/Graphics.xcodeproj; sourceTree = "<group>"; };
+		C794E5D7150CE6080085F923 /* Resources */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Resources; path = ../Resources; sourceTree = SOURCE_ROOT; };
 		C796666D1444910000E540CD /* nuDE.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = nuDE.icns; sourceTree = SOURCE_ROOT; };
 		C79DFF05150BAA7300A1FA32 /* nuDEMain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuDEMain.cpp; sourceTree = SOURCE_ROOT; };
 		C79DFF06150BAA7300A1FA32 /* nuDEMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuDEMain.h; sourceTree = SOURCE_ROOT; };
@@ -157,6 +158,7 @@
 		C72BFECB141CACC9004F0E00 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C794E5D7150CE6080085F923 /* Resources */,
 				C796666D1444910000E540CD /* nuDE.icns */,
 				C7AB29F6141CC012001F8EE5 /* InfoPlist.strings */,
 				C7AB29F8141CC012001F8EE5 /* MainMenu.xib */,
@@ -220,8 +222,8 @@
 			buildPhases = (
 				C72BFEBC141CACC9004F0E00 /* Sources */,
 				C72BFEBD141CACC9004F0E00 /* Frameworks */,
+				C7DEFBD3144AE42B0032BEDD /* Create resources */,
 				C72BFEBE141CACC9004F0E00 /* Resources */,
-				C7DEFBD3144AE42B0032BEDD /* Create resource link */,
 			);
 			buildRules = (
 			);
@@ -312,19 +314,20 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		C7DEFBD3144AE42B0032BEDD /* Create resource link */ = {
+		C7DEFBD3144AE42B0032BEDD /* Create resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
+				"$(SRCROOT)/../Resources/",
 			);
-			name = "Create resource link";
+			name = "Create resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Create resource link.\n\nRES_DIR=$BUILT_PRODUCTS_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH\nNUDE_RES_DIR=$RES_DIR/Resources\n\nif [ -d $NUDE_RES_DIR ]\nthen\n    echo $NUDE_RES_DIR exists!\nelse\n    echo Creating link to resource directory.\n    ln -s $PROJECT_DIR/../Resources $NUDE_RES_DIR\nfi\n";
+			shellScript = "RES_DIR=$BUILT_PRODUCTS_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH\nNUDE_RES_DIR=$RES_DIR/Resources\n\nif [ $COPY_RESOURCES == NO ]; then\n    # Create resource link.\n    if [ -d $NUDE_RES_DIR ]\n    then\n        echo $NUDE_RES_DIR exists!\n    else\n        echo Creating link to resource directory.\n        ln -s $PROJECT_DIR/../Resources $NUDE_RES_DIR\n    fi\nelse\n    # Copy resources.\n    if [ -d $NUDE_RES_DIR ]\n    then\n        rm -rf $NUDE_RES_DIR\n    fi\n\n    echo Copying resources.\n    cp -R $PROJECT_DIR/../Resources $NUDE_RES_DIR\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -382,6 +385,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C7AB2A16141CC772001F8EE5 /* Debug.xcconfig */;
 			buildSettings = {
+				COPY_RESOURCES = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "nuDE-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -396,6 +400,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C7AB2A15141CC772001F8EE5 /* Profile.xcconfig */;
 			buildSettings = {
+				COPY_RESOURCES = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "nuDE-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -430,6 +435,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C7AB2A17141CC772001F8EE5 /* Release.xcconfig */;
 			buildSettings = {
+				COPY_RESOURCES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "nuDE-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
