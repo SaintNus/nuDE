@@ -104,6 +104,9 @@ public:
   nuTaskSet() {
     mTaskList.reserve(EXPANDABLE_LIST_NUM);
   }
+  nuTaskSet(ui32 reserve) {
+    mTaskList.reserve(reserve);
+  }
   ~nuTaskSet() {}
 
   void addTask(const nuTask& task) {
@@ -167,6 +170,11 @@ private:
 
   class Job {
     friend class JobArena;
+    enum JobState {
+      STATE_INITIALIZE = 0,
+      STATE_STARTED,
+      STATE_FINISHED,
+    };
     
     union {
       ui32 mAttribute;
@@ -185,6 +193,7 @@ private:
     ui32 mNumTask;
     Task* mpTaskList;
     Task mEndTask;
+    nuConditionLock mLock;
 
     Job();
 
@@ -192,9 +201,10 @@ private:
     Job(const nuTaskSet& task_set)
         : mNumTask(task_set.getTaskNum()),
           mAttribute(0),
-          mRefCount(0),
+          mRefCount(1),
           mFinishedTask(0),
-          mAssignedTask(0)
+          mAssignedTask(0),
+          mLock(STATE_INITIALIZE)
     {
       NU_ASSERT_C(mNumTask > 0);
       mpTaskList = static_cast< Task* >(nude::Alloc(sizeof(Task) * mNumTask));
@@ -230,7 +240,7 @@ private:
     Task* getTask(void) {
       i32 curr = mAssignedTask;
       i32 res = curr + 1;
-      while(res < static_cast< i32 >(mNumTask)) {
+      while(res <= static_cast< i32 >(mNumTask)) {
         bool ret = nuAtomic::cas(curr, res, &mAssignedTask);
         if(!ret) {
           curr = mAssignedTask;
@@ -242,61 +252,48 @@ private:
       return nullptr;
     }
 
-    Task* stealTask(void) {
-      if(mEndTaskEnable) {
-        i32 curr = mFinishedTask;
-        i32 res = curr + 1;
-        while(1) {
-          bool end_task = (res == static_cast< i32 >(mNumTask + 1));
-          bool ret = nuAtomic::cas(curr, res, &mFinishedTask);
-          if(!ret) {
-            curr = mFinishedTask;
-            res = curr + 1;
-          } else {
-            if(res < static_cast< i32 >(mNumTask)) {
-              curr = mAssignedTask;
-              res = curr + 1;
-              while(res <= static_cast< i32 >(mNumTask)) {
-                ret = nuAtomic::cas(curr, res, &mAssignedTask);
-                if(!ret) {
-                  curr = mAssignedTask;
-                  res = curr + 1;
-                } else {
-                  return &mpTaskList[curr];
-                }
-              }
-            } else if(res == static_cast< i32 >(mNumTask)) {
-              return &mEndTask;
-            } else if(end_task) {
-              return nullptr;
-            }
-          }
+    Task* nextTask(void) {
+      i32 num_task = static_cast< i32 >(mNumTask);
+      i32 curr = mAssignedTask;
+      i32 res = curr + 1;
+      while(res <= num_task) {
+        bool ret = nuAtomic::cas(curr, res, &mAssignedTask);
+        if(!ret) {
+          curr = mAssignedTask;
+          res = curr + 1;
+        } else {
+          return &mpTaskList[curr];
         }
-      } else {
-        i32 curr = mFinishedTask;
-        i32 res = curr + 1;
-        while(1) {
-          bool ret = nuAtomic::cas(curr, res, &mFinishedTask);
-          if(!ret) {
+      }
+      return nullptr;
+    }
+
+    void commitTask(Task& task) {
+      bool end_task = mEndTaskEnable;
+      i32 num_task = static_cast< i32 >(mNumTask);
+      i32 curr = mFinishedTask;
+      i32 res = curr + 1;
+      while(1) {
+        bool ret = nuAtomic::cas(curr, res, &mFinishedTask);
+        if(!ret) {
+          curr = mFinishedTask;
+          res = curr + 1;
+        } else {
+          if(res == num_task && end_task) {
+            mEndTask.execute();
             curr = mFinishedTask;
             res = curr + 1;
-          } else {
-            if(res < static_cast< i32 >(mNumTask)) {
-              curr = mAssignedTask;
-              res = curr + 1;
-              while(res < static_cast< i32 >(mNumTask)) {
-                ret = nuAtomic::cas(curr, res, &mAssignedTask);
-                if(!ret) {
-                  curr = mAssignedTask;
-                  res = curr + 1;
-                } else {
-                  return &mpTaskList[curr];
-                }
+            while(1) {
+              ret = nuAtomic::cas(curr, res, &mFinishedTask);
+              if(!ret) {
+                curr = mFinishedTask;
+                res = curr + 1;
+              } else {
+                return;
               }
-            } else {
-              return nullptr;
             }
           }
+          return;
         }
       }
     }
@@ -339,11 +336,17 @@ private:
                 return;
               }
             }
+          } else {
+            return;
           }
         }
       }
     }
 
+    void wait(void) {
+      mLock.lockWhenCondition(STATE_FINISHED);
+      mLock.unlock();
+    }
   };
 
   class JobArena : public nuObject {
@@ -411,14 +414,15 @@ private:
   class Worker : public nuObject {
     Task* mpTask;
     nuThread mThread;
-    nuCondition mCondition;
+    nuConditionLock mCondition;
 
     union {
       ui32 mAttribute;
       struct {
         ui32 mExit: 1;
         ui32 mState: 3;
-        ui32 mReserved: 28;
+        ui32 mID: 8;
+        ui32 mReserved: 20;
       };
     };
 
@@ -431,9 +435,15 @@ private:
       STATE_TERMINATED,
     };
 
+    enum Condition {
+      COND_EMPTY = 0,
+      COND_ASSIGNED,
+    };
+
     Worker()
         : mAttribute(0),
-          mpTask(nullptr)
+          mpTask(nullptr),
+          mCondition(COND_EMPTY)
     {
       // None...
     }
@@ -446,8 +456,9 @@ private:
 
     void exit(void) {
       if(mExit == 0) {
+        mCondition.lockWhenCondition(COND_EMPTY);
         mExit = 1;
-        mCondition.signal();
+        mCondition.unlockWithCondition(COND_ASSIGNED);
         while(mState != STATE_TERMINATED)
           nuThread::usleep(1000);
       }
@@ -463,7 +474,7 @@ private:
 
   };
 
-  static const ui32 MAX_WORKER = 16;
+  static const ui32 MAX_WORKER = 4;
 
   JobArena mJobArena;
   nuThread mJobArenaThread;
@@ -473,46 +484,51 @@ public:
   class JobTicket {
     friend class nuThreadPool;
   
-    Job* mpJobTicket;
+    Job* mpJob;
 
     JobTicket(Job* p_job)
-        : mpJobTicket(p_job)
+        : mpJob(p_job)
     {
       // None...
     }
   public:
     JobTicket()
-        : mpJobTicket(nullptr)
+        : mpJob(nullptr)
     {
       // None...
     }
 
     ~JobTicket() {
-      if(mpJobTicket) {
-        mpJobTicket->decRefCount();
-        mpJobTicket = nullptr;
-      }
+      release();
     }
 
     JobTicket(const JobTicket& job_ticket) {
-      if(job_ticket.mpJobTicket)
-        mpJobTicket = job_ticket.mpJobTicket->incRefCount();
+      if(job_ticket.mpJob)
+        mpJob = job_ticket.mpJob->incRefCount();
       else
-        mpJobTicket = nullptr;
+        mpJob = nullptr;
     }
 
     const JobTicket& operator = (const JobTicket& job_ticket) {
-      if(mpJobTicket) {
-        mpJobTicket->decRefCount();
-        mpJobTicket = nullptr;
+      if(mpJob) {
+        mpJob->decRefCount();
+        mpJob = nullptr;
       }
-      if(job_ticket.mpJobTicket)
-        mpJobTicket = job_ticket.mpJobTicket->incRefCount();
+      if(job_ticket.mpJob)
+        mpJob = job_ticket.mpJob->incRefCount();
       return *this;
     }
 
     bool isValid(void) const {
-      return mpJobTicket != nullptr;
+      return mpJob != nullptr;
+    }
+
+    void release(void) {
+      if(mpJob) {
+        Job* p_job = mpJob;
+        mpJob = nullptr;
+        p_job->decRefCount();
+      }
     }
 
   };
@@ -521,8 +537,10 @@ public:
   ~nuThreadPool();
 
   JobTicket entryJob(const nuTaskSet& task_set) {
-    return mJobArena.entryJob(task_set);
+    return JobTicket(mJobArena.entryJob(task_set));
   }
+
+  void waitUntilFinished(JobTicket& ticket);
 
 };
 

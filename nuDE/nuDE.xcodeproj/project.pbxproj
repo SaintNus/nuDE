@@ -222,8 +222,8 @@
 			buildPhases = (
 				C72BFEBC141CACC9004F0E00 /* Sources */,
 				C72BFEBD141CACC9004F0E00 /* Frameworks */,
-				C7DEFBD3144AE42B0032BEDD /* Create resources */,
 				C72BFEBE141CACC9004F0E00 /* Resources */,
+				C7DEFBD3144AE42B0032BEDD /* Create resources */,
 			);
 			buildRules = (
 			);

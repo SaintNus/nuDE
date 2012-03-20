@@ -33,6 +33,14 @@ namespace nude
       return mConditionLock.getCondition();
     }
 
+    void lock(void) {
+      mConditionLock.lock();
+    }
+
+    void unlock(void) {
+      mConditionLock.unlock();
+    }
+
     void lockWhenCondition(i32 condition) {
       mConditionLock.lockWhenCondition(condition);
     }
@@ -42,7 +50,7 @@ namespace nude
     }
 
     void unlockWithCondition(i32 condition) {
-      mConditionLock.lockWithCondition(condition);
+      mConditionLock.unlockWithCondition(condition);
     }
 
   };

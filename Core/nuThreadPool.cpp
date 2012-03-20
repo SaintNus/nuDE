@@ -41,6 +41,7 @@ void nuThreadPool::JobArena::schedulerProc(void* param)
       while(it != mJobList.end()) {
         Job* p_job = *it;
         if(p_job->isFinished()) {
+          p_job->mLock.unlockWithCondition(Job::STATE_FINISHED);
           p_job->decRefCount();
           it = mJobList.erase(it);
         } else {
@@ -54,6 +55,7 @@ void nuThreadPool::JobArena::schedulerProc(void* param)
       JobIterator it = mEntryList.begin();
       while(it != mEntryList.end()) {
         Job* p_job = *it;
+        p_job->mLock.lockWhenCondition(Job::STATE_INITIALIZE);
         p_job->mApproved = 1;
         mJobList.push_back(p_job);
         ++it;
@@ -96,6 +98,7 @@ void nuThreadPool::Worker::dispatchWorker(ui32 worker_id, JobArena& job_arena)
   snprintf(worker_name, 32, "Worker-%d", worker_id);
   worker_name[31] = 0x00;
   mThread.setName(worker_name);
+  mID = worker_id;
 
   mThread.dispatchThread(this, 
                          static_cast< nuFunction >(&Worker::workerProcedure),
@@ -107,33 +110,44 @@ void nuThreadPool::Worker::dispatchWorker(ui32 worker_id, JobArena& job_arena)
 
 void nuThreadPool::Worker::workerProcedure(void* param)
 {
-  mCondition.lock();
   while(!mExit) {
     mState = STATE_IDLE;
 
-    while(!mpTask && !mExit)
-      mCondition.wait();
+    mCondition.lockWhenCondition(COND_ASSIGNED);
 
-    if(mExit)
+    if(mExit) {
+      mCondition.unlockWithCondition(COND_EMPTY);
       break;
+    }
 
     mState = STATE_EXECUTING;
 
     while(!mExit && mpTask) {
       mpTask->execute();
-      mpTask = mpTask->p_job->stealTask();
+      {
+        Task* p_task = mpTask;
+        Job* p_job = mpTask->p_job;
+        mpTask = p_job->nextTask();
+        p_job->commitTask(*p_task);
+      }
     }
+
+    mCondition.unlockWithCondition(COND_EMPTY);
   }
-  mCondition.unlock();
 
   mState = STATE_TERMINATED;
 }
 
 void nuThreadPool::Worker::assignTask(Task* p_task)
 {
+  mCondition.lockWhenCondition(COND_EMPTY);
   NU_ASSERT(mpTask == nullptr, "Task exist!\n");
-  mCondition.lock();
   mpTask = p_task;
-  mCondition.unlock();
-  mCondition.signal();
+  mCondition.unlockWithCondition(COND_ASSIGNED);
+}
+
+void nuThreadPool::waitUntilFinished(JobTicket& ticket)
+{
+  if(ticket.isValid())
+    ticket.mpJob->wait();
 }

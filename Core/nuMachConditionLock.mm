@@ -28,6 +28,18 @@ i32 nuMachConditionLock::getCondition(void) const
   return static_cast< i32 >([cond_lock condition]);
 }
 
+void nuMachConditionLock::lock(void)
+{
+  NSConditionLock* cond_lock = static_cast< NSConditionLock* >(mpHandle);
+  [cond_lock lock];
+}
+
+void nuMachConditionLock::unlock(void)
+{
+  NSConditionLock* cond_lock = static_cast< NSConditionLock* >(mpHandle);
+  [cond_lock unlock];
+}
+
 void nuMachConditionLock::lockWhenCondition(i32 condition)
 {
   NSConditionLock* cond_lock = static_cast< NSConditionLock* >(mpHandle);

@@ -20,6 +20,9 @@ public:
 
   i32 getCondition(void) const;
 
+  void lock(void);
+  void unlock(void);
+
   void lockWhenCondition(i32 condition);
   void trylockWhenCondition(i32 condition);
   void unlockWithCondition(i32 condition);
