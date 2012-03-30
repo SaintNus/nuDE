@@ -7,4 +7,4 @@
 
 #include "nuResourceManager.h"
 
-IMPLEMENT_SINGLETON(nuResourceManager);
+IMPLEMENT_TYPE_INFO(nuResourceManager, nuObject);

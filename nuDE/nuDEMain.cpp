@@ -77,6 +77,9 @@ void nuDEMain::initialize(void)
     nuFile file(nude::FATTR_READ, path);
     NU_TRACE("File size: %lu\n", file.getSize());
   }
+
+  nuGResHandle res = nuApplication::renderGL().createVertexBuffer(0, nuGResource::STATIC_RESOURCE);
+  res.release();
 }
 
 void nuDEMain::update(void)

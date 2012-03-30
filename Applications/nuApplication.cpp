@@ -7,7 +7,6 @@
 
 #include "nuApplication.h"
 
-IMPLEMENT_SINGLETON(nuApplication);
 IMPLEMENT_TYPE_INFO(nuApplication, nuObject);
 
 nuApplication::nuApplication()

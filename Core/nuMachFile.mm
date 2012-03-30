@@ -142,7 +142,7 @@ nude::FILE_ERROR nuMachFile::close(void)
 // Read file content.
 size_t nuMachFile::read(void* ptr, size_t bytes)
 {
-  if(!mFileHandle)
+  if(!mFileHandle || ptr == nullptr)
     return 0;
 
   if(mAttribute != nude::FATTR_WRITE) {
@@ -161,7 +161,7 @@ size_t nuMachFile::read(void* ptr, size_t bytes)
 // Write file content.
 size_t nuMachFile::write(void* ptr, size_t bytes)
 {
-  if(!mFileHandle || bytes == 0)
+  if(!mFileHandle || ptr == nullptr || bytes == 0)
     return 0;
 
   if(mAttribute == nude::FATTR_WRITE) {

@@ -474,7 +474,7 @@ private:
 
   };
 
-  static const ui32 MAX_WORKER = 4;
+  static const ui32 MAX_WORKER = 16;
 
   JobArena mJobArena;
   nuThread mJobArenaThread;

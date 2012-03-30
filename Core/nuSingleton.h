@@ -17,49 +17,53 @@
 template< class T >
 class nuSingleton
 {
+  static T** staticInstance(void) {
+    static T* mpInstance = nullptr;
+    return &mpInstance;
+  }
+
+  //! \brief Default constructor.
+  nuSingleton();
+  //! \brief Default destructor.
+  ~nuSingleton();
+
 public:
   //! \brief Get singleton instance.
   static T* instance(void) {
-    return mpInstance;
+    return *(staticInstance());
   }
 
   //! \brief Create singleton instance.
   static T* createInstance(void) {
-    if(!mpInstance)
-      mpInstance = new T;
-    return mpInstance;
+    T** inst = staticInstance();
+    if(!(*inst))
+      *inst = new T;
+    return *inst;
   }
 
   //! \brief Delete singleton instance.
   static void deleteInstance(void) {
-    if(mpInstance) {
-      T* ptr = mpInstance;
-      mpInstance = nullptr;
+    T** inst = staticInstance();
+    if(*inst) {
+      T* ptr = *inst;
+      *inst = nullptr;
       delete ptr;
     }
   }
 
   static const nuTypeInfo& getTypeInfo(void) {
-    NU_ASSERT_C(mpInstance != nullptr);
-    return mpInstance->getTypeInfo();
+    NU_ASSERT_C(instance() != nullptr);
+    return instance()->getTypeInfo();
   }
-
-private:
-  static T* mpInstance;           //!< Singleton instance.
-  //! \brief Default constructor.
-  nuSingleton() {}
-  //! \brief Default destructor.
-  ~nuSingleton() {}
 
 };
 
 #define DECLARE_SINGLETON(_class) \
   private: \
-    friend class nuSingleton< _class >
-
-#define IMPLEMENT_SINGLETON(_class) \
-  template<> _class* nuSingleton< _class >::mpInstance = nullptr
-
-#define INST(_class) nuSingleton< _class >::instance()
+    friend class nuSingleton< _class >; \
+  public: \
+    static _class* instance(void) { \
+      return nuSingleton< _class >::instance(); \
+    }
 
 #endif

@@ -13,6 +13,7 @@
 
 class nuResourceManager : public nuObject
 {
+  DECLARE_TYPE_INFO;
   DECLARE_SINGLETON(nuResourceManager);
 
 private:

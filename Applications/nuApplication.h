@@ -21,7 +21,7 @@ class nuApplication : public nuObject
 
 public:
   static nuAppMain* appMain(void) {
-    return INST(nuApplication)->mpAppMain;
+    return nuApplication::instance()->mpAppMain;
   }
 
   static nuRenderGL& renderGL(void) {

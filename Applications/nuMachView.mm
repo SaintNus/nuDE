@@ -57,7 +57,7 @@ static CVReturn DisplayLinkCallback(CVDisplayLinkRef display_link,
 
 - (void) prepareOpenGL
 {
-  GLint swapInt = 1;
+  GLint swapInt = 0;
 
   [[self openGLContext] makeCurrentContext];
   [[self openGLContext] setValues: &swapInt forParameter: NSOpenGLCPSwapInterval];

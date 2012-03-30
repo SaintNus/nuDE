@@ -201,3 +201,8 @@ i32 nuRenderGL::render(void)
 
   return 0;
 }
+
+void nuRenderGL::updateResources(void)
+{
+
+}

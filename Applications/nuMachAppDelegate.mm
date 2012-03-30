@@ -50,7 +50,7 @@ static nuMachAppDelegate* gpAppDelegate = nil;
     [window makeKeyAndOrderFront: self];
 
     nuSingleton< nuApplication >::createInstance();
-    INST(nuApplication)->initialize([self appMain]);
+    nuApplication::instance()->initialize([self appMain]);
 
     nuApplication::renderGL().initTest();
 
@@ -80,7 +80,7 @@ static nuMachAppDelegate* gpAppDelegate = nil;
 - (void) appThreadProcedure: (id) sender
 {
   NU_TRACE("Running application thread.\n");
-  INST(nuApplication)->run();
+  nuApplication::instance()->run();
 }
 
 @end
