@@ -243,6 +243,7 @@
 		C72BFEB7141CACC8004F0E00 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				CLASSPREFIX = nu;
 				LastUpgradeCheck = 0420;
 			};
 			buildConfigurationList = C72BFEBA141CACC8004F0E00 /* Build configuration list for PBXProject "nuDE" */;

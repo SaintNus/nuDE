@@ -143,8 +143,9 @@
 		C7A2C4A41462BD2000ACDC27 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				CLASSPREFIX = nu;
 				LastUpgradeCheck = 0420;
-				ORGANIZATIONNAME = "Capcom Japan Co. Ltd.";
+				ORGANIZATIONNAME = "";
 			};
 			buildConfigurationList = C7A2C4A71462BD2000ACDC27 /* Build configuration list for PBXProject "Applications" */;
 			compatibilityVersion = "Xcode 3.2";

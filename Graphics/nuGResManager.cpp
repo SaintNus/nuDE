@@ -28,7 +28,7 @@ nuGResHandle nuGResManager::createVertexBuffer(size_t size, nuGResource::RESOURC
 
 nuGResHandle nuGResManager::createElementBuffer(size_t size, nuGResource::RESOURCE_USAGE usage)
 {
-  return nuGResHandle(new nuElementBuffer(0, usage));
+  return nuGResHandle(new nuElementBuffer(nuElementBuffer::UNSIGNED_INT_16, 0, usage));
 }
 
 void nuGResManager::updateStaticResource(void)

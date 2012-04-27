@@ -69,11 +69,11 @@ namespace nude {
       return mpObject != nullptr;
     }
 
-    T* operator * (void) const {
+    T* operator & (void) const {
       return mpObject;
     }
 
-    T& operator & (void) const {
+    T& operator * (void) const {
       return *mpObject;
     }
 

@@ -155,8 +155,9 @@
 		C785D05D145D412100E64F10 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				CLASSPREFIX = nu;
 				LastUpgradeCheck = 0420;
-				ORGANIZATIONNAME = "Capcom Japan Co. Ltd.";
+				ORGANIZATIONNAME = "";
 			};
 			buildConfigurationList = C785D060145D412100E64F10 /* Build configuration list for PBXProject "Graphics" */;
 			compatibilityVersion = "Xcode 3.2";

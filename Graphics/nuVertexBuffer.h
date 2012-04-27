@@ -13,6 +13,7 @@
 class nuVertexBuffer : public nuGResource
 {
   DECLARE_TYPE_INFO;
+  friend class nuGResManager;
 
   void* mpBuffer;
   size_t mSize;
@@ -28,10 +29,10 @@ class nuVertexBuffer : public nuGResource
 
   nuVertexBuffer() {}
 
-public:
   nuVertexBuffer(size_t size, nuGResource::RESOURCE_USAGE usage);
   ~nuVertexBuffer();
 
+public:
   void* getBuffer(void) const {
     return mpBuffer;
   }
@@ -41,5 +42,7 @@ public:
   }
 
 };
+
+typedef nude::Handle< nuVertexBuffer > nuVertexHandle;
 
 #endif

@@ -51,7 +51,7 @@ protected:
         mUsage(usage),
         mAttribute(0)
   {
-    // None...
+    // None.
   }
 
   virtual ~nuGResource() = 0;
@@ -99,25 +99,22 @@ protected:
     }
   }
 
-  virtual void preUpdate(void) {
-    // None...
-  }
-
   virtual void update(void) = 0;
-
-  virtual void postUpdate(void) {
-    if(mUpdated == 1)
-      mUpdated = 0;
-    if(mInitialized == 0)
-      mInitialized = 1;
-  }
 
   bool isInitialized(void) const {
     return mInitialized == 1;
   }
 
+  void setInitialized(bool initialized) {
+    mInitialized = initialized ? 1 : 0;
+  }
+
   bool isUpdated(void) const {
     return mUpdated == 1;
+  }
+
+  void setUpdate(bool update) {
+    mUpdated = update ? 1 : 0;
   }
 
   nuGResource() {}
