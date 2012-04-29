@@ -17,6 +17,8 @@ class nuVertexBuffer : public nuGResource
 
   void* mpBuffer;
   size_t mSize;
+  GLuint mVertexBufferID;
+  size_t mUpdateSize;
 
   void update(void);
 
@@ -27,7 +29,7 @@ class nuVertexBuffer : public nuGResource
     }
   }
 
-  nuVertexBuffer() {}
+  nuVertexBuffer();
 
   nuVertexBuffer(size_t size, nuGResource::RESOURCE_USAGE usage);
   ~nuVertexBuffer();
@@ -39,6 +41,11 @@ public:
 
   size_t getSize(void) const {
     return mSize;
+  }
+
+  void commit(size_t size) {
+    mUpdateSize = size;
+    setUpdate(true);
   }
 
 };

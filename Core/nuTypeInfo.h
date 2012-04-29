@@ -183,6 +183,15 @@ private:
   _class::PrivateTypeInfo _class::mTypeInfo; \
   const nuTypeInfo& _class::TypeInfo(void) { return mTypeInfo; }
 
+#define IMPLEMENT_TYPE_INFO_INST(_class, _super, _new) \
+  _class::PrivateTypeInfo::PrivateTypeInfo() : nuTypeInfo(#_class, &_super::mTypeInfo) {} \
+  _class::PrivateTypeInfo::~PrivateTypeInfo() {} \
+  size_t _class::PrivateTypeInfo::getSize(void) const { return sizeof(_class); } \
+  nuTypeInfo::Type _class::PrivateTypeInfo::getType(void) const { return nuTypeInfo::DEFAULT; } \
+  nuObject* _class::PrivateTypeInfo::createInstance(void) const { return _new; } \
+  _class::PrivateTypeInfo _class::mTypeInfo; \
+  const nuTypeInfo& _class::TypeInfo(void) { return mTypeInfo; }
+
 #define IMPLEMENT_TYPE_INFO_ABSTRACT(_class, _super) \
   _class::PrivateTypeInfo::PrivateTypeInfo() : nuTypeInfo(#_class, &_super::mTypeInfo) {} \
   _class::PrivateTypeInfo::~PrivateTypeInfo() {} \

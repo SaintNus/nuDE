@@ -42,6 +42,21 @@ public:
     return mUsage;
   }
 
+  void protect(i64 frame_id) {
+    i64 sfid = mFrameID;
+    i64 dfid = frame_id;
+
+    while(sfid < dfid) {
+      bool ret = nuAtomic::cas(sfid, dfid, &mFrameID);
+      if(!ret) {
+        sfid = mFrameID;
+        dfid = frame_id;
+      } else {
+        return;
+      }
+    }
+  }
+
 protected:
   volatile i32 mRefCount;
 
@@ -72,7 +87,7 @@ protected:
     }
   }
 
-  void decRefCount(void) {
+  bool decRefCount(void) {
     i32 curr = mRefCount;
     i32 res = curr - 1;
     while(1) {
@@ -91,10 +106,11 @@ protected:
               res = curr - 1;
             } else {
               delete this;
-              return;
+              return true;
             }
           }
         }
+        return false;
       }
     }
   }
@@ -117,11 +133,10 @@ protected:
     mUpdated = update ? 1 : 0;
   }
 
-  nuGResource() {}
-
 private:
   RESOURCE_TYPE mType;
   RESOURCE_USAGE mUsage;
+  volatile i64 mFrameID;
   union {
     ui32 mAttribute;
     struct {
@@ -130,6 +145,8 @@ private:
       ui32 mReserved: 30;
     };
   };
+
+  nuGResource();
 
 };
 

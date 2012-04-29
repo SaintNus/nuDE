@@ -48,7 +48,7 @@ private:
     }
   }
 
-  nuElementBuffer() {}
+  nuElementBuffer();
   nuElementBuffer(ELEMENT_TYPE type, ui32 element_num, nuGResource::RESOURCE_USAGE usage);
   ~nuElementBuffer();
 
