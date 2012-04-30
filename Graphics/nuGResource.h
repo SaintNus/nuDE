@@ -131,6 +131,14 @@ protected:
     mUpdated = update ? 1 : 0;
   }
 
+  ui32 getExtension(void) const {
+    return mExtension;
+  }
+
+  void setExtension(ui32 extension) {
+    mExtension = extension;
+  }
+
 private:
   RESOURCE_TYPE mType;
   RESOURCE_USAGE mUsage;
@@ -140,7 +148,7 @@ private:
     struct {
       ui32 mInitialized: 1;
       ui32 mUpdated: 1;
-      ui32 mReserved: 30;
+      ui32 mExtension: 30;
     };
   };
 

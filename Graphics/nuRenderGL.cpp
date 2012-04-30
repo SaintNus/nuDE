@@ -19,7 +19,6 @@ static GLuint fsh_id = 0;
 static GLuint prog_id = 0;
 static nude::VertexBuffer vtx_buffer;
 static nude::ElementBuffer idx_buffer;
-static GLuint vao_id = 0;
 static GLint vertex_loc = 0;
 static GLint color_loc = 0;
 
@@ -163,6 +162,21 @@ void nuRenderGL::initTest(void)
       void* p_buffer = vtx_buffer->getBuffer();
       memcpy(p_buffer, vtx, sizeof(vtx));
       vtx_buffer->commit(sizeof(vtx));
+
+      vtx_buffer->beginArrayDeclaration(sizeof(Vertex));
+      {
+        vtx_buffer->declare(nuVertexBuffer::VertexArray(vertex_loc,
+                                                        3,
+                                                        nuVertexBuffer::FLOAT,
+                                                        false,
+                                                        0));
+        vtx_buffer->declare(nuVertexBuffer::VertexArray(color_loc,
+                                                        4,
+                                                        nuVertexBuffer::FLOAT,
+                                                        false,
+                                                        sizeof(f32) * 3));
+      }
+      vtx_buffer->endArrayDeclaration();
     }
 
     {
@@ -184,7 +198,6 @@ void nuRenderGL::termTest(void)
   glDeleteProgram(prog_id);
   vtx_buffer.release();
   idx_buffer.release();
-  glDeleteVertexArrays(1, &vao_id);
 }
 
 i32 nuRenderGL::render(void)
@@ -195,23 +208,7 @@ i32 nuRenderGL::render(void)
 
   glUseProgram(prog_id);
 
-  if(vao_id == 0) {
-    glGenVertexArrays(1, &vao_id);
-
-    glBindVertexArray(vao_id);
-
-    vtx_buffer->bind();
-    glEnableVertexAttribArray(vertex_loc);
-    glVertexAttribPointer(vertex_loc, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-                          reinterpret_cast< GLvoid* >(0));
-
-    glEnableVertexAttribArray(color_loc);
-    glVertexAttribPointer(color_loc, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-                          reinterpret_cast< GLvoid* >(sizeof(f32) * 3));
-  } else {
-    glBindVertexArray(vao_id);
-  }
-
+  vtx_buffer->bind();
   idx_buffer->bind();
 
   glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_SHORT, 0);

@@ -52,5 +52,6 @@ typedef char c8;
 typedef wchar_t c32;
 
 #define FORCE_VISIBLE __attribute__((visibility("default")))
+#define FORCE_HIDDEN __attribute__((visibility("hidden")))
 
 #endif
