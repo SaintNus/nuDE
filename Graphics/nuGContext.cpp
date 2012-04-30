@@ -8,11 +8,17 @@
 #include "nuGContext.h"
 
 nuGContext::nuGContext()
+    : mFrameID(0)
 {
 
 }
 
 nuGContext::~nuGContext()
+{
+
+}
+
+void nuGContext::clear(ui32 clear_bit, const nuColor& color, f32 depth)
 {
 
 }

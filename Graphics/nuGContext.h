@@ -14,6 +14,8 @@
  */
 class nuGContext
 {
+  friend class nuRenderGL;
+
 public:
   enum TYPE {
     CLEAR = 0,
@@ -39,10 +41,13 @@ private:
   };
 
   typedef DrawCmd< Clear > ClearCmd;
+  i64 mFrameID;
 
-public:
   nuGContext();
   ~nuGContext();
+
+public:
+  void clear(ui32 clear_bit, const nuColor& color, f32 depth);
 
 };
 

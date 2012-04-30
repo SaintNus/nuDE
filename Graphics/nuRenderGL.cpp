@@ -17,13 +17,14 @@ struct Vertex {
 static GLuint vsh_id = 0;
 static GLuint fsh_id = 0;
 static GLuint prog_id = 0;
-static GLuint vtx_id = 0;
-static GLuint idx_id = 0;
+static nude::VertexBuffer vtx_buffer;
+static nude::ElementBuffer idx_buffer;
 static GLuint vao_id = 0;
 static GLint vertex_loc = 0;
 static GLint color_loc = 0;
 
 nuRenderGL::nuRenderGL()
+    : mFrameID(0)
 {
 
 }
@@ -157,23 +158,21 @@ void nuRenderGL::initTest(void)
       },
     };
 
-    glGenVertexArrays(1, &vao_id);
-    glGenBuffers(1, &vtx_id);
-    glGenBuffers(1, &idx_id);
+    {
+      vtx_buffer = createVertexBuffer(sizeof(vtx), nuGResource::STATIC_RESOURCE);
+      void* p_buffer = vtx_buffer->getBuffer();
+      memcpy(p_buffer, vtx, sizeof(vtx));
+      vtx_buffer->commit(sizeof(vtx));
+    }
 
-    glBindVertexArray(vao_id);
-
-    glBindBuffer(GL_ARRAY_BUFFER, vtx_id);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vtx), vtx, GL_STATIC_DRAW);
-    glEnableVertexAttribArray(vertex_loc);
-    glVertexAttribPointer(vertex_loc, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-                          reinterpret_cast< GLvoid* >(0));
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, idx_id);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(idx), idx, GL_STATIC_DRAW);
-    glEnableVertexAttribArray(color_loc);
-    glVertexAttribPointer(color_loc, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-                          reinterpret_cast< GLvoid* >(sizeof(f32) * 3));
+    {
+      idx_buffer = createElementBuffer(nuElementBuffer::UNSIGNED_INT_16,
+                                       sizeof(idx) / sizeof(ui16),
+                                       nuGResource::nuGResource::STATIC_RESOURCE);
+      void* p_buffer = idx_buffer->getBuffer();
+      memcpy(p_buffer, idx, sizeof(idx));
+      idx_buffer->commit(sizeof(idx) / sizeof(ui16));
+    }
   }
 
 }
@@ -183,8 +182,8 @@ void nuRenderGL::termTest(void)
   glDeleteShader(vsh_id);
   glDeleteShader(fsh_id);
   glDeleteProgram(prog_id);
-  glDeleteBuffers(1, &vtx_id);
-  glDeleteBuffers(1, &idx_id);
+  vtx_buffer.release();
+  idx_buffer.release();
   glDeleteVertexArrays(1, &vao_id);
 }
 
@@ -196,13 +195,33 @@ i32 nuRenderGL::render(void)
 
   glUseProgram(prog_id);
 
-  glBindVertexArray(vao_id);
+  if(vao_id == 0) {
+    glGenVertexArrays(1, &vao_id);
+
+    glBindVertexArray(vao_id);
+
+    vtx_buffer->bind();
+    glEnableVertexAttribArray(vertex_loc);
+    glVertexAttribPointer(vertex_loc, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+                          reinterpret_cast< GLvoid* >(0));
+
+    glEnableVertexAttribArray(color_loc);
+    glVertexAttribPointer(color_loc, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+                          reinterpret_cast< GLvoid* >(sizeof(f32) * 3));
+  } else {
+    glBindVertexArray(vao_id);
+  }
+
+  idx_buffer->bind();
+
   glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_SHORT, 0);
 
   return 0;
 }
 
-void nuRenderGL::updateResources(void)
+void nuRenderGL::updateGraphicResources(void)
 {
-
+  mFrameID++;
+  mResourceManager.updateStaticResource(mFrameID);
+  mResourceManager.updateDynamicResource(mFrameID);
 }

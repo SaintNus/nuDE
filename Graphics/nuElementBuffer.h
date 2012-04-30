@@ -14,6 +14,7 @@ class nuElementBuffer : public nuGResource
 {
   DECLARE_TYPE_INFO;
   friend class nuGResManager;
+  friend nude::Handle< nuElementBuffer >;
 
 public:
   enum ELEMENT_TYPE {
@@ -57,8 +58,8 @@ public:
     return mpBuffer;
   }
 
-  void commit(size_t size) {
-    mUpdateSize = size;
+  void commit(ui32 element_num) {
+    mUpdateSize = element_num * getElementSize(mElementType);
     setUpdate(true);
   }
 
@@ -74,8 +75,14 @@ public:
     return mElementNum;
   }
 
+  void bind(void) const {
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mElementBufferID);
+  }
+
 };
 
-typedef nude::Handle< nuElementBuffer > nuElementHandle;
+namespace nude {
+  typedef Handle< nuElementBuffer > ElementBuffer;
+}
 
 #endif

@@ -17,7 +17,7 @@
 template< class T >
 class nuSingleton
 {
-  static T** staticInstance(void) {
+  static T** staticInstance(void) FORCE_VISIBLE {
     static T* mpInstance = nullptr;
     return &mpInstance;
   }

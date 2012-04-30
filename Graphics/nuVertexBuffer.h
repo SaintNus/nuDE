@@ -14,6 +14,7 @@ class nuVertexBuffer : public nuGResource
 {
   DECLARE_TYPE_INFO;
   friend class nuGResManager;
+  friend nude::Handle< class nuVertexBuffer >;
 
   void* mpBuffer;
   size_t mSize;
@@ -48,8 +49,14 @@ public:
     setUpdate(true);
   }
 
+  void bind(void) const {
+    glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferID);
+  }
+
 };
 
-typedef nude::Handle< nuVertexBuffer > nuVertexHandle;
+namespace nude {
+  typedef Handle< nuVertexBuffer > VertexBuffer;
+}
 
 #endif

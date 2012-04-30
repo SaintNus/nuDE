@@ -51,4 +51,6 @@ typedef char c8;
 //! \brief String.
 typedef wchar_t c32;
 
+#define FORCE_VISIBLE __attribute__((visibility("default")))
+
 #endif

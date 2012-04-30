@@ -9,6 +9,8 @@
 #define __NUGRESMANAGER_H__
 
 #include "nuGResource.h"
+#include "nuVertexBuffer.h"
+#include "nuElementBuffer.h"
 
 class nuGResManager : public nuObject
 {
@@ -36,8 +38,10 @@ public:
   nuGResManager();
   ~nuGResManager();
 
-  nuGResHandle createVertexBuffer(size_t size, nuGResource::RESOURCE_USAGE usage);
-  nuGResHandle createElementBuffer(size_t size, nuGResource::RESOURCE_USAGE usage);
+  nude::VertexBuffer createVertexBuffer(size_t size, nuGResource::RESOURCE_USAGE usage);
+  nude::ElementBuffer createElementBuffer(nuElementBuffer::ELEMENT_TYPE type,
+                                          ui32 size,
+                                          nuGResource::RESOURCE_USAGE usage);
 
   void updateStaticResource(i64 frame_id);
   void updateDynamicResource(i64 frame_id);

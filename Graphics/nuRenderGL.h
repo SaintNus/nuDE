@@ -9,6 +9,8 @@
 #define __NURENDERGL_H__
 
 #include "nuGResManager.h"
+#include "nuVertexBuffer.h"
+#include "nuElementBuffer.h"
 
 /*!
  * \class nuRenderGL
@@ -18,26 +20,28 @@ class nuRenderGL : public nuObject
 {
   DECLARE_TYPE_INFO;
 
+  nuGResManager mResourceManager;
+  i64 mFrameID;
+
 public:
   nuRenderGL();
   ~nuRenderGL();
 
-  void updateResources(void);
+  void updateGraphicResources(void);
   i32 render(void);
 
   void initTest(void);
   void termTest(void);
 
-  nuGResHandle createVertexBuffer(size_t size, nuGResource::RESOURCE_USAGE usage) {
-    return nuGResHandle(mResourceManager.createVertexBuffer(size, usage));
+  nude::VertexBuffer createVertexBuffer(size_t size, nuGResource::RESOURCE_USAGE usage) {
+    return nude::VertexBuffer(mResourceManager.createVertexBuffer(size, usage));
   }
 
-  nuGResHandle createIndexBuffer(size_t size, nuGResource::RESOURCE_USAGE usage) {
-    return nuGResHandle(mResourceManager.createElementBuffer(size, usage));
+  nude::ElementBuffer createElementBuffer(nuElementBuffer::ELEMENT_TYPE type,
+                                          ui32 size,
+                                          nuGResource::RESOURCE_USAGE usage) {
+    return nude::ElementBuffer(mResourceManager.createElementBuffer(type, size, usage));
   }
-
-private:
-  nuGResManager mResourceManager;
 
 };
 

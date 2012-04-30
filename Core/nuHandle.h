@@ -24,14 +24,14 @@ namespace nude {
         : mpObject(nullptr)
     {
       if(handle.isValid())
-        mpObject = handle.mpObject->incRefCount();
+        mpObject = static_cast< T* >(handle.mpObject->incRefCount());
     }
 
     Handle(T* p_obj)
         : mpObject(nullptr)
     {
       NU_ASSERT(p_obj != nullptr, "Invalid pointer.\n");
-      mpObject = p_obj->incRefCount();
+      mpObject = static_cast< T* >(p_obj->incRefCount());
     }
 
     ~Handle() {
@@ -44,7 +44,7 @@ namespace nude {
         mpObject = nullptr;
       }
       if(handle.isValid())
-        mpObject = handle.mpObject->incRefCount();
+        mpObject = static_cast< T* >(handle.mpObject->incRefCount());
       return *this;
     }
 

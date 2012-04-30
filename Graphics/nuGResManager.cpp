@@ -9,6 +9,8 @@
 #include "nuVertexBuffer.h"
 #include "nuElementBuffer.h"
 
+using namespace nude;
+
 IMPLEMENT_TYPE_INFO(nuGResManager, nuObject);
 
 nuGResManager::nuGResManager()
@@ -21,8 +23,11 @@ nuGResManager::nuGResManager()
 
 nuGResManager::~nuGResManager()
 {
-  NU_ASSERT(mStaticResource.size() == 0, "GL static resource is leaking.\n");
-  NU_ASSERT(mDynamicResource.size() == 0, "GL dynamic resource is leaking.\n");
+  deleteResources(mStaticResource, mStaticResMutex, 0x7fffffffffffffffL);
+  deleteResources(mDynamicResource, mDynamicResMutex, 0x7fffffffffffffffL);
+
+  NU_ASSERT(mStaticResource.size() == 0, "Static GL resource is leaking.\n");
+  NU_ASSERT(mDynamicResource.size() == 0, "Dynamic GL resource is leaking.\n");
 
   if(mpUpdateTable) {
     delete[] mpUpdateTable;
@@ -30,14 +35,56 @@ nuGResManager::~nuGResManager()
   }
 }
 
-nuGResHandle nuGResManager::createVertexBuffer(size_t size, nuGResource::RESOURCE_USAGE usage)
+VertexBuffer nuGResManager::createVertexBuffer(size_t size, nuGResource::RESOURCE_USAGE usage)
 {
-  return nuGResHandle(new nuVertexBuffer(0, usage));
+  nuVertexBuffer* p_vb = new nuVertexBuffer(size, usage);
+
+  switch (p_vb->getUsage()) {
+  case nuGResource::STATIC_RESOURCE:
+    {
+      nuMutex::Autolock mutex(mStaticResMutex);
+      mStaticResource.push_back(p_vb);
+    }
+    break;
+  case nuGResource::DYNAMIC_RESOURCE:
+    {
+      nuMutex::Autolock mutex(mDynamicResMutex);
+      mDynamicResource.push_back(p_vb);
+    }
+    break;
+  default:
+    NU_ASSERT_C(false);
+    break;
+  }
+
+  return VertexBuffer(p_vb);
 }
 
-nuGResHandle nuGResManager::createElementBuffer(size_t size, nuGResource::RESOURCE_USAGE usage)
+ElementBuffer nuGResManager::createElementBuffer(nuElementBuffer::ELEMENT_TYPE type,
+                                                 ui32 size,
+                                                 nuGResource::RESOURCE_USAGE usage)
 {
-  return nuGResHandle(new nuElementBuffer(nuElementBuffer::UNSIGNED_INT_16, 0, usage));
+  nuElementBuffer* p_eb = new nuElementBuffer(type, size, usage);
+
+  switch (p_eb->getUsage()) {
+  case nuGResource::STATIC_RESOURCE:
+    {
+      nuMutex::Autolock mutex(mStaticResMutex);
+      mStaticResource.push_back(p_eb);
+    }
+    break;
+  case nuGResource::DYNAMIC_RESOURCE:
+    {
+      nuMutex::Autolock mutex(mDynamicResMutex);
+      mDynamicResource.push_back(p_eb);
+    }
+    break;
+  default:
+    NU_ASSERT_C(false);
+    break;
+  }
+
+  return ElementBuffer(p_eb);
 }
 
 void nuGResManager::updateStaticResource(i64 frame_id)

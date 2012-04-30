@@ -8,12 +8,9 @@
 #ifndef __NUGRESOURCE_H__
 #define __NUGRESOURCE_H__
 
-typedef nude::Handle< class nuGResource > nuGResHandle;
-
 class nuGResource : public nuObject
 {
   DECLARE_TYPE_INFO;
-  friend class nude::Handle< class nuGResource >;
   friend class nuGResManager;
 
 public:
@@ -64,7 +61,8 @@ protected:
       : mRefCount(1),
         mType(type),
         mUsage(usage),
-        mAttribute(0)
+        mAttribute(0),
+        mFrameID(0)
   {
     // None.
   }
