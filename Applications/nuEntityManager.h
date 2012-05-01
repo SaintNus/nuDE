@@ -11,10 +11,30 @@
 class nuEntityManager : public nuObject
 {
   DECLARE_TYPE_INFO;
+  friend class nuEntity;
+
+  union {
+    ui32 mAttribute;
+    struct {
+      ui32 mExited: 1;
+      ui32 mReserved: 31;
+    };
+  };
+
+  nuMutex mListMutex;
+  class nuEntity* mpList;
+  ui32 mEntityNum;
+
+  void registerEntity(class nuEntity& entity);
+  void unregisterEntity(class nuEntity& entity);
 
 public:
   nuEntityManager();
   ~nuEntityManager();
+
+  ui32 getEntityNum(void) const {
+    return mEntityNum;
+  }
 
 };
 

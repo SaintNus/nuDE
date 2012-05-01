@@ -13,9 +13,25 @@ class nuEntity : public nuObject
   DECLARE_TYPE_INFO;
   friend class nuEntityManager;
 
-public:
+  union {
+    ui32 mAttribute;
+    struct {
+      ui32 mRegistered: 1;
+      ui32 mReserved: 31;
+    };
+  };
+
+  nuEntity* mpPrev;
+  nuEntity* mpNext;
+
+protected:
   nuEntity();
-  virtual ~nuEntity() = 0;
+  virtual ~nuEntity();
+
+public:
+  virtual void setup(nuGSetupContext& setup) = 0;
+  virtual void update(void) = 0;
+  virtual void draw(nuGContext& context) = 0;
 
 };
 

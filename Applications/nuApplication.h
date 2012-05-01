@@ -34,6 +34,11 @@ public:
     return appMain()->getThreadPool();
   }
 
+  static nuEntityManager& entityManager(void) {
+    NU_ASSERT_C(appMain() != NULL);
+    return appMain()->getEntityManager();
+  }
+
   void initialize(const nuTypeInfo& app_main);
   i32 run(void) {
     if(mpAppMain)

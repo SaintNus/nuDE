@@ -20,5 +20,6 @@
 #include "nuGResManager.h"
 
 #include "nuGContext.h"
+#include "nuGSetupContext.h"
 
 #endif
