@@ -5,6 +5,7 @@
  * \date 2011/11/03 22:13
  */
 
+#include "nuEntityManager.h"
 #include "nuAppMain.h"
 
 IMPLEMENT_TYPE_INFO(nuAppMain, nuObject);
@@ -12,6 +13,7 @@ IMPLEMENT_TYPE_INFO(nuAppMain, nuObject);
 nuAppMain::nuAppMain()
     : mpRenderGL(nullptr),
       mpThreadPool(nullptr),
+      mpEntityManager(nullptr),
       mState(UNINITIALIZED)
 {
   // None...
@@ -23,11 +25,19 @@ nuAppMain::~nuAppMain()
     while(mState != READY)
       nuThread::usleep(16000);
   }
+
+  if(mpEntityManager) {
+    nuEntityManager* ptr = mpEntityManager;
+    mpEntityManager = nullptr;
+    delete ptr;
+  }
+
   if(mpRenderGL) {
     nuRenderGL* ptr = mpRenderGL;
     mpRenderGL = nullptr;
     delete ptr;
   }
+
   if(mpThreadPool) {
     nuThreadPool* ptr = mpThreadPool;
     mpThreadPool = nullptr;
@@ -49,9 +59,13 @@ i32 nuAppMain::main(void)
 
 void nuAppMain::initialize(void)
 {
-  NU_ASSERT_C(mpRenderGL == NULL);
+  NU_ASSERT_C(mpRenderGL == nullptr);
+  NU_ASSERT_C(mpThreadPool == nullptr);
+
   mpRenderGL = new nuRenderGL;
   mpThreadPool = new nuThreadPool;
+  mpEntityManager = new nuEntityManager;
+  
   mState = READY;
 }
 

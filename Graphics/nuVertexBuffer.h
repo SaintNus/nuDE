@@ -114,6 +114,14 @@ private:
   ~nuVertexBuffer();
 
 public:
+  GLuint getHandle(void) const {
+    return mVertexBufferID;
+  }
+
+  GLuint getArrayHandle(void) const {
+    return mVertexArrayID;
+  }
+
   void* getBuffer(void) const {
     return mpBuffer;
   }

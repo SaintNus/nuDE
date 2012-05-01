@@ -41,10 +41,16 @@ public:
     return *mpThreadPool;
   }
 
+  class nuEntityManager& getEntityManager(void) const {
+    return *mpEntityManager;
+  }
+
 protected:
   STATE mState;
   nuRenderGL* mpRenderGL;
   nuThreadPool* mpThreadPool;
+
+  class nuEntityManager* mpEntityManager;
 
   virtual void update(void) {}
 

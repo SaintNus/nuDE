@@ -54,6 +54,10 @@ private:
   ~nuElementBuffer();
 
 public:
+  GLuint getHandle(void) const {
+    return mElementBufferID;
+  }
+
   void* getBuffer(void) const {
     return mpBuffer;
   }
