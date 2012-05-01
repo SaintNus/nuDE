@@ -18,6 +18,7 @@
 		C7AB29FE141CC065001F8EE5 /* libNudeCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7AB29E0141CBD60001F8EE5 /* libNudeCore.a */; };
 		C7BB68A91424C52800B4899C /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7BB68A81424C52800B4899C /* OpenGL.framework */; };
 		C7BB68B81424D2AB00B4899C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7BB68B71424D2AB00B4899C /* QuartzCore.framework */; };
+		C7DDD834155024BE002B4D5A /* nuDEEntityTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7DDD832155024BE002B4D5A /* nuDEEntityTest.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,6 +91,8 @@
 		C7AB2A17141CC772001F8EE5 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = ../Configurations/Release.xcconfig; sourceTree = "<group>"; };
 		C7BB68A81424C52800B4899C /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		C7BB68B71424D2AB00B4899C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		C7DDD832155024BE002B4D5A /* nuDEEntityTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuDEEntityTest.cpp; sourceTree = SOURCE_ROOT; };
+		C7DDD833155024BE002B4D5A /* nuDEEntityTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuDEEntityTest.h; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -194,10 +197,12 @@
 		C7AB29FF141CC09B001F8EE5 /* Source Codes */ = {
 			isa = PBXGroup;
 			children = (
-				C79DFF05150BAA7300A1FA32 /* nuDEMain.cpp */,
-				C79DFF06150BAA7300A1FA32 /* nuDEMain.h */,
 				C7AB29F1141CC006001F8EE5 /* nuDEAppDelegate.h */,
 				C7AB29F2141CC006001F8EE5 /* nuDEAppDelegate.mm */,
+				C7DDD832155024BE002B4D5A /* nuDEEntityTest.cpp */,
+				C7DDD833155024BE002B4D5A /* nuDEEntityTest.h */,
+				C79DFF05150BAA7300A1FA32 /* nuDEMain.cpp */,
+				C79DFF06150BAA7300A1FA32 /* nuDEMain.h */,
 			);
 			name = "Source Codes";
 			path = nuDE;
@@ -339,6 +344,7 @@
 			files = (
 				C7AB29F5141CC006001F8EE5 /* nuDEAppDelegate.mm in Sources */,
 				C79DFF07150BAA7300A1FA32 /* nuDEMain.cpp in Sources */,
+				C7DDD834155024BE002B4D5A /* nuDEEntityTest.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

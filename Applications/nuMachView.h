@@ -24,7 +24,7 @@
 //! \brief Stop draw procedure.
 - (void) stopDraw;
 
-- (void) lockContext;
-- (void) unlockContext;
+- (CGLContextObj) lockContext;
+- (void) unlockContext: (CGLContextObj) ctx;
 
 @end

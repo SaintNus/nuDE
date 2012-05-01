@@ -18,7 +18,7 @@ static CVReturn DisplayLinkCallback(CVDisplayLinkRef display_link,
 @interface nuMachView (Private)
 
 - (CVReturn) drawFrameForTime: (const CVTimeStamp*) output_time;
-- (void) drawFrame;
+- (void) drawFrameWithContext: (CGLContextObj) ctx;
 
 @end
 
@@ -77,9 +77,9 @@ static CVReturn DisplayLinkCallback(CVDisplayLinkRef display_link,
 {
   NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
-  [self lockContext];
-  [self drawFrame];
-  [self unlockContext];
+  CGLContextObj ctx = [self lockContext];
+  [self drawFrameWithContext: ctx];
+  [self unlockContext: ctx];
 
   [pool release];
   return kCVReturnSuccess;
@@ -103,12 +103,13 @@ static CVReturn DisplayLinkCallback(CVDisplayLinkRef display_link,
   [super dealloc];
 }
 
-- (void) drawFrame
+- (void) drawFrameWithContext: (CGLContextObj) ctx
 {
   NU_ASSERT_C(nuApplication::appMain());
   if(nuApplication::appMain()->getState() == nuAppMain::RUNNING) {
     nuApplication::renderGL().updateGraphicResources();
     nuApplication::renderGL().render();
+    CGLFlushDrawable(ctx);
   }
 }
 
@@ -130,17 +131,16 @@ static CVReturn DisplayLinkCallback(CVDisplayLinkRef display_link,
   }
 }
 
-- (void) lockContext
+- (CGLContextObj) lockContext
 {
   CGLContextObj ctx = static_cast< CGLContextObj >([[self openGLContext] CGLContextObj]);
   [[self openGLContext] makeCurrentContext];
   CGLLockContext(ctx);
+  return ctx;
 }
 
-- (void) unlockContext
+- (void) unlockContext: (CGLContextObj) ctx
 {
-  CGLContextObj ctx = static_cast< CGLContextObj >([[self openGLContext] CGLContextObj]);
-  CGLFlushDrawable(ctx);
   CGLUnlockContext(ctx);
 }
 

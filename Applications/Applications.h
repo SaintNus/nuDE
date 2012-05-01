@@ -13,6 +13,8 @@
 
 #include "nuApplication.h"
 #include "nuAppMain.h"
+#include "nuEntity.h"
+#include "nuEntityManager.h"
 
 #ifdef __OBJC__
 

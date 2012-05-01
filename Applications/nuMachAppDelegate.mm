@@ -64,9 +64,9 @@ static nuMachAppDelegate* gpAppDelegate = nil;
   NU_TRACE("Application terminating!\n");
   [view stopDraw];
 
-  [view lockContext];
+  CGLContextObj ctx = [view lockContext];
   nuApplication::renderGL().termTest();
-  [view unlockContext];
+  [view unlockContext: ctx];
 
   [view release];
   view = nil;
