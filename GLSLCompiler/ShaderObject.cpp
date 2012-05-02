@@ -126,17 +126,17 @@ int ShaderObject::writeToFile(FILE* output_h, const char* name_space)
   WRITE_FILE(output_h, "   */\n\n");
 
   WRITE_FILE(output_h, "  struct Variable {\n");
-  WRITE_FILE(output_h, "    const char* type;\n");
+  WRITE_FILE(output_h, "    const GLchar* type;\n");
   WRITE_FILE(output_h, "    GLenum type;\n");
   WRITE_FILE(output_h, "    GLint size;\n");
   WRITE_FILE(output_h, "  };\n\n");
 
   WRITE_FILE(output_h, "  struct Program {\n");
-  WRITE_FILE(output_h, "    const char* vsh_file; // Vertex shader file name.\n");
-  WRITE_FILE(output_h, "    const char* fsh_file; // Fragment shader file name.\n");
+  WRITE_FILE(output_h, "    const GLchar* vsh_file; // Vertex shader file name.\n");
+  WRITE_FILE(output_h, "    const GLchar* fsh_file; // Fragment shader file name.\n");
   WRITE_FILE(output_h, "    const Variable* attributes; // Program attributes.\n");
   WRITE_FILE(output_h, "    const Variable* uniforms; // Program uniforms.\n");
-  WRITE_FILE(output_h, "    const char** uniform_blocks; // Uniform block names.\n");
+  WRITE_FILE(output_h, "    const GLchar** uniform_blocks; // Uniform block names.\n");
   WRITE_FILE(output_h, "  };\n\n");
 
   WRITE_FILE(output_h, "  /*\n");
@@ -181,7 +181,7 @@ int ShaderObject::writeToFile(FILE* output_h, const char* name_space)
       }
 
       if((*it)->uniform_block.size() > 0) {
-        WRITE_FILE(output_h, "  const char* %sUniformBlocks[%sUniformBlock_Num] = {\n",
+        WRITE_FILE(output_h, "  const GLchar* %sUniformBlocks[%sUniformBlock_Num] = {\n",
                    (*it)->program_name,
                    (*it)->program_name);
         {

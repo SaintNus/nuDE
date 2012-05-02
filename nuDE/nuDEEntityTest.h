@@ -12,13 +12,13 @@ class nuDEEntityTest : public nuEntity
 {
   DECLARE_TYPE_INFO;
 
-public:
-  nuDEEntityTest();
-  ~nuDEEntityTest();
-
   void setup(nuGSetupContext& setup);
   void update(void);
   void draw(nuGContext& context);
+
+public:
+  nuDEEntityTest();
+  ~nuDEEntityTest();
 
 };
 

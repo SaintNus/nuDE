@@ -223,7 +223,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C785D06C145D418E00E64F10 /* Debug.xcconfig */;
 			buildSettings = {
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NudeGraphics-Prefix.pch";
 				HEADER_SEARCH_PATHS = ../Core;
 			};
@@ -233,7 +232,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C785D06E145D418E00E64F10 /* Release.xcconfig */;
 			buildSettings = {
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NudeGraphics-Prefix.pch";
 				HEADER_SEARCH_PATHS = ../Core;
 			};
@@ -243,7 +241,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C785D06D145D418E00E64F10 /* Profile.xcconfig */;
 			buildSettings = {
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NudeGraphics-Prefix.pch";
 				HEADER_SEARCH_PATHS = ../Core;
 			};

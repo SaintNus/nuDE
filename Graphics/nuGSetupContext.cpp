@@ -27,3 +27,13 @@ void nuGSetupContext::endSetup(void)
 {
 
 }
+
+void nuGSetupContext::map(class nuVertexBuffer& vertex_buffer)
+{
+
+}
+
+void nuGSetupContext::map(class nuElementBuffer& element_buffer)
+{
+
+}

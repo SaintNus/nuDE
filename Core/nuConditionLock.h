@@ -45,8 +45,8 @@ namespace nude
       mConditionLock.lockWhenCondition(condition);
     }
 
-    void trylockWhenCondition(i32 condition) {
-      mConditionLock.trylockWhenCondition(condition);
+    bool trylockWhenCondition(i32 condition) {
+      return mConditionLock.trylockWhenCondition(condition);
     }
 
     void unlockWithCondition(i32 condition) {

@@ -23,7 +23,8 @@ static GLint vertex_loc = 0;
 static GLint color_loc = 0;
 
 nuRenderGL::nuRenderGL()
-    : mFrameID(0)
+    : mFrameID(0),
+      mLock(INIT_PHASE)
 {
 
 }
@@ -33,7 +34,7 @@ nuRenderGL::~nuRenderGL()
 
 }
 
-void nuRenderGL::initTest(void)
+void nuRenderGL::initialize(void)
 {
   nuFile vsh(nude::FATTR_READ, "res://Resources/Shader/processed/Debug.vsh");
   nuFile fsh(nude::FATTR_READ, "res://Resources/Shader/processed/Debug.fsh");
@@ -191,17 +192,23 @@ void nuRenderGL::initTest(void)
 
 }
 
-void nuRenderGL::termTest(void)
+void nuRenderGL::terminate(void)
 {
+  mLock.lockWhenCondition(SETUP_PHASE);
+  mLock.unlockWithCondition(EXECUTE_PHASE);
+
   glDeleteShader(vsh_id);
   glDeleteShader(fsh_id);
   glDeleteProgram(prog_id);
+
   vtx_buffer.release();
   idx_buffer.release();
 }
 
 i32 nuRenderGL::render(void)
 {
+  mLock.unlockWithCondition(EXECUTE_PHASE);
+
   glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
   glClearDepth(1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -216,9 +223,21 @@ i32 nuRenderGL::render(void)
   return 0;
 }
 
-void nuRenderGL::updateGraphicResources(void)
+i64 nuRenderGL::updateGraphicResources(void)
 {
   mFrameID++;
   mResourceManager.updateStaticResource(mFrameID);
   mResourceManager.updateDynamicResource(mFrameID);
+  return mFrameID;
+}
+
+void nuRenderGL::synchronize(void)
+{
+  mLock.unlockWithCondition(SETUP_PHASE);
+  mLock.lockWhenCondition(EXECUTE_PHASE);
+}
+
+bool nuRenderGL::isCommandSubmitted(void)
+{
+  return mLock.trylockWhenCondition(SETUP_PHASE);
 }

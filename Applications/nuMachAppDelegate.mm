@@ -52,7 +52,7 @@ static nuMachAppDelegate* gpAppDelegate = nil;
     nuSingleton< nuApplication >::createInstance();
     nuApplication::instance()->initialize([self appMain]);
 
-    nuApplication::renderGL().initTest();
+    nuApplication::renderGL().initialize();
 
     [appThread start];
     [view startDraw];
@@ -65,7 +65,7 @@ static nuMachAppDelegate* gpAppDelegate = nil;
   [view stopDraw];
 
   CGLContextObj ctx = [view lockContext];
-  nuApplication::renderGL().termTest();
+  nuApplication::renderGL().terminate();
   [view unlockContext: ctx];
 
   [view release];

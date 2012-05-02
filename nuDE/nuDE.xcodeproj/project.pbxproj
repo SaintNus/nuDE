@@ -393,7 +393,6 @@
 			baseConfigurationReference = C7AB2A16141CC772001F8EE5 /* Debug.xcconfig */;
 			buildSettings = {
 				COPY_RESOURCES = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "nuDE-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					../Core,
@@ -408,7 +407,6 @@
 			baseConfigurationReference = C7AB2A15141CC772001F8EE5 /* Profile.xcconfig */;
 			buildSettings = {
 				COPY_RESOURCES = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "nuDE-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					../Core,
@@ -443,7 +441,6 @@
 			baseConfigurationReference = C7AB2A17141CC772001F8EE5 /* Release.xcconfig */;
 			buildSettings = {
 				COPY_RESOURCES = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "nuDE-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					../Core,

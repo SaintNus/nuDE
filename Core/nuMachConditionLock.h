@@ -24,7 +24,7 @@ public:
   void unlock(void);
 
   void lockWhenCondition(i32 condition);
-  void trylockWhenCondition(i32 condition);
+  bool trylockWhenCondition(i32 condition);
   void unlockWithCondition(i32 condition);
 
 };

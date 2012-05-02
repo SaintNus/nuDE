@@ -46,10 +46,10 @@ void nuMachConditionLock::lockWhenCondition(i32 condition)
   [cond_lock lockWhenCondition: condition];
 }
 
-void nuMachConditionLock::trylockWhenCondition(i32 condition)
+bool nuMachConditionLock::trylockWhenCondition(i32 condition)
 {
   NSConditionLock* cond_lock = static_cast< NSConditionLock* >(mpHandle);
-  [cond_lock tryLockWhenCondition: condition];
+  return [cond_lock tryLockWhenCondition: condition] == YES;
 }
 
 void nuMachConditionLock::unlockWithCondition(i32 condition)

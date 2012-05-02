@@ -20,18 +20,36 @@ class nuRenderGL : public nuObject
 {
   DECLARE_TYPE_INFO;
 
+  enum RENDERER_PHASE {
+    INIT_PHASE = 0,
+    SETUP_PHASE,
+    EXECUTE_PHASE,
+  };
+
   nuGResManager mResourceManager;
   i64 mFrameID;
+  nuConditionLock mLock;
 
 public:
   nuRenderGL();
   ~nuRenderGL();
 
-  void updateGraphicResources(void);
+  i64 updateGraphicResources(void);
   i32 render(void);
 
-  void initTest(void);
-  void termTest(void);
+  void acquire(void) {
+    mLock.lockWhenCondition(INIT_PHASE);
+  }
+
+  void release(void) {
+    mLock.unlock();
+  }
+
+  void synchronize(void);
+  bool isCommandSubmitted(void);
+
+  void initialize(void);
+  void terminate(void);
 
   nude::VertexBuffer createVertexBuffer(size_t size, nuGResource::RESOURCE_USAGE usage) {
     return nude::VertexBuffer(mResourceManager.createVertexBuffer(size, usage));

@@ -48,12 +48,18 @@ nuAppMain::~nuAppMain()
 i32 nuAppMain::main(void)
 {
   mState = RUNNING;
+  mpRenderGL->acquire();
+
   while(mState != TERMINATING) {
     nuAutoReleasePool pool;
     update();
   }
+
   NU_TRACE("Main loop is terminated...\n");
+
+  mpRenderGL->release();
   mState = READY;
+
   return 0;
 }
 
@@ -75,4 +81,9 @@ void nuAppMain::terminate(void)
   if(mState == RUNNING) {
     mState = TERMINATING;
   }
+}
+
+void nuAppMain::update(void)
+{
+  mpRenderGL->synchronize();
 }

@@ -28,7 +28,6 @@ protected:
   nuEntity();
   virtual ~nuEntity();
 
-public:
   virtual void setup(nuGSetupContext& setup) = 0;
   virtual void update(void) = 0;
   virtual void draw(nuGContext& context) = 0;

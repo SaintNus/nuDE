@@ -8,6 +8,8 @@
 #ifndef __NUAPPMAIN_H__
 #define __NUAPPMAIN_H__
 
+#include "nuEntityManager.h"
+
 /*!
  * \class nuAppMain
  * \brief Application main class.
@@ -41,7 +43,7 @@ public:
     return *mpThreadPool;
   }
 
-  class nuEntityManager& getEntityManager(void) const {
+  nuEntityManager& getEntityManager(void) const {
     return *mpEntityManager;
   }
 
@@ -52,7 +54,7 @@ protected:
 
   class nuEntityManager* mpEntityManager;
 
-  virtual void update(void) {}
+  virtual void update(void);
 
 };
 

@@ -72,3 +72,19 @@ void nuEntityManager::unregisterEntity(nuEntity& entity)
 
   entity.mRegistered = 1;
 }
+
+void nuEntityManager::setupEntity(i64 frame_id)
+{
+  nuGSetupContext setup_ctx;
+  setup_ctx.beginSetup(frame_id);
+  {
+    nuMutex::Autolock lock(mListMutex);
+    nuEntity* ptr = mpList;
+
+    while(ptr) {
+      ptr->setup(setup_ctx);
+      ptr = ptr->mpNext;
+    }
+  }
+  setup_ctx.endSetup();
+}

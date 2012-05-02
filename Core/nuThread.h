@@ -76,9 +76,9 @@ namespace nude
     }
 
     //! \brief Sleep (in seconds).
-    static void sleep(ui32 int_seconds) {}
+    static void sleep(ui32 int_seconds);
     //! \brief Sleep (in μseconds).
-    static void usleep(ui32 int_useconds) {}
+    static void usleep(ui32 int_useconds);
 
   private:
     ThreadHandler mThreadHandler; //!< Thread handler.

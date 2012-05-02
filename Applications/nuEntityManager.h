@@ -36,6 +36,8 @@ public:
     return mEntityNum;
   }
 
+  void setupEntity(i64 frame_id);
+
 };
 
 #endif
