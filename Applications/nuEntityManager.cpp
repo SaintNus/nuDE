@@ -70,7 +70,7 @@ void nuEntityManager::unregisterEntity(nuEntity& entity)
 
   mEntityNum--;
 
-  entity.mRegistered = 1;
+  entity.mRegistered = 0;
 }
 
 void nuEntityManager::setupEntity(i64 frame_id)
