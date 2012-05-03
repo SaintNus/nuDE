@@ -16,7 +16,6 @@ class nuTask
 {
   friend class nuTaskSet;
 
-private:
   nuObject* mpObject;
   nuFunction mFunction;
   void* mpParameter;
@@ -139,6 +138,7 @@ class nuThreadPool : public nuObject
   DECLARE_TYPE_INFO;
 
 public:
+  static const ui32 MAX_WORKER = 8;
   class JobTicket;
 
 private:
@@ -479,8 +479,6 @@ private:
     }
 
   };
-
-  static const ui32 MAX_WORKER = 8;
 
   JobArena mJobArena;
   nuThread mJobArenaThread;

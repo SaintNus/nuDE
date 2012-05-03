@@ -54,11 +54,16 @@ public:
   }
 
 protected:
+  static const size_t DEFAULT_RING_BUFFER_SIZE = 2 * 1024 * 1024;
+
   STATE mState;
   nuRenderGL* mpRenderGL;
   nuThreadPool* mpThreadPool;
 
-  class nuEntityManager* mpEntityManager;
+  nuEntityManager* mpEntityManager;
+  nuGContextBuffer* mpContextBuffer;
+  size_t mRingBufferSize;
+  nuGContext* mpGraphicContext[nuThreadPool::MAX_WORKER];
 
   virtual void update(void);
   virtual void end(void) {}

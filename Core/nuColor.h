@@ -12,6 +12,7 @@
 
 class nuColor
 {
+public:
   union {
     ui32 rgba;
     struct {

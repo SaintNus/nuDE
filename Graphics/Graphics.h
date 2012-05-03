@@ -15,6 +15,8 @@
 #include <OpenGL/OpenGL.h>
 #include <OpenGL/gl3.h>
 
+#include "nuGraphics.h"
+
 #include "nuRenderGL.h"
 #include "nuGResource.h"
 #include "nuGResManager.h"
