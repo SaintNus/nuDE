@@ -5,20 +5,45 @@
  * \date 2011/09/11 20:10
  */
 
+#include "nuType.h"
 #include "nuMemory.h"
 
-// Allocate memory.
-void* nude::Alloc(size_t size)
+struct MemHeader
 {
-  //! \todo Add memory header info.
-  return malloc(size);
+  size_t size;
+  void* ptr;
+};
+
+// Allocate memory.
+void* nude::Alloc(size_t size, size_t align)
+{
+  size_t na = align - 1;
+  size_t sz = size + sizeof(MemHeader) + na;
+  void* ptr = malloc(sz);
+  MemHeader* p_header = static_cast< MemHeader* >(ptr);
+  p_header->size = size;
+  ui64 align_addr = reinterpret_cast< ui64 >(&p_header[1]);
+  align_addr += na; 
+  align_addr &= ~na;
+  void** ret = reinterpret_cast< void** >(align_addr);
+  ret[-1] = ptr;
+  return reinterpret_cast< void* >(align_addr);
 }
 
 // Deallocate memory.
 void nude::Dealloc(void* p_addr)
 {
-  //! \todo Leak check.
-  free(p_addr);
+  void** ptr = static_cast< void** >(p_addr);
+  ptr--;
+  free(*ptr);
+}
+
+size_t nude::MemSize(void* p_addr)
+{
+  void** ptr = static_cast< void** >(p_addr);
+  ptr--;
+  MemHeader* p_header = static_cast< MemHeader* >(*ptr);
+  return p_header->size;
 }
 
 /*

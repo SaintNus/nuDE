@@ -42,8 +42,6 @@ void nuGContext::clear(ui32 clear_bit, const nuColor& color, f32 depth)
 
 void nuGContext::begin(i64 frame_id, Tag* p_tag, ui32 tag_num)
 {
-  NU_ASSERT_C(mpTag == nullptr);
-
   if(mTempTagNum < tag_num) {
     if(mpTempTag) {
       delete[] mpTempTag;
@@ -68,13 +66,48 @@ void nuGContext::begin(i64 frame_id, Tag* p_tag, ui32 tag_num)
 
 void nuGContext::end(void)
 {
-  sortTag();
-  mpTag = nullptr;
-  mTagNum = 0;
-  mCurrentTag = 0;
+  if(mCurrentTag > 1)
+    sortTag();
 }
 
 void nuGContext::sortTag(void)
 {
+  ui32 inc = 1;
+  ui32 l, l_max;
+  ui32 r, r_max;
+  ui32 curr;
 
+  Tag* p_tmp = mpTempTag;
+
+  while(inc < mCurrentTag) {
+    l = 0;
+    r = inc;
+    l_max = r - 1;
+    r_max = (l_max + inc < mCurrentTag) ? l_max + inc : mCurrentTag - 1;
+    curr = 0;
+
+    while(curr < mCurrentTag) {
+      while(l <= l_max && r <= r_max) {
+        if(mpTag[r].mPriority.value < mpTag[l].mPriority.value)
+          p_tmp[curr] = mpTag[r++];
+        else
+          p_tmp[curr] = mpTag[l++];
+        curr++;
+      }
+
+      while(r <= r_max)
+        p_tmp[curr++] = mpTag[r++];
+      while (l <= l_max)
+        p_tmp[curr++] = mpTag[l++];
+
+      l = r;
+      r += inc;
+      l_max = r - 1;
+      r_max = (l_max + inc < mCurrentTag) ? l_max + inc : mCurrentTag - 1;
+    }
+
+    inc *= 2;
+
+    memcpy(mpTag, mpTempTag, sizeof(Tag) * mCurrentTag);
+  }
 }

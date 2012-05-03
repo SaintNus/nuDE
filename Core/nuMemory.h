@@ -12,9 +12,11 @@ namespace nude
 {
 
   //! \brief Allocate memory.
-  void* Alloc(size_t size);
+  void* Alloc(size_t size, size_t align = 8);
   //! \brief Deallocate memory.
   void Dealloc(void* p_addr);
+  //! \brief Memory size.
+  size_t MemSize(void* p_addr);
 
 }
 

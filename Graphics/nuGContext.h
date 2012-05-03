@@ -127,12 +127,20 @@ public:
   void begin(i64 frame_id, Tag* p_tag, ui32 tag_num);
   void end(void);
 
+  Tag* getTags(void) const {
+    return mpTag;
+  }
+
+  ui32 getTagNum(void) const {
+    return mCurrentTag;
+  }
+
   void setPriority(nude::PASS pass, ui32 priority) {
     mCurrentPriority.pass = pass;
     mCurrentPriority.priority = priority;
   }
 
-  void clear(ui32 clear_bit, const nuColor& color, f32 depth);
+  void clear(ui32 clear_bit, const nuColor& color, f32 depth);  
 
 };
 
