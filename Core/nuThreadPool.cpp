@@ -75,8 +75,6 @@ void nuThreadPool::JobArena::schedulerProc(void* param)
         }
       }
     }
-
-    nuThread::usleep(1);
   }
   NU_TRACE("Closing job arena.\n");
 }

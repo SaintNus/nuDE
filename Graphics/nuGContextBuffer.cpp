@@ -17,3 +17,5 @@ nuGContextBuffer::~nuGContextBuffer()
 {
 
 }
+
+void initialize(size_t rb_size);
