@@ -82,9 +82,32 @@ void nuEntityManager::setupEntity(i64 frame_id)
     nuEntity* ptr = mpList;
 
     while(ptr) {
+      if(ptr->mSetup == 0)
+        ptr->mSetup = 1;
       ptr->setup(setup_ctx);
       ptr = ptr->mpNext;
     }
   }
   setup_ctx.endSetup();
+}
+
+void nuEntityManager::createUpdateList(nuTaskSet& update_set)
+{
+  nuMutex::Autolock lock(mListMutex);
+
+  nuEntity* ptr = mpList;
+  while(ptr) {
+    if(ptr->mSetup == 1) {
+      update_set.addTask(nuTask(this,
+                                static_cast< nuFunction >(&nuEntityManager::updateEntity),
+                                ptr));
+    }
+    ptr = ptr->mpNext;
+  }
+}
+
+void nuEntityManager::updateEntity(void* param)
+{
+  nuEntity* p_entity = static_cast< nuEntity* >(param);
+  p_entity->update();
 }

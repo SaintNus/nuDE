@@ -16,6 +16,7 @@ class nuDEMain : public nuAppMain
 
   nuDEEntityTest* mpTest;
 
+  void begin(void);
   void update(void);
   void end(void);
 

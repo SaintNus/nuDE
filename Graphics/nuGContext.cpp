@@ -31,8 +31,8 @@ void nuGContext::clear(ui32 clear_bit, const nuColor& color, f32 depth)
   if(p_clear) {
     Tag& tag = mpTag[mCurrentTag];
     mCurrentTag++;
-    tag.priority = mCurrentPriority;
-    tag.command = p_clear;
+    tag.mPriority = mCurrentPriority;
+    tag.mpCommand = p_clear;
     p_clear->type = CLEAR;
     p_clear->data.clear_bit = clear_bit;
     p_clear->data.clear_color = color.rgba;
@@ -40,7 +40,7 @@ void nuGContext::clear(ui32 clear_bit, const nuColor& color, f32 depth)
   }
 }
 
-void nuGContext::begin(ui32 tag_num, Tag* p_tag)
+void nuGContext::begin(i64 frame_id, Tag* p_tag, ui32 tag_num)
 {
   NU_ASSERT_C(mpTag == nullptr);
 
@@ -63,6 +63,7 @@ void nuGContext::begin(ui32 tag_num, Tag* p_tag)
   mpTag = p_tag;
   mTagNum = tag_num;
   mCurrentTag = 0;
+  mFrameID = frame_id;
 }
 
 void nuGContext::end(void)

@@ -16,7 +16,10 @@ nuAppMain::nuAppMain()
       mpEntityManager(nullptr),
       mpContextBuffer(nullptr),
       mState(UNINITIALIZED),
-      mRingBufferSize(DEFAULT_RING_BUFFER_SIZE)
+      mRingBufferSize(DEFAULT_RING_BUFFER_SIZE),
+      mpTag(nullptr),
+      mTagNum(DEFAULT_TAG_NUM),
+      mFrameID(0)
 {
   for(ui32 ui = 0; ui < nuThreadPool::MAX_WORKER; ui++) {
     mpGraphicContext[ui] = nullptr;
@@ -46,6 +49,12 @@ nuAppMain::~nuAppMain()
     delete ptr;
   }
 
+  if(mpTag) {
+    nuGContext::Tag* ptr = mpTag;
+    mpTag = nullptr;
+    delete[] ptr;
+  }
+
   if(mpRenderGL) {
     nuRenderGL* ptr = mpRenderGL;
     mpRenderGL = nullptr;
@@ -64,13 +73,17 @@ i32 nuAppMain::main(void)
   mState = RUNNING;
   mpRenderGL->acquire();
 
+  NU_TRACE("Main loop is up and running.\n");
+  begin();
+
   while(mState != TERMINATING) {
     nuAutoReleasePool pool;
     update();
+    draw();
   }
 
-  NU_TRACE("Main loop is terminated...\n");
   end();
+  NU_TRACE("Main loop is terminated.\n");
 
   mpRenderGL->release();
   mState = READY;
@@ -91,6 +104,8 @@ void nuAppMain::initialize(void)
     mpGraphicContext[ui] = new nuGContext(*mpContextBuffer);
   }
   
+  mpTag = new nuGContext::Tag[mTagNum];
+
   mState = READY;
 }
 
@@ -105,5 +120,43 @@ void nuAppMain::terminate(void)
 
 void nuAppMain::update(void)
 {
-  mpRenderGL->synchronize();
+  mFrameID = mpRenderGL->synchronize();
+
+  if(mpEntityManager->getEntityNum()) {
+    nuTaskSet update_set(mpEntityManager->getEntityNum());
+    mpEntityManager->createUpdateList(update_set);
+    if(update_set.getTaskNum() > 0) {
+      nuThreadPool::JobTicket ticket = mpThreadPool->entryJob(update_set);
+      mpThreadPool->waitUntilFinished(ticket);
+    }
+  }
+}
+
+void nuAppMain::draw(void)
+{
+  ui32 tag_num = mTagNum / nuThreadPool::MAX_WORKER;
+
+  for(ui32 ui = 0; ui < nuThreadPool::MAX_WORKER; ui++) {
+    mpGraphicContext[ui]->begin(mFrameID, &mpTag[ui * tag_num], tag_num);
+  }
+
+  {
+    nuTaskSet draw(nuThreadPool::MAX_WORKER);
+    for(ui32 ui = 0; ui < nuThreadPool::MAX_WORKER; ui++) {
+      draw.addTask(nuTask(this,
+                          static_cast< nuFunction >(&nuAppMain::executeDraw),
+                          mpGraphicContext[ui]));
+    }
+
+    {
+      nuThreadPool::JobTicket ticket = mpThreadPool->entryJob(draw);
+      mpThreadPool->waitUntilFinished(ticket);
+    }
+  }
+}
+
+void nuAppMain::executeDraw(void* param)
+{
+  nuGContext* p_ctx = static_cast< nuGContext* >(param);
+  p_ctx->end();
 }

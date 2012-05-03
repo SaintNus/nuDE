@@ -231,10 +231,11 @@ i64 nuRenderGL::updateGraphicResources(void)
   return mFrameID;
 }
 
-void nuRenderGL::synchronize(void)
+i64 nuRenderGL::synchronize(void)
 {
   mLock.unlockWithCondition(SETUP_PHASE);
   mLock.lockWhenCondition(EXECUTE_PHASE);
+  return mFrameID;
 }
 
 bool nuRenderGL::isCommandSubmitted(void)

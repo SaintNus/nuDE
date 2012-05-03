@@ -17,7 +17,8 @@ class nuEntity : public nuObject
     ui32 mAttribute;
     struct {
       ui32 mRegistered: 1;
-      ui32 mReserved: 31;
+      ui32 mSetup: 1;
+      ui32 mReserved: 30;
     };
   };
 

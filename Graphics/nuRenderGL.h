@@ -45,7 +45,7 @@ public:
     mLock.unlock();
   }
 
-  void synchronize(void);
+  i64 synchronize(void);
   bool isCommandSubmitted(void);
 
   void initialize(void);

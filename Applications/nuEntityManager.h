@@ -28,6 +28,8 @@ class nuEntityManager : public nuObject
   void registerEntity(class nuEntity& entity);
   void unregisterEntity(class nuEntity& entity);
 
+  void updateEntity(void* param);
+
 public:
   nuEntityManager();
   ~nuEntityManager();
@@ -37,6 +39,7 @@ public:
   }
 
   void setupEntity(i64 frame_id);
+  void createUpdateList(nuTaskSet& update_set);
 
 };
 

@@ -55,6 +55,7 @@ public:
 
 protected:
   static const size_t DEFAULT_RING_BUFFER_SIZE = 2 * 1024 * 1024;
+  static const ui32 DEFAULT_TAG_NUM = 8 * 1024;
 
   STATE mState;
   nuRenderGL* mpRenderGL;
@@ -64,9 +65,16 @@ protected:
   nuGContextBuffer* mpContextBuffer;
   size_t mRingBufferSize;
   nuGContext* mpGraphicContext[nuThreadPool::MAX_WORKER];
+  nuGContext::Tag* mpTag;
+  ui32 mTagNum;
+  i64 mFrameID;
 
   virtual void update(void);
+  virtual void draw(void);
+  virtual void begin(void) {}
   virtual void end(void) {}
+
+  void executeDraw(void* param);
 
 };
 

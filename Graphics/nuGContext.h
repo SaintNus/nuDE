@@ -19,6 +19,14 @@ class nuGContext
 {
   friend class nuRenderGL;
 
+  union Priority {
+    ui32 value;
+    struct {
+      ui32 pass: 5;
+      ui32 priority: 27;
+    };
+  };
+
 public:
   enum TYPE {
     CLEAR = 0,
@@ -28,6 +36,15 @@ public:
     COLOR = GL_COLOR_BUFFER_BIT,
     DEPTH = GL_DEPTH_BUFFER_BIT,
     STENCIL = GL_STENCIL_BUFFER_BIT,
+  };
+
+  class Tag {
+    friend class nuGContext;
+    Priority mPriority;
+    void* mpCommand;
+  public:
+    Tag() {}
+    ~Tag() {}
   };
 
 private:
@@ -75,19 +92,6 @@ private:
 
   };
 
-  union Priority {
-    ui32 value;
-    struct {
-      ui32 pass: 5;
-      ui32 priority: 27;
-    };
-  };
-
-  struct Tag {
-    Priority priority;
-    void* command;
-  };
-
   template< class T >
   struct DrawCmd {
     TYPE type;
@@ -120,7 +124,7 @@ public:
   nuGContext(nuGContextBuffer& ctx_buffer);
   ~nuGContext();
 
-  void begin(ui32 tag_num, Tag* p_tag);
+  void begin(i64 frame_id, Tag* p_tag, ui32 tag_num);
   void end(void);
 
   void setPriority(nude::PASS pass, ui32 priority) {
