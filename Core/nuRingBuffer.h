@@ -18,26 +18,6 @@ class nuRingBuffer
   size_t mSize;
   size_t mRemainSize;
 
-  void initialize(size_t size) {
-    if(size > 0) {
-      if(mpBuffer) {
-        nude::Dealloc(mpBuffer);
-        mpBuffer = nullptr;
-        mSize = 0;
-        mRemainSize = 0;
-        mpCurrent = nullptr;
-      }
-
-      mpBuffer = nude::Alloc(size);
-
-      if(mpBuffer) {
-        mpCurrent = mpBuffer;
-        mSize = size;
-        mRemainSize = 0;
-      }
-    }
-  }
-
 public:
   nuRingBuffer(size_t size)
       : mSize(0),
@@ -45,7 +25,13 @@ public:
         mpBuffer(nullptr),
         mpCurrent(nullptr)
   {
-    initialize(size);
+    NU_ASSERT(mSize > 0, "Size must be > 0.\n");
+    mpBuffer = nude::Alloc(size);
+    if(mpBuffer) {
+      mpCurrent = mpBuffer;
+      mSize = size;
+      mRemainSize = 0;
+    }
   }
 
   ~nuRingBuffer() {

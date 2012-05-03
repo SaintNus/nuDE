@@ -14,13 +14,9 @@ nuAppMain::nuAppMain()
     : mpRenderGL(nullptr),
       mpThreadPool(nullptr),
       mpEntityManager(nullptr),
-      mpContextBuffer(nullptr),
-      mState(UNINITIALIZED),
-      mRingBufferSize(DEFAULT_RING_BUFFER_SIZE)
+      mState(UNINITIALIZED)
 {
-  for(ui32 ui = 0; ui < nuThreadPool::MAX_WORKER; ui++) {
-    mpGraphicContext[ui] = nullptr;
-  }
+  // None...
 }
 
 nuAppMain::~nuAppMain()
@@ -30,19 +26,6 @@ nuAppMain::~nuAppMain()
   if(mpEntityManager) {
     nuEntityManager* ptr = mpEntityManager;
     mpEntityManager = nullptr;
-    delete ptr;
-  }
-
-  for(ui32 ui = 0; ui < nuThreadPool::MAX_WORKER; ui++) {
-    if(mpGraphicContext[ui]) {
-      delete mpGraphicContext[ui];
-      mpGraphicContext[ui] = nullptr;
-    }
-  }
-
-  if(mpContextBuffer) {
-    nuGContextBuffer* ptr = mpContextBuffer;
-    mpContextBuffer = nullptr;
     delete ptr;
   }
 
@@ -80,16 +63,12 @@ i32 nuAppMain::main(void)
 
 void nuAppMain::initialize(void)
 {
-  NU_ASSERT_C(mState == UNINITIALIZED);
+  NU_ASSERT_C(mpRenderGL == nullptr);
+  NU_ASSERT_C(mpThreadPool == nullptr);
 
   mpRenderGL = new nuRenderGL;
   mpThreadPool = new nuThreadPool;
   mpEntityManager = new nuEntityManager;
-  mpContextBuffer = new nuGContextBuffer(mRingBufferSize);
-
-  for(ui32 ui = 0; ui < nuThreadPool::MAX_WORKER; ui++) {
-    mpGraphicContext[ui] = new nuGContext(*mpContextBuffer);
-  }
   
   mState = READY;
 }
@@ -97,7 +76,6 @@ void nuAppMain::initialize(void)
 void nuAppMain::terminate(void)
 {
   NU_ASSERT_C(mState == RUNNING);
-
   if(mState == RUNNING) {
     mState = TERMINATING;
   }

@@ -8,7 +8,6 @@
 #ifndef __NUGCONTEXT_H__
 #define __NUGCONTEXT_H__
 
-#include "nuGraphics.h"
 #include "nuGContextBuffer.h"
 
 /*!
@@ -75,16 +74,14 @@ private:
 
   };
 
-  union Priority {
-    ui32 value;
-    struct {
-      ui32 pass: 5;
-      ui32 priority: 27;
-    };
-  };
-
   struct Tag {
-    Priority priority;
+    union {
+      ui32 value;
+      struct {
+        ui32 pass: 5;
+        ui32 priority: 27;
+      };
+    };
     void* command;
   };
 
@@ -95,39 +92,21 @@ private:
   };
 
   struct Clear {
-    ui32 clear_color;
+    nuColor clear_color;
     f32 depth_value;
     ui32 clear_bit;
   };
 
   typedef DrawCmd< Clear > ClearCmd;
-  static const ui32 EXPAND_TEMP_TAG_NUM = 256;
-
   i64 mFrameID;
   Buffer mBuffer;
   Tag* mpTag;
-  ui32 mTagNum;
-  ui32 mCurrentTag;
-  Tag* mpTempTag;
-  ui32 mTempTagNum;
-  Priority mCurrentPriority;
 
   nuGContext();
-
-  void sortTag(void);
-
-public:
   nuGContext(nuGContextBuffer& ctx_buffer);
   ~nuGContext();
 
-  void begin(ui32 tag_num, Tag* p_tag);
-  void end(void);
-
-  void setPriority(nude::PASS pass, ui32 priority) {
-    mCurrentPriority.pass = pass;
-    mCurrentPriority.priority = priority;
-  }
-
+public:
   void clear(ui32 clear_bit, const nuColor& color, f32 depth);
 
 };
