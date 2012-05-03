@@ -40,19 +40,28 @@ public:
   }
 
   void initialize(const nuTypeInfo& app_main);
+
   i32 run(void) {
     if(mpAppMain)
       return mpAppMain->main();
     return -1;
   }
 
+  void terminate(void);
+
 private:
+  enum STATE {
+    UNINITIALIZED = 0,
+    INITIALIZED,
+    TERMINATED,
+  };
+
   nuAppMain* mpAppMain;
+  STATE mState;
 
   nuApplication();
   ~nuApplication();
 
-  void terminate(void);
 };
 
 #endif

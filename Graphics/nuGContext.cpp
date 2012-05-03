@@ -7,15 +7,16 @@
 
 #include "nuGContext.h"
 
-nuGContext::nuGContext()
-    : mFrameID(0)
+nuGContext::nuGContext(nuGContextBuffer& ctx_buffer)
+    : mFrameID(0),
+      mBuffer(ctx_buffer)
 {
-
+  // None...
 }
 
 nuGContext::~nuGContext()
 {
-
+  // None...
 }
 
 void nuGContext::clear(ui32 clear_bit, const nuColor& color, f32 depth)

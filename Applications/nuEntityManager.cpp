@@ -76,7 +76,7 @@ void nuEntityManager::unregisterEntity(nuEntity& entity)
 void nuEntityManager::setupEntity(i64 frame_id)
 {
   nuGSetupContext setup_ctx;
-  setup_ctx.beginSetup(frame_id);
+  setup_ctx.beginSetup(frame_id + 1);
   {
     nuMutex::Autolock lock(mListMutex);
     nuEntity* ptr = mpList;

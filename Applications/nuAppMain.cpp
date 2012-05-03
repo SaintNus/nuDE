@@ -21,10 +21,7 @@ nuAppMain::nuAppMain()
 
 nuAppMain::~nuAppMain()
 {
-  if(mState == RUNNING || mState == TERMINATING) {
-    while(mState != READY)
-      nuThread::usleep(16000);
-  }
+  waitForTermination();
 
   if(mpEntityManager) {
     nuEntityManager* ptr = mpEntityManager;
@@ -56,6 +53,7 @@ i32 nuAppMain::main(void)
   }
 
   NU_TRACE("Main loop is terminated...\n");
+  end();
 
   mpRenderGL->release();
   mState = READY;

@@ -73,7 +73,10 @@ static nuMachAppDelegate* gpAppDelegate = nil;
   [window release];
   window = nil;
   [appThread release];
+
+  nuApplication::instance()->terminate();
   nuSingleton< nuApplication >::deleteInstance();
+
   NU_TRACE("--- Bye ---\n");
 }
 

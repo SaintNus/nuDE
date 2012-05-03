@@ -14,3 +14,8 @@ nuTypeInfo::Type nuObject::PrivateTypeInfo::getType(void) const { return nuTypeI
 nuObject* nuObject::PrivateTypeInfo::createInstance(void) const { return nullptr; }
 nuObject::PrivateTypeInfo nuObject::mTypeInfo;
 const nuTypeInfo& nuObject::TypeInfo(void) { return mTypeInfo; }
+
+nuObject::~nuObject()
+{
+  // None...
+}

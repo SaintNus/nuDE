@@ -20,6 +20,8 @@
 		C75B6369147E992C0004C7D9 /* nuColor.h in Headers */ = {isa = PBXBuildFile; fileRef = C75B6367147E992C0004C7D9 /* nuColor.h */; };
 		C75B636C147EA3510004C7D9 /* nuMath.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C75B636A147EA3510004C7D9 /* nuMath.cpp */; };
 		C75B636D147EA3510004C7D9 /* nuMath.h in Headers */ = {isa = PBXBuildFile; fileRef = C75B636B147EA3510004C7D9 /* nuMath.h */; };
+		C7987C7E15516BC800A98D46 /* nuRingBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7987C7C15516BC800A98D46 /* nuRingBuffer.cpp */; };
+		C7987C7F15516BC800A98D46 /* nuRingBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = C7987C7D15516BC800A98D46 /* nuRingBuffer.h */; };
 		C79D18A414F93C2100D201C7 /* nuCondition.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C79D18A214F93C2000D201C7 /* nuCondition.cpp */; };
 		C79D18A514F93C2100D201C7 /* nuCondition.h in Headers */ = {isa = PBXBuildFile; fileRef = C79D18A314F93C2000D201C7 /* nuCondition.h */; };
 		C79D18A814F93FDD00D201C7 /* nuMachCondition.h in Headers */ = {isa = PBXBuildFile; fileRef = C79D18A614F93FDC00D201C7 /* nuMachCondition.h */; };
@@ -87,6 +89,8 @@
 		C75B6367147E992C0004C7D9 /* nuColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuColor.h; sourceTree = "<group>"; };
 		C75B636A147EA3510004C7D9 /* nuMath.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuMath.cpp; sourceTree = "<group>"; };
 		C75B636B147EA3510004C7D9 /* nuMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuMath.h; sourceTree = "<group>"; };
+		C7987C7C15516BC800A98D46 /* nuRingBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuRingBuffer.cpp; sourceTree = "<group>"; };
+		C7987C7D15516BC800A98D46 /* nuRingBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuRingBuffer.h; sourceTree = "<group>"; };
 		C79D18A214F93C2000D201C7 /* nuCondition.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuCondition.cpp; sourceTree = "<group>"; };
 		C79D18A314F93C2000D201C7 /* nuCondition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuCondition.h; sourceTree = "<group>"; };
 		C79D18A614F93FDC00D201C7 /* nuMachCondition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuMachCondition.h; sourceTree = "<group>"; };
@@ -224,6 +228,8 @@
 				C7EE1B8914D563FD00A9CF2B /* nuResource.h */,
 				C7D3748B14DD6E9700CADBA8 /* nuResourceManager.cpp */,
 				C7D3748C14DD6E9700CADBA8 /* nuResourceManager.h */,
+				C7987C7C15516BC800A98D46 /* nuRingBuffer.cpp */,
+				C7987C7D15516BC800A98D46 /* nuRingBuffer.h */,
 				C726EF1D146D5C220038550E /* nuSingleton.cpp */,
 				C726EF1A146D5C0B0038550E /* nuSingleton.h */,
 				C7D3748F14DD732700CADBA8 /* nuStream.cpp */,
@@ -290,6 +296,7 @@
 				C79D18B014F9481E00D201C7 /* nuMachAutoReleasePool.h in Headers */,
 				C79D18B714FE6FC000D201C7 /* nuConditionLock.h in Headers */,
 				C79D18B814FE6FC000D201C7 /* nuMachConditionLock.h in Headers */,
+				C7987C7F15516BC800A98D46 /* nuRingBuffer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -374,6 +381,7 @@
 				C79D18B114F9481E00D201C7 /* nuMachAutoReleasePool.mm in Sources */,
 				C79D18B614FE6FC000D201C7 /* nuConditionLock.cpp in Sources */,
 				C79D18B914FE6FC000D201C7 /* nuMachConditionLock.mm in Sources */,
+				C7987C7E15516BC800A98D46 /* nuRingBuffer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

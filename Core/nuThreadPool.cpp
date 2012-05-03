@@ -17,7 +17,7 @@ nuThreadPool::nuThreadPool()
                                  this);
 
   for(ui32 ui = 0; ui < MAX_WORKER; ui++)
-    mWorker[ui].dispatchWorker(ui, mJobArena);
+    mWorker[ui].dispatchWorker(ui + 1, mJobArena);
 }
 
 nuThreadPool::~nuThreadPool()
@@ -125,12 +125,12 @@ void nuThreadPool::Worker::workerProcedure(void* param)
     mState = STATE_EXECUTING;
 
     while(!mExit && mpTask) {
-      mpTask->execute();
+      mpTask->execute(mID);
       {
         Task* p_task = mpTask;
         Job* p_job = mpTask->p_job;
         mpTask = p_job->nextTask();
-        p_job->commitTask(*p_task);
+        p_job->commitTask(mID, *p_task);
       }
     }
 

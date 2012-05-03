@@ -10,14 +10,15 @@
 IMPLEMENT_TYPE_INFO(nuApplication, nuObject);
 
 nuApplication::nuApplication()
-    : mpAppMain(nullptr)
+    : mpAppMain(nullptr),
+      mState(UNINITIALIZED)
 {
   // None...
 }
 
 nuApplication::~nuApplication()
 {
-  terminate();
+  NU_ASSERT(mState != INITIALIZED, "Unterminated application instance.\n");
   if(mpAppMain) {
     delete mpAppMain;
     mpAppMain = nullptr;
@@ -26,17 +27,27 @@ nuApplication::~nuApplication()
 
 void nuApplication::initialize(const nuTypeInfo &app_main)
 {
+  if(mState != UNINITIALIZED)
+    return;
+
   if(!app_main.isDerivedFrom(nuAppMain::TypeInfo())) {
     mpAppMain = nullptr;
     NU_ASSERT(false, "Invalid main class.");
   } else {
     mpAppMain = static_cast< nuAppMain* >(app_main.createInstance());
     mpAppMain->initialize();
+    mState = INITIALIZED;
   }
 }
 
 void nuApplication::terminate(void)
 {
-  if(mpAppMain)
+  if(mState != INITIALIZED)
+    return;
+
+  if(mpAppMain) {
     mpAppMain->terminate();
+    mpAppMain->waitForTermination();
+    mState = TERMINATED;
+  }
 }

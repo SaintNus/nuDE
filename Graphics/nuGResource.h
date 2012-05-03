@@ -16,7 +16,7 @@ class nuGResource : public nuObject
 public:
   enum RESOURCE_TYPE {
     FRAME_BUFFER = 0,
-    RENDER_TARGET,
+    RENDER_BUFFER,
     VERTEX_BUFFER,
     ELEMENT_BUFFER,
     TEXTURE,

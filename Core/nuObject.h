@@ -19,14 +19,21 @@
 class nuObject
 {
   DECLARE_TYPE_INFO;
+  friend class nuThreadPool;
+
+  ui32 mThreadID;
 
 public:
   typedef void (*function)(void*);
 
   //! \brief Default constructor.
-  nuObject() { /* None... */ }
+  nuObject()
+      : mThreadID(0)
+  {
+    // None...
+  }
   //! \brief Default destructor.
-  virtual ~nuObject() { /* None... */ }
+  virtual ~nuObject() = 0;
 
   //! \brief Operator new.
   //! \{
@@ -48,12 +55,6 @@ public:
   }
   //! \}
 
-protected:
-  // None...
-
-private:
-  // None...
-  
 };
 
 typedef void (nuObject::*nuFunction)(void*);

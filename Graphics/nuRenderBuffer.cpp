@@ -7,8 +7,8 @@
 
 #include "nuRenderBuffer.h"
 
-nuRenderBuffer::nuRenderBuffer(size_t scratch_sz)
-    : mScratchBuffer(scratch_sz)
+nuRenderBuffer::nuRenderBuffer()
+    : nuGResource(RENDER_BUFFER, STATIC_RESOURCE)
 {
   // None...
 }

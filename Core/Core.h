@@ -52,5 +52,6 @@
 
 #include "nuColor.h"
 #include "nuHandle.h"
+#include "nuRingBuffer.h"
 
 #endif

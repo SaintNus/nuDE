@@ -8,6 +8,8 @@
 #ifndef __NUGCONTEXT_H__
 #define __NUGCONTEXT_H__
 
+#include "nuGContextBuffer.h"
+
 /*!
  * \class nuGContext
  * \brief Graphic context.
@@ -28,6 +30,61 @@ public:
   };
 
 private:
+  class Buffer {
+    nuGContextBuffer& mContextBuffer;
+    size_t mRemain;
+    void* mpBuffer;
+
+  public:
+    Buffer(nuGContextBuffer& ctx_buffer)
+        : mContextBuffer(ctx_buffer),
+          mRemain(0),
+          mpBuffer(nullptr)
+    {
+      // None...
+    }
+    ~Buffer() {
+      // None...
+    }
+
+    void reset(void) {
+      mRemain = 0;
+      mpBuffer = nullptr;
+    }
+
+    template< class T >
+    T* allocBuffer(void) {
+      if(mRemain < sizeof(T)) {
+        mpBuffer = mContextBuffer.allocRingBuffer(nuGContextBuffer::CONTEXT_BUFFER_SIZE);
+        if(mpBuffer)
+          mRemain = nuGContextBuffer::CONTEXT_BUFFER_SIZE;
+        else
+          mRemain = 0;
+      }
+
+      if(mpBuffer) {
+        T* ret = static_cast< T* >(mpBuffer);
+        mpBuffer = &ret[1];
+        mRemain -= sizeof(T);
+        return ret;
+      }
+
+      return nullptr;
+    }
+
+  };
+
+  struct Tag {
+    union {
+      ui32 value;
+      struct {
+        ui32 pass: 5;
+        ui32 priority: 27;
+      };
+    };
+    void* command;
+  };
+
   template< class T >
   struct DrawCmd {
     TYPE type;
@@ -42,8 +99,11 @@ private:
 
   typedef DrawCmd< Clear > ClearCmd;
   i64 mFrameID;
+  Buffer mBuffer;
+  Tag* mpTag;
 
   nuGContext();
+  nuGContext(nuGContextBuffer& ctx_buffer);
   ~nuGContext();
 
 public:

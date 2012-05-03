@@ -145,14 +145,20 @@ private:
   class Job;
   class JobArena;
 
+  static void assignThreadID(nuObject& object, ui32 thread_id) {
+    object.mThreadID = thread_id;
+  }
+
   struct Task {
     Job* p_job;
     nuObject* p_object;
     nuFunction function;
     void* p_parameter;
 
-    void execute(void) {
+    void execute(ui32 thread_id) {
+      nuThreadPool::assignThreadID(*p_object, thread_id);
       (p_object->*function)(p_parameter);
+      nuThreadPool::assignThreadID(*p_object, 0);
     }
 
     const Task& operator = (const nuTask& task) {
@@ -268,7 +274,7 @@ private:
       return nullptr;
     }
 
-    void commitTask(Task& task) {
+    void commitTask(ui32 thread_id, Task& task) {
       bool end_task = mEndTaskEnable;
       i32 num_task = static_cast< i32 >(mNumTask);
       i32 curr = mFinishedTask;
@@ -280,7 +286,7 @@ private:
           res = curr + 1;
         } else {
           if(res == num_task && end_task) {
-            mEndTask.execute();
+            mEndTask.execute(thread_id);
             curr = mFinishedTask;
             res = curr + 1;
             while(1) {

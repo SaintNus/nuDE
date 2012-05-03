@@ -33,6 +33,12 @@ public:
   virtual i32 main(void);
   virtual void terminate(void);
 
+  void waitForTermination(void) {
+    if(mState == RUNNING || mState == TERMINATING) {
+      while(mState != READY)
+        nuThread::usleep(16000);
+    }
+  }
   nuRenderGL& getRenderGL(void) const {
     return *mpRenderGL;
   }
@@ -55,6 +61,7 @@ protected:
   class nuEntityManager* mpEntityManager;
 
   virtual void update(void);
+  virtual void end(void) {}
 
 };
 

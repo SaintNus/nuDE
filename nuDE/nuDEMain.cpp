@@ -57,6 +57,7 @@ IMPLEMENT_TYPE_INFO(TestThreadPool, nuObject);
 IMPLEMENT_TYPE_INFO(nuDEMain, nuAppMain);
 
 nuDEMain::nuDEMain()
+    : mpTest(nullptr)
 {
   for(ui32 ui = 0; ui < TEST_THREAD_POOL; ui++)
     test_thread[ui].setID(ui);
@@ -64,7 +65,10 @@ nuDEMain::nuDEMain()
 
 nuDEMain::~nuDEMain()
 {
-
+  if(mpTest) {
+    delete mpTest;
+    mpTest = nullptr;
+  }
 }
 
 void nuDEMain::initialize(void)
@@ -77,6 +81,8 @@ void nuDEMain::initialize(void)
     nuFile file(nude::FATTR_READ, path);
     NU_TRACE("File size: %lu\n", file.getSize());
   }
+
+  mpTest = new nuDEEntityTest;
 }
 
 void nuDEMain::update(void)
@@ -98,6 +104,15 @@ void nuDEMain::update(void)
   {
     nuThreadPool::JobTicket ticket = nuApplication::threadPool().entryJob(task_set);
     nuApplication::threadPool().waitUntilFinished(ticket);
+  }
+}
+
+void nuDEMain::end(void)
+{
+  nuAppMain::end();
+  if(mpTest) {
+    delete mpTest;
+    mpTest = nullptr;
   }
 }
 
