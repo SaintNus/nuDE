@@ -91,9 +91,25 @@ void nuEntityManager::setupEntity(i64 frame_id)
   setup_ctx.endSetup();
 }
 
-void nuEntityManager::createUpdateList(nuTaskSet& update_set)
+void nuEntityManager::createUpdateList(nuTaskSet& update_set, EntityTable& table)
 {
   nuMutex::Autolock lock(mListMutex);
+
+  if(table.mCapacity < mEntityNum) {
+    ui32 num = mEntityNum / EntityTable::EXPAND_ENTRY_NUM;
+    num = (num + 1) * EntityTable::EXPAND_ENTRY_NUM;
+    if(table.mpEntityTable) {
+      delete[] table.mpEntityTable;
+      table.mpEntityTable = nullptr;
+      table.mCapacity = 0;
+      table.mEntryNum = 0;
+    }
+    table.mpEntityTable = new nuEntity* [num];
+    if(table.mpEntityTable) {
+      table.mCapacity = num;
+      table.mEntryNum = 0;
+    }
+  }
 
   nuEntity* ptr = mpList;
   while(ptr) {
@@ -101,6 +117,8 @@ void nuEntityManager::createUpdateList(nuTaskSet& update_set)
       update_set.addTask(nuTask(this,
                                 static_cast< nuFunction >(&nuEntityManager::updateEntity),
                                 ptr));
+      table.mpEntityTable[table.mEntryNum] = ptr;
+      table.mEntryNum++;
     }
     ptr = ptr->mpNext;
   }
@@ -110,4 +128,9 @@ void nuEntityManager::updateEntity(void* param)
 {
   nuEntity* p_entity = static_cast< nuEntity* >(param);
   p_entity->update();
+}
+
+void nuEntityManager::drawEntity(nuGContext& context, nuEntity& entity)
+{
+  entity.draw(context);
 }

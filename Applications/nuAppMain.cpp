@@ -120,11 +120,11 @@ void nuAppMain::terminate(void)
 
 void nuAppMain::update(void)
 {
-  mFrameID = mpRenderGL->synchronize();
+  mFrameID = mpRenderGL->synchronize() + 1;
 
   if(mpEntityManager->getEntityNum()) {
     nuTaskSet update_set(mpEntityManager->getEntityNum());
-    mpEntityManager->createUpdateList(update_set);
+    mpEntityManager->createUpdateList(update_set, mEntityTable);
     if(update_set.getTaskNum() > 0) {
       nuThreadPool::JobTicket ticket = mpThreadPool->entryJob(update_set);
       mpThreadPool->waitUntilFinished(ticket);
@@ -134,6 +134,9 @@ void nuAppMain::update(void)
 
 void nuAppMain::draw(void)
 {
+  if(mEntityTableIterator.initialize(mEntityTable) == 0)
+    return;
+
   ui32 tag_num = mTagNum / nuThreadPool::MAX_WORKER;
 
   for(ui32 ui = 0; ui < nuThreadPool::MAX_WORKER; ui++) {
@@ -157,6 +160,14 @@ void nuAppMain::draw(void)
 
 void nuAppMain::executeDraw(void* param)
 {
+  const ui32 reserve_num = 8;
+  nuEntity** table;
   nuGContext* p_ctx = static_cast< nuGContext* >(param);
+  ui32 num = mEntityTableIterator.get(&table, reserve_num);
+  while(num > 0) {
+    for(ui32 ui = 0; ui < num; ui++)
+      mpEntityManager->drawEntity(*p_ctx, *table[ui]);
+    num = mEntityTableIterator.get(&table, reserve_num);
+  }
   p_ctx->end();
 }

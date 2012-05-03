@@ -68,6 +68,8 @@ protected:
   nuGContext::Tag* mpTag;
   ui32 mTagNum;
   i64 mFrameID;
+  nuEntityManager::EntityTable mEntityTable;
+  nuEntityManager::EntityTable::Iterator mEntityTableIterator;
 
   virtual void update(void);
   virtual void draw(void);
