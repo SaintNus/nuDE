@@ -95,21 +95,7 @@ void nuEntityManager::createUpdateList(nuTaskSet& update_set, EntityTable& table
 {
   nuMutex::Autolock lock(mListMutex);
 
-  if(table.mCapacity < mEntityNum) {
-    ui32 num = mEntityNum / EntityTable::EXPAND_ENTRY_NUM;
-    num = (num + 1) * EntityTable::EXPAND_ENTRY_NUM;
-    if(table.mpEntityTable) {
-      delete[] table.mpEntityTable;
-      table.mpEntityTable = nullptr;
-      table.mCapacity = 0;
-      table.mEntryNum = 0;
-    }
-    table.mpEntityTable = new nuEntity* [num];
-    if(table.mpEntityTable) {
-      table.mCapacity = num;
-      table.mEntryNum = 0;
-    }
-  }
+  table.reserve(mEntityNum);
 
   nuEntity* ptr = mpList;
   while(ptr) {

@@ -24,14 +24,16 @@ static GLint color_loc = 0;
 
 nuRenderGL::nuRenderGL()
     : mFrameID(0),
-      mLock(INIT_PHASE)
+      mLock(INIT_PHASE),
+      mpNextTagList(nullptr),
+      mpCurrentTagList(nullptr)
 {
-
+  // None...
 }
 
 nuRenderGL::~nuRenderGL()
 {
-
+  // None...
 }
 
 void nuRenderGL::initialize(void)
@@ -190,6 +192,9 @@ void nuRenderGL::initialize(void)
     }
   }
 
+  glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+  glClearDepth(1.0f);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void nuRenderGL::terminate(void)
@@ -205,22 +210,44 @@ void nuRenderGL::terminate(void)
   idx_buffer.release();
 }
 
-i32 nuRenderGL::render(void)
+bool nuRenderGL::render(void)
 {
   mLock.unlockWithCondition(EXECUTE_PHASE);
 
-  glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-  glClearDepth(1.0f);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  if(mpCurrentTagList) {
+    if(mpCurrentTagList->mTagNum > 0) {
+      nuGContext::Tag* p_tag = mpCurrentTagList->mpTagList;
+      for(ui32 ui = 0; ui < mpCurrentTagList->mTagNum; ui++) {
+        nuGContext::DrawCmd< i32 >* p_dummy = static_cast< nuGContext::DrawCmd< i32 >* >(p_tag[ui].mpCommand);
 
-  glUseProgram(prog_id);
+        switch(p_dummy->type) {
+        case nuGContext::CLEAR:
+          {
+            typedef nuGContext::DrawCmd< nuGContext::Clear > ClearCmd;
+            ClearCmd* p_clear = static_cast< ClearCmd* >(p_tag[ui].mpCommand);
+            nuColor clear_color(p_clear->data.clear_color);
+            glClearColor(clear_color.fr(), clear_color.fg(), clear_color.fb(), clear_color.fa());
+            glClearDepth(p_clear->data.depth_value);
+            glClear(p_clear->data.clear_bit);
+          }
+          break;
+        default:
+          NU_ASSERT(false, "Logical error.\n");
+        }
+      }
+      
+      glUseProgram(prog_id);
 
-  vtx_buffer->bind();
-  idx_buffer->bind();
+      vtx_buffer->bind();
+      idx_buffer->bind();
 
-  glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_SHORT, 0);
+      glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_SHORT, 0);
 
-  return 0;
+      return true;
+    }
+  }
+
+  return false;
 }
 
 i64 nuRenderGL::updateGraphicResources(void)
@@ -240,5 +267,10 @@ i64 nuRenderGL::synchronize(void)
 
 bool nuRenderGL::isCommandSubmitted(void)
 {
-  return mLock.trylockWhenCondition(SETUP_PHASE);
+  if(mLock.trylockWhenCondition(SETUP_PHASE)) {
+    mpCurrentTagList = mpNextTagList;
+    mpNextTagList = nullptr;
+    return true;
+  }
+  return false;
 }

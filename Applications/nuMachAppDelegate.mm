@@ -52,7 +52,10 @@ static nuMachAppDelegate* gpAppDelegate = nil;
     nuSingleton< nuApplication >::createInstance();
     nuApplication::instance()->initialize([self appMain]);
 
+    CGLContextObj ctx = [view lockContext];
     nuApplication::renderGL().initialize();
+    CGLFlushDrawable(ctx);
+    [view unlockContext: ctx];
 
     [appThread start];
     [view startDraw];

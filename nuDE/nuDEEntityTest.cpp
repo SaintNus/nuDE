@@ -31,5 +31,6 @@ void nuDEEntityTest::update(void)
 
 void nuDEEntityTest::draw(nuGContext& context)
 {
-
+  context.setPriority(nude::PASS_TRANSPARENCY, 0);
+  context.clear(nuGContext::CLEAR_COLOR | nuGContext::CLEAR_DEPTH, nuColor(0), 1.0f);
 }

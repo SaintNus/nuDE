@@ -64,12 +64,18 @@ protected:
   nuEntityManager* mpEntityManager;
   nuGContextBuffer* mpContextBuffer;
   size_t mRingBufferSize;
+
   nuGContext* mpGraphicContext[nuThreadPool::MAX_WORKER];
   nuGContext::Tag* mpTag;
+
   ui32 mTagNum;
   i64 mFrameID;
+
   nuEntityManager::EntityTable mEntityTable;
   nuEntityManager::EntityTable::Iterator mEntityTableIterator;
+
+  nuGContext::TagList mTagList[2];
+  ui32 mCurrentTagList;
 
   virtual void update(void);
   virtual void draw(void);

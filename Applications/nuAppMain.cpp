@@ -19,7 +19,8 @@ nuAppMain::nuAppMain()
       mRingBufferSize(DEFAULT_RING_BUFFER_SIZE),
       mpTag(nullptr),
       mTagNum(DEFAULT_TAG_NUM),
-      mFrameID(0)
+      mFrameID(0),
+      mCurrentTagList(0)
 {
   for(ui32 ui = 0; ui < nuThreadPool::MAX_WORKER; ui++) {
     mpGraphicContext[ui] = nullptr;
@@ -120,6 +121,9 @@ void nuAppMain::terminate(void)
 
 void nuAppMain::update(void)
 {
+  mCurrentTagList ^= 1;
+
+  mpRenderGL->setNextTagList(mTagList[mCurrentTagList]);
   mFrameID = mpRenderGL->synchronize() + 1;
 
   if(mpEntityManager->getEntityNum()) {
@@ -155,6 +159,19 @@ void nuAppMain::draw(void)
       nuThreadPool::JobTicket ticket = mpThreadPool->entryJob(draw);
       mpThreadPool->waitUntilFinished(ticket);
     }
+  }
+
+  {
+    nuGContext::SortTagContext sort_ctx[nuThreadPool::MAX_WORKER];
+    ui32 ctx_num = 0;
+    for(ui32 ui = 0; ui < nuThreadPool::MAX_WORKER; ui++) {
+      if(mpGraphicContext[ui]->getTagNum() > 0) {
+        sort_ctx[ctx_num].initialize(mpGraphicContext[ui]);
+        ctx_num++;
+      }
+    }
+
+    nuGContext::createTagList(mTagList[mCurrentTagList ^ 1], sort_ctx, ctx_num);
   }
 }
 

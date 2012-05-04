@@ -41,6 +41,23 @@ public:
     ui32 mEntryNum;
     nuEntity** mpEntityTable;
 
+    void reserve(ui32 entity_num) {
+      if(mCapacity < entity_num) {
+        ui32 num = entity_num / EntityTable::EXPAND_ENTRY_NUM;
+        num = (num + 1) * EntityTable::EXPAND_ENTRY_NUM;
+        if(mpEntityTable) {
+          delete[] mpEntityTable;
+          mpEntityTable = nullptr;
+          mCapacity = 0;
+        }
+        mpEntityTable = new nuEntity* [num];
+        if(mpEntityTable) {
+          mCapacity = num;
+        }
+      }
+      mEntryNum = 0;
+    }
+
   public:
     class Iterator {
       volatile i32 mCurrentIndex;

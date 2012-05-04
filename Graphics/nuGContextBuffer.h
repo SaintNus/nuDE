@@ -11,6 +11,7 @@
 class nuGContextBuffer
 {
   nuRingBuffer mRingBuffer;
+  nuMutex mRingBufferMutex;
 
 public:
   static const size_t CONTEXT_BUFFER_SIZE = 64 * 1024;
@@ -19,6 +20,7 @@ public:
   ~nuGContextBuffer();
 
   void* allocRingBuffer(size_t size) {
+    nuMutex::Autolock lock(mRingBufferMutex);
     return mRingBuffer.alloc(size);
   }
 

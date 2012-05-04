@@ -110,8 +110,8 @@ static CVReturn DisplayLinkCallback(CVDisplayLinkRef display_link,
     if(nuApplication::renderGL().isCommandSubmitted()) {
       i64 frame_id = nuApplication::renderGL().updateGraphicResources();
       nuApplication::entityManager().setupEntity(frame_id);
-      nuApplication::renderGL().render();
-      CGLFlushDrawable(ctx);
+      if(nuApplication::renderGL().render())
+        CGLFlushDrawable(ctx);
     }
   }
 }

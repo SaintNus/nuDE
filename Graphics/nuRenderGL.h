@@ -8,6 +8,7 @@
 #ifndef __NURENDERGL_H__
 #define __NURENDERGL_H__
 
+#include "nuGContext.h"
 #include "nuGResManager.h"
 #include "nuVertexBuffer.h"
 #include "nuElementBuffer.h"
@@ -29,13 +30,19 @@ class nuRenderGL : public nuObject
   nuGResManager mResourceManager;
   i64 mFrameID;
   nuConditionLock mLock;
+  nuGContext::TagList* mpNextTagList;
+  nuGContext::TagList* mpCurrentTagList;
 
 public:
   nuRenderGL();
   ~nuRenderGL();
 
+  void setNextTagList(nuGContext::TagList& next) {
+    mpNextTagList = &next;
+  }
+
   i64 updateGraphicResources(void);
-  i32 render(void);
+  bool render(void);
 
   void acquire(void) {
     mLock.lockWhenCondition(INIT_PHASE);

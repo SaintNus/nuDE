@@ -22,8 +22,8 @@ class nuGContext
   union Priority {
     ui32 value;
     struct {
-      ui32 pass: 5;
-      ui32 priority: 27;
+      ui32 pass: 4;
+      ui32 priority: 28;
     };
   };
 
@@ -33,18 +33,66 @@ public:
   };
     
   enum CLEAR_BIT {
-    COLOR = GL_COLOR_BUFFER_BIT,
-    DEPTH = GL_DEPTH_BUFFER_BIT,
-    STENCIL = GL_STENCIL_BUFFER_BIT,
+    CLEAR_COLOR = GL_COLOR_BUFFER_BIT,
+    CLEAR_DEPTH = GL_DEPTH_BUFFER_BIT,
+    CLEAR_STENCIL = GL_STENCIL_BUFFER_BIT,
   };
 
   class Tag {
     friend class nuGContext;
+    friend class nuRenderGL;
+
     Priority mPriority;
     void* mpCommand;
   public:
     Tag() {}
     ~Tag() {}
+  };
+
+  class TagList {
+    friend class nuGContext;
+    friend class nuRenderGL;
+
+    static const ui32 EXPAND_TAG_LIST = 1024;
+
+    Tag* mpTagList;
+    ui32 mTagNum;
+    ui32 mCapacity;
+
+    void reserve(ui32 tag_num) {
+      ui32 num = tag_num / EXPAND_TAG_LIST;
+      num = (num + 1) * EXPAND_TAG_LIST;
+      if(num > mCapacity) {
+        if(mpTagList) {
+          delete[] mpTagList;
+          mTagNum = 0;
+          mCapacity = 0;
+        }
+
+        mpTagList = new Tag[num];
+
+        if(mpTagList) {
+          mCapacity = num;
+          mTagNum = 0;
+        }
+      }
+    }
+
+  public:
+    TagList()
+        : mpTagList(nullptr),
+          mTagNum(0),
+          mCapacity(0)
+    {
+      // None...
+    }
+          
+    ~TagList() {
+      if(mpTagList) {
+        delete[] mpTagList;
+        mpTagList = nullptr;
+      }
+    }
   };
 
 private:
@@ -121,6 +169,20 @@ private:
   void sortTag(void);
 
 public:
+  class SortTagContext {
+    friend class nuGContext;
+    nuGContext* mpContext;
+    ui32 mTagNum;
+  public:
+    SortTagContext() {}
+    ~SortTagContext() {}
+
+    void initialize(nuGContext* p_ctx) {
+      mpContext = p_ctx;
+      mTagNum = mpContext->getTagNum();
+    }
+  };
+
   nuGContext(nuGContextBuffer& ctx_buffer);
   ~nuGContext();
 
@@ -141,6 +203,8 @@ public:
   }
 
   void clear(ui32 clear_bit, const nuColor& color, f32 depth);  
+
+  static void createTagList(TagList& tag_list, SortTagContext* ctx, ui32 ctx_num);
 
 };
 

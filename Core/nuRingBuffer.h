@@ -33,7 +33,7 @@ class nuRingBuffer
       if(mpBuffer) {
         mpCurrent = mpBuffer;
         mSize = size;
-        mRemainSize = 0;
+        mRemainSize = mSize;
       }
     }
   }
@@ -59,9 +59,11 @@ public:
   T* alloc(ui32 num) {
     size_t sz = sizeof(T) * num;
     if(mSize < sz)
-      return NULL;
-    if(mRemainSize < sz)
+      return nullptr;
+    if(mRemainSize < sz) {
       mpCurrent = mpBuffer;
+      mRemainSize = mSize;
+    }
     T* ret = static_cast< T* >(mpCurrent);
     mpCurrent = &ret[num];
     mRemainSize -= sz;
@@ -70,10 +72,12 @@ public:
 
   void* alloc(size_t size) {
     if(mSize < size)
-      return NULL;
-    if(mRemainSize < size)
+      return nullptr;
+    if(mRemainSize < size) {
       mpCurrent = mpBuffer;
-    char* ret = static_cast< char* >(mpCurrent);
+      mRemainSize = mSize;
+    }
+    ui8* ret = static_cast< ui8* >(mpCurrent);
     mpCurrent = &ret[size];
     mRemainSize -= size;
     return ret;
