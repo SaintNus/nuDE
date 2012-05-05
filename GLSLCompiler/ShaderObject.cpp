@@ -126,7 +126,7 @@ int ShaderObject::writeToFile(FILE* output_h, const char* name_space)
   WRITE_FILE(output_h, "   */\n\n");
 
   WRITE_FILE(output_h, "  struct Variable {\n");
-  WRITE_FILE(output_h, "    const GLchar* type;\n");
+  WRITE_FILE(output_h, "    const GLchar* name;\n");
   WRITE_FILE(output_h, "    GLenum type;\n");
   WRITE_FILE(output_h, "    GLint size;\n");
   WRITE_FILE(output_h, "  };\n\n");
@@ -134,8 +134,11 @@ int ShaderObject::writeToFile(FILE* output_h, const char* name_space)
   WRITE_FILE(output_h, "  struct Program {\n");
   WRITE_FILE(output_h, "    const GLchar* vsh_file; // Vertex shader file name.\n");
   WRITE_FILE(output_h, "    const GLchar* fsh_file; // Fragment shader file name.\n");
+  WRITE_FILE(output_h, "    const GLuint attribute_num; // Number of program attribute.\n");
   WRITE_FILE(output_h, "    const Variable* attributes; // Program attributes.\n");
+  WRITE_FILE(output_h, "    const GLuint uniform_num; // Number of program uniform.\n");
   WRITE_FILE(output_h, "    const Variable* uniforms; // Program uniforms.\n");
+  WRITE_FILE(output_h, "    const GLuint uniform_block_num; // Number of uniform block.\n");
   WRITE_FILE(output_h, "    const GLchar** uniform_blocks; // Uniform block names.\n");
   WRITE_FILE(output_h, "  };\n\n");
 
@@ -147,7 +150,7 @@ int ShaderObject::writeToFile(FILE* output_h, const char* name_space)
     ProgramListConstIterator it;
     for(it = mProgramList.begin(); it != mProgramList.end(); it++) {
       if((*it)->attribute.size() > 0) {
-        WRITE_FILE(output_h, "  const Variable %sAttributes[%sAttribute_Num] = {\n",
+        WRITE_FILE(output_h, "  static const Variable %sAttributes[%sAttribute_Num] = {\n",
                    (*it)->program_name,
                    (*it)->program_name);
         {
@@ -164,7 +167,7 @@ int ShaderObject::writeToFile(FILE* output_h, const char* name_space)
       }
 
       if((*it)->uniform.size() > 0) {
-        WRITE_FILE(output_h, "  const Variable %sUniforms[%sUniform_Num] = {\n",
+        WRITE_FILE(output_h, "  static const Variable %sUniforms[%sUniform_Num] = {\n",
                    (*it)->program_name,
                    (*it)->program_name);
         {
@@ -181,7 +184,7 @@ int ShaderObject::writeToFile(FILE* output_h, const char* name_space)
       }
 
       if((*it)->uniform_block.size() > 0) {
-        WRITE_FILE(output_h, "  const GLchar* %sUniformBlocks[%sUniformBlock_Num] = {\n",
+        WRITE_FILE(output_h, "  static const GLchar* %sUniformBlocks[%sUniformBlock_Num] = {\n",
                    (*it)->program_name,
                    (*it)->program_name);
         {
@@ -196,32 +199,37 @@ int ShaderObject::writeToFile(FILE* output_h, const char* name_space)
   }
 
   if(mProgramList.size() > 0) {
-    WRITE_FILE(output_h, "  const Program GLSLPrograms[ProgramList_Num] = {\n");
+    WRITE_FILE(output_h, "  static const Program GLSLPrograms[ProgramList_Num] = {\n");
     ProgramListConstIterator it;
     for(it = mProgramList.begin(); it != mProgramList.end(); it++) {
       WRITE_FILE(output_h, "    {\n");
       WRITE_FILE(output_h, "      \"%s\",\n", (*it)->vertex_shd.file_name);
       WRITE_FILE(output_h, "      \"%s\",\n", (*it)->fragment_shd.file_name);
       if((*it)->attribute.size() > 0) {
+        WRITE_FILE(output_h, "      %sAttribute_Num,\n", (*it)->program_name);
         WRITE_FILE(output_h, "      %sAttributes,\n", (*it)->program_name);
       } else {
+        WRITE_FILE(output_h, "      0,\n");
         WRITE_FILE(output_h, "      NULL,\n");
       }
       if((*it)->uniform.size() > 0) {
+        WRITE_FILE(output_h, "      %sUniform_Num,\n", (*it)->program_name);
         WRITE_FILE(output_h, "      %sUniforms,\n", (*it)->program_name);
       } else {
+        WRITE_FILE(output_h, "      0,\n");
         WRITE_FILE(output_h, "      NULL,\n");
       }
       if((*it)->uniform_block.size() > 0) {
+        WRITE_FILE(output_h, "      %sUniformBlock_Num,\n", (*it)->program_name);
         WRITE_FILE(output_h, "      %sUniformBlocks,\n", (*it)->program_name);
       } else {
+        WRITE_FILE(output_h, "      0,\n");
         WRITE_FILE(output_h, "      NULL,\n");
       }
       WRITE_FILE(output_h, "    },\n");
     }
   }
   WRITE_FILE(output_h, "  };\n\n");
-  WRITE_FILE(output_h, "}\n");
 
   WRITE_FILE(output_h, "\n#ifdef __cplusplus\n");
   WRITE_FILE(output_h, "}\n");

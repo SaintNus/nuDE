@@ -29,6 +29,11 @@
 		C7AB762614DE8A7E00A42A8C /* nuGResManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7AB762414DE8A7E00A42A8C /* nuGResManager.cpp */; };
 		C7AB762714DE8A7E00A42A8C /* nuGResManager.h in Headers */ = {isa = PBXBuildFile; fileRef = C7AB762514DE8A7E00A42A8C /* nuGResManager.h */; };
 		C7AB762B14DEDF9400A42A8C /* Graphics.h in Headers */ = {isa = PBXBuildFile; fileRef = C7AB762A14DEDF9400A42A8C /* Graphics.h */; };
+		C7BECCEB15556977006FA080 /* nuProgram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7BECCE615556976006FA080 /* nuProgram.cpp */; };
+		C7BECCEC15556977006FA080 /* nuProgram.h in Headers */ = {isa = PBXBuildFile; fileRef = C7BECCE715556976006FA080 /* nuProgram.h */; };
+		C7BECCED15556977006FA080 /* nuProgramManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7BECCE815556976006FA080 /* nuProgramManager.cpp */; };
+		C7BECCEE15556977006FA080 /* nuProgramManager.h in Headers */ = {isa = PBXBuildFile; fileRef = C7BECCE915556976006FA080 /* nuProgramManager.h */; };
+		C7BECCEF15556977006FA080 /* nuShaderInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = C7BECCEA15556977006FA080 /* nuShaderInfo.h */; };
 		C7DDD81E1550012F002B4D5A /* nuGSetupContext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7DDD81C1550012F002B4D5A /* nuGSetupContext.cpp */; };
 		C7DDD81F1550012F002B4D5A /* nuGSetupContext.h in Headers */ = {isa = PBXBuildFile; fileRef = C7DDD81D1550012F002B4D5A /* nuGSetupContext.h */; };
 /* End PBXBuildFile section */
@@ -60,6 +65,11 @@
 		C7AB762414DE8A7E00A42A8C /* nuGResManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuGResManager.cpp; sourceTree = "<group>"; };
 		C7AB762514DE8A7E00A42A8C /* nuGResManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuGResManager.h; sourceTree = "<group>"; };
 		C7AB762A14DEDF9400A42A8C /* Graphics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Graphics.h; sourceTree = "<group>"; };
+		C7BECCE615556976006FA080 /* nuProgram.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuProgram.cpp; sourceTree = "<group>"; };
+		C7BECCE715556976006FA080 /* nuProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuProgram.h; sourceTree = "<group>"; };
+		C7BECCE815556976006FA080 /* nuProgramManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuProgramManager.cpp; sourceTree = "<group>"; };
+		C7BECCE915556976006FA080 /* nuProgramManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuProgramManager.h; sourceTree = "<group>"; };
+		C7BECCEA15556977006FA080 /* nuShaderInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuShaderInfo.h; sourceTree = "<group>"; };
 		C7DDD81C1550012F002B4D5A /* nuGSetupContext.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuGSetupContext.cpp; sourceTree = "<group>"; };
 		C7DDD81D1550012F002B4D5A /* nuGSetupContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuGSetupContext.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -121,10 +131,15 @@
 				C7AB761B14DE7DFD00A42A8C /* nuGResource.h */,
 				C7DDD81C1550012F002B4D5A /* nuGSetupContext.cpp */,
 				C7DDD81D1550012F002B4D5A /* nuGSetupContext.h */,
+				C7BECCE615556976006FA080 /* nuProgram.cpp */,
+				C7BECCE715556976006FA080 /* nuProgram.h */,
+				C7BECCE815556976006FA080 /* nuProgramManager.cpp */,
+				C7BECCE915556976006FA080 /* nuProgramManager.h */,
 				C79E4D6C14E2D1F0001E60BF /* nuRenderBuffer.cpp */,
 				C79E4D6D14E2D1F0001E60BF /* nuRenderBuffer.h */,
 				C785D085145D44D300E64F10 /* nuRenderGL.cpp */,
 				C785D086145D44D300E64F10 /* nuRenderGL.h */,
+				C7BECCEA15556977006FA080 /* nuShaderInfo.h */,
 				C77E29EB155520F500627CAA /* nuVertexArray.cpp */,
 				C77E29EC155520F500627CAA /* nuVertexArray.h */,
 				C79DFF1C151A3E0400A1FA32 /* nuVertexBuffer.cpp */,
@@ -153,6 +168,9 @@
 				C7987C69155143FC00A98D46 /* nuGContextBuffer.h in Headers */,
 				C798C10D15528AC2009595EA /* nuGraphics.h in Headers */,
 				C77E29EE155520F500627CAA /* nuVertexArray.h in Headers */,
+				C7BECCEC15556977006FA080 /* nuProgram.h in Headers */,
+				C7BECCEE15556977006FA080 /* nuProgramManager.h in Headers */,
+				C7BECCEF15556977006FA080 /* nuShaderInfo.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -237,6 +255,8 @@
 				C7987C68155143FC00A98D46 /* nuGContextBuffer.cpp in Sources */,
 				C798C10C15528AC2009595EA /* nuGraphics.cpp in Sources */,
 				C77E29ED155520F500627CAA /* nuVertexArray.cpp in Sources */,
+				C7BECCEB15556977006FA080 /* nuProgram.cpp in Sources */,
+				C7BECCED15556977006FA080 /* nuProgramManager.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

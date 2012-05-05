@@ -2,3 +2,8 @@ build
 xcuserdata
 
 docs
+nuShaderInfo.h
+Resources/Shader/processed
+dbg_glslpc
+README.html
+Markdown.pl

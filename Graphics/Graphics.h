@@ -28,4 +28,6 @@
 #include "nuVertexBuffer.h"
 #include "nuElementBuffer.h"
 
+#include "nuShaderInfo.h"
+
 #endif
