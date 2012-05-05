@@ -36,32 +36,11 @@ void nuThreadPool::JobArena::schedulerProc(void* param)
   NU_TRACE("Opening job arena.\n");
 
   while(!mExit) {
-    if(!mJobList.empty()) {
-      JobIterator it = mJobList.begin();
-      while(it != mJobList.end()) {
-        Job* p_job = *it;
-        if(p_job->isFinished()) {
-          p_job->mLock.unlockWithCondition(Job::STATE_FINISHED);
-          p_job->decRefCount();
-          it = mJobList.erase(it);
-        } else {
-          ++it;
-        }
-      }
-    }
+    if(!mJobList.empty())
+      processFinishedJob();
 
-    if(!mEntryList.empty()) {
-      nuMutex::Autolock lock(mEntryMutex);
-      JobIterator it = mEntryList.begin();
-      while(it != mEntryList.end()) {
-        Job* p_job = *it;
-        p_job->mLock.lockWhenCondition(Job::STATE_INITIALIZE);
-        p_job->mApproved = 1;
-        mJobList.push_back(p_job);
-        ++it;
-      }
-      mEntryList.clear();
-    }
+    if(!mEntryList.empty())
+      processJobEntry();
 
     if(!mJobList.empty()) {
       for(ui32 ui = 0; ui < MAX_WORKER; ui++) {
@@ -75,7 +54,10 @@ void nuThreadPool::JobArena::schedulerProc(void* param)
         }
       }
     }
+
+    nuThread::usleep(500);
   }
+
   NU_TRACE("Closing job arena.\n");
 }
 

@@ -49,6 +49,14 @@ public:
 
   void terminate(void);
 
+  void setFrameTime(f32 frame_time) {
+    mFrameTime = frame_time;
+  }
+
+  f32 getFrameTime(void) const {
+    return mFrameTime;
+  }
+
 private:
   enum STATE {
     UNINITIALIZED = 0,
@@ -58,6 +66,7 @@ private:
 
   nuAppMain* mpAppMain;
   STATE mState;
+  f32 mFrameTime;
 
   nuApplication();
   ~nuApplication();

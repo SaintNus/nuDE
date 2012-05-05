@@ -18,7 +18,7 @@ static CVReturn DisplayLinkCallback(CVDisplayLinkRef display_link,
 @interface nuMachView (Private)
 
 - (CVReturn) drawFrameForTime: (const CVTimeStamp*) output_time;
-- (void) drawFrameWithContext: (CGLContextObj) ctx;
+- (void) drawFrameWithContext: (CGLContextObj) ctx timeStamp: (const CVTimeStamp*) time_stamp;
 
 @end
 
@@ -48,8 +48,10 @@ static CVReturn DisplayLinkCallback(CVDisplayLinkRef display_link,
   
   NSRect content_rect = [window contentRectForFrameRect: [window frame]];
   self = [super initWithFrame: content_rect pixelFormat: pf];
-  if(self)
+  if(self) {
     [window setContentView: self];
+    videoTime = 0;
+  }
   [pf release];
   pf = nil;
   return self;
@@ -68,6 +70,12 @@ static CVReturn DisplayLinkCallback(CVDisplayLinkRef display_link,
   
   CGLContextObj ctx = static_cast< CGLContextObj >([[self openGLContext] CGLContextObj]);
   CGLPixelFormatObj pf = static_cast< CGLPixelFormatObj >([[self pixelFormat] CGLPixelFormatObj]);
+
+  {
+    GLint sync = 1;
+    CGLSetParameter(ctx, kCGLCPSwapInterval, &sync);
+  }
+
   CVDisplayLinkSetCurrentCGDisplayFromOpenGLContext(displayLink, ctx, pf);
 
   displayLinkStarted = false;
@@ -78,7 +86,7 @@ static CVReturn DisplayLinkCallback(CVDisplayLinkRef display_link,
   NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
   CGLContextObj ctx = [self lockContext];
-  [self drawFrameWithContext: ctx];
+  [self drawFrameWithContext: ctx timeStamp: output_time];
   [self unlockContext: ctx];
 
   [pool release];
@@ -88,7 +96,7 @@ static CVReturn DisplayLinkCallback(CVDisplayLinkRef display_link,
 - (void) reshape
 { 
   [super reshape];
-  #if !NDEBUG
+#if !NDEBUG
   {
     NSSize frame_size = [self frame].size;
     NU_TRACE("Resizing to %.1f x %.1f\n", frame_size.width, frame_size.height);
@@ -103,13 +111,35 @@ static CVReturn DisplayLinkCallback(CVDisplayLinkRef display_link,
   [super dealloc];
 }
 
-- (void) drawFrameWithContext: (CGLContextObj) ctx
+- (void) drawFrameWithContext: (CGLContextObj) ctx timeStamp: (const CVTimeStamp*) time_stamp
 {
   NU_ASSERT_C(nuApplication::appMain());
   if(nuApplication::appMain()->getState() == nuAppMain::RUNNING) {
     if(nuApplication::renderGL().isCommandSubmitted()) {
+      const f64 freq_60 = 1.0 / 60.0;
+      const f64 min_ftime = 0.5;
+      const f64 max_ftime = 5.0;
+
       i64 frame_id = nuApplication::renderGL().updateGraphicResources();
-      nuApplication::entityManager().setupEntity(frame_id);
+
+      i64 v_time = time_stamp->videoTime;
+      i64 delta_time = v_time - videoTime;
+
+      f64 refresh_freq = 1.0 / static_cast< f64 >(time_stamp->videoRefreshPeriod);
+      f64 frame_scale = time_stamp->rateScalar * static_cast< f64 >(time_stamp->videoTimeScale) * refresh_freq * freq_60;
+      f64 frame_time = static_cast< f64 >(delta_time) * refresh_freq;
+      
+      videoTime = v_time;
+
+      if(frame_time < min_ftime)
+        frame_time = min_ftime;
+      else if(frame_time > max_ftime)
+        frame_time = max_ftime;
+
+      nuApplication::instance()->setFrameTime(static_cast< f32 >(frame_time * frame_scale));
+      // NU_TRACE("Frame time: %f\n", nuApplication::instance()->getFrameTime());
+      nuApplication::entityManager().setupEntity(frame_id);      
+
       if(nuApplication::renderGL().render())
         CGLFlushDrawable(ctx);
     }

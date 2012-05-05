@@ -18,10 +18,7 @@ nuElementBuffer::nuElementBuffer(ELEMENT_TYPE type, ui32 element_num, nuGResourc
       mElementNum(element_num),
       mElementType(type)
 {
-  size_t size = getElementSize(mElementType) * mElementNum;
-  mpBuffer = nude::Alloc(size);
-  if(mpBuffer)
-    mSize = size;
+  mSize = getElementSize(mElementType) * mElementNum;
 }
 
 nuElementBuffer::~nuElementBuffer()
@@ -33,40 +30,37 @@ nuElementBuffer::~nuElementBuffer()
 
 void nuElementBuffer::update(void)
 {
+  if(isMapped()) {
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mElementBufferID);
+    glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
+    mpBuffer = nullptr;
+    setMapped(false);
+  }  
+
   if(!isUpdated())
     return;
 
   if(!isInitialized()) {
     glGenBuffers(1, &mElementBufferID);
     NU_ASSERT(mElementBufferID != 0, "Cannot generate vertex buffer object.\n");
-  }
 
-  switch(getUsage()) {
-  case nuGResource::STATIC_RESOURCE:
-    if(!isInitialized()) {
-      glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mElementBufferID);
-      glBufferData(GL_ELEMENT_ARRAY_BUFFER, mUpdateSize, mpBuffer, GL_STATIC_DRAW);
-      releaseBuffer();
-      setInitialized(true);
-      setUpdate(false);
-      mUpdateSize = 0;
+    GLenum usage;
+    switch(getUsage()) {
+    case nuGResource::STATIC_RESOURCE:
+      usage = GL_STATIC_DRAW;
+      break;
+    case nuGResource::DYNAMIC_RESOURCE:
+      usage = GL_DYNAMIC_DRAW;
+      break;
+    default:
+      NU_ASSERT(false, "Logical error.\n");
     }
-    break;
-  case nuGResource::DYNAMIC_RESOURCE:
-    if(!isInitialized()) {
-      glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mElementBufferID);
-      glBufferData(GL_ELEMENT_ARRAY_BUFFER, mSize, mpBuffer, GL_STATIC_DRAW);
-      setInitialized(true);
-      setUpdate(false);
-      mUpdateSize = 0;
-    } else {
-      glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mElementBufferID);
-      glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, mUpdateSize, mpBuffer);
-      setUpdate(false);
-      mUpdateSize = 0;
-    }
-    break;
-  default:
-    NU_ASSERT(false, "Logical error.\n");
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mElementBufferID);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, mUpdateSize, mpBuffer, usage);
+    releaseBuffer();
+    setInitialized(true);
+    setUpdate(false);
+    mUpdateSize = 0;
   }
 }

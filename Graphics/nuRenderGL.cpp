@@ -17,8 +17,6 @@ struct Vertex {
 static GLuint vsh_id = 0;
 static GLuint fsh_id = 0;
 static GLuint prog_id = 0;
-static nude::VertexBuffer vtx_buffer;
-static nude::ElementBuffer idx_buffer;
 static GLint vertex_loc = 0;
 static GLint color_loc = 0;
 
@@ -161,36 +159,38 @@ void nuRenderGL::initialize(void)
     };
 
     {
-      vtx_buffer = createVertexBuffer(sizeof(vtx), nuGResource::STATIC_RESOURCE);
-      void* p_buffer = vtx_buffer->getBuffer();
+      mTestVtxBuffer = createVertexBuffer(sizeof(vtx), nuGResource::DYNAMIC_RESOURCE);
+      void* p_buffer = mTestVtxBuffer->beginInitialize();
       memcpy(p_buffer, vtx, sizeof(vtx));
-      vtx_buffer->commit(sizeof(vtx));
+      mTestVtxBuffer->endInitialize();
 
-      vtx_buffer->beginArrayDeclaration(sizeof(Vertex));
+      mTestVtxBuffer->beginArrayDeclaration(sizeof(Vertex));
       {
-        vtx_buffer->declare(nuVertexBuffer::VertexArray(vertex_loc,
+        mTestVtxBuffer->declare(nuVertexBuffer::VertexArray(vertex_loc,
                                                         3,
                                                         nuVertexBuffer::FLOAT,
                                                         false,
                                                         0));
-        vtx_buffer->declare(nuVertexBuffer::VertexArray(color_loc,
+        mTestVtxBuffer->declare(nuVertexBuffer::VertexArray(color_loc,
                                                         4,
                                                         nuVertexBuffer::FLOAT,
                                                         false,
                                                         sizeof(f32) * 3));
       }
-      vtx_buffer->endArrayDeclaration();
+      mTestVtxBuffer->endArrayDeclaration();
     }
 
     {
-      idx_buffer = createElementBuffer(nuElementBuffer::UNSIGNED_INT_16,
+      mTestIdxBuffer = createElementBuffer(nuElementBuffer::UNSIGNED_INT_16,
                                        sizeof(idx) / sizeof(ui16),
                                        nuGResource::nuGResource::STATIC_RESOURCE);
-      void* p_buffer = idx_buffer->getBuffer();
+      void* p_buffer = mTestIdxBuffer->beginInitialize();
       memcpy(p_buffer, idx, sizeof(idx));
-      idx_buffer->commit(sizeof(idx) / sizeof(ui16));
+      mTestIdxBuffer->endInitialize();
     }
   }
+
+  glEnable(GL_PRIMITIVE_RESTART);
 
   glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
   glClearDepth(1.0f);
@@ -206,8 +206,8 @@ void nuRenderGL::terminate(void)
   glDeleteShader(fsh_id);
   glDeleteProgram(prog_id);
 
-  vtx_buffer.release();
-  idx_buffer.release();
+  mTestVtxBuffer.release();
+  mTestIdxBuffer.release();
 }
 
 bool nuRenderGL::render(void)
@@ -222,14 +222,7 @@ bool nuRenderGL::render(void)
 
         switch(p_dummy->type) {
         case nuGContext::CLEAR:
-          {
-            typedef nuGContext::DrawCmd< nuGContext::Clear > ClearCmd;
-            ClearCmd* p_clear = static_cast< ClearCmd* >(p_tag[ui].mpCommand);
-            nuColor clear_color(p_clear->data.clear_color);
-            glClearColor(clear_color.fr(), clear_color.fg(), clear_color.fb(), clear_color.fa());
-            glClearDepth(p_clear->data.depth_value);
-            glClear(p_clear->data.clear_bit);
-          }
+          executeClear(p_tag[ui].mpCommand);
           break;
         default:
           NU_ASSERT(false, "Logical error.\n");
@@ -238,8 +231,8 @@ bool nuRenderGL::render(void)
       
       glUseProgram(prog_id);
 
-      vtx_buffer->bind();
-      idx_buffer->bind();
+      mTestVtxBuffer->bind();
+      mTestIdxBuffer->bind();
 
       glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_SHORT, 0);
 
@@ -273,4 +266,14 @@ bool nuRenderGL::isCommandSubmitted(void)
     return true;
   }
   return false;
+}
+
+void nuRenderGL::executeClear(void* clear_cmd)
+{
+  typedef nuGContext::DrawCmd< nuGContext::Clear > ClearCmd;
+  ClearCmd* p_clear = static_cast< ClearCmd* >(clear_cmd);
+  nuColor clear_color(p_clear->data.clear_color);
+  glClearColor(clear_color.fr(), clear_color.fg(), clear_color.fb(), clear_color.fa());
+  glClearDepth(p_clear->data.depth_value);
+  glClear(p_clear->data.clear_bit);
 }

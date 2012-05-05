@@ -16,6 +16,9 @@ class nuDEEntityTest : public nuEntity
   void update(void);
   void draw(nuGContext& context);
 
+  f32 mPosX;
+  f32 mDir;
+
 public:
   nuDEEntityTest();
   ~nuDEEntityTest();

@@ -22,8 +22,8 @@ class nuGContext
   union Priority {
     ui32 value;
     struct {
-      ui32 pass: 4;
       ui32 priority: 28;
+      ui32 pass: 4;
     };
   };
 

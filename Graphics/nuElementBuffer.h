@@ -14,6 +14,7 @@ class nuElementBuffer : public nuGResource
 {
   DECLARE_TYPE_INFO;
   friend class nuGResManager;
+  friend class nuGSetupContext;
   friend nude::Handle< nuElementBuffer >;
 
 public:
@@ -23,6 +24,10 @@ public:
   };
 
 private:
+  enum EXTENSION_FLAG {
+    MAPPED = 1 << 0,
+  };
+
   size_t getElementSize(ELEMENT_TYPE type) const {
     const size_t sz_table[] = {
       2,
@@ -43,10 +48,23 @@ private:
   void update(void);
 
   void releaseBuffer(void) {
-    if(mpBuffer) {
+    if(!isInitialized() && mpBuffer) {
       nude::Dealloc(mpBuffer);
       mpBuffer = nullptr;
     }
+  }
+
+  void setMapped(bool mapped) {
+    ui32 ext = getExtension();
+    if(mapped)
+      ext |= MAPPED;
+    else
+      ext &= ~MAPPED;
+    setExtension(ext);
+  }
+
+  bool isMapped(void) const {
+    return (getExtension() & MAPPED) ? true : false;
   }
 
   nuElementBuffer();
@@ -54,17 +72,35 @@ private:
   ~nuElementBuffer();
 
 public:
+  void initialize(void) {
+    if(!isInitialized()) {
+      mUpdateSize = mSize;
+      setUpdate(true);
+    }
+  }
+
+  void* beginInitialize(void) {
+    if(!isInitialized()) {
+      if(!mpBuffer)
+        mpBuffer = nude::Alloc(mSize);
+      return mpBuffer;
+    }
+    return nullptr;
+  }
+
+  void endInitialize(void) {
+    if(!isInitialized() && mpBuffer) {
+      mUpdateSize = mSize;
+      setUpdate(true);
+    }
+  }
+
   GLuint getHandle(void) const {
     return mElementBufferID;
   }
 
   void* getBuffer(void) const {
     return mpBuffer;
-  }
-
-  void commit(ui32 element_num) {
-    mUpdateSize = element_num * getElementSize(mElementType);
-    setUpdate(true);
   }
 
   size_t getSize(void) const {

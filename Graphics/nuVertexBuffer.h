@@ -14,6 +14,7 @@ class nuVertexBuffer : public nuGResource
 {
   DECLARE_TYPE_INFO;
   friend class nuGResManager;
+  friend class nuGSetupContext;
   friend nude::Handle< class nuVertexBuffer >;
 
 public:
@@ -55,6 +56,7 @@ public:
 private:
   enum EXTENSION_FLAG {
     UPDATE_VERTEX_ARRAY = 1 << 0,
+    MAPPED = 1 << 1,
   };
 
   GLenum getAttributeType(ATTRIBUTE_TYPE type) const {
@@ -87,7 +89,7 @@ private:
   void update(void);
 
   void releaseBuffer(void) {
-    if(mpBuffer) {
+    if(!isInitialized() && mpBuffer) {
       nude::Dealloc(mpBuffer);
       mpBuffer = nullptr;
     }
@@ -108,12 +110,48 @@ private:
     return (getExtension() & UPDATE_VERTEX_ARRAY) ? true : false;
   }
 
+  void setMapped(bool mapped) {
+    ui32 ext = getExtension();
+    if(mapped)
+      ext |= MAPPED;
+    else
+      ext &= ~MAPPED;
+    setExtension(ext);
+  }
+
+  bool isMapped(void) const {
+    return (getExtension() & MAPPED) ? true : false;
+  }
+
   nuVertexBuffer();
 
   nuVertexBuffer(size_t size, nuGResource::RESOURCE_USAGE usage);
   ~nuVertexBuffer();
 
 public:
+  void initialize(void) {
+    if(!isInitialized()) {
+      mUpdateSize = mSize;
+      setUpdate(true);
+    }
+  }
+
+  void* beginInitialize(void) {
+    if(!isInitialized()) {
+      if(!mpBuffer)
+        mpBuffer = nude::Alloc(mSize);
+      return mpBuffer;
+    }
+    return nullptr;
+  }
+
+  void endInitialize(void) {
+    if(!isInitialized() && mpBuffer) {
+      mUpdateSize = mSize;
+      setUpdate(true);
+    }
+  }
+
   GLuint getHandle(void) const {
     return mVertexBufferID;
   }
@@ -128,11 +166,6 @@ public:
 
   size_t getSize(void) const {
     return mSize;
-  }
-
-  void commit(size_t size) {
-    mUpdateSize = size;
-    setUpdate(true);
   }
 
   void bind(void) const {

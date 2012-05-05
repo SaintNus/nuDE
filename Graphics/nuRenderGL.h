@@ -33,6 +33,11 @@ class nuRenderGL : public nuObject
   nuGContext::TagList* mpNextTagList;
   nuGContext::TagList* mpCurrentTagList;
 
+  nude::VertexBuffer mTestVtxBuffer;
+  nude::ElementBuffer mTestIdxBuffer;
+
+  void executeClear(void* clear_cmd);
+
 public:
   nuRenderGL();
   ~nuRenderGL();
@@ -68,6 +73,13 @@ public:
     return nude::ElementBuffer(mResourceManager.createElementBuffer(type, size, usage));
   }
 
+  nude::VertexBuffer& getTestVB(void) {
+    return mTestVtxBuffer;
+  }
+
+  nude::ElementBuffer& getTestIB(void) {
+    return mTestIdxBuffer;
+  }
 };
 
 #endif

@@ -5,12 +5,14 @@
  * \date 2012/05/01 20:32
  */
 
+#include "nuVertexBuffer.h"
+#include "nuElementBuffer.h"
 #include "nuGSetupContext.h"
 
 nuGSetupContext::nuGSetupContext()
     : mFrameID(0)
 {
-
+  // None...
 }
 
 nuGSetupContext::~nuGSetupContext()
@@ -25,15 +27,31 @@ void nuGSetupContext::beginSetup(i64 frame_id)
 
 void nuGSetupContext::endSetup(void)
 {
-
+  // None...
 }
 
-void nuGSetupContext::map(class nuVertexBuffer& vertex_buffer)
+void nuGSetupContext::map(nuVertexBuffer& vertex_buffer)
 {
+  if(vertex_buffer.isMapped())
+    return;
 
+  if(vertex_buffer.isInitialized() && vertex_buffer.getHandle()) {
+    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer.getHandle());
+    vertex_buffer.mpBuffer = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
+    if(vertex_buffer.mpBuffer)
+      vertex_buffer.setMapped(true);
+  }
 }
 
-void nuGSetupContext::map(class nuElementBuffer& element_buffer)
+void nuGSetupContext::map(nuElementBuffer& element_buffer)
 {
+  if(element_buffer.isMapped())
+    return;
 
+  if(element_buffer.isInitialized() && element_buffer.getHandle()) {
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, element_buffer.getHandle());
+    element_buffer.mpBuffer = glMapBuffer(GL_ELEMENT_ARRAY_BUFFER, GL_WRITE_ONLY);
+    if(element_buffer.mpBuffer)
+      element_buffer.setMapped(true);
+  }
 }

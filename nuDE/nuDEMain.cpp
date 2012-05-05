@@ -86,6 +86,8 @@ void nuDEMain::initialize(void)
 void nuDEMain::update(void)
 {
   nuAppMain::update();
+
+  /*
   const ui32 job_num = TEST_THREAD_POOL;
 
   nuTaskSet task_set(job_num);
@@ -103,6 +105,7 @@ void nuDEMain::update(void)
     nuThreadPool::JobTicket ticket = nuApplication::threadPool().entryJob(task_set);
     nuApplication::threadPool().waitUntilFinished(ticket);
   }
+   */
 }
 
 void nuDEMain::begin(void)

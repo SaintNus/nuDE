@@ -13,6 +13,7 @@
 {
   CVDisplayLinkRef displayLink;
   bool displayLinkStarted;
+  i64 videoTime;
 }
 
 @property (nonatomic, readonly) bool displayLinkStarted;

@@ -12,16 +12,13 @@ IMPLEMENT_TYPE_INFO_INST(nuVertexBuffer, nuGResource, nullptr);
 nuVertexBuffer::nuVertexBuffer(size_t size, nuGResource::RESOURCE_USAGE usage)
     : nuGResource(nuGResource::VERTEX_BUFFER, usage),
       mpBuffer(nullptr),
-      mSize(0),
+      mSize(size),
       mUpdateSize(0),
       mVertexBufferID(0),
       mVertexArrayID(0),
       mVertexArrayNum(0),
       mStride(0)
 {
-  mpBuffer = nude::Alloc(size);
-  if(mpBuffer)
-    mSize = size;
   memset(mVertexArray, 0x00, sizeof(mVertexArray));
 }
 
@@ -36,39 +33,36 @@ nuVertexBuffer::~nuVertexBuffer()
 
 void nuVertexBuffer::update(void)
 {
+  if(isMapped()) {
+    glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferID);
+    glUnmapBuffer(GL_ARRAY_BUFFER);
+    mpBuffer = nullptr;
+    setMapped(false);
+  }  
+
   if(isUpdated()) {
     if(!isInitialized()) {
       glGenBuffers(1, &mVertexBufferID);
       NU_ASSERT(mVertexBufferID != 0, "Cannot generate vertex buffer object.\n");
-    }
 
-    switch(getUsage()) {
-    case nuGResource::STATIC_RESOURCE:
-      if(!isInitialized()) {
-        glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferID);
-        glBufferData(GL_ARRAY_BUFFER, mUpdateSize, mpBuffer, GL_STATIC_DRAW);
-        releaseBuffer();
-        setInitialized(true);
-        setUpdate(false);
-        mUpdateSize = 0;
+      GLenum usage;
+      switch(getUsage()) {
+      case nuGResource::STATIC_RESOURCE:
+        usage = GL_STATIC_DRAW;
+        break;
+      case nuGResource::DYNAMIC_RESOURCE:
+        usage = GL_DYNAMIC_DRAW;
+        break;
+      default:
+        NU_ASSERT(false, "Logical error.\n");
       }
-      break;
-    case nuGResource::DYNAMIC_RESOURCE:
-      if(!isInitialized()) {
-        glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferID);
-        glBufferData(GL_ARRAY_BUFFER, mSize, mpBuffer, GL_STATIC_DRAW);
-        setInitialized(true);
-        setUpdate(false);
-        mUpdateSize = 0;
-      } else {
-        glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferID);
-        glBufferSubData(GL_ARRAY_BUFFER, 0, mUpdateSize, mpBuffer);
-        setUpdate(false);
-        mUpdateSize = 0;
-      }
-      break;
-    default:
-      NU_ASSERT(false, "Logical error.\n");
+
+      glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferID);
+      glBufferData(GL_ARRAY_BUFFER, mUpdateSize, mpBuffer, usage);
+      releaseBuffer();
+      setInitialized(true);
+      setUpdate(false);
+      mUpdateSize = 0;
     }
   }
 
@@ -105,6 +99,7 @@ void nuVertexBuffer::update(void)
       }
     }
 
+    glBindVertexArray(0);
     setUpdateVertexArray(false);
   }
 }

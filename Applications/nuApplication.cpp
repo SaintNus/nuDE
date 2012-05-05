@@ -11,7 +11,8 @@ IMPLEMENT_TYPE_INFO(nuApplication, nuObject);
 
 nuApplication::nuApplication()
     : mpAppMain(nullptr),
-      mState(UNINITIALIZED)
+      mState(UNINITIALIZED),
+      mFrameTime(1.0f)
 {
   // None...
 }

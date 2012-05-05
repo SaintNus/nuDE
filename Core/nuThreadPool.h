@@ -138,7 +138,7 @@ class nuThreadPool : public nuObject
   DECLARE_TYPE_INFO;
 
 public:
-  static const ui32 MAX_WORKER = 8;
+  static const ui32 MAX_WORKER = 4;
   class JobTicket;
 
 private:
@@ -357,8 +357,8 @@ private:
 
   class JobArena : public nuObject {
     typedef std::list< Job* > JobList;
-    typedef JobList::iterator JobIterator;
-    typedef JobList::const_iterator JobConstIterator;
+    typedef JobList::iterator JobListIterator;
+    typedef JobList::const_iterator JobListConstIterator;
 
     ui32 mExit;
 
@@ -374,7 +374,7 @@ private:
     }
 
     Task* getAvailableTask(void) {
-      JobIterator it = mJobList.begin();
+      JobListIterator it = mJobList.begin();
       while(it != mJobList.end()) {
         Job* p_job = *it;
         if(p_job->isTaskAvailable()) {
@@ -387,6 +387,33 @@ private:
       return nullptr;
     }
 
+    void processJobEntry(void) {
+      nuMutex::Autolock lock(mEntryMutex);
+      JobListIterator it = mEntryList.begin();
+      while(it != mEntryList.end()) {
+        Job* p_job = *it;
+        p_job->mLock.lockWhenCondition(Job::STATE_INITIALIZE);
+        p_job->mApproved = 1;
+        mJobList.push_back(p_job);
+        ++it;
+      }
+      mEntryList.clear();
+    }
+
+    void processFinishedJob(void) {
+      JobListIterator it = mJobList.begin();
+      while(it != mJobList.end()) {
+        Job* p_job = *it;
+        if(p_job->isFinished()) {
+          p_job->mLock.unlockWithCondition(Job::STATE_FINISHED);
+          p_job->decRefCount();
+          it = mJobList.erase(it);
+        } else {
+          ++it;
+        }
+      }
+    }
+
   public:
     JobArena()
         : mExit(0)
@@ -395,12 +422,12 @@ private:
     }
 
     ~JobArena() {
-      for(JobIterator it = mEntryList.begin(); it != mEntryList.end(); ++it) {
+      for(JobListIterator it = mEntryList.begin(); it != mEntryList.end(); ++it) {
         delete *it;
         *it = nullptr;
       }
       mEntryList.clear();
-      for(JobIterator it = mJobList.begin(); it != mJobList.end(); ++it) {
+      for(JobListIterator it = mJobList.begin(); it != mJobList.end(); ++it) {
         delete *it;
         *it = nullptr;
       }
