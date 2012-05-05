@@ -24,4 +24,8 @@
 #include "nuGContext.h"
 #include "nuGSetupContext.h"
 
+#include "nuVertexArray.h"
+#include "nuVertexBuffer.h"
+#include "nuElementBuffer.h"
+
 #endif

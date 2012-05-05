@@ -9,6 +9,7 @@
 #define __NUGRESMANAGER_H__
 
 #include "nuGResource.h"
+#include "nuVertexArray.h"
 #include "nuVertexBuffer.h"
 #include "nuElementBuffer.h"
 
@@ -34,10 +35,31 @@ class nuGResManager : public nuObject
   void deleteResources(ResList& resource_list, nuMutex& mutex, i64 frame_id);
   void updateResources(ResList& resource_list, nuMutex& mutex);
 
+  void registerResource(nuGResource& resource) {
+    switch (resource.getUsage()) {
+    case nuGResource::STATIC_RESOURCE:
+      {
+        nuMutex::Autolock mutex(mStaticResMutex);
+        mStaticResource.push_back(&resource);
+      }
+      break;
+    case nuGResource::DYNAMIC_RESOURCE:
+      {
+        nuMutex::Autolock mutex(mDynamicResMutex);
+        mDynamicResource.push_back(&resource);
+      }
+      break;
+    default:
+      NU_ASSERT_C(false);
+      break;
+    }
+  }
+
 public:
   nuGResManager();
   ~nuGResManager();
 
+  nude::VertexArray createVertexArray(void);
   nude::VertexBuffer createVertexBuffer(size_t size, nuGResource::RESOURCE_USAGE usage);
   nude::ElementBuffer createElementBuffer(nuElementBuffer::ELEMENT_TYPE type,
                                           ui32 size,

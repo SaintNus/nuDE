@@ -17,8 +17,6 @@ struct Vertex {
 static GLuint vsh_id = 0;
 static GLuint fsh_id = 0;
 static GLuint prog_id = 0;
-static GLint vertex_loc = 0;
-static GLint color_loc = 0;
 
 nuRenderGL::nuRenderGL()
     : mFrameID(0),
@@ -86,8 +84,13 @@ void nuRenderGL::initialize(void)
   }
 
   prog_id = glCreateProgram();
+
   glAttachShader(prog_id, vsh_id);
   glAttachShader(prog_id, fsh_id);
+
+  glBindAttribLocation(prog_id, 0, "inPosition");
+  glBindAttribLocation(prog_id, 1, "inColor");
+
   glLinkProgram(prog_id);
 
   glGetProgramiv(prog_id, GL_LINK_STATUS, &status);
@@ -119,81 +122,21 @@ void nuRenderGL::initialize(void)
     NU_TRACE("Error validating program.\n");
   }
 
-  {
-    GLint attrib, attrib_len;
-    glGetProgramiv(prog_id, GL_ACTIVE_ATTRIBUTES, &attrib);
-    glGetProgramiv(prog_id, GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, &attrib_len);
-    GLchar* p_attr = static_cast< GLchar* >(nude::Alloc(attrib_len));
-    for(GLuint ui = 0; ui < static_cast< GLuint >(attrib); ui++) {
-      GLsizei len;
-      GLint size;
-      GLenum type;
-      glGetActiveAttrib(prog_id, ui, attrib_len, &len, &size, &type, p_attr);
-      NU_TRACE("len: %d, size: %d, type: 0x%x, name: %s\n", len, size, type, p_attr);
-      if(strcmp(p_attr, "inPosition") == 0)
-        vertex_loc = glGetAttribLocation(prog_id, p_attr);
-      else if(strcmp(p_attr, "inColor") == 0)
-        color_loc = glGetAttribLocation(prog_id, p_attr);
-    }
-    nude::Dealloc(p_attr);
-  }
-
   nude::Dealloc(vsh_buffer);
   nude::Dealloc(fsh_buffer);
-
-  {
-    ui16 idx[3] = { 0, 1, 2 };
-    Vertex vtx[3] = {
-      {
-        { 0.0f, 0.6f, 0.0f },
-        { 1.0f, 0.85f, 0.35f, 1.0f }
-      },
-      {
-        { -0.2f, -0.3f, 0.0f },
-        { 1.0f, 0.85f, 0.35f, 1.0f }
-      },
-      {
-        { 0.2f, -0.3f, 0.0f },
-        { 1.0f, 0.85f, 0.35f, 1.0f }
-      },
-    };
-
-    {
-      mTestVtxBuffer = createVertexBuffer(sizeof(vtx), nuGResource::DYNAMIC_RESOURCE);
-      void* p_buffer = mTestVtxBuffer->beginInitialize();
-      memcpy(p_buffer, vtx, sizeof(vtx));
-      mTestVtxBuffer->endInitialize();
-
-      mTestVtxBuffer->beginArrayDeclaration(sizeof(Vertex));
-      {
-        mTestVtxBuffer->declare(nuVertexBuffer::VertexArray(vertex_loc,
-                                                        3,
-                                                        nuVertexBuffer::FLOAT,
-                                                        false,
-                                                        0));
-        mTestVtxBuffer->declare(nuVertexBuffer::VertexArray(color_loc,
-                                                        4,
-                                                        nuVertexBuffer::FLOAT,
-                                                        false,
-                                                        sizeof(f32) * 3));
-      }
-      mTestVtxBuffer->endArrayDeclaration();
-    }
-
-    {
-      mTestIdxBuffer = createElementBuffer(nuElementBuffer::UNSIGNED_INT_16,
-                                       sizeof(idx) / sizeof(ui16),
-                                       nuGResource::nuGResource::STATIC_RESOURCE);
-      void* p_buffer = mTestIdxBuffer->beginInitialize();
-      memcpy(p_buffer, idx, sizeof(idx));
-      mTestIdxBuffer->endInitialize();
-    }
-  }
-
   glEnable(GL_PRIMITIVE_RESTART);
 
+  // Initialize render context.
+  mRenderContext.clear_color = nuColor(0);
   glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+
+  mRenderContext.depth_value = 1.0f;
   glClearDepth(1.0f);
+
+  mRenderContext.p_vertex_array = nullptr;
+  mRenderContext.p_vertex_buffer = nullptr;
+  mRenderContext.p_element_buffer = nullptr;
+
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
@@ -205,37 +148,38 @@ void nuRenderGL::terminate(void)
   glDeleteShader(vsh_id);
   glDeleteShader(fsh_id);
   glDeleteProgram(prog_id);
-
-  mTestVtxBuffer.release();
-  mTestIdxBuffer.release();
 }
 
 bool nuRenderGL::render(void)
 {
+  typedef nuGContext::DrawCmd< i32 > DummyCmd;
+
   mLock.unlockWithCondition(EXECUTE_PHASE);
 
   if(mpCurrentTagList) {
     if(mpCurrentTagList->mTagNum > 0) {
       nuGContext::Tag* p_tag = mpCurrentTagList->mpTagList;
+
+      mRenderContext.p_vertex_array = nullptr;
+      mRenderContext.p_vertex_buffer = nullptr;
+      mRenderContext.p_element_buffer = nullptr;
+
       for(ui32 ui = 0; ui < mpCurrentTagList->mTagNum; ui++) {
-        nuGContext::DrawCmd< i32 >* p_dummy = static_cast< nuGContext::DrawCmd< i32 >* >(p_tag[ui].mpCommand);
+        DummyCmd* p_dummy = static_cast< DummyCmd* >(p_tag[ui].mpCommand);
 
         switch(p_dummy->type) {
         case nuGContext::CLEAR:
-          executeClear(p_tag[ui].mpCommand);
+          executeClear(mRenderContext, p_tag[ui].mpCommand);
+          break;
+        case nuGContext::DRAW_ELEMENTS:
+          glUseProgram(prog_id);
+          executeDrawElements(mRenderContext, p_tag[ui].mpCommand);
           break;
         default:
           NU_ASSERT(false, "Logical error.\n");
         }
       }
       
-      glUseProgram(prog_id);
-
-      mTestVtxBuffer->bind();
-      mTestIdxBuffer->bind();
-
-      glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_SHORT, 0);
-
       return true;
     }
   }
@@ -268,12 +212,83 @@ bool nuRenderGL::isCommandSubmitted(void)
   return false;
 }
 
-void nuRenderGL::executeClear(void* clear_cmd)
+void nuRenderGL::executeClear(RenderContext& context, void* clear_cmd)
 {
-  typedef nuGContext::DrawCmd< nuGContext::Clear > ClearCmd;
-  ClearCmd* p_clear = static_cast< ClearCmd* >(clear_cmd);
+  nuGContext::ClearCmd* p_clear = static_cast< nuGContext::ClearCmd* >(clear_cmd);
   nuColor clear_color(p_clear->data.clear_color);
-  glClearColor(clear_color.fr(), clear_color.fg(), clear_color.fb(), clear_color.fa());
-  glClearDepth(p_clear->data.depth_value);
+
+  if(context.clear_color != clear_color)
+    glClearColor(clear_color.fr(), clear_color.fg(), clear_color.fb(), clear_color.fa());
+  
+  if(fabsf(p_clear->data.depth_value - context.depth_value) > 0.000001f)
+    glClearDepth(p_clear->data.depth_value);
+
   glClear(p_clear->data.clear_bit);
+}
+
+void nuRenderGL::executeDrawElements(RenderContext& context, void* draw_cmd)
+{
+  nuGContext::DrawElementsCmd* p_draw = static_cast< nuGContext::DrawElementsCmd* >(draw_cmd);
+
+  if(p_draw->data.p_vertex_array->getHandle() == 0)
+    return;
+  if(p_draw->data.p_vertex_buffer->getHandle() == 0)
+    return;
+  if(p_draw->data.p_element_buffer->getHandle() == 0)
+    return;
+
+  if(context.p_vertex_array != p_draw->data.p_vertex_array)
+    context.p_vertex_array = p_draw->data.p_vertex_array;
+
+  if(context.p_vertex_buffer != p_draw->data.p_vertex_buffer)
+    context.p_vertex_buffer = p_draw->data.p_vertex_buffer;
+
+  if(context.p_vertex_array->getVertexHandle() != context.p_vertex_buffer->getHandle())
+    context.p_vertex_array->reset(context.p_vertex_buffer->getHandle());
+  else
+    glBindVertexArray(context.p_vertex_array->getHandle());
+
+  if(context.p_element_buffer != p_draw->data.p_element_buffer) {
+    const GLuint restart_idx[] = {
+      0xffff,
+      0xffffffff,
+    };
+    if(context.p_element_buffer) {
+      nuElementBuffer::ELEMENT_TYPE prev_type = context.p_element_buffer->getElementType();
+      if(prev_type != p_draw->data.p_element_buffer->getElementType())
+        glPrimitiveRestartIndex(restart_idx[p_draw->data.p_element_buffer->getElementType()]);
+    } else {
+      glPrimitiveRestartIndex(restart_idx[p_draw->data.p_element_buffer->getElementType()]);
+    }
+
+    context.p_element_buffer = p_draw->data.p_element_buffer;
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, context.p_element_buffer->getHandle());
+  }
+
+  const GLenum primitive_mode[] = {
+    GL_POINTS,
+
+    GL_LINE_STRIP,
+    GL_LINE_LOOP,
+    GL_LINES,
+
+    GL_TRIANGLE_STRIP,
+    GL_TRIANGLE_FAN,
+    GL_TRIANGLES,
+
+    GL_LINES_ADJACENCY,
+    GL_LINE_STRIP_ADJACENCY,
+    GL_TRIANGLES_ADJACENCY,
+    GL_TRIANGLE_STRIP_ADJACENCY,
+  };
+
+  const GLenum element_type[] = {
+    GL_UNSIGNED_SHORT,
+    GL_UNSIGNED_INT,
+  };
+
+  glDrawElements(primitive_mode[p_draw->data.primitive_mode],
+                 p_draw->data.element_num,
+                 element_type[context.p_element_buffer->getElementType()],
+                 0);
 }

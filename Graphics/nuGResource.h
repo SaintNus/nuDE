@@ -19,6 +19,7 @@ public:
     RENDER_BUFFER,
     VERTEX_BUFFER,
     ELEMENT_BUFFER,
+    VERTEX_ARRAY,
     TEXTURE,
   };
 

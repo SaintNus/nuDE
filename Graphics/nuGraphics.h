@@ -16,6 +16,23 @@ namespace nude {
     PASS_DRAW_2D,
   };
 
+  enum PRIMITIVE_MODE {
+    POINTS = 0,
+
+    LINE_STRIP,
+    LINE_LOOP,
+    LINE_LINES,
+
+    TRIANGLE_STRIP,
+    TRIANGLE_FAN,
+    TRIANGLES,
+    
+    LINES_ADJACENCY,
+    LINE_STRIP_ADJACENCY,
+    TRIANGLES_ADJACENCY,
+    TRIANGLE_STRIP_ADJACENCY,
+  };
+
 }
 
 #endif

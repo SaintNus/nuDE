@@ -24,22 +24,6 @@ nuGContext::~nuGContext()
   // None...
 }
 
-void nuGContext::clear(ui32 clear_bit, const nuColor& color, f32 depth)
-{
-  NU_ASSERT_C(mpTag != nullptr);
-  DrawCmd< Clear >* p_clear = mBuffer.allocBuffer< DrawCmd< Clear > >();
-  if(p_clear) {
-    Tag& tag = mpTag[mCurrentTag];
-    mCurrentTag++;
-    tag.mPriority = mCurrentPriority;
-    tag.mpCommand = p_clear;
-    p_clear->type = CLEAR;
-    p_clear->data.clear_bit = clear_bit;
-    p_clear->data.clear_color = color.rgba;
-    p_clear->data.depth_value = depth;
-  }
-}
-
 void nuGContext::begin(i64 frame_id, Tag* p_tag, ui32 tag_num)
 {
   if(mTempTagNum < tag_num) {
@@ -64,6 +48,15 @@ void nuGContext::begin(i64 frame_id, Tag* p_tag, ui32 tag_num)
   mFrameID = frame_id;
 
   mBuffer.reset();
+
+  mCurrentClear.clear_color = 0;
+  mCurrentClear.depth_value = 1.0f;
+
+  mCurrentDrawElements.p_vertex_array = nullptr;
+  mCurrentDrawElements.p_vertex_buffer = nullptr;
+  mCurrentDrawElements.p_element_buffer = nullptr;
+  mCurrentDrawElements.primitive_mode = 0;
+  mCurrentDrawElements.element_num = 0;
 }
 
 void nuGContext::end(void)
@@ -171,5 +164,98 @@ void nuGContext::createTagList(TagList& tag_list, SortTagContext* ctx, ui32 ctx_
         }
       }
     }
+  }
+}
+
+void nuGContext::setClearColor(const nuColor& color)
+{
+  mCurrentClear.clear_color = color.rgba;
+}
+
+void nuGContext::setClearDepth(f32 depth)
+{
+  mCurrentClear.depth_value = depth;
+}
+
+void nuGContext::clear(ui32 clear_bit)
+{
+  NU_ASSERT_C(mpTag != nullptr);
+
+  if(mCurrentTag >= mTagNum)
+    return;
+
+  DrawCmd< Clear >* p_clear = mBuffer.allocBuffer< DrawCmd< Clear > >();
+  if(p_clear) {
+    Tag& tag = mpTag[mCurrentTag];
+    mCurrentTag++;
+    tag.mPriority = mCurrentPriority;
+    tag.mpCommand = p_clear;
+    p_clear->type = CLEAR;
+    p_clear->data.clear_bit = clear_bit;
+    p_clear->data.clear_color = mCurrentClear.clear_color;
+    p_clear->data.depth_value = mCurrentClear.depth_value;
+  }
+}
+
+void nuGContext::setVertexArray(nude::VertexArray& array)
+{
+  if(!array.isValid()) {
+    mCurrentDrawElements.p_vertex_array = nullptr;
+    return;
+  }
+
+  array->protect(mFrameID);
+  mCurrentDrawElements.p_vertex_array = &array;
+}
+
+void nuGContext::setVertexBuffer(nude::VertexBuffer& buffer)
+{
+  if(!buffer.isValid()) {
+    mCurrentDrawElements.p_vertex_buffer = nullptr;
+    return;
+  }
+
+  buffer->protect(mFrameID);
+  mCurrentDrawElements.p_vertex_buffer = &buffer;
+}
+
+void nuGContext::setElementBuffer(nude::ElementBuffer& buffer)
+{
+  if(!buffer.isValid()) {
+    mCurrentDrawElements.p_element_buffer = 0;
+    return;
+  }
+
+  buffer->protect(mFrameID);
+  mCurrentDrawElements.p_element_buffer = &buffer;
+}
+
+void nuGContext::drawElements(nude::PRIMITIVE_MODE primitive_mode, ui32 element_num)
+{
+  if(mCurrentTag >= mTagNum)
+    return;
+
+  if(!mCurrentDrawElements.p_vertex_buffer)
+    return;
+  if(!mCurrentDrawElements.p_element_buffer)
+    return;
+  if(!mCurrentDrawElements.p_vertex_array)
+    return;
+
+  NU_ASSERT_C(mpTag != nullptr);
+  DrawCmd< DrawElements >* p_draw = mBuffer.allocBuffer< DrawCmd< DrawElements > >();
+  if(p_draw) {
+    Tag& tag = mpTag[mCurrentTag];
+    mCurrentTag++;
+    tag.mPriority = mCurrentPriority;
+    tag.mpCommand = p_draw;
+    p_draw->type = DRAW_ELEMENTS;
+    p_draw->data.p_vertex_array = mCurrentDrawElements.p_vertex_array;
+    p_draw->data.p_vertex_buffer = mCurrentDrawElements.p_vertex_buffer;
+    p_draw->data.p_element_buffer = mCurrentDrawElements.p_element_buffer;
+    p_draw->data.primitive_mode = primitive_mode;
+    if(element_num > p_draw->data.p_element_buffer->getElementNum())
+      element_num = p_draw->data.p_element_buffer->getElementNum();
+    p_draw->data.element_num = element_num;
   }
 }

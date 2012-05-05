@@ -35,28 +35,17 @@ nuGResManager::~nuGResManager()
   }
 }
 
+VertexArray nuGResManager::createVertexArray(void)
+{
+  nuVertexArray* p_va = new nuVertexArray();
+  registerResource(*p_va);
+  return VertexArray(p_va);
+}
+
 VertexBuffer nuGResManager::createVertexBuffer(size_t size, nuGResource::RESOURCE_USAGE usage)
 {
   nuVertexBuffer* p_vb = new nuVertexBuffer(size, usage);
-
-  switch (p_vb->getUsage()) {
-  case nuGResource::STATIC_RESOURCE:
-    {
-      nuMutex::Autolock mutex(mStaticResMutex);
-      mStaticResource.push_back(p_vb);
-    }
-    break;
-  case nuGResource::DYNAMIC_RESOURCE:
-    {
-      nuMutex::Autolock mutex(mDynamicResMutex);
-      mDynamicResource.push_back(p_vb);
-    }
-    break;
-  default:
-    NU_ASSERT_C(false);
-    break;
-  }
-
+  registerResource(*p_vb);
   return VertexBuffer(p_vb);
 }
 
@@ -65,25 +54,7 @@ ElementBuffer nuGResManager::createElementBuffer(nuElementBuffer::ELEMENT_TYPE t
                                                  nuGResource::RESOURCE_USAGE usage)
 {
   nuElementBuffer* p_eb = new nuElementBuffer(type, size, usage);
-
-  switch (p_eb->getUsage()) {
-  case nuGResource::STATIC_RESOURCE:
-    {
-      nuMutex::Autolock mutex(mStaticResMutex);
-      mStaticResource.push_back(p_eb);
-    }
-    break;
-  case nuGResource::DYNAMIC_RESOURCE:
-    {
-      nuMutex::Autolock mutex(mDynamicResMutex);
-      mDynamicResource.push_back(p_eb);
-    }
-    break;
-  default:
-    NU_ASSERT_C(false);
-    break;
-  }
-
+  registerResource(*p_eb);
   return ElementBuffer(p_eb);
 }
 

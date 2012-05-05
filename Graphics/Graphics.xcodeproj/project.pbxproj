@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C77E29ED155520F500627CAA /* nuVertexArray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C77E29EB155520F500627CAA /* nuVertexArray.cpp */; };
+		C77E29EE155520F500627CAA /* nuVertexArray.h in Headers */ = {isa = PBXBuildFile; fileRef = C77E29EC155520F500627CAA /* nuVertexArray.h */; };
 		C785D083145D433000E64F10 /* NudeGraphics-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = C785D082145D433000E64F10 /* NudeGraphics-Prefix.pch */; };
 		C785D087145D44D300E64F10 /* nuRenderGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C785D085145D44D300E64F10 /* nuRenderGL.cpp */; };
 		C785D088145D44D300E64F10 /* nuRenderGL.h in Headers */ = {isa = PBXBuildFile; fileRef = C785D086145D44D300E64F10 /* nuRenderGL.h */; };
@@ -32,6 +34,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C77E29EB155520F500627CAA /* nuVertexArray.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuVertexArray.cpp; sourceTree = "<group>"; };
+		C77E29EC155520F500627CAA /* nuVertexArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuVertexArray.h; sourceTree = "<group>"; };
 		C785D06C145D418E00E64F10 /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = ../Configurations/Debug.xcconfig; sourceTree = "<group>"; };
 		C785D06D145D418E00E64F10 /* Profile.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Profile.xcconfig; path = ../Configurations/Profile.xcconfig; sourceTree = "<group>"; };
 		C785D06E145D418E00E64F10 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = ../Configurations/Release.xcconfig; sourceTree = "<group>"; };
@@ -121,6 +125,8 @@
 				C79E4D6D14E2D1F0001E60BF /* nuRenderBuffer.h */,
 				C785D085145D44D300E64F10 /* nuRenderGL.cpp */,
 				C785D086145D44D300E64F10 /* nuRenderGL.h */,
+				C77E29EB155520F500627CAA /* nuVertexArray.cpp */,
+				C77E29EC155520F500627CAA /* nuVertexArray.h */,
 				C79DFF1C151A3E0400A1FA32 /* nuVertexBuffer.cpp */,
 				C79DFF1D151A3E0500A1FA32 /* nuVertexBuffer.h */,
 			);
@@ -146,6 +152,7 @@
 				C7DDD81F1550012F002B4D5A /* nuGSetupContext.h in Headers */,
 				C7987C69155143FC00A98D46 /* nuGContextBuffer.h in Headers */,
 				C798C10D15528AC2009595EA /* nuGraphics.h in Headers */,
+				C77E29EE155520F500627CAA /* nuVertexArray.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -229,6 +236,7 @@
 				C7DDD81E1550012F002B4D5A /* nuGSetupContext.cpp in Sources */,
 				C7987C68155143FC00A98D46 /* nuGContextBuffer.cpp in Sources */,
 				C798C10C15528AC2009595EA /* nuGraphics.cpp in Sources */,
+				C77E29ED155520F500627CAA /* nuVertexArray.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

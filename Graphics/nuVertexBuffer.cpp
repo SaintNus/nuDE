@@ -14,12 +14,9 @@ nuVertexBuffer::nuVertexBuffer(size_t size, nuGResource::RESOURCE_USAGE usage)
       mpBuffer(nullptr),
       mSize(size),
       mUpdateSize(0),
-      mVertexBufferID(0),
-      mVertexArrayID(0),
-      mVertexArrayNum(0),
-      mStride(0)
+      mVertexBufferID(0)
 {
-  memset(mVertexArray, 0x00, sizeof(mVertexArray));
+  // None...
 }
 
 nuVertexBuffer::~nuVertexBuffer()
@@ -27,8 +24,6 @@ nuVertexBuffer::~nuVertexBuffer()
   releaseBuffer();
   if(mVertexBufferID != 0)
     glDeleteBuffers(1, &mVertexBufferID);
-  if(mVertexArrayID != 0)
-    glDeleteVertexArrays(1, &mVertexArrayID);
 }
 
 void nuVertexBuffer::update(void)
@@ -64,42 +59,5 @@ void nuVertexBuffer::update(void)
       setUpdate(false);
       mUpdateSize = 0;
     }
-  }
-
-  if(isUpdateVertexArray() && mVertexBufferID != 0) {
-    if(mVertexArrayID == 0) {
-      glGenVertexArrays(1, &mVertexArrayID);
-    }
-
-    glBindVertexArray(mVertexArrayID);
-    glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferID);
-
-    {
-      ui32 flag = 0;
-
-      for(ui32 ui = 0; ui < mVertexArrayNum; ui++) {
-        VertexArray& va = mVertexArray[ui];
-        GLuint idx = static_cast< GLuint >(va.index);
-
-        flag |= 1 << idx;
-
-        glEnableVertexAttribArray(idx);
-        glVertexAttribPointer(idx,
-                              static_cast< GLint >(va.size),
-                              getAttributeType(va.type),
-                              va.normalized ? GL_TRUE : GL_FALSE,
-                              static_cast< GLsizei >(mStride),
-                              reinterpret_cast< GLvoid* >(va.offset));
-      }
-
-      for(ui32 ui = 0; ui < MAX_VERTEX_ATTRIBUTE; ui++) {
-        ui32 mask = 1 << ui;
-        if((flag & mask) == 0)
-          glDisableVertexAttribArray(static_cast< GLuint >(ui));
-      }
-    }
-
-    glBindVertexArray(0);
-    setUpdateVertexArray(false);
   }
 }

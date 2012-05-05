@@ -74,6 +74,10 @@ public:
     return rgba == color.rgba;
   }
 
+  bool operator != (const nuColor& color) const {
+    return rgba != color.rgba;
+  }
+
   f32 fr(void) const {
     return static_cast< f32 >(r) / 255.0f;
   }

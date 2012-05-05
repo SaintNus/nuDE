@@ -124,7 +124,7 @@ void nuAppMain::update(void)
   mCurrentTagList ^= 1;
 
   mpRenderGL->setNextTagList(mTagList[mCurrentTagList]);
-  mFrameID = mpRenderGL->synchronize() + 1;
+  mFrameID = mpRenderGL->synchronize();
 
   if(mpEntityManager->getEntityNum()) {
     nuTaskSet update_set(mpEntityManager->getEntityNum());

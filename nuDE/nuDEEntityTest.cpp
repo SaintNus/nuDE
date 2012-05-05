@@ -9,50 +9,69 @@
 
 IMPLEMENT_TYPE_INFO(nuDEEntityTest, nuEntity);
 
+struct Vertex {
+  f32 pos[3];
+  ui32 abgr;
+};
+
+
 nuDEEntityTest::nuDEEntityTest()
     : mPosX(0.0f),
       mDir(1.0f)
 {
+  mVertexBuffer = nuApplication::renderGL().createVertexBuffer(sizeof(Vertex) * 3,
+                                                               nuGResource::DYNAMIC_RESOURCE);
+  mVertexBuffer->initialize();
 
+  mVertexArray = nuApplication::renderGL().createVertexArray();
+  mVertexArray->beginDeclaration(2);
+  mVertexArray->declare(0, nuVertexArray::Array(3, nuVertexArray::FLOAT, false, sizeof(Vertex), 0));
+  mVertexArray->declare(1, nuVertexArray::Array(4, nuVertexArray::UNSIGNED_INT_8, true, sizeof(Vertex), sizeof(f32) * 3));
+  mVertexArray->endDeclaration();
+
+  ui16 idx[3] = { 0, 1, 2 };
+  mElementBuffer = nuApplication::renderGL().createElementBuffer(nuElementBuffer::UNSIGNED_INT_16,
+                                                                 3,
+                                                                 nuGResource::nuGResource::STATIC_RESOURCE);
+  void* p_buffer = mElementBuffer->beginInitialize();
+  memcpy(p_buffer, idx, sizeof(idx));
+  mElementBuffer->endInitialize();
 }
 
 nuDEEntityTest::~nuDEEntityTest()
 {
-
+  mVertexBuffer.release();
+  mElementBuffer.release();
+  mVertexArray.release();
 }
 
 void nuDEEntityTest::setup(nuGSetupContext& setup)
 {
-  if(nuApplication::instance()->renderGL().getTestVB().isValid())
-    setup.map(*nuApplication::instance()->renderGL().getTestVB());
+  if(mVertexBuffer.isValid())
+    setup.map(*mVertexBuffer);
 }
 
 void nuDEEntityTest::update(void)
 {
-  struct Vertex {
-    f32 pos[3];
-    f32 color[4];
-  };
-
   Vertex vtx[3] = {
     {
       { mPosX, 0.6f, 0.0f },
-      { 1.0f, 0.85f, 0.35f, 1.0f }
+      0xff0000ff,
     },
     {
       { -0.2f, -0.3f, 0.0f },
-      { 1.0f, 0.85f, 0.35f, 1.0f }
+      0xff00ff00,
     },
     {
       { 0.2f, -0.3f, 0.0f },
-      { 1.0f, 0.85f, 0.35f, 1.0f }
+      0xffff0000,
     },
   };
 
-  if(nuApplication::instance()->renderGL().getTestVB().isValid()) {
-    void* p_buffer = nuApplication::instance()->renderGL().getTestVB()->getBuffer();
+  if(mVertexBuffer.isValid()) {
+    void* p_buffer = mVertexBuffer->getBuffer();
     if(p_buffer)
-      memcpy(p_buffer, vtx, sizeof(Vertex));
+      memcpy(p_buffer, vtx, sizeof(vtx));
   }
 
   mPosX += 0.01f * mDir * nuApplication::instance()->getFrameTime();
@@ -65,5 +84,11 @@ void nuDEEntityTest::update(void)
 void nuDEEntityTest::draw(nuGContext& context)
 {
   context.setPriority(nude::PASS_TRANSPARENCY, 0);
+
   context.clear(nuGContext::CLEAR_COLOR | nuGContext::CLEAR_DEPTH, nuColor(0), 1.0f);
+
+  context.setVertexArray(mVertexArray);
+  context.setVertexBuffer(mVertexBuffer);
+  context.setElementBuffer(mElementBuffer);
+  context.drawElements(nude::TRIANGLES, 3);
 }

@@ -19,6 +19,10 @@ class nuDEEntityTest : public nuEntity
   f32 mPosX;
   f32 mDir;
 
+  nude::VertexBuffer mVertexBuffer;
+  nude::ElementBuffer mElementBuffer;
+  nude::VertexArray mVertexArray;
+
 public:
   nuDEEntityTest();
   ~nuDEEntityTest();

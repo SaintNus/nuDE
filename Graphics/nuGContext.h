@@ -10,6 +10,9 @@
 
 #include "nuGraphics.h"
 #include "nuGContextBuffer.h"
+#include "nuVertexArray.h"
+#include "nuVertexBuffer.h"
+#include "nuElementBuffer.h"
 
 /*!
  * \class nuGContext
@@ -30,6 +33,7 @@ class nuGContext
 public:
   enum TYPE {
     CLEAR = 0,
+    DRAW_ELEMENTS,
   };
     
   enum CLEAR_BIT {
@@ -151,8 +155,17 @@ private:
     f32 depth_value;
     ui32 clear_bit;
   };
-
   typedef DrawCmd< Clear > ClearCmd;
+
+  struct DrawElements {
+    nuVertexArray* p_vertex_array;
+    nuVertexBuffer* p_vertex_buffer;
+    nuElementBuffer* p_element_buffer;
+    ui32 primitive_mode: 4;
+    ui32 element_num: 28;
+  };
+  typedef DrawCmd< DrawElements > DrawElementsCmd;
+
   static const ui32 EXPAND_TEMP_TAG_NUM = 256;
 
   i64 mFrameID;
@@ -163,6 +176,9 @@ private:
   Tag* mpTempTag;
   ui32 mTempTagNum;
   Priority mCurrentPriority;
+
+  Clear mCurrentClear;
+  DrawElements mCurrentDrawElements;
 
   nuGContext();
 
@@ -202,7 +218,21 @@ public:
     mCurrentPriority.priority = priority;
   }
 
-  void clear(ui32 clear_bit, const nuColor& color, f32 depth);  
+
+  void setClearColor(const nuColor& color);
+  void setClearDepth(f32 depth);
+  void clear(ui32 clear_bit);
+
+  void clear(ui32 clear_bit, const nuColor& color, f32 depth) {
+    setClearColor(color);
+    setClearDepth(depth);
+    clear(clear_bit);
+  }
+
+  void setVertexArray(nude::VertexArray& array);
+  void setVertexBuffer(nude::VertexBuffer& buffer);
+  void setElementBuffer(nude::ElementBuffer& buffer);
+  void drawElements(nude::PRIMITIVE_MODE primitive_mode, ui32 element_num);
 
   static void createTagList(TagList& tag_list, SortTagContext* ctx, ui32 ctx_num);
 

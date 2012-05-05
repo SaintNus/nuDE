@@ -10,6 +10,7 @@
 
 #include "nuGContext.h"
 #include "nuGResManager.h"
+#include "nuVertexArray.h"
 #include "nuVertexBuffer.h"
 #include "nuElementBuffer.h"
 
@@ -27,16 +28,26 @@ class nuRenderGL : public nuObject
     EXECUTE_PHASE,
   };
 
+  struct RenderContext {
+    nuColor clear_color;
+    f32 depth_value;
+    nuVertexArray* p_vertex_array;
+    nuVertexBuffer* p_vertex_buffer;
+    nuElementBuffer* p_element_buffer;
+  };
+
   nuGResManager mResourceManager;
   i64 mFrameID;
   nuConditionLock mLock;
   nuGContext::TagList* mpNextTagList;
   nuGContext::TagList* mpCurrentTagList;
+  RenderContext mRenderContext;
 
-  nude::VertexBuffer mTestVtxBuffer;
-  nude::ElementBuffer mTestIdxBuffer;
+  GLint mVertexLoc;
+  GLint mColorLoc;
 
-  void executeClear(void* clear_cmd);
+  void executeClear(RenderContext& context, void* clear_cmd);
+  void executeDrawElements(RenderContext& context, void* draw_cmd);
 
 public:
   nuRenderGL();
@@ -63,6 +74,10 @@ public:
   void initialize(void);
   void terminate(void);
 
+  nude::VertexArray createVertexArray() {
+    return nude::VertexArray(mResourceManager.createVertexArray());
+  }
+
   nude::VertexBuffer createVertexBuffer(size_t size, nuGResource::RESOURCE_USAGE usage) {
     return nude::VertexBuffer(mResourceManager.createVertexBuffer(size, usage));
   }
@@ -73,13 +88,6 @@ public:
     return nude::ElementBuffer(mResourceManager.createElementBuffer(type, size, usage));
   }
 
-  nude::VertexBuffer& getTestVB(void) {
-    return mTestVtxBuffer;
-  }
-
-  nude::ElementBuffer& getTestIB(void) {
-    return mTestIdxBuffer;
-  }
 };
 
 #endif

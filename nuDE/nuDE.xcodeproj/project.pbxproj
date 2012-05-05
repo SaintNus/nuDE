@@ -78,7 +78,6 @@
 		C796666D1444910000E540CD /* nuDE.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = nuDE.icns; sourceTree = SOURCE_ROOT; };
 		C79DFF05150BAA7300A1FA32 /* nuDEMain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuDEMain.cpp; sourceTree = SOURCE_ROOT; };
 		C79DFF06150BAA7300A1FA32 /* nuDEMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuDEMain.h; sourceTree = SOURCE_ROOT; };
-		C79FC5B5141D0631005C6C70 /* nude.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = nude.h; path = ../nude.h; sourceTree = "<group>"; };
 		C7A2C4AB1462BD2000ACDC27 /* Applications.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Applications.xcodeproj; path = ../Applications/Applications.xcodeproj; sourceTree = "<group>"; };
 		C7AB29EF141CC006001F8EE5 /* nuDE-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "nuDE-Info.plist"; sourceTree = SOURCE_ROOT; };
 		C7AB29F0141CC006001F8EE5 /* nuDE-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "nuDE-Prefix.pch"; sourceTree = SOURCE_ROOT; };
@@ -119,7 +118,6 @@
 				C785D064145D415600E64F10 /* Graphics.xcodeproj */,
 				C7A2C4AB1462BD2000ACDC27 /* Applications.xcodeproj */,
 				C7AB2A14141CC759001F8EE5 /* Configurations */,
-				C79FC5B5141D0631005C6C70 /* nude.h */,
 				C7AB29F0141CC006001F8EE5 /* nuDE-Prefix.pch */,
 				C7AB29EF141CC006001F8EE5 /* nuDE-Info.plist */,
 				C7AB29FF141CC09B001F8EE5 /* Source Codes */,

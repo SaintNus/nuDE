@@ -115,15 +115,6 @@ public:
     return mElementNum;
   }
 
-  void bind(void) const {
-    static const GLuint restart_idx[] = {
-      0xffff,
-      0xffffffff,
-    };
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mElementBufferID);
-    glPrimitiveRestartIndex(restart_idx[mElementType]);
-  }
-
 };
 
 namespace nude {
