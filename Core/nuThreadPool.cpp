@@ -37,22 +37,20 @@ void nuThreadPool::JobArena::schedulerProc(void* param)
   mCondition.lock();
 
   while(!mExit) {
-    if(mUnfinisedJob > 0)
+    if(mUnfinishedJob > 0)
       nuThread::usleep(500);
 
-    while(mConditionValue == EMPTY && mUnfinisedJob == 0) {
+    while(mConditionValue == EMPTY && mUnfinishedJob == 0) {
       mState = STATE_WAIT;
       mCondition.wait();
       if(mExit)
         break;
     }
 
-    mState = STATE_RUNNING;
-
     if(mExit)
       break;
 
-    if(mUnfinisedJob == 0)
+    if(mUnfinishedJob == 0)
       setCondition(EMPTY);
 
     if(!mJobList.empty())

@@ -46,6 +46,8 @@
 #include "nuOSType.h"
 
 #include "nuResource.h"
+#include "nuResourceManager.h"
+#include "nuStream.h"
 #include "nuSingleton.h"
 
 #include "nuThreadPool.h"

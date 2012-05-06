@@ -46,7 +46,7 @@ public:
   //! \brief Read file content.
   size_t read(void* ptr, size_t bytes);
   //! \brief Write file content.
-  size_t write(void* ptr, size_t bytes);
+  size_t write(const void* ptr, size_t bytes);
   //! \brief Seek file.
   nude::FILE_ERROR seek(i64 pos, nude::FILE_SEEK whence);
   //! \brief Tell file position.

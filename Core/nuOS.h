@@ -32,6 +32,13 @@ namespace nude
     FATTR_UPDATE,
   };
 
+  enum STREAM_ERROR {
+    SERROR_CRITICAL = -1,
+    SERROR_NONE = 0,
+    SERROR_CANNOT_OPEN,
+    SERROR_INVALID_OPERATION,
+  };
+
 }
 
 #endif

@@ -159,14 +159,14 @@ size_t nuMachFile::read(void* ptr, size_t bytes)
 }
 
 // Write file content.
-size_t nuMachFile::write(void* ptr, size_t bytes)
+size_t nuMachFile::write(const void* ptr, size_t bytes)
 {
   if(!mFileHandle || ptr == nullptr || bytes == 0)
     return 0;
 
   if(mAttribute == nude::FATTR_WRITE) {
     NSFileHandle* fh = static_cast< NSFileHandle* >(mFileHandle);
-    NSData* data = [NSData dataWithBytesNoCopy: ptr length: bytes freeWhenDone: NO];
+    NSData* data = [NSData dataWithBytesNoCopy: const_cast< void* >(ptr) length: bytes freeWhenDone: NO];
     [fh writeData: data];
     return bytes;
   }

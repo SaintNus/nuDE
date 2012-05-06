@@ -24,9 +24,6 @@ public:
   nuDEMain();
   ~nuDEMain();
 
-  void initialize(void);
-  void terminate(void);
-
 };
 
 #endif

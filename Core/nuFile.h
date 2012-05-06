@@ -55,7 +55,7 @@ namespace nude {
       return mFileHandler.read(ptr, bytes);
     }
     //! \brief Write to file.
-    size_t write(void* ptr, size_t bytes) {
+    size_t write(const void* ptr, size_t bytes) {
       return mFileHandler.write(ptr, bytes);
     }
     //! \brief Seek.

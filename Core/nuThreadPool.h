@@ -375,12 +375,12 @@ private:
     nuCondition mCondition;
     volatile i32 mConditionValue;
     STATE mState;
-    volatile i32 mUnfinisedJob;
+    volatile i32 mUnfinishedJob;
 
     void queueEntry(Job* p_job) {
       nuMutex::Autolock lock(mEntryMutex);
       p_job->mRegistered = 1;
-      nuAtomic::inc(&mUnfinisedJob);
+      nuAtomic::inc(&mUnfinishedJob);
       mEntryList.push_back(p_job->incRefCount());
     }
 
@@ -416,7 +416,7 @@ private:
       while(it != mJobList.end()) {
         Job* p_job = *it;
         if(p_job->isFinished()) {
-          nuAtomic::dec(&mUnfinisedJob);
+          nuAtomic::dec(&mUnfinishedJob);
           p_job->mLock.unlockWithCondition(Job::STATE_FINISHED);
           p_job->decRefCount();
           it = mJobList.erase(it);
@@ -436,7 +436,7 @@ private:
         : mExit(0),
           mConditionValue(EMPTY),
           mState(STATE_IDLE),
-          mUnfinisedJob(0)
+          mUnfinishedJob(0)
     {
       // None...
     }
@@ -475,6 +475,7 @@ private:
         if(ret) {
           if(res == HAS_DATA && mState == STATE_WAIT) {
             mCondition.lock();
+            mState = STATE_RUNNING;
             mCondition.signal();
             mCondition.unlock();
           }
