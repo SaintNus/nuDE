@@ -34,8 +34,27 @@ void nuThreadPool::JobArena::schedulerProc(void* param)
   nuThreadPool* p_pool = static_cast< nuThreadPool* >(param);
 
   NU_TRACE("Opening job arena.\n");
+  mCondition.lock();
 
   while(!mExit) {
+    if(mUnfinisedJob > 0)
+      nuThread::usleep(500);
+
+    while(mConditionValue == EMPTY && mUnfinisedJob == 0) {
+      mState = STATE_WAIT;
+      mCondition.wait();
+      if(mExit)
+        break;
+    }
+
+    mState = STATE_RUNNING;
+
+    if(mExit)
+      break;
+
+    if(mUnfinisedJob == 0)
+      setCondition(EMPTY);
+
     if(!mJobList.empty())
       processFinishedJob();
 
@@ -54,10 +73,10 @@ void nuThreadPool::JobArena::schedulerProc(void* param)
         }
       }
     }
-
-    nuThread::usleep(500);
   }
 
+  mCondition.unlock();
+  mState = STATE_IDLE;
   NU_TRACE("Closing job arena.\n");
 }
 
@@ -65,6 +84,7 @@ nuThreadPool::JobTicket nuThreadPool::JobArena::entryJob(const nuTaskSet& task_s
 {
   Job* p_job = new Job(task_set);
   queueEntry(p_job);
+  setCondition(HAS_DATA);
   return JobTicket(p_job);
 }
 
@@ -92,6 +112,8 @@ void nuThreadPool::Worker::dispatchWorker(ui32 worker_id, JobArena& job_arena)
 
 void nuThreadPool::Worker::workerProcedure(void* param)
 {
+  nuThreadPool::JobArena& job_arena = *static_cast< nuThreadPool::JobArena* >(param);
+
   while(!mExit) {
     mState = STATE_IDLE;
 
@@ -110,7 +132,10 @@ void nuThreadPool::Worker::workerProcedure(void* param)
         Task* p_task = mpTask;
         Job* p_job = mpTask->p_job;
         mpTask = p_job->nextTask();
-        p_job->commitTask(mID, *p_task);
+        if(p_job->commitTask(mID, *p_task)) {
+          job_arena.setCondition(nuThreadPool::JobArena::HAS_DATA);
+          break;
+        }
       }
     }
 

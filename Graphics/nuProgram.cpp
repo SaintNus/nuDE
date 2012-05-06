@@ -6,3 +6,15 @@
  */
 
 #include "nuProgram.h"
+
+IMPLEMENT_TYPE_INFO(nuProgram, nuObject);
+
+nuProgram::nuProgram()
+{
+
+}
+
+nuProgram::~nuProgram()
+{
+
+}

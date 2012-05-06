@@ -6,3 +6,15 @@
  */
 
 #include "nuProgramManager.h"
+
+IMPLEMENT_TYPE_INFO(nuProgramManager, nuObject);
+
+nuProgramManager::nuProgramManager()
+{
+
+}
+
+nuProgramManager::~nuProgramManager()
+{
+
+}

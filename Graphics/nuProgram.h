@@ -8,6 +8,14 @@
 #ifndef __NUPROGRAM_H__
 #define __NUPROGRAM_H__
 
+class nuProgram : public nuObject
+{
+  DECLARE_TYPE_INFO;
 
+public:
+  nuProgram();
+  ~nuProgram();
+
+};
 
 #endif

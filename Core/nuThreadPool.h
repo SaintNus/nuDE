@@ -274,7 +274,7 @@ private:
       return nullptr;
     }
 
-    void commitTask(ui32 thread_id, Task& task) {
+    bool commitTask(ui32 thread_id, Task& task) {
       bool end_task = mEndTaskEnable;
       i32 num_task = static_cast< i32 >(mNumTask);
       i32 curr = mFinishedTask;
@@ -295,11 +295,11 @@ private:
                 curr = mFinishedTask;
                 res = curr + 1;
               } else {
-                return;
+                return true;
               }
             }
           }
-          return;
+          return false;
         }
       }
     }
@@ -360,16 +360,27 @@ private:
     typedef JobList::iterator JobListIterator;
     typedef JobList::const_iterator JobListConstIterator;
 
+    enum STATE {
+      STATE_IDLE = 0,
+      STATE_WAIT,
+      STATE_RUNNING,
+    };
+
     ui32 mExit;
 
     JobList mJobList;
 
     JobList mEntryList;
     nuMutex mEntryMutex;
+    nuCondition mCondition;
+    volatile i32 mConditionValue;
+    STATE mState;
+    volatile i32 mUnfinisedJob;
 
     void queueEntry(Job* p_job) {
       nuMutex::Autolock lock(mEntryMutex);
       p_job->mRegistered = 1;
+      nuAtomic::inc(&mUnfinisedJob);
       mEntryList.push_back(p_job->incRefCount());
     }
 
@@ -405,6 +416,7 @@ private:
       while(it != mJobList.end()) {
         Job* p_job = *it;
         if(p_job->isFinished()) {
+          nuAtomic::dec(&mUnfinisedJob);
           p_job->mLock.unlockWithCondition(Job::STATE_FINISHED);
           p_job->decRefCount();
           it = mJobList.erase(it);
@@ -415,8 +427,16 @@ private:
     }
 
   public:
+    enum CONDITION {
+      EMPTY = 0,
+      HAS_DATA,
+    };
+  
     JobArena()
-        : mExit(0)
+        : mExit(0),
+          mConditionValue(EMPTY),
+          mState(STATE_IDLE),
+          mUnfinisedJob(0)
     {
       // None...
     }
@@ -440,6 +460,28 @@ private:
 
     void exit(void) {
       mExit = 1;
+
+      while(mState != STATE_IDLE) {
+        mCondition.signal();
+        nuThread::usleep(1000);
+      }
+    }
+
+    void setCondition(CONDITION condition) {
+      i32 curr = mConditionValue;
+      i32 res = condition;
+      while(res != curr) {
+        bool ret = nuAtomic::cas(curr, res, &mConditionValue);
+        if(ret) {
+          if(res == HAS_DATA && mState == STATE_WAIT) {
+            mCondition.lock();
+            mCondition.signal();
+            mCondition.unlock();
+          }
+        } else {
+          curr = mConditionValue;
+        }
+      }
     }
 
   };

@@ -8,5 +8,14 @@
 #ifndef __NUPROGRAMMANAGER_H__
 #define __NUPROGRAMMANAGER_H__
 
+class nuProgramManager : public nuObject
+{
+  DECLARE_TYPE_INFO;
+
+public:
+  nuProgramManager();
+  ~nuProgramManager();
+
+};
 
 #endif
