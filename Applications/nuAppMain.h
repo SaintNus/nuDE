@@ -58,6 +58,7 @@ protected:
   static const ui32 DEFAULT_TAG_NUM = 8 * 1024;
 
   STATE mState;
+  nuResourceManager* mpResourceManager;
   nuRenderGL* mpRenderGL;
   nuThreadPool* mpThreadPool;
 

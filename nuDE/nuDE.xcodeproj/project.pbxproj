@@ -392,11 +392,6 @@
 			buildSettings = {
 				COPY_RESOURCES = NO;
 				GCC_PREFIX_HEADER = "nuDE-Prefix.pch";
-				HEADER_SEARCH_PATHS = (
-					../Core,
-					../Graphics,
-					../Applications,
-				);
 			};
 			name = Debug;
 		};
@@ -406,11 +401,6 @@
 			buildSettings = {
 				COPY_RESOURCES = NO;
 				GCC_PREFIX_HEADER = "nuDE-Prefix.pch";
-				HEADER_SEARCH_PATHS = (
-					../Core,
-					../Graphics,
-					../Applications,
-				);
 			};
 			name = Profile;
 		};
@@ -440,11 +430,6 @@
 			buildSettings = {
 				COPY_RESOURCES = YES;
 				GCC_PREFIX_HEADER = "nuDE-Prefix.pch";
-				HEADER_SEARCH_PATHS = (
-					../Core,
-					../Graphics,
-					../Applications,
-				);
 			};
 			name = Release;
 		};

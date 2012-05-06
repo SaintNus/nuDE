@@ -14,7 +14,7 @@ class nuResourceManager : public nuObject
 {
   DECLARE_TYPE_INFO;
 
-private:
+public:
   nuResourceManager() {}
   ~nuResourceManager() {}
 

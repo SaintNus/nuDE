@@ -11,7 +11,8 @@
 IMPLEMENT_TYPE_INFO(nuAppMain, nuObject);
 
 nuAppMain::nuAppMain()
-    : mpRenderGL(nullptr),
+    : mpResourceManager(nullptr),
+      mpRenderGL(nullptr),
       mpThreadPool(nullptr),
       mpEntityManager(nullptr),
       mpContextBuffer(nullptr),
@@ -65,6 +66,12 @@ nuAppMain::~nuAppMain()
   if(mpThreadPool) {
     nuThreadPool* ptr = mpThreadPool;
     mpThreadPool = nullptr;
+    delete ptr;
+  }
+
+  if(mpResourceManager) {
+    nuResourceManager* ptr = mpResourceManager;
+    mpResourceManager = nullptr;
     delete ptr;
   }
 }
