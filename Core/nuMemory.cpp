@@ -18,8 +18,6 @@ struct MemHeader
 // Allocate memory.
 void* nude::Alloc(size_t size, size_t align)
 {
-  NU_ASSERT_C(size > 0);
-
   size_t na = align - 1;
   size_t sz = size + sizeof(MemHeader) + na;
   void* ptr = malloc(sz);
@@ -36,7 +34,8 @@ void* nude::Alloc(size_t size, size_t align)
 // Deallocate memory.
 void nude::Dealloc(void* p_addr)
 {
-  NU_ASSERT_C(p_addr != nullptr);
+  if(!p_addr)
+    return;
 
   void** ptr = static_cast< void** >(p_addr);
   ptr--;
@@ -45,7 +44,8 @@ void nude::Dealloc(void* p_addr)
 
 size_t nude::MemSize(void* p_addr)
 {
-  NU_ASSERT_C(p_addr != nullptr);
+  if(!p_addr)
+    return 0;
 
   void** ptr = static_cast< void** >(p_addr);
   ptr--;

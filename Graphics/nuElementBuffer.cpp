@@ -37,9 +37,6 @@ void nuElementBuffer::update(void)
     setMapped(false);
   }  
 
-  if(!isUpdated())
-    return;
-
   if(!isInitialized()) {
     glGenBuffers(1, &mElementBufferID);
     NU_ASSERT(mElementBufferID != 0, "Cannot generate vertex buffer object.\n");

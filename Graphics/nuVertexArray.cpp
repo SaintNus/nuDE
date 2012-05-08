@@ -34,9 +34,6 @@ nuVertexArray::~nuVertexArray()
 
 void nuVertexArray::update(void)
 {
-  if(!isUpdated())
-    return;
-
   if(!isInitialized()) {
     glGenVertexArrays(1, &mHandle);
     NU_ASSERT(mHandle != 0, "Cannot generate vertex array object.\n");

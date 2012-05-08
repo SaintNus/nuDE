@@ -7,71 +7,71 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C726EF1B146D5C0B0038550E /* nuSingleton.h in Headers */ = {isa = PBXBuildFile; fileRef = C726EF1A146D5C0B0038550E /* nuSingleton.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C726EF1B146D5C0B0038550E /* nuSingleton.h in Headers */ = {isa = PBXBuildFile; fileRef = C726EF1A146D5C0B0038550E /* nuSingleton.h */; settings = {ATTRIBUTES = (); }; };
 		C726EF1E146D5C220038550E /* nuSingleton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C726EF1D146D5C220038550E /* nuSingleton.cpp */; };
 		C72BFEFC141CB0BB004F0E00 /* nuType.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C72BFEFB141CB0BB004F0E00 /* nuType.cpp */; };
-		C72BFEFE141CB0D1004F0E00 /* nuType.h in Headers */ = {isa = PBXBuildFile; fileRef = C72BFEFD141CB0D1004F0E00 /* nuType.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C72BFEFE141CB0D1004F0E00 /* nuType.h in Headers */ = {isa = PBXBuildFile; fileRef = C72BFEFD141CB0D1004F0E00 /* nuType.h */; settings = {ATTRIBUTES = (); }; };
 		C72BFF00141CB15E004F0E00 /* NudeCore-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = C72BFEFF141CB15E004F0E00 /* NudeCore-Prefix.pch */; settings = {ATTRIBUTES = (); }; };
 		C72BFF06141CB5D2004F0E00 /* nuDebug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C72BFF04141CB5D2004F0E00 /* nuDebug.cpp */; };
-		C72BFF07141CB5D2004F0E00 /* nuDebug.h in Headers */ = {isa = PBXBuildFile; fileRef = C72BFF05141CB5D2004F0E00 /* nuDebug.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C72BFF07141CB5D2004F0E00 /* nuDebug.h in Headers */ = {isa = PBXBuildFile; fileRef = C72BFF05141CB5D2004F0E00 /* nuDebug.h */; settings = {ATTRIBUTES = (); }; };
 		C75B6363147E8ED40004C7D9 /* nuGeometry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C75B6361147E8ED40004C7D9 /* nuGeometry.cpp */; };
-		C75B6364147E8ED40004C7D9 /* nuGeometry.h in Headers */ = {isa = PBXBuildFile; fileRef = C75B6362147E8ED40004C7D9 /* nuGeometry.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C75B6364147E8ED40004C7D9 /* nuGeometry.h in Headers */ = {isa = PBXBuildFile; fileRef = C75B6362147E8ED40004C7D9 /* nuGeometry.h */; settings = {ATTRIBUTES = (); }; };
 		C75B6368147E992C0004C7D9 /* nuColor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C75B6366147E992C0004C7D9 /* nuColor.cpp */; };
-		C75B6369147E992C0004C7D9 /* nuColor.h in Headers */ = {isa = PBXBuildFile; fileRef = C75B6367147E992C0004C7D9 /* nuColor.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C75B6369147E992C0004C7D9 /* nuColor.h in Headers */ = {isa = PBXBuildFile; fileRef = C75B6367147E992C0004C7D9 /* nuColor.h */; settings = {ATTRIBUTES = (); }; };
 		C75B636C147EA3510004C7D9 /* nuMath.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C75B636A147EA3510004C7D9 /* nuMath.cpp */; };
-		C75B636D147EA3510004C7D9 /* nuMath.h in Headers */ = {isa = PBXBuildFile; fileRef = C75B636B147EA3510004C7D9 /* nuMath.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C75B636D147EA3510004C7D9 /* nuMath.h in Headers */ = {isa = PBXBuildFile; fileRef = C75B636B147EA3510004C7D9 /* nuMath.h */; settings = {ATTRIBUTES = (); }; };
 		C7987C7E15516BC800A98D46 /* nuRingBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7987C7C15516BC800A98D46 /* nuRingBuffer.cpp */; };
-		C7987C7F15516BC800A98D46 /* nuRingBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = C7987C7D15516BC800A98D46 /* nuRingBuffer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C7987C7F15516BC800A98D46 /* nuRingBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = C7987C7D15516BC800A98D46 /* nuRingBuffer.h */; settings = {ATTRIBUTES = (); }; };
 		C79D18A414F93C2100D201C7 /* nuCondition.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C79D18A214F93C2000D201C7 /* nuCondition.cpp */; };
-		C79D18A514F93C2100D201C7 /* nuCondition.h in Headers */ = {isa = PBXBuildFile; fileRef = C79D18A314F93C2000D201C7 /* nuCondition.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C79D18A814F93FDD00D201C7 /* nuMachCondition.h in Headers */ = {isa = PBXBuildFile; fileRef = C79D18A614F93FDC00D201C7 /* nuMachCondition.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C79D18A514F93C2100D201C7 /* nuCondition.h in Headers */ = {isa = PBXBuildFile; fileRef = C79D18A314F93C2000D201C7 /* nuCondition.h */; settings = {ATTRIBUTES = (); }; };
+		C79D18A814F93FDD00D201C7 /* nuMachCondition.h in Headers */ = {isa = PBXBuildFile; fileRef = C79D18A614F93FDC00D201C7 /* nuMachCondition.h */; settings = {ATTRIBUTES = (); }; };
 		C79D18A914F93FDD00D201C7 /* nuMachCondition.mm in Sources */ = {isa = PBXBuildFile; fileRef = C79D18A714F93FDD00D201C7 /* nuMachCondition.mm */; };
 		C79D18AC14F9473B00D201C7 /* nuAutoReleasePool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C79D18AA14F9473A00D201C7 /* nuAutoReleasePool.cpp */; };
-		C79D18AD14F9473B00D201C7 /* nuAutoReleasePool.h in Headers */ = {isa = PBXBuildFile; fileRef = C79D18AB14F9473A00D201C7 /* nuAutoReleasePool.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C79D18B014F9481E00D201C7 /* nuMachAutoReleasePool.h in Headers */ = {isa = PBXBuildFile; fileRef = C79D18AE14F9481D00D201C7 /* nuMachAutoReleasePool.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C79D18AD14F9473B00D201C7 /* nuAutoReleasePool.h in Headers */ = {isa = PBXBuildFile; fileRef = C79D18AB14F9473A00D201C7 /* nuAutoReleasePool.h */; settings = {ATTRIBUTES = (); }; };
+		C79D18B014F9481E00D201C7 /* nuMachAutoReleasePool.h in Headers */ = {isa = PBXBuildFile; fileRef = C79D18AE14F9481D00D201C7 /* nuMachAutoReleasePool.h */; settings = {ATTRIBUTES = (); }; };
 		C79D18B114F9481E00D201C7 /* nuMachAutoReleasePool.mm in Sources */ = {isa = PBXBuildFile; fileRef = C79D18AF14F9481E00D201C7 /* nuMachAutoReleasePool.mm */; };
 		C79D18B614FE6FC000D201C7 /* nuConditionLock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C79D18B214FE6FBD00D201C7 /* nuConditionLock.cpp */; };
-		C79D18B714FE6FC000D201C7 /* nuConditionLock.h in Headers */ = {isa = PBXBuildFile; fileRef = C79D18B314FE6FBD00D201C7 /* nuConditionLock.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C79D18B814FE6FC000D201C7 /* nuMachConditionLock.h in Headers */ = {isa = PBXBuildFile; fileRef = C79D18B414FE6FBE00D201C7 /* nuMachConditionLock.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C79D18B714FE6FC000D201C7 /* nuConditionLock.h in Headers */ = {isa = PBXBuildFile; fileRef = C79D18B314FE6FBD00D201C7 /* nuConditionLock.h */; settings = {ATTRIBUTES = (); }; };
+		C79D18B814FE6FC000D201C7 /* nuMachConditionLock.h in Headers */ = {isa = PBXBuildFile; fileRef = C79D18B414FE6FBE00D201C7 /* nuMachConditionLock.h */; settings = {ATTRIBUTES = (); }; };
 		C79D18B914FE6FC000D201C7 /* nuMachConditionLock.mm in Sources */ = {isa = PBXBuildFile; fileRef = C79D18B514FE6FBF00D201C7 /* nuMachConditionLock.mm */; };
 		C79E4D7314E811C3001E60BF /* nuThreadPool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C79E4D7114E811C3001E60BF /* nuThreadPool.cpp */; };
-		C79E4D7414E811C3001E60BF /* nuThreadPool.h in Headers */ = {isa = PBXBuildFile; fileRef = C79E4D7214E811C3001E60BF /* nuThreadPool.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C79E4D7414E811C3001E60BF /* nuThreadPool.h in Headers */ = {isa = PBXBuildFile; fileRef = C79E4D7214E811C3001E60BF /* nuThreadPool.h */; settings = {ATTRIBUTES = (); }; };
 		C79FC5B3141D02C7005C6C70 /* nuObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C79FC5B1141D02C7005C6C70 /* nuObject.cpp */; };
-		C79FC5B4141D02C7005C6C70 /* nuObject.h in Headers */ = {isa = PBXBuildFile; fileRef = C79FC5B2141D02C7005C6C70 /* nuObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C79FC5B4141D02C7005C6C70 /* nuObject.h in Headers */ = {isa = PBXBuildFile; fileRef = C79FC5B2141D02C7005C6C70 /* nuObject.h */; settings = {ATTRIBUTES = (); }; };
 		C79FC5F1141E3B67005C6C70 /* nuCRC.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C79FC5EF141E3B67005C6C70 /* nuCRC.cpp */; };
-		C79FC5F2141E3B67005C6C70 /* nuCRC.h in Headers */ = {isa = PBXBuildFile; fileRef = C79FC5F0141E3B67005C6C70 /* nuCRC.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C79FC5F2141E3B67005C6C70 /* nuCRC.h in Headers */ = {isa = PBXBuildFile; fileRef = C79FC5F0141E3B67005C6C70 /* nuCRC.h */; settings = {ATTRIBUTES = (); }; };
 		C79FC5F6141E6F0D005C6C70 /* nuTypeInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C79FC5F4141E6F0D005C6C70 /* nuTypeInfo.cpp */; };
-		C79FC5F7141E6F0D005C6C70 /* nuTypeInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = C79FC5F5141E6F0D005C6C70 /* nuTypeInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C79FC5F7141E6F0D005C6C70 /* nuTypeInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = C79FC5F5141E6F0D005C6C70 /* nuTypeInfo.h */; settings = {ATTRIBUTES = (); }; };
 		C7AB2A23141CCE74001F8EE5 /* nuMemory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7AB2A21141CCE74001F8EE5 /* nuMemory.cpp */; };
-		C7AB2A24141CCE74001F8EE5 /* nuMemory.h in Headers */ = {isa = PBXBuildFile; fileRef = C7AB2A22141CCE74001F8EE5 /* nuMemory.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C7AB762914DEDF0300A42A8C /* Core.h in Headers */ = {isa = PBXBuildFile; fileRef = C7AB762814DEDF0300A42A8C /* Core.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C7AB2A24141CCE74001F8EE5 /* nuMemory.h in Headers */ = {isa = PBXBuildFile; fileRef = C7AB2A22141CCE74001F8EE5 /* nuMemory.h */; settings = {ATTRIBUTES = (); }; };
+		C7AB762914DEDF0300A42A8C /* Core.h in Headers */ = {isa = PBXBuildFile; fileRef = C7AB762814DEDF0300A42A8C /* Core.h */; settings = {ATTRIBUTES = (); }; };
 		C7D3748D14DD6E9800CADBA8 /* nuResourceManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7D3748B14DD6E9700CADBA8 /* nuResourceManager.cpp */; };
-		C7D3748E14DD6E9800CADBA8 /* nuResourceManager.h in Headers */ = {isa = PBXBuildFile; fileRef = C7D3748C14DD6E9700CADBA8 /* nuResourceManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C7D3748E14DD6E9800CADBA8 /* nuResourceManager.h in Headers */ = {isa = PBXBuildFile; fileRef = C7D3748C14DD6E9700CADBA8 /* nuResourceManager.h */; settings = {ATTRIBUTES = (); }; };
 		C7D3749114DD732700CADBA8 /* nuStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7D3748F14DD732700CADBA8 /* nuStream.cpp */; };
-		C7D3749214DD732700CADBA8 /* nuStream.h in Headers */ = {isa = PBXBuildFile; fileRef = C7D3749014DD732700CADBA8 /* nuStream.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C7D3749214DD732700CADBA8 /* nuStream.h in Headers */ = {isa = PBXBuildFile; fileRef = C7D3749014DD732700CADBA8 /* nuStream.h */; settings = {ATTRIBUTES = (); }; };
 		C7EE1B8C14D563FD00A9CF2B /* nuAtomic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7EE1B7714D563FC00A9CF2B /* nuAtomic.cpp */; };
-		C7EE1B8D14D563FD00A9CF2B /* nuAtomic.h in Headers */ = {isa = PBXBuildFile; fileRef = C7EE1B7814D563FC00A9CF2B /* nuAtomic.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C7EE1B8D14D563FD00A9CF2B /* nuAtomic.h in Headers */ = {isa = PBXBuildFile; fileRef = C7EE1B7814D563FC00A9CF2B /* nuAtomic.h */; settings = {ATTRIBUTES = (); }; };
 		C7EE1B8E14D563FD00A9CF2B /* nuFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7EE1B7914D563FC00A9CF2B /* nuFile.cpp */; };
-		C7EE1B8F14D563FD00A9CF2B /* nuFile.h in Headers */ = {isa = PBXBuildFile; fileRef = C7EE1B7A14D563FC00A9CF2B /* nuFile.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C7EE1B8F14D563FD00A9CF2B /* nuFile.h in Headers */ = {isa = PBXBuildFile; fileRef = C7EE1B7A14D563FC00A9CF2B /* nuFile.h */; settings = {ATTRIBUTES = (); }; };
 		C7EE1B9014D563FD00A9CF2B /* nuMachAtomic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7EE1B7B14D563FC00A9CF2B /* nuMachAtomic.cpp */; };
-		C7EE1B9114D563FD00A9CF2B /* nuMachAtomic.h in Headers */ = {isa = PBXBuildFile; fileRef = C7EE1B7C14D563FC00A9CF2B /* nuMachAtomic.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C7EE1B9214D563FD00A9CF2B /* nuMachFile.h in Headers */ = {isa = PBXBuildFile; fileRef = C7EE1B7D14D563FC00A9CF2B /* nuMachFile.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C7EE1B9114D563FD00A9CF2B /* nuMachAtomic.h in Headers */ = {isa = PBXBuildFile; fileRef = C7EE1B7C14D563FC00A9CF2B /* nuMachAtomic.h */; settings = {ATTRIBUTES = (); }; };
+		C7EE1B9214D563FD00A9CF2B /* nuMachFile.h in Headers */ = {isa = PBXBuildFile; fileRef = C7EE1B7D14D563FC00A9CF2B /* nuMachFile.h */; settings = {ATTRIBUTES = (); }; };
 		C7EE1B9314D563FD00A9CF2B /* nuMachFile.mm in Sources */ = {isa = PBXBuildFile; fileRef = C7EE1B7E14D563FC00A9CF2B /* nuMachFile.mm */; };
-		C7EE1B9414D563FD00A9CF2B /* nuMachMutex.h in Headers */ = {isa = PBXBuildFile; fileRef = C7EE1B7F14D563FD00A9CF2B /* nuMachMutex.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C7EE1B9414D563FD00A9CF2B /* nuMachMutex.h in Headers */ = {isa = PBXBuildFile; fileRef = C7EE1B7F14D563FD00A9CF2B /* nuMachMutex.h */; settings = {ATTRIBUTES = (); }; };
 		C7EE1B9514D563FD00A9CF2B /* nuMachMutex.mm in Sources */ = {isa = PBXBuildFile; fileRef = C7EE1B8014D563FD00A9CF2B /* nuMachMutex.mm */; };
-		C7EE1B9614D563FD00A9CF2B /* nuMachThread.h in Headers */ = {isa = PBXBuildFile; fileRef = C7EE1B8114D563FD00A9CF2B /* nuMachThread.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C7EE1B9614D563FD00A9CF2B /* nuMachThread.h in Headers */ = {isa = PBXBuildFile; fileRef = C7EE1B8114D563FD00A9CF2B /* nuMachThread.h */; settings = {ATTRIBUTES = (); }; };
 		C7EE1B9714D563FD00A9CF2B /* nuMachThread.mm in Sources */ = {isa = PBXBuildFile; fileRef = C7EE1B8214D563FD00A9CF2B /* nuMachThread.mm */; };
 		C7EE1B9814D563FD00A9CF2B /* nuMutex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7EE1B8314D563FD00A9CF2B /* nuMutex.cpp */; };
-		C7EE1B9914D563FD00A9CF2B /* nuMutex.h in Headers */ = {isa = PBXBuildFile; fileRef = C7EE1B8414D563FD00A9CF2B /* nuMutex.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C7EE1B9A14D563FD00A9CF2B /* nuOS.h in Headers */ = {isa = PBXBuildFile; fileRef = C7EE1B8514D563FD00A9CF2B /* nuOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C7EE1B9914D563FD00A9CF2B /* nuMutex.h in Headers */ = {isa = PBXBuildFile; fileRef = C7EE1B8414D563FD00A9CF2B /* nuMutex.h */; settings = {ATTRIBUTES = (); }; };
+		C7EE1B9A14D563FD00A9CF2B /* nuOS.h in Headers */ = {isa = PBXBuildFile; fileRef = C7EE1B8514D563FD00A9CF2B /* nuOS.h */; settings = {ATTRIBUTES = (); }; };
 		C7EE1B9B14D563FD00A9CF2B /* nuOSType.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7EE1B8614D563FD00A9CF2B /* nuOSType.cpp */; };
-		C7EE1B9C14D563FD00A9CF2B /* nuOSType.h in Headers */ = {isa = PBXBuildFile; fileRef = C7EE1B8714D563FD00A9CF2B /* nuOSType.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C7EE1B9C14D563FD00A9CF2B /* nuOSType.h in Headers */ = {isa = PBXBuildFile; fileRef = C7EE1B8714D563FD00A9CF2B /* nuOSType.h */; settings = {ATTRIBUTES = (); }; };
 		C7EE1B9D14D563FD00A9CF2B /* nuResource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7EE1B8814D563FD00A9CF2B /* nuResource.cpp */; };
-		C7EE1B9E14D563FD00A9CF2B /* nuResource.h in Headers */ = {isa = PBXBuildFile; fileRef = C7EE1B8914D563FD00A9CF2B /* nuResource.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C7EE1B9E14D563FD00A9CF2B /* nuResource.h in Headers */ = {isa = PBXBuildFile; fileRef = C7EE1B8914D563FD00A9CF2B /* nuResource.h */; settings = {ATTRIBUTES = (); }; };
 		C7EE1B9F14D563FD00A9CF2B /* nuThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7EE1B8A14D563FD00A9CF2B /* nuThread.cpp */; };
-		C7EE1BA014D563FD00A9CF2B /* nuThread.h in Headers */ = {isa = PBXBuildFile; fileRef = C7EE1B8B14D563FD00A9CF2B /* nuThread.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C7EE1BA014D563FD00A9CF2B /* nuThread.h in Headers */ = {isa = PBXBuildFile; fileRef = C7EE1B8B14D563FD00A9CF2B /* nuThread.h */; settings = {ATTRIBUTES = (); }; };
 		C7EE1BA414D5973500A9CF2B /* nuHandle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7EE1BA214D5973400A9CF2B /* nuHandle.cpp */; };
-		C7EE1BA514D5973500A9CF2B /* nuHandle.h in Headers */ = {isa = PBXBuildFile; fileRef = C7EE1BA314D5973500A9CF2B /* nuHandle.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C7EE1BA514D5973500A9CF2B /* nuHandle.h in Headers */ = {isa = PBXBuildFile; fileRef = C7EE1BA314D5973500A9CF2B /* nuHandle.h */; settings = {ATTRIBUTES = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -253,6 +253,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C72BFF00141CB15E004F0E00 /* NudeCore-Prefix.pch in Headers */,
 				C72BFEFE141CB0D1004F0E00 /* nuType.h in Headers */,
 				C72BFF07141CB5D2004F0E00 /* nuDebug.h in Headers */,
 				C7AB2A24141CCE74001F8EE5 /* nuMemory.h in Headers */,
@@ -286,7 +287,6 @@
 				C79D18B714FE6FC000D201C7 /* nuConditionLock.h in Headers */,
 				C79D18B814FE6FC000D201C7 /* nuMachConditionLock.h in Headers */,
 				C7987C7F15516BC800A98D46 /* nuRingBuffer.h in Headers */,
-				C72BFF00141CB15E004F0E00 /* NudeCore-Prefix.pch in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

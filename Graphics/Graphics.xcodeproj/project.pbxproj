@@ -8,34 +8,34 @@
 
 /* Begin PBXBuildFile section */
 		C77E29ED155520F500627CAA /* nuVertexArray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C77E29EB155520F500627CAA /* nuVertexArray.cpp */; };
-		C77E29EE155520F500627CAA /* nuVertexArray.h in Headers */ = {isa = PBXBuildFile; fileRef = C77E29EC155520F500627CAA /* nuVertexArray.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C77E29EE155520F500627CAA /* nuVertexArray.h in Headers */ = {isa = PBXBuildFile; fileRef = C77E29EC155520F500627CAA /* nuVertexArray.h */; settings = {ATTRIBUTES = (); }; };
 		C780FBAB1556DA5D000B013E /* NudeGraphics-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = C785D082145D433000E64F10 /* NudeGraphics-Prefix.pch */; };
 		C785D087145D44D300E64F10 /* nuRenderGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C785D085145D44D300E64F10 /* nuRenderGL.cpp */; };
-		C785D088145D44D300E64F10 /* nuRenderGL.h in Headers */ = {isa = PBXBuildFile; fileRef = C785D086145D44D300E64F10 /* nuRenderGL.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C785D088145D44D300E64F10 /* nuRenderGL.h in Headers */ = {isa = PBXBuildFile; fileRef = C785D086145D44D300E64F10 /* nuRenderGL.h */; settings = {ATTRIBUTES = (); }; };
 		C7987C68155143FC00A98D46 /* nuGContextBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7987C66155143FC00A98D46 /* nuGContextBuffer.cpp */; };
-		C7987C69155143FC00A98D46 /* nuGContextBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = C7987C67155143FC00A98D46 /* nuGContextBuffer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C7987C69155143FC00A98D46 /* nuGContextBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = C7987C67155143FC00A98D46 /* nuGContextBuffer.h */; settings = {ATTRIBUTES = (); }; };
 		C798C10C15528AC2009595EA /* nuGraphics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C798C10A15528AC2009595EA /* nuGraphics.cpp */; };
-		C798C10D15528AC2009595EA /* nuGraphics.h in Headers */ = {isa = PBXBuildFile; fileRef = C798C10B15528AC2009595EA /* nuGraphics.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C798C10D15528AC2009595EA /* nuGraphics.h in Headers */ = {isa = PBXBuildFile; fileRef = C798C10B15528AC2009595EA /* nuGraphics.h */; settings = {ATTRIBUTES = (); }; };
 		C79DFF1E151A3E0500A1FA32 /* nuElementBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C79DFF1A151A3E0400A1FA32 /* nuElementBuffer.cpp */; };
-		C79DFF1F151A3E0500A1FA32 /* nuElementBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = C79DFF1B151A3E0400A1FA32 /* nuElementBuffer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C79DFF1F151A3E0500A1FA32 /* nuElementBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = C79DFF1B151A3E0400A1FA32 /* nuElementBuffer.h */; settings = {ATTRIBUTES = (); }; };
 		C79DFF20151A3E0500A1FA32 /* nuVertexBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C79DFF1C151A3E0400A1FA32 /* nuVertexBuffer.cpp */; };
-		C79DFF21151A3E0500A1FA32 /* nuVertexBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = C79DFF1D151A3E0500A1FA32 /* nuVertexBuffer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C79DFF21151A3E0500A1FA32 /* nuVertexBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = C79DFF1D151A3E0500A1FA32 /* nuVertexBuffer.h */; settings = {ATTRIBUTES = (); }; };
 		C79E4D6E14E2D1F0001E60BF /* nuRenderBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C79E4D6C14E2D1F0001E60BF /* nuRenderBuffer.cpp */; };
-		C79E4D6F14E2D1F0001E60BF /* nuRenderBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = C79E4D6D14E2D1F0001E60BF /* nuRenderBuffer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C79E4D6F14E2D1F0001E60BF /* nuRenderBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = C79E4D6D14E2D1F0001E60BF /* nuRenderBuffer.h */; settings = {ATTRIBUTES = (); }; };
 		C7A2C49F145D7D0F00ACDC27 /* nuGContext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7A2C49D145D7D0F00ACDC27 /* nuGContext.cpp */; };
-		C7A2C4A0145D7D0F00ACDC27 /* nuGContext.h in Headers */ = {isa = PBXBuildFile; fileRef = C7A2C49E145D7D0F00ACDC27 /* nuGContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C7A2C4A0145D7D0F00ACDC27 /* nuGContext.h in Headers */ = {isa = PBXBuildFile; fileRef = C7A2C49E145D7D0F00ACDC27 /* nuGContext.h */; settings = {ATTRIBUTES = (); }; };
 		C7AB761C14DE7DFD00A42A8C /* nuGResource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7AB761A14DE7DFD00A42A8C /* nuGResource.cpp */; };
-		C7AB761D14DE7DFD00A42A8C /* nuGResource.h in Headers */ = {isa = PBXBuildFile; fileRef = C7AB761B14DE7DFD00A42A8C /* nuGResource.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C7AB761D14DE7DFD00A42A8C /* nuGResource.h in Headers */ = {isa = PBXBuildFile; fileRef = C7AB761B14DE7DFD00A42A8C /* nuGResource.h */; settings = {ATTRIBUTES = (); }; };
 		C7AB762614DE8A7E00A42A8C /* nuGResManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7AB762414DE8A7E00A42A8C /* nuGResManager.cpp */; };
-		C7AB762714DE8A7E00A42A8C /* nuGResManager.h in Headers */ = {isa = PBXBuildFile; fileRef = C7AB762514DE8A7E00A42A8C /* nuGResManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C7AB762B14DEDF9400A42A8C /* Graphics.h in Headers */ = {isa = PBXBuildFile; fileRef = C7AB762A14DEDF9400A42A8C /* Graphics.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C7AB762714DE8A7E00A42A8C /* nuGResManager.h in Headers */ = {isa = PBXBuildFile; fileRef = C7AB762514DE8A7E00A42A8C /* nuGResManager.h */; settings = {ATTRIBUTES = (); }; };
+		C7AB762B14DEDF9400A42A8C /* Graphics.h in Headers */ = {isa = PBXBuildFile; fileRef = C7AB762A14DEDF9400A42A8C /* Graphics.h */; settings = {ATTRIBUTES = (); }; };
 		C7BECCEB15556977006FA080 /* nuProgram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7BECCE615556976006FA080 /* nuProgram.cpp */; };
-		C7BECCEC15556977006FA080 /* nuProgram.h in Headers */ = {isa = PBXBuildFile; fileRef = C7BECCE715556976006FA080 /* nuProgram.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C7BECCEC15556977006FA080 /* nuProgram.h in Headers */ = {isa = PBXBuildFile; fileRef = C7BECCE715556976006FA080 /* nuProgram.h */; settings = {ATTRIBUTES = (); }; };
 		C7BECCED15556977006FA080 /* nuProgramManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7BECCE815556976006FA080 /* nuProgramManager.cpp */; };
-		C7BECCEE15556977006FA080 /* nuProgramManager.h in Headers */ = {isa = PBXBuildFile; fileRef = C7BECCE915556976006FA080 /* nuProgramManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C7BECCEF15556977006FA080 /* nuShaderInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = C7BECCEA15556977006FA080 /* nuShaderInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C7BECCEE15556977006FA080 /* nuProgramManager.h in Headers */ = {isa = PBXBuildFile; fileRef = C7BECCE915556976006FA080 /* nuProgramManager.h */; settings = {ATTRIBUTES = (); }; };
+		C7BECCEF15556977006FA080 /* nuShaderInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = C7BECCEA15556977006FA080 /* nuShaderInfo.h */; settings = {ATTRIBUTES = (); }; };
 		C7DDD81E1550012F002B4D5A /* nuGSetupContext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7DDD81C1550012F002B4D5A /* nuGSetupContext.cpp */; };
-		C7DDD81F1550012F002B4D5A /* nuGSetupContext.h in Headers */ = {isa = PBXBuildFile; fileRef = C7DDD81D1550012F002B4D5A /* nuGSetupContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C7DDD81F1550012F002B4D5A /* nuGSetupContext.h in Headers */ = {isa = PBXBuildFile; fileRef = C7DDD81D1550012F002B4D5A /* nuGSetupContext.h */; settings = {ATTRIBUTES = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -145,6 +145,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C780FBAB1556DA5D000B013E /* NudeGraphics-Prefix.pch in Headers */,
 				C785D088145D44D300E64F10 /* nuRenderGL.h in Headers */,
 				C7A2C4A0145D7D0F00ACDC27 /* nuGContext.h in Headers */,
 				C7AB761D14DE7DFD00A42A8C /* nuGResource.h in Headers */,
@@ -160,7 +161,6 @@
 				C7BECCEC15556977006FA080 /* nuProgram.h in Headers */,
 				C7BECCEE15556977006FA080 /* nuProgramManager.h in Headers */,
 				C7BECCEF15556977006FA080 /* nuShaderInfo.h in Headers */,
-				C780FBAB1556DA5D000B013E /* NudeGraphics-Prefix.pch in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -171,8 +171,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C785D076145D421D00E64F10 /* Build configuration list for PBXNativeTarget "Graphics" */;
 			buildPhases = (
-				C7EE1B6C14D4985500A9CF2B /* ShellScript */,
 				C785D072145D421D00E64F10 /* Headers */,
+				C7EE1B6C14D4985500A9CF2B /* ShellScript */,
 				C785D070145D421D00E64F10 /* Sources */,
 			);
 			buildRules = (
@@ -257,6 +257,7 @@
 			baseConfigurationReference = C785D06C145D418E00E64F10 /* Debug.xcconfig */;
 			buildSettings = {
 				GCC_PREFIX_HEADER = "NudeGraphics-Prefix.pch";
+				HEADER_SEARCH_PATHS = ../Core;
 			};
 			name = Debug;
 		};
@@ -265,6 +266,7 @@
 			baseConfigurationReference = C785D06E145D418E00E64F10 /* Release.xcconfig */;
 			buildSettings = {
 				GCC_PREFIX_HEADER = "NudeGraphics-Prefix.pch";
+				HEADER_SEARCH_PATHS = ../Core;
 			};
 			name = Release;
 		};
@@ -273,6 +275,7 @@
 			baseConfigurationReference = C785D06D145D418E00E64F10 /* Profile.xcconfig */;
 			buildSettings = {
 				GCC_PREFIX_HEADER = "NudeGraphics-Prefix.pch";
+				HEADER_SEARCH_PATHS = ../Core;
 			};
 			name = Profile;
 		};

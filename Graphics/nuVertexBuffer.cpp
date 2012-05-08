@@ -35,29 +35,27 @@ void nuVertexBuffer::update(void)
     setMapped(false);
   }  
 
-  if(isUpdated()) {
-    if(!isInitialized()) {
-      glGenBuffers(1, &mVertexBufferID);
-      NU_ASSERT(mVertexBufferID != 0, "Cannot generate vertex buffer object.\n");
+  if(!isInitialized()) {
+    glGenBuffers(1, &mVertexBufferID);
+    NU_ASSERT(mVertexBufferID != 0, "Cannot generate vertex buffer object.\n");
 
-      GLenum usage;
-      switch(getUsage()) {
-      case nuGResource::STATIC_RESOURCE:
-        usage = GL_STATIC_DRAW;
-        break;
-      case nuGResource::DYNAMIC_RESOURCE:
-        usage = GL_DYNAMIC_DRAW;
-        break;
-      default:
-        NU_ASSERT(false, "Logical error.\n");
-      }
-
-      glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferID);
-      glBufferData(GL_ARRAY_BUFFER, mUpdateSize, mpBuffer, usage);
-      releaseBuffer();
-      setInitialized(true);
-      setUpdate(false);
-      mUpdateSize = 0;
+    GLenum usage;
+    switch(getUsage()) {
+    case nuGResource::STATIC_RESOURCE:
+      usage = GL_STATIC_DRAW;
+      break;
+    case nuGResource::DYNAMIC_RESOURCE:
+      usage = GL_DYNAMIC_DRAW;
+      break;
+    default:
+      NU_ASSERT(false, "Logical error.\n");
     }
+
+    glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferID);
+    glBufferData(GL_ARRAY_BUFFER, mUpdateSize, mpBuffer, usage);
+    releaseBuffer();
+    setInitialized(true);
+    setUpdate(false);
+    mUpdateSize = 0;
   }
 }

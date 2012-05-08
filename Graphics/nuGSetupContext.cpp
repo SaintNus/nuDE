@@ -38,8 +38,10 @@ void nuGSetupContext::map(nuVertexBuffer& vertex_buffer)
   if(vertex_buffer.isInitialized() && vertex_buffer.getHandle()) {
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer.getHandle());
     vertex_buffer.mpBuffer = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
-    if(vertex_buffer.mpBuffer)
+    if(vertex_buffer.mpBuffer) {
       vertex_buffer.setMapped(true);
+      vertex_buffer.setUpdate(true);
+    }
   }
 }
 
@@ -51,7 +53,9 @@ void nuGSetupContext::map(nuElementBuffer& element_buffer)
   if(element_buffer.isInitialized() && element_buffer.getHandle()) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, element_buffer.getHandle());
     element_buffer.mpBuffer = glMapBuffer(GL_ELEMENT_ARRAY_BUFFER, GL_WRITE_ONLY);
-    if(element_buffer.mpBuffer)
+    if(element_buffer.mpBuffer) {
       element_buffer.setMapped(true);
+      element_buffer.setUpdate(true);
+    }
   }
 }
