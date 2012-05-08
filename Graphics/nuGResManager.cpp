@@ -116,5 +116,6 @@ void nuGResManager::updateResources(ResList& resource_list, nuMutex& mutex)
 
   for(ui32 ui = 0; ui < num; ui++) {
     mpUpdateTable[ui]->update();
+    mpUpdateTable[ui]->setUpdate(false);
   }
 }

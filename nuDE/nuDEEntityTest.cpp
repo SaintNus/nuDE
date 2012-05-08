@@ -36,6 +36,20 @@ nuDEEntityTest::nuDEEntityTest()
   void* p_buffer = mElementBuffer->beginInitialize();
   memcpy(p_buffer, idx, sizeof(idx));
   mElementBuffer->endInitialize();
+
+  {
+    ccstr str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    nuStream test;
+    void* mem = test.create(strlen(str));
+    memcpy(mem, str, strlen(str));
+    test.seekBegin(8);
+    test.seekEnd(8);
+    test.rewind();
+    {
+      ui8 buffer[4];
+      test.read< ui8 >(buffer, 4);
+    }
+  }
 }
 
 nuDEEntityTest::~nuDEEntityTest()

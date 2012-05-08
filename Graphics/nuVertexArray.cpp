@@ -50,8 +50,6 @@ void nuVertexArray::update(void)
     glDisableVertexAttribArray(static_cast< GLuint >(ui));
 
   glBindVertexArray(0);
-
-  setUpdate(false);
 }
 
 void nuVertexArray::beginDeclaration(ui32 array_num)

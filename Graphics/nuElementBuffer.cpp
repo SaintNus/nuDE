@@ -57,7 +57,6 @@ void nuElementBuffer::update(void)
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, mUpdateSize, mpBuffer, usage);
     releaseBuffer();
     setInitialized(true);
-    setUpdate(false);
     mUpdateSize = 0;
   }
 }
