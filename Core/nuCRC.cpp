@@ -5,7 +5,7 @@
  * \date 2010/04/17 02:33
  */
 
-#include "nuDebug.h"
+#include "CoreInclude.h"
 #include "nuCRC.h"
 
 // CRC table

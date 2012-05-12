@@ -5,6 +5,7 @@
  * \date 2012/05/01 20:32
  */
 
+#include "GraphicsInclude.h"
 #include "nuVertexBuffer.h"
 #include "nuElementBuffer.h"
 #include "nuGSetupContext.h"

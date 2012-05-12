@@ -5,6 +5,7 @@
  * \date 2012/03/23 12:28
  */
 
+#include "GraphicsInclude.h"
 #include "nuVertexBuffer.h"
 
 IMPLEMENT_TYPE_INFO_INST(nuVertexBuffer, nuGResource, nullptr);

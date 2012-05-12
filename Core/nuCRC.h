@@ -8,8 +8,6 @@
 #ifndef __NUCRC_H__
 #define __NUCRC_H__
 
-#include "nuType.h"
-
 /*!
  * \class nuCRC
  * \brief CRC generator.

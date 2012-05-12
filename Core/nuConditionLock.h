@@ -8,8 +8,6 @@
 #ifndef __NUCONDITIONLOCK_H__
 #define __NUCONDITIONLOCK_H__
 
-#include "nuType.h"
-
 namespace nude
 {
 

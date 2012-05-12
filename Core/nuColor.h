@@ -8,8 +8,6 @@
 #ifndef __NUCOLOR_H__
 #define __NUCOLOR_H__
 
-#include "nuType.h"
-
 class nuColor
 {
 public:

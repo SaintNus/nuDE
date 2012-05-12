@@ -5,8 +5,7 @@
  * \date 2011/09/11 20:10
  */
 
-#include "nuType.h"
-#include "nuDebug.h"
+#include "CoreInclude.h"
 #include "nuMemory.h"
 
 struct MemHeader

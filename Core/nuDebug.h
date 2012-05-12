@@ -8,8 +8,6 @@
 #ifndef __NUDEBUG_H__
 #define __NUDEBUG_H__
 
-#include "nuType.h"
-
 //! \brief Assert.
 #if NDEBUG || !DEBUG
 #define NU_ASSERT(_cond, ...)

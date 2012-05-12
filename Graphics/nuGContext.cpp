@@ -5,6 +5,7 @@
  * \date 2011/10/30 21:49
  */
 
+#include "GraphicsInclude.h"
 #include "nuGContext.h"
 
 nuGContext::nuGContext(nuGContextBuffer& ctx_buffer)

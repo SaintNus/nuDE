@@ -5,4 +5,5 @@
  * \date 2011/11/26 23:52
  */
 
+#include "CoreInclude.h"
 #include "nuAtomic.h"

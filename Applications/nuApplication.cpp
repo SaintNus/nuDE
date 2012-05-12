@@ -5,6 +5,7 @@
  * \date 2011/11/03 21:53
  */
 
+#include "ApplicationsInclude.h"
 #include "nuApplication.h"
 
 IMPLEMENT_TYPE_INFO(nuApplication, nuObject);

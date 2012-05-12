@@ -29,6 +29,7 @@
 		C7AB762614DE8A7E00A42A8C /* nuGResManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7AB762414DE8A7E00A42A8C /* nuGResManager.cpp */; };
 		C7AB762714DE8A7E00A42A8C /* nuGResManager.h in Headers */ = {isa = PBXBuildFile; fileRef = C7AB762514DE8A7E00A42A8C /* nuGResManager.h */; settings = {ATTRIBUTES = (); }; };
 		C7AB762B14DEDF9400A42A8C /* Graphics.h in Headers */ = {isa = PBXBuildFile; fileRef = C7AB762A14DEDF9400A42A8C /* Graphics.h */; settings = {ATTRIBUTES = (); }; };
+		C7ACC9BE155E62B600090E4D /* GraphicsInclude.h in Headers */ = {isa = PBXBuildFile; fileRef = C7ACC9BD155E62B600090E4D /* GraphicsInclude.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C7BECCEB15556977006FA080 /* nuProgram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7BECCE615556976006FA080 /* nuProgram.cpp */; };
 		C7BECCEC15556977006FA080 /* nuProgram.h in Headers */ = {isa = PBXBuildFile; fileRef = C7BECCE715556976006FA080 /* nuProgram.h */; settings = {ATTRIBUTES = (); }; };
 		C7BECCED15556977006FA080 /* nuProgramManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7BECCE815556976006FA080 /* nuProgramManager.cpp */; };
@@ -65,6 +66,7 @@
 		C7AB762414DE8A7E00A42A8C /* nuGResManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuGResManager.cpp; sourceTree = "<group>"; };
 		C7AB762514DE8A7E00A42A8C /* nuGResManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuGResManager.h; sourceTree = "<group>"; };
 		C7AB762A14DEDF9400A42A8C /* Graphics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Graphics.h; sourceTree = "<group>"; };
+		C7ACC9BD155E62B600090E4D /* GraphicsInclude.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphicsInclude.h; sourceTree = "<group>"; };
 		C7BECCE615556976006FA080 /* nuProgram.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuProgram.cpp; sourceTree = "<group>"; };
 		C7BECCE715556976006FA080 /* nuProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuProgram.h; sourceTree = "<group>"; };
 		C7BECCE815556976006FA080 /* nuProgramManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuProgramManager.cpp; sourceTree = "<group>"; };
@@ -107,6 +109,7 @@
 		C785D07A145D42A300E64F10 /* Source Codes */ = {
 			isa = PBXGroup;
 			children = (
+				C7ACC9BD155E62B600090E4D /* GraphicsInclude.h */,
 				C79DFF1A151A3E0400A1FA32 /* nuElementBuffer.cpp */,
 				C79DFF1B151A3E0400A1FA32 /* nuElementBuffer.h */,
 				C7A2C49D145D7D0F00ACDC27 /* nuGContext.cpp */,
@@ -161,6 +164,7 @@
 				C7BECCEC15556977006FA080 /* nuProgram.h in Headers */,
 				C7BECCEE15556977006FA080 /* nuProgramManager.h in Headers */,
 				C7BECCEF15556977006FA080 /* nuShaderInfo.h in Headers */,
+				C7ACC9BE155E62B600090E4D /* GraphicsInclude.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

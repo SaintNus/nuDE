@@ -5,6 +5,7 @@
  * \date 2012/02/09 00:54
  */
 
+#include "GraphicsInclude.h"
 #include "nuRenderBuffer.h"
 
 nuRenderBuffer::nuRenderBuffer()

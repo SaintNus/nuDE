@@ -5,6 +5,7 @@
  * \date 2012/03/22 01:51
  */
 
+#include "GraphicsInclude.h"
 #include "nuElementBuffer.h"
 
 IMPLEMENT_TYPE_INFO_INST(nuElementBuffer, nuGResource, nullptr);

@@ -5,6 +5,7 @@
  * \date 2011/09/11 23:54
  */
 
+#include "CoreInclude.h"
 #include "nuObject.h"
 
 nuObject::PrivateTypeInfo::PrivateTypeInfo() : nuTypeInfo("nuObject", nullptr) {}

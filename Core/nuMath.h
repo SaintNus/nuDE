@@ -8,8 +8,6 @@
 #ifndef __NUMATH_H__
 #define __NUMATH_H__
 
-#include "nuType.h"
-
 namespace nude
 {
   const f32 FloatE = 0.000001f;

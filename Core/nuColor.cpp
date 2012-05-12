@@ -5,6 +5,7 @@
  * \date 2011/11/25 00:26
  */
 
+#include "CoreInclude.h"
 #include "nuColor.h"
 
 const nuColor nuColor::Red(0xff0000ff);

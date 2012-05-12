@@ -5,6 +5,7 @@
  * \date 2012/05/01 23:08
  */
 
+#include "nuDEInclude.h"
 #include "nuDEEntityTest.h"
 
 class ResourceTest : public nuResource
@@ -51,7 +52,7 @@ nuDEEntityTest::nuDEEntityTest()
     : mPosX(0.0f),
       mDir(1.0f)
 {
-  nuResHandle res = nuApplication::resourceManager().createResourceSync("res://Resources/resource_test.rtst");
+  nuApplication::resourceManager().createResource("res://Resources/resource_test.rtst");
   mVertexBuffer = nuApplication::renderGL().createVertexBuffer(sizeof(Vertex) * 3,
                                                                nuGResource::DYNAMIC_RESOURCE);
   mVertexBuffer->initialize();

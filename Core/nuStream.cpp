@@ -5,6 +5,7 @@
  * \date 2012/02/04 23:18
  */
 
+#include "CoreInclude.h"
 #include "nuStream.h"
 
 void* nuStream::create(void* p_buffer, size_t size)

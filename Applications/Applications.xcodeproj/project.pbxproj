@@ -19,6 +19,7 @@
 		C7A2C4C51462C3C200ACDC27 /* nuApplication.h in Headers */ = {isa = PBXBuildFile; fileRef = C7A2C4C41462C3C200ACDC27 /* nuApplication.h */; settings = {ATTRIBUTES = (); }; };
 		C7A2C4C71462C9D400ACDC27 /* nuAppMain.h in Headers */ = {isa = PBXBuildFile; fileRef = C7A2C4C61462C9D400ACDC27 /* nuAppMain.h */; settings = {ATTRIBUTES = (); }; };
 		C7AB762D14DEE52800A42A8C /* Applications.h in Headers */ = {isa = PBXBuildFile; fileRef = C7AB762C14DEE52800A42A8C /* Applications.h */; settings = {ATTRIBUTES = (); }; };
+		C7ACC9C0155E62DB00090E4D /* ApplicationsInclude.h in Headers */ = {isa = PBXBuildFile; fileRef = C7ACC9BF155E62DB00090E4D /* ApplicationsInclude.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C7D3748714D825E800CADBA8 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = C7D3748614D825E800CADBA8 /* main.mm */; };
 		C7DDD817154FF19B002B4D5A /* nuEntity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7DDD813154FF19B002B4D5A /* nuEntity.cpp */; };
 		C7DDD818154FF19B002B4D5A /* nuEntity.h in Headers */ = {isa = PBXBuildFile; fileRef = C7DDD814154FF19B002B4D5A /* nuEntity.h */; settings = {ATTRIBUTES = (); }; };
@@ -43,6 +44,7 @@
 		C7A2C4C41462C3C200ACDC27 /* nuApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = nuApplication.h; sourceTree = "<group>"; };
 		C7A2C4C61462C9D400ACDC27 /* nuAppMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuAppMain.h; sourceTree = "<group>"; };
 		C7AB762C14DEE52800A42A8C /* Applications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Applications.h; sourceTree = "<group>"; };
+		C7ACC9BF155E62DB00090E4D /* ApplicationsInclude.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplicationsInclude.h; sourceTree = "<group>"; };
 		C7D3748614D825E800CADBA8 /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
 		C7DDD813154FF19B002B4D5A /* nuEntity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuEntity.cpp; sourceTree = "<group>"; };
 		C7DDD814154FF19B002B4D5A /* nuEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuEntity.h; sourceTree = "<group>"; };
@@ -83,6 +85,7 @@
 		C7A2C4BD1462C18500ACDC27 /* Source Codes */ = {
 			isa = PBXGroup;
 			children = (
+				C7ACC9BF155E62DB00090E4D /* ApplicationsInclude.h */,
 				C7D3748614D825E800CADBA8 /* main.mm */,
 				C7A2C4C21462C3A600ACDC27 /* nuApplication.cpp */,
 				C7A2C4C41462C3C200ACDC27 /* nuApplication.h */,
@@ -118,6 +121,7 @@
 				C7AB762D14DEE52800A42A8C /* Applications.h in Headers */,
 				C7DDD818154FF19B002B4D5A /* nuEntity.h in Headers */,
 				C7DDD81A154FF19B002B4D5A /* nuEntityManager.h in Headers */,
+				C7ACC9C0155E62DB00090E4D /* ApplicationsInclude.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

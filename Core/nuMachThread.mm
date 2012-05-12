@@ -5,6 +5,7 @@
  * \date 2011/11/06 04:35
  */
 
+#import "CoreInclude.h"
 #import "nuMachThread.h"
 #import "nuThread.h"
 

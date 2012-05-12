@@ -72,6 +72,7 @@
 		C7EE1BA014D563FD00A9CF2B /* nuThread.h in Headers */ = {isa = PBXBuildFile; fileRef = C7EE1B8B14D563FD00A9CF2B /* nuThread.h */; settings = {ATTRIBUTES = (); }; };
 		C7EE1BA414D5973500A9CF2B /* nuHandle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7EE1BA214D5973400A9CF2B /* nuHandle.cpp */; };
 		C7EE1BA514D5973500A9CF2B /* nuHandle.h in Headers */ = {isa = PBXBuildFile; fileRef = C7EE1BA314D5973500A9CF2B /* nuHandle.h */; settings = {ATTRIBUTES = (); }; };
+		C7FBC351155E678B009E03D2 /* CoreInclude.h in Headers */ = {isa = PBXBuildFile; fileRef = C7FBC350155E678B009E03D2 /* CoreInclude.h */; settings = {ATTRIBUTES = (Private, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -144,6 +145,7 @@
 		C7EE1B8B14D563FD00A9CF2B /* nuThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuThread.h; sourceTree = "<group>"; };
 		C7EE1BA214D5973400A9CF2B /* nuHandle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuHandle.cpp; sourceTree = "<group>"; };
 		C7EE1BA314D5973500A9CF2B /* nuHandle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuHandle.h; sourceTree = "<group>"; };
+		C7FBC350155E678B009E03D2 /* CoreInclude.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreInclude.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -169,6 +171,7 @@
 		C72BFEF9141CB008004F0E00 /* Source Codes */ = {
 			isa = PBXGroup;
 			children = (
+				C7FBC350155E678B009E03D2 /* CoreInclude.h */,
 				C7EE1B7714D563FC00A9CF2B /* nuAtomic.cpp */,
 				C7EE1B7814D563FC00A9CF2B /* nuAtomic.h */,
 				C79D18AA14F9473A00D201C7 /* nuAutoReleasePool.cpp */,
@@ -287,6 +290,7 @@
 				C79D18B714FE6FC000D201C7 /* nuConditionLock.h in Headers */,
 				C79D18B814FE6FC000D201C7 /* nuMachConditionLock.h in Headers */,
 				C7987C7F15516BC800A98D46 /* nuRingBuffer.h in Headers */,
+				C7FBC351155E678B009E03D2 /* CoreInclude.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

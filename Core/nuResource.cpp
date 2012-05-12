@@ -5,6 +5,7 @@
  * \date 2012/01/29 20:13
  */
 
+#include "CoreInclude.h"
 #include "nuResourceManager.h"
 #include "nuResource.h"
 

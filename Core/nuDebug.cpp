@@ -5,6 +5,7 @@
  * \date 2010/02/26 23:45
  */
 
+#include "CoreInclude.h"
 #include "nuDebug.h"
 
 // Log string.

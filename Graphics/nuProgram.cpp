@@ -5,6 +5,7 @@
  * \date 2012/05/05 23:08
  */
 
+#include "GraphicsInclude.h"
 #include "nuProgram.h"
 
 IMPLEMENT_TYPE_INFO(nuProgram, nuObject);

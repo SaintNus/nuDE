@@ -8,8 +8,6 @@
 #ifndef __NUGEOMETRY_H__
 #define __NUGEOMETRY_H__
 
-#include "nuType.h"
-
 class nuPoint
 {
 private:

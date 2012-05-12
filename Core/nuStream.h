@@ -8,7 +8,6 @@
 #ifndef __NUSTREAM_H__
 #define __NUSTREAM_H__
 
-#include "nuType.h"
 #include "nuOS.h"
 #include "nuOSType.h"
 

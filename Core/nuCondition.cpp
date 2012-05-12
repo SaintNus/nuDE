@@ -5,4 +5,5 @@
  * \date 2012/02/26 00:55
  */
 
+#include "CoreInclude.h"
 #include "nuCondition.h"

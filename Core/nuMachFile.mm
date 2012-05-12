@@ -5,7 +5,8 @@
  * \date 2011/09/19 18:59
  */
 
-#include "nuMachFile.h"
+#import "CoreInclude.h"
+#import "nuMachFile.h"
 
 // Open a file.
 nude::FILE_ERROR nuMachFile::open(nude::FILE_ATTRIBUTE attr, ccstr name)

@@ -5,6 +5,8 @@
  * \date 2011/09/14 23:44
  */
 
+#import "ApplicationsInclude.h"
+
 #import "nuMachAppDelegate.h"
 #import "nuApplication.h"
 

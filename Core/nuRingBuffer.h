@@ -8,7 +8,6 @@
 #ifndef __NURINGBUFFER_H__
 #define __NURINGBUFFER_H__
 
-#include "nuDebug.h"
 #include "nuMemory.h"
 
 class nuRingBuffer

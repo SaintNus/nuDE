@@ -5,7 +5,8 @@
  * \date 2012/02/26 01:49
  */
 
-#include "nuMachAutoReleasePool.h"
+#import "CoreInclude.h"
+#import "nuMachAutoReleasePool.h"
 
 nuMachAutoReleasePool::nuMachAutoReleasePool()
     : mpHandle(nullptr)

@@ -5,6 +5,8 @@
  * \date 2011/11/03 22:13
  */
 
+#include "ApplicationsInclude.h"
+
 #include "nuEntityManager.h"
 #include "nuAppMain.h"
 

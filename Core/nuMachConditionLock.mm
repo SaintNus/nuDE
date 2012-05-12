@@ -5,7 +5,8 @@
  * \date 2012/02/29 23:59
  */
 
-#include "nuMachConditionLock.h"
+#import "CoreInclude.h"
+#import "nuMachConditionLock.h"
 
 nuMachConditionLock::nuMachConditionLock(i32 condition)
     : mpHandle(nullptr)

@@ -5,6 +5,7 @@
  * \date 2011/09/14 23:53
  */
 
+#import "ApplicationsInclude.h"
 #import "nuMachWindow.h"
 
 @implementation nuMachWindow

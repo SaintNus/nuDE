@@ -5,6 +5,7 @@
  * \date 2011/11/25 01:08
  */
 
+#include "CoreInclude.h"
 #include "nuMath.h"
 
 const nuMtx3 nuMtx3::Identity(1.0f, 0.0f, 0.0f,

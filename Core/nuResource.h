@@ -57,6 +57,7 @@ private:
     mCRC = crc;
   }
 
+protected:
   nuResource* incRefCount(void) {
     i32 curr = mRefCount;
     i32 res = curr + 1;

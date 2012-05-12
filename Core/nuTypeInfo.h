@@ -8,8 +8,6 @@
 #ifndef __NUTYPEINFO_H__
 #define __NUTYPEINFO_H__
 
-#include "nuType.h"
-
 /*!
  * \class nuTypeInfo
  * \brief Type information.

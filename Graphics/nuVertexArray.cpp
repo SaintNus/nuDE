@@ -5,6 +5,7 @@
  * \date 2012/05/05 17:53
  */
 
+#include "GraphicsInclude.h"
 #include "nuVertexArray.h"
 
 IMPLEMENT_TYPE_INFO(nuVertexArray, nuGResource);

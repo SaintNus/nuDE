@@ -5,6 +5,7 @@
  * \date 2012/05/02 19:35
  */
 
+#include "GraphicsInclude.h"
 #include "nuGContextBuffer.h"
 
 nuGContextBuffer::nuGContextBuffer(size_t rb_size)

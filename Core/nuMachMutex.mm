@@ -5,7 +5,8 @@
  * \date 2011/11/26 23:15
  */
 
-#include "nuMachMutex.h"
+#import "CoreInclude.h"
+#import "nuMachMutex.h"
 
 nuMachMutex::nuMachMutex()
     : mpMutex(nullptr)

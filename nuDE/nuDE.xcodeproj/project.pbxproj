@@ -88,6 +88,7 @@
 		C7AB2A15141CC772001F8EE5 /* Profile.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Profile.xcconfig; path = ../Configurations/Profile.xcconfig; sourceTree = "<group>"; };
 		C7AB2A16141CC772001F8EE5 /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = ../Configurations/Debug.xcconfig; sourceTree = "<group>"; };
 		C7AB2A17141CC772001F8EE5 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = ../Configurations/Release.xcconfig; sourceTree = "<group>"; };
+		C7ACC9C2155E62F400090E4D /* nuDEInclude.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuDEInclude.h; sourceTree = SOURCE_ROOT; };
 		C7BB68A81424C52800B4899C /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		C7BB68B71424D2AB00B4899C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		C7DDD832155024BE002B4D5A /* nuDEEntityTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuDEEntityTest.cpp; sourceTree = SOURCE_ROOT; };
@@ -199,6 +200,7 @@
 				C7AB29F2141CC006001F8EE5 /* nuDEAppDelegate.mm */,
 				C7DDD832155024BE002B4D5A /* nuDEEntityTest.cpp */,
 				C7DDD833155024BE002B4D5A /* nuDEEntityTest.h */,
+				C7ACC9C2155E62F400090E4D /* nuDEInclude.h */,
 				C79DFF05150BAA7300A1FA32 /* nuDEMain.cpp */,
 				C79DFF06150BAA7300A1FA32 /* nuDEMain.h */,
 			);

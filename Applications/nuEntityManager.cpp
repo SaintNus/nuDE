@@ -5,6 +5,8 @@
  * \date 2012/05/01 19:30
  */
 
+#include "ApplicationsInclude.h"
+
 #include "nuEntity.h"
 #include "nuEntityManager.h"
 

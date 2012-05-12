@@ -8,8 +8,6 @@
 #ifndef __NUMACHCONDITIONLOCK_H__
 #define __NUMACHCONDITIONLOCK_H__
 
-#include "nuType.h"
-
 class nuMachConditionLock
 {
   void* mpHandle;

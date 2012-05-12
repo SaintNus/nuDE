@@ -8,7 +8,6 @@
 #ifndef __NUMACHFILE_H__
 #define __NUMACHFILE_H__
 
-#include "nuType.h"
 #include "nuOS.h"
 
 /*!

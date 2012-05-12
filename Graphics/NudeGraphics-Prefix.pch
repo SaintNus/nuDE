@@ -10,4 +10,4 @@
 #include <OpenGL/OpenGL.h>
 #include <OpenGL/gl3.h>
 
-#include "../Core/Core.h"
+#include "Core.h"

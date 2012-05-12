@@ -5,7 +5,7 @@
  * \date 2010/04/15 23:40
  */
 
-#include "nuDebug.h"
+#include "CoreInclude.h"
 #include "nuCRC.h"
 #include "nuTypeInfo.h"
 

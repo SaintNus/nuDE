@@ -5,6 +5,7 @@
  * \date 2012/03/11 00:28
  */
 
+#include "nuDEInclude.h"
 #include "nuDEMain.h"
 
 IMPLEMENT_TYPE_INFO(nuDEMain, nuAppMain);
