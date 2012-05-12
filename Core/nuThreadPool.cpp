@@ -50,6 +50,8 @@ void nuThreadPool::JobArena::schedulerProc(void* param)
     if(mExit)
       break;
 
+    mState = STATE_RUNNING;
+
     if(mUnfinishedJob == 0)
       setCondition(EMPTY);
 

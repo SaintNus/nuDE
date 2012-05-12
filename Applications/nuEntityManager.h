@@ -89,7 +89,7 @@ public:
         }
 
         while(curr < static_cast< i32 >(mpEntityTable->getEntryNum())) {
-          bool ret = nuAtomic::cas(curr, res, &mCurrentIndex);
+          bool ret = nuAtomic::casBarrier(curr, res, &mCurrentIndex);
           if(!ret) {
             curr = mCurrentIndex;
             entry_num = num;

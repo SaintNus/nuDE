@@ -7,6 +7,38 @@
 
 #include "nuDEEntityTest.h"
 
+class ResourceTest : public nuResource
+{
+  DECLARE_TYPE_INFO;
+
+  ResourceTest() {}
+  ~ResourceTest() {}
+
+  virtual ccstr getExt(void) const {
+    return "rtst";
+  }
+  virtual ERROR_CODE setup(const nuStream& stream) {
+    size_t sz = stream.getSize();
+    void* p_data = nude::Alloc(sz);
+
+    if(!p_data) {
+      nude::Dealloc(p_data);
+      return ERROR_INSUFFICIENT_MEMORY;
+    }
+
+    if(stream.read(p_data, sz) != sz) {
+      nude::Dealloc(p_data);
+      return ERROR_CORRUPTED;
+    }
+
+    nude::Dealloc(p_data);
+    return ERROR_NONE;
+  }
+
+};
+
+IMPLEMENT_TYPE_INFO(ResourceTest, nuResource);
+
 IMPLEMENT_TYPE_INFO(nuDEEntityTest, nuEntity);
 
 struct Vertex {
@@ -19,6 +51,7 @@ nuDEEntityTest::nuDEEntityTest()
     : mPosX(0.0f),
       mDir(1.0f)
 {
+  nuResHandle res = nuApplication::resourceManager().createResource("res://Resources/resource_test.rtst");
   mVertexBuffer = nuApplication::renderGL().createVertexBuffer(sizeof(Vertex) * 3,
                                                                nuGResource::DYNAMIC_RESOURCE);
   mVertexBuffer->initialize();

@@ -25,18 +25,23 @@ public:
   }
 
   static nuRenderGL& renderGL(void) {
-    NU_ASSERT_C(appMain() != NULL);
+    NU_ASSERT_C(appMain() != nullptr);
     return appMain()->getRenderGL();
   }
 
   static nuThreadPool& threadPool(void) {
-    NU_ASSERT_C(appMain() != NULL);
+    NU_ASSERT_C(appMain() != nullptr);
     return appMain()->getThreadPool();
   }
 
   static nuEntityManager& entityManager(void) {
-    NU_ASSERT_C(appMain() != NULL);
+    NU_ASSERT_C(appMain() != nullptr);
     return appMain()->getEntityManager();
+  }
+
+  static nuResourceManager& resourceManager(void) {
+    NU_ASSERT_C(appMain() != nullptr);
+    return appMain()->getResourceManager();
   }
 
   void initialize(const nuTypeInfo& app_main);

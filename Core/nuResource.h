@@ -11,6 +11,7 @@
 #include "nuObject.h"
 #include "nuOSType.h"
 #include "nuHandle.h"
+#include "nuStream.h"
 
 typedef nude::Handle< class nuResource > nuResHandle;
 
@@ -22,52 +23,45 @@ class nuResource : public nuObject
 {
   DECLARE_TYPE_INFO;
   friend class nude::Handle< class nuResource >;
+  friend class nuResourceManager;
 
 public:
   enum ERROR_CODE {
     ERROR_NONE = 0,
-    ERROR_INVALID_DATA,
+    ERROR_NOT_FOUND,
+    ERROR_INVALID,
     ERROR_CORRUPTED,
+    ERROR_INVALID_VERSION,
+    ERROR_INSUFFICIENT_MEMORY,
   };
 
-  nuResource()
-      : mAttribute(0),
-        mRefCount(1),
-        mPath(nullptr)
-  {
-    // None...
-  }
-
-  virtual ~nuResource() {
-    if(mPath) {
-      nude::Dealloc(mPath);
-      mPath = nullptr;
-    }
-  }
-
-  virtual ccstr getExt(void) const = 0;
-  virtual ERROR_CODE setup(const void* p_data, size_t size) = 0;
-
-  static nuResHandle createResource(nuResource* p_res) {
-    return nuResHandle(p_res);
-  }
-
 private:
-  ui32 mAttribute;
   volatile i32 mRefCount;
   cstr mPath;
+  ui32 mCRC;
+  class nuResourceManager* mpResourceManager;
 
-  void setPath(ccstr path) {
+  union {
+    ui32 mAttribute;
+    struct {
+      ui32 mInitialized: 1;
+      ui32 mErrorCode: 6;
+      ui32 mReserved: 25;
+    };
+  };
+
+  void setPath(ccstr path, ui32 crc) {
     size_t len = strlen(path) + 1;
     mPath = static_cast< c8* >(nude::Alloc(len));
     strncpy(mPath, path, len);
+    mCRC = crc;
   }
 
   nuResource* incRefCount(void) {
     i32 curr = mRefCount;
     i32 res = curr + 1;
     while(1) {
-      bool ret = nuAtomic::cas(curr, res, &mRefCount);
+      bool ret = nuAtomic::casBarrier(curr, res, &mRefCount);
       if(!ret) {
         curr = mRefCount;
         res = curr + 1;
@@ -83,7 +77,7 @@ private:
     i32 curr = mRefCount;
     i32 res = curr - 1;
     while(1) {
-      bool ret = nuAtomic::cas(curr, res, &mRefCount);
+      bool ret = nuAtomic::casBarrier(curr, res, &mRefCount);
       if(!ret) {
         curr = mRefCount;
         res = curr - 1;
@@ -92,7 +86,7 @@ private:
           curr = mRefCount;
           res = curr - 1;
           while(res < 0) {
-            ret = nuAtomic::cas(curr, res, &mRefCount);
+            ret = nuAtomic::casBarrier(curr, res, &mRefCount);
             if(!ret) {
               curr = mRefCount;
               res = curr - 1;
@@ -102,10 +96,28 @@ private:
             }
           }
         }
+        return;
       }
     }
   }
 
+protected:
+  nuResource();
+  virtual ~nuResource();
+
+  virtual ccstr getExt(void) const = 0;
+  virtual ERROR_CODE setup(const nuStream& stream) = 0;
+
+public:
+  bool isInitialized(void) const {
+    return mInitialized == 1;
+  }
+
+  ERROR_CODE getErrorCode(void) const {
+    return static_cast< ERROR_CODE >(mErrorCode);
+  }
+
+  ccstr getErrorStr(ERROR_CODE code) const;
 };
 
 #endif

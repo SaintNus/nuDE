@@ -106,6 +106,7 @@ void nuAppMain::initialize(void)
   mpRenderGL = new nuRenderGL;
   mpThreadPool = new nuThreadPool;
   mpEntityManager = new nuEntityManager;
+  mpResourceManager = new nuResourceManager;
   mpContextBuffer = new nuGContextBuffer(mRingBufferSize);
 
   for(ui32 ui = 0; ui < nuThreadPool::MAX_WORKER; ui++) {

@@ -171,8 +171,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C785D076145D421D00E64F10 /* Build configuration list for PBXNativeTarget "Graphics" */;
 			buildPhases = (
-				C785D072145D421D00E64F10 /* Headers */,
 				C7EE1B6C14D4985500A9CF2B /* ShellScript */,
+				C785D072145D421D00E64F10 /* Headers */,
 				C785D070145D421D00E64F10 /* Sources */,
 			);
 			buildRules = (

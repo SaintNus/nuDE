@@ -615,6 +615,9 @@ int BuildGLSLProgram(ShaderObject::Program* p_program, FILE* vsh_file, FILE* fsh
 
     for(GLuint ui = 0; ui < static_cast< GLuint >(uniform); ui++) {
       GLsizei len;
+      GLint data_sz;
+
+      glGetActiveUniformBlockiv(prog_id, ui, GL_UNIFORM_BLOCK_DATA_SIZE, &data_sz);
       glGetActiveUniformBlockName(prog_id, ui, uniform_len, &len, p_uniform);
       int str_idx = StringTable::addString(0, p_uniform);
       if(str_idx < 0) {
@@ -625,7 +628,7 @@ int BuildGLSLProgram(ShaderObject::Program* p_program, FILE* vsh_file, FILE* fsh
       {
         ShaderObject::Variable var;
         var.name = StringTable::getString(str_idx)->string();
-        var.size = 0;
+        var.size = data_sz;
         var.type = 0;
         p_program->uniform_block.push_back(var);
       }

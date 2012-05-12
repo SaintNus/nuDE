@@ -74,6 +74,7 @@ public:
 
   int writeToFile(FILE* output_h, const char* name_space);
 
+  const char* getVarTypeString(GLenum type);
 };
 
 #endif

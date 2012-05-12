@@ -39,18 +39,25 @@ public:
         nuThread::usleep(16000);
     }
   }
-  nuRenderGL& getRenderGL(void) const {
+
+  nuRenderGL& getRenderGL(void) {
     return *mpRenderGL;
   }
+
   STATE getState(void) const {
     return mState;
   }
-  nuThreadPool& getThreadPool(void) const {
+
+  nuThreadPool& getThreadPool(void) {
     return *mpThreadPool;
   }
 
-  nuEntityManager& getEntityManager(void) const {
+  nuEntityManager& getEntityManager(void) {
     return *mpEntityManager;
+  }
+
+  nuResourceManager& getResourceManager(void) {
+    return *mpResourceManager;
   }
 
 protected:

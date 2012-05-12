@@ -36,13 +36,18 @@ public:
     return mName;
   }
 
-  //! \brief Get super class.
-  const nuTypeInfo* getSuperClass(void) const {
+  //! \brief Get parent.
+  const nuTypeInfo* getParent(void) const {
     return mpSuperClass;
   }
-  //! \brief Get sub class.
-  const nuTypeInfo* getSubClass(void) const {
+  //! \brief Get child.
+  const nuTypeInfo* getChild(void) const {
     return mpSubClass;
+  }
+
+  //! \brief Get sibling.
+  const nuTypeInfo* getSibling(void) const {
+    return mpNextClass;
   }
 
   //! \brief Get size.

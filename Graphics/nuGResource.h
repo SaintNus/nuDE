@@ -45,7 +45,7 @@ public:
     i64 dfid = frame_id;
 
     while(sfid < dfid) {
-      bool ret = nuAtomic::cas(sfid, dfid, &mFrameID);
+      bool ret = nuAtomic::casBarrier(sfid, dfid, &mFrameID);
       if(!ret) {
         sfid = mFrameID;
         dfid = frame_id;
@@ -74,7 +74,7 @@ protected:
     i32 curr = mRefCount;
     i32 res = curr + 1;
     while(1) {
-      bool ret = nuAtomic::cas(curr, res, &mRefCount);
+      bool ret = nuAtomic::casBarrier(curr, res, &mRefCount);
       if(!ret) {
         curr = mRefCount;
         res = curr + 1;
@@ -90,7 +90,7 @@ protected:
     i32 curr = mRefCount;
     i32 res = curr - 1;
     while(1) {
-      bool ret = nuAtomic::cas(curr, res, &mRefCount);
+      bool ret = nuAtomic::casBarrier(curr, res, &mRefCount);
       if(!ret) {
         curr = mRefCount;
         res = curr - 1;
@@ -99,7 +99,7 @@ protected:
           curr = mRefCount;
           res = curr - 1;
           while(res < 0) {
-            ret = nuAtomic::cas(curr, res, &mRefCount);
+            ret = nuAtomic::casBarrier(curr, res, &mRefCount);
             if(!ret) {
               curr = mRefCount;
               res = curr - 1;

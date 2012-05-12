@@ -247,7 +247,7 @@ private:
       i32 curr = mAssignedTask;
       i32 res = curr + 1;
       while(res <= static_cast< i32 >(mNumTask)) {
-        bool ret = nuAtomic::cas(curr, res, &mAssignedTask);
+        bool ret = nuAtomic::casBarrier(curr, res, &mAssignedTask);
         if(!ret) {
           curr = mAssignedTask;
           res = curr + 1;
@@ -263,7 +263,7 @@ private:
       i32 curr = mAssignedTask;
       i32 res = curr + 1;
       while(res <= num_task) {
-        bool ret = nuAtomic::cas(curr, res, &mAssignedTask);
+        bool ret = nuAtomic::casBarrier(curr, res, &mAssignedTask);
         if(!ret) {
           curr = mAssignedTask;
           res = curr + 1;
@@ -280,7 +280,7 @@ private:
       i32 curr = mFinishedTask;
       i32 res = curr + 1;
       while(1) {
-        bool ret = nuAtomic::cas(curr, res, &mFinishedTask);
+        bool ret = nuAtomic::casBarrier(curr, res, &mFinishedTask);
         if(!ret) {
           curr = mFinishedTask;
           res = curr + 1;
@@ -290,7 +290,7 @@ private:
             curr = mFinishedTask;
             res = curr + 1;
             while(1) {
-              ret = nuAtomic::cas(curr, res, &mFinishedTask);
+              ret = nuAtomic::casBarrier(curr, res, &mFinishedTask);
               if(!ret) {
                 curr = mFinishedTask;
                 res = curr + 1;
@@ -308,7 +308,7 @@ private:
       i32 curr = mRefCount;
       i32 res = curr + 1;
       while(1) {
-        bool ret = nuAtomic::cas(curr, res, &mRefCount);
+        bool ret = nuAtomic::casBarrier(curr, res, &mRefCount);
         if(!ret) {
           curr = mRefCount;
           res = curr + 1;
@@ -324,7 +324,7 @@ private:
       i32 curr = mRefCount;
       i32 res = curr - 1;
       while(1) {
-        bool ret = nuAtomic::cas(curr, res, &mRefCount);
+        bool ret = nuAtomic::casBarrier(curr, res, &mRefCount);
         if(!ret) {
           curr = mRefCount;
           res = curr - 1;
@@ -333,7 +333,7 @@ private:
             curr = mRefCount;
             res = curr - 1;
             while(res < 0) {
-              ret = nuAtomic::cas(curr, res, &mRefCount);
+              ret = nuAtomic::casBarrier(curr, res, &mRefCount);
               if(!ret) {
                 curr = mRefCount;
                 res = curr - 1;
@@ -380,7 +380,7 @@ private:
     void queueEntry(Job* p_job) {
       nuMutex::Autolock lock(mEntryMutex);
       p_job->mRegistered = 1;
-      nuAtomic::inc(&mUnfinishedJob);
+      nuAtomic::incBarrier(&mUnfinishedJob);
       mEntryList.push_back(p_job->incRefCount());
     }
 
@@ -416,7 +416,7 @@ private:
       while(it != mJobList.end()) {
         Job* p_job = *it;
         if(p_job->isFinished()) {
-          nuAtomic::dec(&mUnfinishedJob);
+          nuAtomic::decBarrier(&mUnfinishedJob);
           p_job->mLock.unlockWithCondition(Job::STATE_FINISHED);
           p_job->decRefCount();
           it = mJobList.erase(it);
@@ -471,7 +471,7 @@ private:
       i32 curr = mConditionValue;
       i32 res = condition;
       while(res != curr) {
-        bool ret = nuAtomic::cas(curr, res, &mConditionValue);
+        bool ret = nuAtomic::casBarrier(curr, res, &mConditionValue);
         if(ret) {
           if(res == HAS_DATA && mState == STATE_WAIT) {
             mCondition.lock();

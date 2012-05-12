@@ -25,6 +25,7 @@
 #include <wchar.h>
 #include <vector>
 #include <list>
+#include <map>
 
 #include <libkern/OSAtomic.h>
 

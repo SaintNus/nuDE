@@ -75,7 +75,7 @@ private:
     }
 
     nude::STREAM_ERROR seekBegin(ui64 seek_offset) const {
-      if(mFile.isOpened())
+      if(!mFile.isOpened())
         return nude::SERROR_CANNOT_OPEN;
 
       FileStreamer& file_stream = *const_cast< FileStreamer* >(this);
@@ -87,7 +87,7 @@ private:
     }
 
     nude::STREAM_ERROR seekEnd(ui64 seek_offset) const {
-      if(mFile.isOpened())
+      if(!mFile.isOpened())
         return nude::SERROR_CANNOT_OPEN;
 
       FileStreamer& file_stream = *const_cast< FileStreamer* >(this);
@@ -99,7 +99,7 @@ private:
     }
 
     nude::STREAM_ERROR seek(i64 seek_offset) const {
-      if(mFile.isOpened())
+      if(!mFile.isOpened())
         return nude::SERROR_CANNOT_OPEN;
 
       FileStreamer& file_stream = *const_cast< FileStreamer* >(this);
@@ -111,7 +111,7 @@ private:
     }
 
     size_t read(void* p_buffer, size_t size) const {
-      if(mFile.isOpened())
+      if(!mFile.isOpened())
         return nude::SERROR_CANNOT_OPEN;
 
       FileStreamer& file_stream = *const_cast< FileStreamer* >(this);
@@ -119,7 +119,7 @@ private:
     }
 
     size_t write(const void* p_buffer, size_t size) {
-      if(mFile.isOpened())
+      if(!mFile.isOpened())
         return nude::SERROR_CANNOT_OPEN;
       return mFile.write(p_buffer, size);
     }
