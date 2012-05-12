@@ -8,9 +8,6 @@
 #ifndef __APPLICATIONS_H__
 #define __APPLICATIONS_H__
 
-#include "Core.h"
-#include "Graphics.h"
-
 #include "nuApplication.h"
 #include "nuAppMain.h"
 #include "nuEntity.h"

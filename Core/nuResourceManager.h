@@ -94,6 +94,7 @@ class nuResourceManager : public nuObject
   }
 
   void buildResourceTable(const nuTypeInfo& type_info);
+  void load(nuResource& res);
 
 public:
   nuResourceManager();

@@ -81,6 +81,11 @@ namespace nude {
       return mpObject;
     }
 
+    template< class C >
+    C* cast(void) const {
+      return static_cast< C* >(mpObject);
+    }
+
   private:
     T* mpObject;
 

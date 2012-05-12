@@ -89,20 +89,7 @@ void nuResourceManager::resourceLoaderProc(void* param)
     }
 
     for(ui32 ui = 0; ui < num; ui++) {
-      nuStream stream;
-      if(stream.create(load_list[ui]->mPath, nude::FATTR_READ) == nude::SERROR_NONE) {
-        NU_TRACE("Loading: %s\n", load_list[ui]->mPath);
-        nuResource::ERROR_CODE ret = load_list[ui]->setup(stream);
-        load_list[ui]->mErrorCode = ret;
-        if(ret == nuResource::ERROR_NONE) {
-          load_list[ui]->mInitialized = 1;
-        } else {
-          NU_TRACE("Error loading %s: %s.\n", load_list[ui]->mPath, load_list[ui]->getErrorStr(ret));
-        }
-      } else {
-        load_list[ui]->mErrorCode = nuResource::ERROR_NOT_FOUND;
-        NU_TRACE("Resource load error: %s.\n", load_list[ui]->getErrorStr(nuResource::ERROR_NOT_FOUND));
-      }
+      load(*load_list[ui]);
       load_list[ui]->decRefCount();
       nuAtomic::decBarrier(&mLoadTaskNum);
     }
@@ -190,6 +177,44 @@ nuResHandle nuResourceManager::createResource(ccstr resource_path)
 
 nuResHandle nuResourceManager::createResourceSync(ccstr resource_path)
 {
+  ui32 crc = nuCRC::calculate(resource_path);
+  nuResource* p_res = nullptr;
+
+  {
+    nuMutex::Autolock lock(mResourceMapMutex);
+    ResourceMap::iterator it = mResourceMap.find(crc);
+    if(it != mResourceMap.end())
+      return nuResHandle(it->second);
+
+    ccstr ptr = strrchr(resource_path, '.');
+    if(ptr) {
+      ptr++;
+      ui32 ext_crc = nuCRC::calculate(ptr);
+      TypeInfoMapConstIterator itt = mTypeInfoMap.find(ext_crc);
+      if(itt != mTypeInfoMap.end()) {
+        p_res = static_cast< nuResource* >(itt->second->createInstance());
+        if(p_res) {
+          p_res->setPath(resource_path, crc);
+          p_res->mpResourceManager = this;
+#if NDEBUG || !DEBUG
+          mResourceMap.insert(std::pair< ui32, nuResource* >(crc, p_res));
+#else
+          std::pair< ResourceMapIterator, bool > res;
+          res = mResourceMap.insert(std::pair< ui32, nuResource* >(crc, p_res));
+          NU_ASSERT(res.second, "Cannot register resource!\n");
+#endif
+        }
+      }
+    }
+  }
+
+  if(p_res) {
+    nuResHandle ret(p_res);
+    load(*p_res);
+    return ret;
+  }
+
+  NU_ASSERT(false, "Cannot create resource (%s).\n", resource_path);
   return nuResHandle();
 }
 
@@ -214,4 +239,22 @@ void nuResourceManager::buildResourceTable(const nuTypeInfo& type_info)
 
   if(type_info.getSibling())
     buildResourceTable(*type_info.getSibling());
+}
+
+void nuResourceManager::load(nuResource& res)
+{
+  nuStream stream;
+  if(stream.create(res.mPath, nude::FATTR_READ) == nude::SERROR_NONE) {
+    NU_TRACE("Loading: %s\n", res.mPath);
+    nuResource::ERROR_CODE ret = res.setup(stream);
+    res.mErrorCode = ret;
+    if(ret == nuResource::ERROR_NONE) {
+      res.mInitialized = 1;
+    } else {
+      NU_TRACE("Error loading %s: %s.\n", res.mPath, res.getErrorStr(ret));
+    }
+  } else {
+    res.mErrorCode = nuResource::ERROR_NOT_FOUND;
+    NU_TRACE("Resource load error: %s.\n", res.getErrorStr(nuResource::ERROR_NOT_FOUND));
+  }
 }

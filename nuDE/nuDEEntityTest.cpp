@@ -14,10 +14,10 @@ class ResourceTest : public nuResource
   ResourceTest() {}
   ~ResourceTest() {}
 
-  virtual ccstr getExt(void) const {
+  ccstr getExt(void) const {
     return "rtst";
   }
-  virtual ERROR_CODE setup(const nuStream& stream) {
+  ERROR_CODE setup(const nuStream& stream) {
     size_t sz = stream.getSize();
     void* p_data = nude::Alloc(sz);
 
@@ -51,7 +51,7 @@ nuDEEntityTest::nuDEEntityTest()
     : mPosX(0.0f),
       mDir(1.0f)
 {
-  nuResHandle res = nuApplication::resourceManager().createResource("res://Resources/resource_test.rtst");
+  nuResHandle res = nuApplication::resourceManager().createResourceSync("res://Resources/resource_test.rtst");
   mVertexBuffer = nuApplication::renderGL().createVertexBuffer(sizeof(Vertex) * 3,
                                                                nuGResource::DYNAMIC_RESOURCE);
   mVertexBuffer->initialize();

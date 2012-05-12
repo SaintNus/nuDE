@@ -8,8 +8,6 @@
 #ifndef __GRAPHICS_H__
 #define __GRAPHICS_H__
 
-#include "Core.h"
-
 #include <QuartzCore/CVDisplayLink.h>
 
 #include <OpenGL/OpenGL.h>
