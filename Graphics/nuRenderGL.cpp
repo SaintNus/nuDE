@@ -35,7 +35,7 @@ nuRenderGL::~nuRenderGL()
 
 void nuRenderGL::initialize(nuResourceManager& resource_mgr, ccstr shader_list)
 {
-  mProgramManager.initializeResource(resource_mgr, shader_list);
+  mResourceManager.initializeShaderList(resource_mgr, shader_list);
 
   nuFile vsh(nude::FATTR_READ, "res://Resources/Shader/processed/Debug.vsh");
   nuFile fsh(nude::FATTR_READ, "res://Resources/Shader/processed/Debug.fsh");
@@ -151,8 +151,6 @@ void nuRenderGL::terminate(void)
   CHECK_GL_ERROR(glDeleteShader(vsh_id));
   CHECK_GL_ERROR(glDeleteShader(fsh_id));
   CHECK_GL_ERROR(glDeleteProgram(prog_id));
-
-  mProgramManager.terminateResource();
 }
 
 bool nuRenderGL::render(void)

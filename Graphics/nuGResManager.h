@@ -12,6 +12,7 @@
 #include "nuVertexArray.h"
 #include "nuVertexBuffer.h"
 #include "nuElementBuffer.h"
+#include "nuShaderList.h"
 
 class nuGResManager : public nuObject
 {
@@ -32,10 +33,13 @@ class nuGResManager : public nuObject
   nuGResource** mpUpdateTable;
   ui32 mUpdateTableNum;
 
+  nude::ShaderList mShaderList;
+
   void deleteResources(ResList& resource_list, nuMutex& mutex, i64 frame_id);
   void updateResources(ResList& resource_list, nuMutex& mutex);
 
   void registerResource(nuGResource& resource) {
+    resource.mpGResManager = this;
     switch (resource.getUsage()) {
     case nuGResource::STATIC_RESOURCE:
       {
@@ -58,6 +62,11 @@ class nuGResManager : public nuObject
 public:
   nuGResManager();
   ~nuGResManager();
+
+  void initializeShaderList(nuResourceManager& resource_mgr, ccstr shader_list);
+  const nude::ShaderList& getShaderList(void) const {
+    return mShaderList;
+  }
 
   nude::VertexArray createVertexArray(void);
   nude::VertexBuffer createVertexBuffer(size_t size, nuGResource::RESOURCE_USAGE usage);

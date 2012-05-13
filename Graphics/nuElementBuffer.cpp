@@ -14,7 +14,6 @@ nuElementBuffer::nuElementBuffer(ELEMENT_TYPE type, ui32 element_num, nuGResourc
     : nuGResource(nuGResource::ELEMENT_BUFFER, usage),
       mpBuffer(nullptr),
       mSize(0),
-      mUpdateSize(0),
       mElementBufferID(0),
       mElementNum(element_num),
       mElementType(type)
@@ -42,22 +41,14 @@ void nuElementBuffer::update(void)
     CHECK_GL_ERROR(glGenBuffers(1, &mElementBufferID));
     NU_ASSERT(mElementBufferID != 0, "Cannot generate vertex buffer object.\n");
 
-    GLenum usage;
-    switch(getUsage()) {
-    case nuGResource::STATIC_RESOURCE:
-      usage = GL_STATIC_DRAW;
-      break;
-    case nuGResource::DYNAMIC_RESOURCE:
-      usage = GL_DYNAMIC_DRAW;
-      break;
-    default:
-      NU_ASSERT(false, "Logical error.\n");
-    }
+    const GLenum usage_tbl[] = {
+      GL_STATIC_DRAW,
+      GL_DYNAMIC_DRAW,
+    };
 
     CHECK_GL_ERROR(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mElementBufferID));
-    CHECK_GL_ERROR(glBufferData(GL_ELEMENT_ARRAY_BUFFER, mUpdateSize, mpBuffer, usage));
+    CHECK_GL_ERROR(glBufferData(GL_ELEMENT_ARRAY_BUFFER, mSize, mpBuffer, usage_tbl[getUsage()]));
     releaseBuffer();
     setInitialized(true);
-    mUpdateSize = 0;
   }
 }

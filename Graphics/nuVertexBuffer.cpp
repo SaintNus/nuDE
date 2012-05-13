@@ -14,7 +14,6 @@ nuVertexBuffer::nuVertexBuffer(size_t size, nuGResource::RESOURCE_USAGE usage)
     : nuGResource(nuGResource::VERTEX_BUFFER, usage),
       mpBuffer(nullptr),
       mSize(size),
-      mUpdateSize(0),
       mVertexBufferID(0)
 {
   // None...
@@ -40,22 +39,14 @@ void nuVertexBuffer::update(void)
     CHECK_GL_ERROR(glGenBuffers(1, &mVertexBufferID));
     NU_ASSERT(mVertexBufferID != 0, "Cannot generate vertex buffer object.\n");
 
-    GLenum usage;
-    switch(getUsage()) {
-    case nuGResource::STATIC_RESOURCE:
-      usage = GL_STATIC_DRAW;
-      break;
-    case nuGResource::DYNAMIC_RESOURCE:
-      usage = GL_DYNAMIC_DRAW;
-      break;
-    default:
-      NU_ASSERT(false, "Logical error.\n");
-    }
+    const GLenum usage_tbl[] = {
+      GL_STATIC_DRAW,
+      GL_DYNAMIC_DRAW,
+    };
 
     CHECK_GL_ERROR(glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferID));
-    CHECK_GL_ERROR(glBufferData(GL_ARRAY_BUFFER, mUpdateSize, mpBuffer, usage));
+    CHECK_GL_ERROR(glBufferData(GL_ARRAY_BUFFER, mSize, mpBuffer, usage_tbl[getUsage()]));
     releaseBuffer();
     setInitialized(true);
-    mUpdateSize = 0;
   }
 }

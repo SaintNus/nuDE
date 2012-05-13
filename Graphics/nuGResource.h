@@ -64,7 +64,8 @@ protected:
         mType(type),
         mUsage(usage),
         mAttribute(0),
-        mFrameID(0)
+        mFrameID(0),
+        mpGResManager(nullptr)
   {
     // None.
   }
@@ -141,9 +142,14 @@ protected:
     mExtension = extension;
   }
 
+  class nuGResManager& getGResManager(void) const {
+    return *mpGResManager;
+  }
+
 private:
   RESOURCE_TYPE mType;
   RESOURCE_USAGE mUsage;
+  class nuGResManager* mpGResManager;
   volatile i64 mFrameID;
   union {
     ui32 mAttribute;

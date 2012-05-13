@@ -19,6 +19,8 @@ nuGResManager::nuGResManager()
     : mpUpdateTable(nullptr),
       mUpdateTableNum(EXPANDABLE_TABLE_NUM)
 {
+  nuShaderList shd;
+
   mpUpdateTable = new nuGResource* [mUpdateTableNum];
   NU_ASSERT(mpUpdateTable != nullptr, "Cannot create update table.\n");
 }
@@ -120,4 +122,13 @@ void nuGResManager::updateResources(ResList& resource_list, nuMutex& mutex)
     mpUpdateTable[ui]->update();
     mpUpdateTable[ui]->setUpdate(false);
   }
+}
+
+void nuGResManager::initializeShaderList(nuResourceManager& resource_mgr, ccstr shader_list)
+{
+  if(mShaderList.isValid())
+    return;
+
+  nuResHandle res = resource_mgr.createResource(shader_list);
+  mShaderList = res.cast< nuShaderList >();
 }

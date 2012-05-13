@@ -24,7 +24,6 @@ class nuVertexBuffer : public nuGResource
   void* mpBuffer;
   size_t mSize;
   GLuint mVertexBufferID;
-  size_t mUpdateSize;
 
   void update(void);
 
@@ -56,7 +55,6 @@ class nuVertexBuffer : public nuGResource
 public:
   void initialize(void) {
     if(!isInitialized()) {
-      mUpdateSize = mSize;
       setUpdate(true);
     }
   }
@@ -72,7 +70,6 @@ public:
 
   void endInitialize(void) {
     if(!isInitialized() && mpBuffer) {
-      mUpdateSize = mSize;
       setUpdate(true);
     }
   }

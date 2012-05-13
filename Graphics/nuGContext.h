@@ -13,6 +13,7 @@
 #include "nuVertexArray.h"
 #include "nuVertexBuffer.h"
 #include "nuElementBuffer.h"
+#include "nuShaderProgram.h"
 
 /*!
  * \class nuGContext
@@ -218,6 +219,11 @@ public:
     mCurrentPriority.priority = priority;
   }
 
+  void beginDraw(nude::PASS pass, ui32 priority) {
+    setPriority(pass, priority);
+  }
+
+  void endDraw(void) {}
 
   void setClearColor(const nuColor& color);
   void setClearDepth(f32 depth);

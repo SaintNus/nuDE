@@ -13,7 +13,6 @@
 #include "nuVertexArray.h"
 #include "nuVertexBuffer.h"
 #include "nuElementBuffer.h"
-#include "nuProgramManager.h"
 
 /*!
  * \class nuRenderGL
@@ -46,8 +45,6 @@ class nuRenderGL : public nuObject
 
   GLint mVertexLoc;
   GLint mColorLoc;
-
-  nuProgramManager mProgramManager;
 
   void executeClear(RenderContext& context, void* clear_cmd);
   void executeDrawElements(RenderContext& context, void* draw_cmd);

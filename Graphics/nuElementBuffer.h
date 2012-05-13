@@ -41,7 +41,6 @@ private:
 
   void* mpBuffer;
   size_t mSize;
-  size_t mUpdateSize;
 
   GLuint mElementBufferID;
 
@@ -74,7 +73,6 @@ private:
 public:
   void initialize(void) {
     if(!isInitialized()) {
-      mUpdateSize = mSize;
       setUpdate(true);
     }
   }
@@ -90,7 +88,6 @@ public:
 
   void endInitialize(void) {
     if(!isInitialized() && mpBuffer) {
-      mUpdateSize = mSize;
       setUpdate(true);
     }
   }

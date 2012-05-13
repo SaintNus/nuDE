@@ -131,12 +131,15 @@ void nuDEEntityTest::update(void)
 
 void nuDEEntityTest::draw(nuGContext& context)
 {
-  context.setPriority(nude::PASS_TRANSPARENCY, 0);
-
+  context.setPriority(nude::PASS_OPAQUE, 0);
   context.clear(nuGContext::CLEAR_COLOR | nuGContext::CLEAR_DEPTH, nuColor(0), 1.0f);
+
+  context.beginDraw(nude::PASS_TRANSPARENCY, 0);
 
   context.setVertexArray(mVertexArray);
   context.setVertexBuffer(mVertexBuffer);
   context.setElementBuffer(mElementBuffer);
   context.drawElements(nude::TRIANGLES, 3);
+
+  context.endDraw();
 }
