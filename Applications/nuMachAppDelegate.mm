@@ -55,7 +55,8 @@ static nuMachAppDelegate* gpAppDelegate = nil;
     nuApplication::instance()->initialize([self appMain]);
 
     CGLContextObj ctx = [view lockContext];
-    nuApplication::renderGL().initialize();
+    nuApplication::renderGL().initialize(nuApplication::resourceManager(),
+                                         "res://Resources/Shader.shlst");
     CGLFlushDrawable(ctx);
     [view unlockContext: ctx];
 

@@ -42,6 +42,7 @@ ccstr nuResource::getErrorStr(ERROR_CODE code) const
     "Resource is corrupted",
     "Invalid version",
     "Insufficient memory",
+    "Read fail",
   };
   return err_str[code];
 #else

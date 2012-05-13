@@ -21,6 +21,7 @@ public:
     ELEMENT_BUFFER,
     VERTEX_ARRAY,
     TEXTURE,
+    SHADER_PROGRAM,
   };
 
   enum RESOURCE_USAGE {

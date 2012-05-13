@@ -74,7 +74,7 @@ public:
   i64 synchronize(void);
   bool isCommandSubmitted(void);
 
-  void initialize(void);
+  void initialize(nuResourceManager& resource_mgr, ccstr shader_list);
   void terminate(void);
 
   nude::VertexArray createVertexArray() {

@@ -9,5 +9,6 @@
 #define __GRAPHICSINCLUDE_H__
 
 #include "Core.h"
+#include "nuGDebug.h"
 
 #endif

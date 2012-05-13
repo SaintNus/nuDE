@@ -23,7 +23,7 @@ nuVertexArray::nuVertexArray()
 nuVertexArray::~nuVertexArray()
 {
   if(mHandle != 0) {
-    glDeleteVertexArrays(1, &mHandle);
+    CHECK_GL_ERROR(glDeleteVertexArrays(1, &mHandle));
     mHandle = 0;
   }
 
@@ -36,21 +36,21 @@ nuVertexArray::~nuVertexArray()
 void nuVertexArray::update(void)
 {
   if(!isInitialized()) {
-    glGenVertexArrays(1, &mHandle);
+    CHECK_GL_ERROR(glGenVertexArrays(1, &mHandle));
     NU_ASSERT(mHandle != 0, "Cannot generate vertex array object.\n");
     setInitialized(true);
   }
 
-  glBindVertexArray(mHandle);
-  glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffer);
+  CHECK_GL_ERROR(glBindVertexArray(mHandle));
+  CHECK_GL_ERROR(glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffer));
 
   for(ui32 ui = 0; ui < mArrayNum; ui++)
-    glEnableVertexAttribArray(static_cast< GLuint >(ui));
+    CHECK_GL_ERROR(glEnableVertexAttribArray(static_cast< GLuint >(ui)));
 
   for(ui32 ui = mArrayNum; ui < MAX_VERTEX_ATTRIBUTE; ui++)
-    glDisableVertexAttribArray(static_cast< GLuint >(ui));
+    CHECK_GL_ERROR(glDisableVertexAttribArray(static_cast< GLuint >(ui)));
 
-  glBindVertexArray(0);
+  CHECK_GL_ERROR(glBindVertexArray(0));
 }
 
 void nuVertexArray::beginDeclaration(ui32 array_num)
@@ -83,17 +83,17 @@ void nuVertexArray::reset(GLuint vertex_id)
 {
   mVertexBuffer = vertex_id;
 
-  glBindVertexArray(mHandle);
-  glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffer);
+  CHECK_GL_ERROR(glBindVertexArray(mHandle));
+  CHECK_GL_ERROR(glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffer));
 
   for(ui32 ui = 0; ui < mArrayNum; ui++) {
     Array& va = mpArray[ui];
     GLuint idx = static_cast< GLuint>(ui);
-    glVertexAttribPointer(idx,
-                          static_cast< GLint >(va.size),
-                          getAttributeType(va.type),
-                          va.normalized ? GL_TRUE : GL_FALSE,
-                          static_cast< GLsizei >(va.stride),
-                          reinterpret_cast< GLvoid* >(va.offset));
+    CHECK_GL_ERROR(glVertexAttribPointer(idx,
+                                         static_cast< GLint >(va.size),
+                                         getAttributeType(va.type),
+                                         va.normalized ? GL_TRUE : GL_FALSE,
+                                         static_cast< GLsizei >(va.stride),
+                                         reinterpret_cast< GLvoid* >(va.offset)));
   }
 }

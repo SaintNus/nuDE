@@ -33,8 +33,10 @@ nuRenderGL::~nuRenderGL()
   // None...
 }
 
-void nuRenderGL::initialize(void)
+void nuRenderGL::initialize(nuResourceManager& resource_mgr, ccstr shader_list)
 {
+  mProgramManager.initializeResource(resource_mgr, shader_list);
+
   nuFile vsh(nude::FATTR_READ, "res://Resources/Shader/processed/Debug.vsh");
   nuFile fsh(nude::FATTR_READ, "res://Resources/Shader/processed/Debug.fsh");
   void* vsh_buffer = nude::Alloc(vsh.getSize());
@@ -45,21 +47,21 @@ void nuRenderGL::initialize(void)
 
   GLint status;
 
-  vsh_id = glCreateShader(GL_VERTEX_SHADER);
-  fsh_id = glCreateShader(GL_FRAGMENT_SHADER);
+  CHECK_GL_ERROR(vsh_id = glCreateShader(GL_VERTEX_SHADER));
+  CHECK_GL_ERROR(fsh_id = glCreateShader(GL_FRAGMENT_SHADER));
 
   vsh.read(vsh_buffer, vsh.getSize());
-  glShaderSource(vsh_id, 1, (const GLchar**) &vsh_buffer, &vsh_len);
-  glCompileShader(vsh_id);
+  CHECK_GL_ERROR(glShaderSource(vsh_id, 1, (const GLchar**) &vsh_buffer, &vsh_len));
+  CHECK_GL_ERROR(glCompileShader(vsh_id));
 
-  glGetShaderiv(vsh_id, GL_COMPILE_STATUS, &status);
+  CHECK_GL_ERROR(glGetShaderiv(vsh_id, GL_COMPILE_STATUS, &status));
   if(status == 0) {
     GLint log_len;
-    glGetShaderiv(vsh_id, GL_INFO_LOG_LENGTH, &log_len);
+    CHECK_GL_ERROR(glGetShaderiv(vsh_id, GL_INFO_LOG_LENGTH, &log_len));
     if(log_len > 0) {
       GLchar* p_log = static_cast< GLchar* >(nude::Alloc(log_len));
       GLsizei len;
-      glGetShaderInfoLog(vsh_id, log_len, &len, p_log);
+      CHECK_GL_ERROR(glGetShaderInfoLog(vsh_id, log_len, &len, p_log));
       NU_TRACE("%s\n", p_log);
       nude::Dealloc(p_log);
     }
@@ -67,56 +69,56 @@ void nuRenderGL::initialize(void)
   }
 
   fsh.read(fsh_buffer, fsh.getSize());
-  glShaderSource(fsh_id, 1, (const GLchar**) &fsh_buffer, &fsh_len);
-  glCompileShader(fsh_id);
+  CHECK_GL_ERROR(glShaderSource(fsh_id, 1, (const GLchar**) &fsh_buffer, &fsh_len));
+  CHECK_GL_ERROR(glCompileShader(fsh_id));
 
-  glGetShaderiv(fsh_id, GL_COMPILE_STATUS, &status);
+  CHECK_GL_ERROR(glGetShaderiv(fsh_id, GL_COMPILE_STATUS, &status));
   if(status == 0) {
     GLint log_len;
-    glGetShaderiv(fsh_id, GL_INFO_LOG_LENGTH, &log_len);
+    CHECK_GL_ERROR(glGetShaderiv(fsh_id, GL_INFO_LOG_LENGTH, &log_len));
     if(log_len > 0) {
       GLchar* p_log = static_cast< GLchar* >(nude::Alloc(log_len));
       GLsizei len;
-      glGetShaderInfoLog(fsh_id, log_len, &len, p_log);
+      CHECK_GL_ERROR(glGetShaderInfoLog(fsh_id, log_len, &len, p_log));
       NU_TRACE("%s\n", p_log);
       nude::Dealloc(p_log);
     }
     NU_TRACE("Error compiling fragment shader.\n");
   }
 
-  prog_id = glCreateProgram();
+  CHECK_GL_ERROR(prog_id = glCreateProgram());
 
-  glAttachShader(prog_id, vsh_id);
-  glAttachShader(prog_id, fsh_id);
+  CHECK_GL_ERROR(glAttachShader(prog_id, vsh_id));
+  CHECK_GL_ERROR(glAttachShader(prog_id, fsh_id));
 
-  glBindAttribLocation(prog_id, 0, "inPosition");
-  glBindAttribLocation(prog_id, 1, "inColor");
+  CHECK_GL_ERROR(glBindAttribLocation(prog_id, 0, "inPosition"));
+  CHECK_GL_ERROR(glBindAttribLocation(prog_id, 1, "inColor"));
 
-  glLinkProgram(prog_id);
+  CHECK_GL_ERROR(glLinkProgram(prog_id));
 
-  glGetProgramiv(prog_id, GL_LINK_STATUS, &status);
+  CHECK_GL_ERROR(glGetProgramiv(prog_id, GL_LINK_STATUS, &status));
   if(status == 0) {
     GLint log_len;
-    glGetProgramiv(prog_id, GL_INFO_LOG_LENGTH, &log_len);
+    CHECK_GL_ERROR(glGetProgramiv(prog_id, GL_INFO_LOG_LENGTH, &log_len));
     if(log_len > 0) {
       GLchar* p_log = static_cast< GLchar* >(nude::Alloc(log_len));
       GLsizei len;
-      glGetProgramInfoLog(prog_id, log_len, &len, p_log);
+      CHECK_GL_ERROR(glGetProgramInfoLog(prog_id, log_len, &len, p_log));
       NU_TRACE("%s\n", p_log);
       nude::Dealloc(p_log);
     }
     NU_TRACE("Error linking program.\n");
   }
 
-  glValidateProgram(prog_id);
-  glGetProgramiv(prog_id, GL_VALIDATE_STATUS, &status);
+  CHECK_GL_ERROR(glValidateProgram(prog_id));
+  CHECK_GL_ERROR(glGetProgramiv(prog_id, GL_VALIDATE_STATUS, &status));
   if(status == 0) {
     GLint log_len;
-    glGetProgramiv(prog_id, GL_INFO_LOG_LENGTH, &log_len);
+    CHECK_GL_ERROR(glGetProgramiv(prog_id, GL_INFO_LOG_LENGTH, &log_len));
     if(log_len > 0) {
       GLchar* p_log = static_cast< GLchar* >(nude::Alloc(log_len));
       GLsizei len;
-      glGetProgramInfoLog(prog_id, log_len, &len, p_log);
+      CHECK_GL_ERROR(glGetProgramInfoLog(prog_id, log_len, &len, p_log));
       NU_TRACE("%s\n", p_log);
       nude::Dealloc(p_log);
     }
@@ -125,20 +127,20 @@ void nuRenderGL::initialize(void)
 
   nude::Dealloc(vsh_buffer);
   nude::Dealloc(fsh_buffer);
-  glEnable(GL_PRIMITIVE_RESTART);
+  CHECK_GL_ERROR(glEnable(GL_PRIMITIVE_RESTART));
 
   // Initialize render context.
   mRenderContext.clear_color = nuColor(0);
-  glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+  CHECK_GL_ERROR(glClearColor(0.0f, 0.0f, 0.0f, 0.0f));
 
   mRenderContext.depth_value = 1.0f;
-  glClearDepth(1.0f);
+  CHECK_GL_ERROR(glClearDepth(1.0f));
 
   mRenderContext.p_vertex_array = nullptr;
   mRenderContext.p_vertex_buffer = nullptr;
   mRenderContext.p_element_buffer = nullptr;
 
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  CHECK_GL_ERROR(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 }
 
 void nuRenderGL::terminate(void)
@@ -146,9 +148,11 @@ void nuRenderGL::terminate(void)
   mLock.lockWhenCondition(SETUP_PHASE);
   mLock.unlockWithCondition(EXECUTE_PHASE);
 
-  glDeleteShader(vsh_id);
-  glDeleteShader(fsh_id);
-  glDeleteProgram(prog_id);
+  CHECK_GL_ERROR(glDeleteShader(vsh_id));
+  CHECK_GL_ERROR(glDeleteShader(fsh_id));
+  CHECK_GL_ERROR(glDeleteProgram(prog_id));
+
+  mProgramManager.terminateResource();
 }
 
 bool nuRenderGL::render(void)
@@ -173,7 +177,7 @@ bool nuRenderGL::render(void)
           executeClear(mRenderContext, p_tag[ui].mpCommand);
           break;
         case nuGContext::DRAW_ELEMENTS:
-          glUseProgram(prog_id);
+          CHECK_GL_ERROR(glUseProgram(prog_id));
           executeDrawElements(mRenderContext, p_tag[ui].mpCommand);
           break;
         default:
@@ -219,12 +223,12 @@ void nuRenderGL::executeClear(RenderContext& context, void* clear_cmd)
   nuColor clear_color(p_clear->data.clear_color);
 
   if(context.clear_color != clear_color)
-    glClearColor(clear_color.fr(), clear_color.fg(), clear_color.fb(), clear_color.fa());
+    CHECK_GL_ERROR(glClearColor(clear_color.fr(), clear_color.fg(), clear_color.fb(), clear_color.fa()));
   
   if(fabsf(p_clear->data.depth_value - context.depth_value) > 0.000001f)
-    glClearDepth(p_clear->data.depth_value);
+    CHECK_GL_ERROR(glClearDepth(p_clear->data.depth_value));
 
-  glClear(p_clear->data.clear_bit);
+  CHECK_GL_ERROR(glClear(p_clear->data.clear_bit));
 }
 
 void nuRenderGL::executeDrawElements(RenderContext& context, void* draw_cmd)
@@ -247,7 +251,7 @@ void nuRenderGL::executeDrawElements(RenderContext& context, void* draw_cmd)
   if(context.p_vertex_array->getVertexHandle() != context.p_vertex_buffer->getHandle())
     context.p_vertex_array->reset(context.p_vertex_buffer->getHandle());
   else
-    glBindVertexArray(context.p_vertex_array->getHandle());
+    CHECK_GL_ERROR(glBindVertexArray(context.p_vertex_array->getHandle()));
 
   if(context.p_element_buffer != p_draw->data.p_element_buffer) {
     const GLuint restart_idx[] = {
@@ -257,13 +261,13 @@ void nuRenderGL::executeDrawElements(RenderContext& context, void* draw_cmd)
     if(context.p_element_buffer) {
       nuElementBuffer::ELEMENT_TYPE prev_type = context.p_element_buffer->getElementType();
       if(prev_type != p_draw->data.p_element_buffer->getElementType())
-        glPrimitiveRestartIndex(restart_idx[p_draw->data.p_element_buffer->getElementType()]);
+        CHECK_GL_ERROR(glPrimitiveRestartIndex(restart_idx[p_draw->data.p_element_buffer->getElementType()]));
     } else {
-      glPrimitiveRestartIndex(restart_idx[p_draw->data.p_element_buffer->getElementType()]);
+      CHECK_GL_ERROR(glPrimitiveRestartIndex(restart_idx[p_draw->data.p_element_buffer->getElementType()]));
     }
 
     context.p_element_buffer = p_draw->data.p_element_buffer;
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, context.p_element_buffer->getHandle());
+    CHECK_GL_ERROR(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, context.p_element_buffer->getHandle()));
   }
 
   const GLenum primitive_mode[] = {
@@ -288,8 +292,8 @@ void nuRenderGL::executeDrawElements(RenderContext& context, void* draw_cmd)
     GL_UNSIGNED_INT,
   };
 
-  glDrawElements(primitive_mode[p_draw->data.primitive_mode],
-                 p_draw->data.element_num,
-                 element_type[context.p_element_buffer->getElementType()],
-                 0);
+  CHECK_GL_ERROR(glDrawElements(primitive_mode[p_draw->data.primitive_mode],
+                                p_draw->data.element_num,
+                                element_type[context.p_element_buffer->getElementType()],
+                                0));
 }

@@ -26,20 +26,20 @@ nuElementBuffer::~nuElementBuffer()
 {
   releaseBuffer();
   if(mElementBufferID > 0)
-    glDeleteBuffers(1, &mElementBufferID);
+    CHECK_GL_ERROR(glDeleteBuffers(1, &mElementBufferID));
 }
 
 void nuElementBuffer::update(void)
 {
   if(isMapped()) {
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mElementBufferID);
-    glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
+    CHECK_GL_ERROR(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mElementBufferID));
+    CHECK_GL_ERROR(glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER));
     mpBuffer = nullptr;
     setMapped(false);
   }  
 
   if(!isInitialized()) {
-    glGenBuffers(1, &mElementBufferID);
+    CHECK_GL_ERROR(glGenBuffers(1, &mElementBufferID));
     NU_ASSERT(mElementBufferID != 0, "Cannot generate vertex buffer object.\n");
 
     GLenum usage;
@@ -54,8 +54,8 @@ void nuElementBuffer::update(void)
       NU_ASSERT(false, "Logical error.\n");
     }
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mElementBufferID);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, mUpdateSize, mpBuffer, usage);
+    CHECK_GL_ERROR(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mElementBufferID));
+    CHECK_GL_ERROR(glBufferData(GL_ELEMENT_ARRAY_BUFFER, mUpdateSize, mpBuffer, usage));
     releaseBuffer();
     setInitialized(true);
     mUpdateSize = 0;

@@ -1,4 +1,4 @@
 # Shader list.
 # This file describes location of all the shaders.
 
-res://Resources/Shader/processed/
+SHADER_PATH = "res://Resources/Shader/processed/"

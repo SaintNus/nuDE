@@ -54,7 +54,7 @@ namespace nude {
         mpObject = nullptr;
       }
       if(p_obj)
-        mpObject = p_obj->incRefCount();
+        mpObject = static_cast< T* >(p_obj->incRefCount());
       return *this;
     }
 

@@ -18,6 +18,50 @@ namespace nude
   //! \brief Memory size.
   size_t MemSize(void* p_addr);
 
+  class Allocator {
+  public:
+    Allocator() {}
+    ~Allocator() {}
+
+    void* allocate(size_t size) const {
+      return Alloc(size);
+    }
+    void deallocate(void* p_addr) const {
+      return Dealloc(p_addr);
+    }
+    size_t size(void* p_addr) const {
+      return MemSize(p_addr);
+    }
+
+  };
+
+  template< class Alloc = Allocator >
+  class TempBuffer {
+    void* mpBuffer;
+    size_t mSize;
+
+  public:
+    TempBuffer(size_t size)
+        : mSize(size)
+    {
+      Alloc alloc;
+      mpBuffer = alloc.allocate(mSize);
+    }
+    ~TempBuffer() {
+      if(mpBuffer) {
+        Alloc alloc;
+        alloc.deallocate(mpBuffer);
+      }
+    }
+
+    void* getBuffer(void) const {
+      return mpBuffer;
+    }
+    size_t getSize(void) const {
+      return mSize;
+    }
+  };
+
 }
 
 //! \brief Operator new.
