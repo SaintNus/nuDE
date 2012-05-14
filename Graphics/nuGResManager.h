@@ -13,6 +13,7 @@
 #include "nuVertexBuffer.h"
 #include "nuElementBuffer.h"
 #include "nuShaderList.h"
+#include "nuShaderProgram.h"
 
 class nuGResManager : public nuObject
 {
@@ -73,6 +74,7 @@ public:
   nude::ElementBuffer createElementBuffer(nuElementBuffer::ELEMENT_TYPE type,
                                           ui32 size,
                                           nuGResource::RESOURCE_USAGE usage);
+  nude::ShaderProgram createShaderProgram(nude::ProgramList program);
 
   void updateStaticResource(i64 frame_id);
   void updateDynamicResource(i64 frame_id);

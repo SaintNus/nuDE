@@ -62,6 +62,13 @@ ElementBuffer nuGResManager::createElementBuffer(nuElementBuffer::ELEMENT_TYPE t
   return ElementBuffer(p_eb);
 }
 
+nude::ShaderProgram nuGResManager::createShaderProgram(nude::ProgramList program)
+{
+  nuShaderProgram* p_prog = new nuShaderProgram(program);
+  registerResource(*p_prog);
+  return ShaderProgram(p_prog);
+}
+
 void nuGResManager::updateStaticResource(i64 frame_id)
 {
   deleteResources(mStaticResource, mStaticResMutex, frame_id);

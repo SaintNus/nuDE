@@ -53,6 +53,8 @@ nuDEEntityTest::nuDEEntityTest()
       mDir(1.0f)
 {
   nuApplication::resourceManager().createResource("res://Resources/resource_test.rtst");
+
+  mShaderProgram = nuApplication::renderGL().createShaderProgram(nude::Program_Debug);
   mVertexBuffer = nuApplication::renderGL().createVertexBuffer(sizeof(Vertex) * 3,
                                                                nuGResource::DYNAMIC_RESOURCE);
   mVertexBuffer->initialize();
@@ -134,7 +136,7 @@ void nuDEEntityTest::draw(nuGContext& context)
   context.setPriority(nude::PASS_OPAQUE, 0);
   context.clear(nuGContext::CLEAR_COLOR | nuGContext::CLEAR_DEPTH, nuColor(0), 1.0f);
 
-  context.beginDraw(nude::PASS_TRANSPARENCY, 0);
+  context.beginDraw(nude::PASS_TRANSPARENCY, 0, mShaderProgram);
 
   context.setVertexArray(mVertexArray);
   context.setVertexBuffer(mVertexBuffer);

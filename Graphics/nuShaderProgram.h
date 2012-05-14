@@ -14,6 +14,7 @@
 class nuShaderProgram : public nuGResource
 {
   DECLARE_TYPE_INFO;
+  friend class nuGResManager;
   friend nude::Handle< nuShaderProgram >;
 
   struct UniformValue {

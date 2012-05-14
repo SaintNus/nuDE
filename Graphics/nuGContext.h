@@ -159,6 +159,7 @@ private:
   typedef DrawCmd< Clear > ClearCmd;
 
   struct DrawElements {
+    nuShaderProgram* p_shader_program;
     nuVertexArray* p_vertex_array;
     nuVertexBuffer* p_vertex_buffer;
     nuElementBuffer* p_element_buffer;
@@ -219,11 +220,15 @@ public:
     mCurrentPriority.priority = priority;
   }
 
-  void beginDraw(nude::PASS pass, ui32 priority) {
+  void beginDraw(nude::PASS pass, ui32 priority, const nude::ShaderProgram& program) {
     setPriority(pass, priority);
+    program->protect(mFrameID);
+    mCurrentDrawElements.p_shader_program = &program;
   }
 
-  void endDraw(void) {}
+  void endDraw(void) {
+    mCurrentDrawElements.p_shader_program = nullptr;
+  }
 
   void setClearColor(const nuColor& color);
   void setClearDepth(f32 depth);

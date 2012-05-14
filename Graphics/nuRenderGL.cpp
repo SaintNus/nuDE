@@ -10,15 +10,6 @@
 
 IMPLEMENT_TYPE_INFO(nuRenderGL, nuObject);
 
-struct Vertex {
-  f32 pos[3];
-  f32 color[4];
-};
-
-static GLuint vsh_id = 0;
-static GLuint fsh_id = 0;
-static GLuint prog_id = 0;
-
 nuRenderGL::nuRenderGL()
     : mFrameID(0),
       mLock(INIT_PHASE),
@@ -37,101 +28,10 @@ void nuRenderGL::initialize(nuResourceManager& resource_mgr, ccstr shader_list)
 {
   mResourceManager.initializeShaderList(resource_mgr, shader_list);
 
-  nuFile vsh(nude::FATTR_READ, "res://Resources/Shader/processed/Debug.vsh");
-  nuFile fsh(nude::FATTR_READ, "res://Resources/Shader/processed/Debug.fsh");
-  void* vsh_buffer = nude::Alloc(vsh.getSize());
-  void* fsh_buffer = nude::Alloc(fsh.getSize());
-
-  GLint vsh_len = static_cast< GLint >(vsh.getSize());
-  GLint fsh_len = static_cast< GLint >(fsh.getSize());
-
-  GLint status;
-
-  CHECK_GL_ERROR(vsh_id = glCreateShader(GL_VERTEX_SHADER));
-  CHECK_GL_ERROR(fsh_id = glCreateShader(GL_FRAGMENT_SHADER));
-
-  vsh.read(vsh_buffer, vsh.getSize());
-  CHECK_GL_ERROR(glShaderSource(vsh_id, 1, (const GLchar**) &vsh_buffer, &vsh_len));
-  CHECK_GL_ERROR(glCompileShader(vsh_id));
-
-  CHECK_GL_ERROR(glGetShaderiv(vsh_id, GL_COMPILE_STATUS, &status));
-  if(status == 0) {
-    GLint log_len;
-    CHECK_GL_ERROR(glGetShaderiv(vsh_id, GL_INFO_LOG_LENGTH, &log_len));
-    if(log_len > 0) {
-      GLchar* p_log = static_cast< GLchar* >(nude::Alloc(log_len));
-      GLsizei len;
-      CHECK_GL_ERROR(glGetShaderInfoLog(vsh_id, log_len, &len, p_log));
-      NU_TRACE("%s\n", p_log);
-      nude::Dealloc(p_log);
-    }
-    NU_TRACE("Error compiling vertex shader.\n");
-  }
-
-  fsh.read(fsh_buffer, fsh.getSize());
-  CHECK_GL_ERROR(glShaderSource(fsh_id, 1, (const GLchar**) &fsh_buffer, &fsh_len));
-  CHECK_GL_ERROR(glCompileShader(fsh_id));
-
-  CHECK_GL_ERROR(glGetShaderiv(fsh_id, GL_COMPILE_STATUS, &status));
-  if(status == 0) {
-    GLint log_len;
-    CHECK_GL_ERROR(glGetShaderiv(fsh_id, GL_INFO_LOG_LENGTH, &log_len));
-    if(log_len > 0) {
-      GLchar* p_log = static_cast< GLchar* >(nude::Alloc(log_len));
-      GLsizei len;
-      CHECK_GL_ERROR(glGetShaderInfoLog(fsh_id, log_len, &len, p_log));
-      NU_TRACE("%s\n", p_log);
-      nude::Dealloc(p_log);
-    }
-    NU_TRACE("Error compiling fragment shader.\n");
-  }
-
-  CHECK_GL_ERROR(prog_id = glCreateProgram());
-
-  CHECK_GL_ERROR(glAttachShader(prog_id, vsh_id));
-  CHECK_GL_ERROR(glAttachShader(prog_id, fsh_id));
-
-  CHECK_GL_ERROR(glBindAttribLocation(prog_id, 0, "inPosition"));
-  CHECK_GL_ERROR(glBindAttribLocation(prog_id, 1, "inColor"));
-
-  CHECK_GL_ERROR(glLinkProgram(prog_id));
-
-  CHECK_GL_ERROR(glGetProgramiv(prog_id, GL_LINK_STATUS, &status));
-  if(status == 0) {
-    GLint log_len;
-    CHECK_GL_ERROR(glGetProgramiv(prog_id, GL_INFO_LOG_LENGTH, &log_len));
-    if(log_len > 0) {
-      GLchar* p_log = static_cast< GLchar* >(nude::Alloc(log_len));
-      GLsizei len;
-      CHECK_GL_ERROR(glGetProgramInfoLog(prog_id, log_len, &len, p_log));
-      NU_TRACE("%s\n", p_log);
-      nude::Dealloc(p_log);
-    }
-    NU_TRACE("Error linking program.\n");
-  }
-
-  CHECK_GL_ERROR(glValidateProgram(prog_id));
-  CHECK_GL_ERROR(glGetProgramiv(prog_id, GL_VALIDATE_STATUS, &status));
-  if(status == 0) {
-    GLint log_len;
-    CHECK_GL_ERROR(glGetProgramiv(prog_id, GL_INFO_LOG_LENGTH, &log_len));
-    if(log_len > 0) {
-      GLchar* p_log = static_cast< GLchar* >(nude::Alloc(log_len));
-      GLsizei len;
-      CHECK_GL_ERROR(glGetProgramInfoLog(prog_id, log_len, &len, p_log));
-      NU_TRACE("%s\n", p_log);
-      nude::Dealloc(p_log);
-    }
-    NU_TRACE("Error validating program.\n");
-  }
-
-  nude::Dealloc(vsh_buffer);
-  nude::Dealloc(fsh_buffer);
-  CHECK_GL_ERROR(glEnable(GL_PRIMITIVE_RESTART));
-
   // Initialize render context.
   mRenderContext.clear_color = nuColor(0);
   CHECK_GL_ERROR(glClearColor(0.0f, 0.0f, 0.0f, 0.0f));
+  CHECK_GL_ERROR(glEnable(GL_PRIMITIVE_RESTART));
 
   mRenderContext.depth_value = 1.0f;
   CHECK_GL_ERROR(glClearDepth(1.0f));
@@ -147,10 +47,6 @@ void nuRenderGL::terminate(void)
 {
   mLock.lockWhenCondition(SETUP_PHASE);
   mLock.unlockWithCondition(EXECUTE_PHASE);
-
-  CHECK_GL_ERROR(glDeleteShader(vsh_id));
-  CHECK_GL_ERROR(glDeleteShader(fsh_id));
-  CHECK_GL_ERROR(glDeleteProgram(prog_id));
 }
 
 bool nuRenderGL::render(void)
@@ -163,6 +59,7 @@ bool nuRenderGL::render(void)
     if(mpCurrentTagList->mTagNum > 0) {
       nuGContext::Tag* p_tag = mpCurrentTagList->mpTagList;
 
+      mRenderContext.p_shader_program = nullptr;
       mRenderContext.p_vertex_array = nullptr;
       mRenderContext.p_vertex_buffer = nullptr;
       mRenderContext.p_element_buffer = nullptr;
@@ -175,7 +72,6 @@ bool nuRenderGL::render(void)
           executeClear(mRenderContext, p_tag[ui].mpCommand);
           break;
         case nuGContext::DRAW_ELEMENTS:
-          CHECK_GL_ERROR(glUseProgram(prog_id));
           executeDrawElements(mRenderContext, p_tag[ui].mpCommand);
           break;
         default:
@@ -233,12 +129,16 @@ void nuRenderGL::executeDrawElements(RenderContext& context, void* draw_cmd)
 {
   nuGContext::DrawElementsCmd* p_draw = static_cast< nuGContext::DrawElementsCmd* >(draw_cmd);
 
+  if(p_draw->data.p_shader_program->getHandle() == 0)
+    return;
   if(p_draw->data.p_vertex_array->getHandle() == 0)
     return;
   if(p_draw->data.p_vertex_buffer->getHandle() == 0)
     return;
   if(p_draw->data.p_element_buffer->getHandle() == 0)
     return;
+
+  setShaderProgram(context, p_draw->data.p_shader_program);
 
   if(context.p_vertex_array != p_draw->data.p_vertex_array)
     context.p_vertex_array = p_draw->data.p_vertex_array;
@@ -294,4 +194,13 @@ void nuRenderGL::executeDrawElements(RenderContext& context, void* draw_cmd)
                                 p_draw->data.element_num,
                                 element_type[context.p_element_buffer->getElementType()],
                                 0));
+}
+
+void nuRenderGL::setShaderProgram(RenderContext& context, nuShaderProgram* p_program)
+{
+  if(context.p_shader_program == p_program)
+    return;
+
+  context.p_shader_program = p_program;
+  CHECK_GL_ERROR(glUseProgram(context.p_shader_program->getHandle()));
 }

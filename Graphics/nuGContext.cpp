@@ -53,6 +53,7 @@ void nuGContext::begin(i64 frame_id, Tag* p_tag, ui32 tag_num)
   mCurrentClear.clear_color = 0;
   mCurrentClear.depth_value = 1.0f;
 
+  mCurrentDrawElements.p_shader_program = nullptr;
   mCurrentDrawElements.p_vertex_array = nullptr;
   mCurrentDrawElements.p_vertex_buffer = nullptr;
   mCurrentDrawElements.p_element_buffer = nullptr;
@@ -236,6 +237,8 @@ void nuGContext::drawElements(nude::PRIMITIVE_MODE primitive_mode, ui32 element_
   if(mCurrentTag >= mTagNum)
     return;
 
+  if(!mCurrentDrawElements.p_shader_program)
+    return;
   if(!mCurrentDrawElements.p_vertex_buffer)
     return;
   if(!mCurrentDrawElements.p_element_buffer)
@@ -251,6 +254,7 @@ void nuGContext::drawElements(nude::PRIMITIVE_MODE primitive_mode, ui32 element_
     tag.mPriority = mCurrentPriority;
     tag.mpCommand = p_draw;
     p_draw->type = DRAW_ELEMENTS;
+    p_draw->data.p_shader_program = mCurrentDrawElements.p_shader_program;
     p_draw->data.p_vertex_array = mCurrentDrawElements.p_vertex_array;
     p_draw->data.p_vertex_buffer = mCurrentDrawElements.p_vertex_buffer;
     p_draw->data.p_element_buffer = mCurrentDrawElements.p_element_buffer;

@@ -22,6 +22,7 @@ class nuDEEntityTest : public nuEntity
   nude::VertexBuffer mVertexBuffer;
   nude::ElementBuffer mElementBuffer;
   nude::VertexArray mVertexArray;
+  nude::ShaderProgram mShaderProgram;
 
 public:
   nuDEEntityTest();

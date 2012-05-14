@@ -12,7 +12,7 @@
 
 #define UNIFORM_TYPE_SIZE(_type, _gl_type, _size) if(_type == _gl_type) return _size
 
-IMPLEMENT_TYPE_INFO(nuShaderProgram, nuGResource);
+IMPLEMENT_TYPE_INFO_INST(nuShaderProgram, nuGResource, nullptr);
 
 nuShaderProgram::nuShaderProgram(nude::ProgramList program)
     : nuGResource(nuGResource::SHADER_PROGRAM, nuGResource::DYNAMIC_RESOURCE),
@@ -41,6 +41,8 @@ nuShaderProgram::nuShaderProgram(nude::ProgramList program)
       mpUniformBlock[ui].binding = 0;
     }
   }
+
+  setUpdate(true);
 }
 
 nuShaderProgram::~nuShaderProgram()

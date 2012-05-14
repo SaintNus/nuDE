@@ -13,6 +13,7 @@
 #include "nuVertexArray.h"
 #include "nuVertexBuffer.h"
 #include "nuElementBuffer.h"
+#include "nuShaderProgram.h"
 
 /*!
  * \class nuRenderGL
@@ -31,6 +32,7 @@ class nuRenderGL : public nuObject
   struct RenderContext {
     nuColor clear_color;
     f32 depth_value;
+    nuShaderProgram* p_shader_program;
     nuVertexArray* p_vertex_array;
     nuVertexBuffer* p_vertex_buffer;
     nuElementBuffer* p_element_buffer;
@@ -48,6 +50,8 @@ class nuRenderGL : public nuObject
 
   void executeClear(RenderContext& context, void* clear_cmd);
   void executeDrawElements(RenderContext& context, void* draw_cmd);
+
+  void setShaderProgram(RenderContext& context, nuShaderProgram* p_program);
 
 public:
   nuRenderGL();
@@ -86,6 +90,10 @@ public:
                                           ui32 size,
                                           nuGResource::RESOURCE_USAGE usage) {
     return nude::ElementBuffer(mResourceManager.createElementBuffer(type, size, usage));
+  }
+
+  nude::ShaderProgram createShaderProgram(nude::ProgramList program) {
+    return nude::ShaderProgram(mResourceManager.createShaderProgram(program));
   }
 
 };
