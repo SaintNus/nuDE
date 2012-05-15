@@ -175,13 +175,11 @@ void nuAppMain::draw(void)
     nuGContext::SortTagContext sort_ctx[nuThreadPool::MAX_WORKER];
     ui32 ctx_num = 0;
     for(ui32 ui = 0; ui < nuThreadPool::MAX_WORKER; ui++) {
-      if(mpGraphicContext[ui]->getTagNum() > 0) {
-        sort_ctx[ctx_num].initialize(mpGraphicContext[ui]);
+      if(sort_ctx[ctx_num].initialize(mpGraphicContext[ui]))
         ctx_num++;
-      }
     }
 
-    nuGContext::createTagList(mTagList[mCurrentTagList ^ 1], sort_ctx, ctx_num);
+    nuGContext::SortTagContext::createTagList(mTagList[mCurrentTagList ^ 1], sort_ctx, ctx_num);
   }
 }
 

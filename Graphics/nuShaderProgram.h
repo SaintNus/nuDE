@@ -17,10 +17,9 @@ class nuShaderProgram : public nuGResource
   friend class nuGResManager;
   friend nude::Handle< nuShaderProgram >;
 
-  struct UniformValue {
+  struct Uniform {
     GLint location;
-    size_t size; 
-    void* value;
+    size_t size;
   };
 
   struct UniformBlock {
@@ -37,7 +36,7 @@ class nuShaderProgram : public nuGResource
   const nude::Program& mGlslProgram;
   GLuint mProgramID;
 
-  UniformValue* mpUniformValue;
+  Uniform* mpUniform;
   UniformBlock* mpUniformBlock;
 
   void update(void);
@@ -58,15 +57,19 @@ public:
   }
 
   size_t getUniformSize(ui32 index) const {
-    if(mpUniformValue || index >= mGlslProgram.uniform_num)
+    if(!mpUniform || index >= mGlslProgram.uniform_num)
       return 0;
-    return mpUniformValue[index].size;
+    return mpUniform[index].size;
   }
 
-  void setUniform(ui32 index, void* data) {
-    if(mpUniformValue || index >= mGlslProgram.uniform_num)
-      return;
-    memcpy(mpUniformValue[index].value, data, mpUniformValue[index].size);
+  GLuint getUniformLocation(ui32 index) const {
+    if(!mpUniform || index >= mGlslProgram.uniform_num)
+      return 0;
+    return mpUniform[index].location;
+  }
+
+  const nude::Program& getGlslProgram(void) const {
+    return mGlslProgram;
   }
 
 };

@@ -106,15 +106,18 @@ void nuDEEntityTest::update(void)
   Vertex vtx[3] = {
     {
       { mPosX, 0.6f, 0.0f },
-      0xff0000ff,
+      // 0xff0000ff,
+      0xffffffff,
     },
     {
       { -0.2f, -0.3f, 0.0f },
-      0xff00ff00,
+      // 0xff00ff00,
+      0xffffffff,
     },
     {
       { 0.2f, -0.3f, 0.0f },
-      0xffff0000,
+      // 0xffff0000,
+      0xffffffff,
     },
   };
 
@@ -137,11 +140,19 @@ void nuDEEntityTest::draw(nuGContext& context)
   context.clear(nuGContext::CLEAR_COLOR | nuGContext::CLEAR_DEPTH, nuColor(0), 1.0f);
 
   context.beginDraw(nude::PASS_TRANSPARENCY, 0, mShaderProgram);
-
-  context.setVertexArray(mVertexArray);
-  context.setVertexBuffer(mVertexBuffer);
-  context.setElementBuffer(mElementBuffer);
-  context.drawElements(nude::TRIANGLES, 3);
-
+  {
+    f32 vv[4] = { 0.5f, 0.5f, 0.5f, 1.0f };
+    f32 vvv[3][4] = {
+      { 1.0f, 0.0f, 0.0f, 1.0f },
+      { 0.0f, 1.0f, 0.0f, 1.0f },
+      { 0.0f, 0.0f, 1.0f, 1.0f },
+    };
+    context.setUniform4(nude::Debug_uniTest, vv);
+    context.setUniform4(nude::Debug_uniColor_0_, 3, reinterpret_cast< f32* >(vvv));
+    context.setVertexArray(mVertexArray);
+    context.setVertexBuffer(mVertexBuffer);
+    context.setElementBuffer(mElementBuffer);
+    context.drawElements(nude::TRIANGLES, 3);
+  }
   context.endDraw();
 }

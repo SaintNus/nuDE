@@ -8,6 +8,7 @@
 #include "GraphicsInclude.h"
 #include "nuVertexBuffer.h"
 #include "nuElementBuffer.h"
+#include "nuShaderProgram.h"
 #include "nuGSetupContext.h"
 
 nuGSetupContext::nuGSetupContext()

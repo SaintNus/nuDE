@@ -19,17 +19,16 @@ nuShaderProgram::nuShaderProgram(nude::ProgramList program)
       mProgram(program),
       mGlslProgram(nude::GLSLPrograms[program]),
       mProgramID(0),
-      mpUniformValue(nullptr),
+      mpUniform(nullptr),
       mpUniformBlock(nullptr)
 {
   if(mGlslProgram.uniform_num > 0) {
-    mpUniformValue = new UniformValue[mGlslProgram.uniform_num];
-    NU_ASSERT_C(mpUniformValue != nullptr);
+    mpUniform = new Uniform[mGlslProgram.uniform_num];
+    NU_ASSERT_C(mpUniform != nullptr);
     for(ui32 ui = 0; ui < mGlslProgram.uniform_num; ui++) {
       const nude::Variable& uniform = mGlslProgram.uniforms[ui];
-      mpUniformValue[ui].location = 0;
-      mpUniformValue[ui].size = getSize(uniform.type) * uniform.size;
-      mpUniformValue[ui].value = nude::Alloc(mpUniformValue[ui].size);
+      mpUniform[ui].location = 0;
+      mpUniform[ui].size = getSize(uniform.type) * uniform.size;
     }
   }
 
@@ -47,13 +46,9 @@ nuShaderProgram::nuShaderProgram(nude::ProgramList program)
 
 nuShaderProgram::~nuShaderProgram()
 {
-  if(mpUniformValue) {
-    for(GLuint ui = 0; ui < mGlslProgram.uniform_num; ui++) {
-      if(mpUniformValue[ui].value)
-        nude::Dealloc(mpUniformValue[ui].value);
-    }
-    delete[] mpUniformValue;
-    mpUniformValue = nullptr;
+  if(mpUniform) {
+    delete[] mpUniform;
+    mpUniform = nullptr;
   }
 
   if(mpUniformBlock) {
@@ -115,8 +110,8 @@ void nuShaderProgram::update(void)
 
     if(mGlslProgram.uniform_num > 0) {
       for(GLuint ui = 0; ui < mGlslProgram.uniform_num; ui++) {
-        CHECK_GL_ERROR(mpUniformValue[ui].location = glGetUniformLocation(mProgramID,
-                                                                          mGlslProgram.uniforms[ui].name));
+        CHECK_GL_ERROR(mpUniform[ui].location = glGetUniformLocation(mProgramID,
+                                                                     mGlslProgram.uniforms[ui].name));
       }
     }
 

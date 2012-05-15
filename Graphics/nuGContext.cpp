@@ -15,14 +15,28 @@ nuGContext::nuGContext(nuGContextBuffer& ctx_buffer)
       mTagNum(0),
       mCurrentTag(0),
       mpTempTag(nullptr),
-      mTempTagNum(0)
+      mTempTagNum(0),
+      mpUniformValue(nullptr),
+      mUniformValueNum(0),
+      mCurrentUniformValue(0)
 {
   mCurrentPriority.value = 0;
+  mpUniformValue = new UniformValue[EXPAND_UNIFORM_VALUE];
+  if(mpUniformValue)
+    mUniformValueNum = EXPAND_UNIFORM_VALUE;
 }
 
 nuGContext::~nuGContext()
 {
-  // None...
+  if(mpTempTag) {
+    delete[] mpTempTag;
+    mpTempTag = nullptr;
+  }
+
+  if(mpUniformValue) {
+    delete[] mpUniformValue;
+    mpUniformValue = nullptr;
+  }
 }
 
 void nuGContext::begin(i64 frame_id, Tag* p_tag, ui32 tag_num)
@@ -53,10 +67,14 @@ void nuGContext::begin(i64 frame_id, Tag* p_tag, ui32 tag_num)
   mCurrentClear.clear_color = 0;
   mCurrentClear.depth_value = 1.0f;
 
-  mCurrentDrawElements.p_shader_program = nullptr;
+  mCurrentDrawElements.program_object.p_shader_program = nullptr;
+  mCurrentDrawElements.program_object.uniform_num = 0;
+  mCurrentDrawElements.program_object.p_value = nullptr;
+
   mCurrentDrawElements.p_vertex_array = nullptr;
   mCurrentDrawElements.p_vertex_buffer = nullptr;
   mCurrentDrawElements.p_element_buffer = nullptr;
+
   mCurrentDrawElements.primitive_mode = 0;
   mCurrentDrawElements.element_num = 0;
 }
@@ -117,7 +135,7 @@ void nuGContext::sortTag(void)
     memcpy(mpTag, mpTempTag, sizeof(Tag) * mCurrentTag);
 }
 
-void nuGContext::createTagList(TagList& tag_list, SortTagContext* ctx, ui32 ctx_num)
+void nuGContext::SortTagContext::createTagList(TagList& tag_list, SortTagContext* ctx, ui32 ctx_num)
 {
   ui32 tag_num = 0;
   for(ui32 ui = 0; ui < ctx_num; ui++) {
@@ -237,7 +255,7 @@ void nuGContext::drawElements(nude::PRIMITIVE_MODE primitive_mode, ui32 element_
   if(mCurrentTag >= mTagNum)
     return;
 
-  if(!mCurrentDrawElements.p_shader_program)
+  if(!mCurrentDrawElements.program_object.p_shader_program)
     return;
   if(!mCurrentDrawElements.p_vertex_buffer)
     return;
@@ -254,13 +272,58 @@ void nuGContext::drawElements(nude::PRIMITIVE_MODE primitive_mode, ui32 element_
     tag.mPriority = mCurrentPriority;
     tag.mpCommand = p_draw;
     p_draw->type = DRAW_ELEMENTS;
-    p_draw->data.p_shader_program = mCurrentDrawElements.p_shader_program;
+
+    size_t uv_sz = sizeof(UniformValue) * mCurrentUniformValue;
+
+    p_draw->data.program_object.p_shader_program = mCurrentDrawElements.program_object.p_shader_program;
+    p_draw->data.program_object.uniform_num = mCurrentUniformValue;
+    if(p_draw->data.program_object.uniform_num > 0) {
+      p_draw->data.program_object.p_value = static_cast< UniformValue* >(mBuffer.allocBuffer(uv_sz));
+      memcpy(p_draw->data.program_object.p_value, mpUniformValue, uv_sz);
+    } else {
+      p_draw->data.program_object.p_value = nullptr;
+    }
+
     p_draw->data.p_vertex_array = mCurrentDrawElements.p_vertex_array;
     p_draw->data.p_vertex_buffer = mCurrentDrawElements.p_vertex_buffer;
     p_draw->data.p_element_buffer = mCurrentDrawElements.p_element_buffer;
+
     p_draw->data.primitive_mode = primitive_mode;
+
     if(element_num > p_draw->data.p_element_buffer->getElementNum())
       element_num = p_draw->data.p_element_buffer->getElementNum();
     p_draw->data.element_num = element_num;
+  }
+}
+
+void nuGContext::setUniform(ui32 index, UniformValue::TYPE type, ui32 size, bool transpose, const void* p_data)
+{
+  ProgramObject& program_object = mCurrentDrawElements.program_object;
+
+  if(!program_object.p_shader_program)
+    return;
+  if(index >= program_object.p_shader_program->getUniformNum())
+    return;
+
+  if(program_object.p_shader_program->getUniformNum() > mUniformValueNum) {
+    ui32 num = program_object.p_shader_program->getUniformNum() / EXPAND_UNIFORM_VALUE;
+    num = (num + 1) * EXPAND_UNIFORM_VALUE;
+    if(mpUniformValue)
+      delete[] mpUniformValue;
+    mpUniformValue = new UniformValue[num];
+    mUniformValueNum = num;
+  }
+
+  UniformValue& value = mpUniformValue[mCurrentUniformValue];
+  nuShaderProgram* p_program = program_object.p_shader_program;
+  value.location = p_program->getUniformLocation(index);
+  value.type = type;
+  value.transpose = transpose ? 1 : 0;
+  value.count = size;
+  size_t usz = getUniformSize(type) * size;
+  value.p_data = mBuffer.allocBuffer(usz);
+  if(value.p_data) {
+    memcpy(value.p_data, p_data, usz);
+    mCurrentUniformValue++;
   }
 }

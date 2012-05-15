@@ -51,7 +51,7 @@ class nuRenderGL : public nuObject
   void executeClear(RenderContext& context, void* clear_cmd);
   void executeDrawElements(RenderContext& context, void* draw_cmd);
 
-  void setShaderProgram(RenderContext& context, nuShaderProgram* p_program);
+  void setShaderProgram(RenderContext& context, nuGContext::ProgramObject& program);
 
 public:
   nuRenderGL();
