@@ -147,8 +147,8 @@ void nuDEEntityTest::draw(nuGContext& context)
       { 0.0f, 1.0f, 0.0f, 1.0f },
       { 0.0f, 0.0f, 1.0f, 1.0f },
     };
-    context.setUniform4(nude::Debug_uniTest, vv);
-    context.setUniform4(nude::Debug_uniColor_0_, 3, reinterpret_cast< f32* >(vvv));
+    context.setUniform(nude::Debug_uniTest, vv);
+    context.setUniform(nude::Debug_uniColor_0_, vvv);
     context.setVertexArray(mVertexArray);
     context.setVertexBuffer(mVertexBuffer);
     context.setElementBuffer(mElementBuffer);

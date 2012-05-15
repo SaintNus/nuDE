@@ -273,6 +273,148 @@ private:
     return tbl[type];
   }
 
+  UniformValue::TYPE convertToUniformValueType(GLenum type, GLint size) const {
+    struct TypeTable {
+      GLenum gl;
+      UniformValue::TYPE type;
+    };
+    const TypeTable tbl[] = {
+      { GL_FLOAT, UniformValue::FLOAT_1 },
+      { GL_FLOAT_VEC2, UniformValue::FLOAT_2 },
+      { GL_FLOAT_VEC3, UniformValue::FLOAT_3 },
+      { GL_FLOAT_VEC4, UniformValue::FLOAT_4 },
+      { GL_INT, UniformValue::INT_1 },
+      { GL_INT_VEC2, UniformValue::INT_2 },
+      { GL_INT_VEC3, UniformValue::INT_3 },
+      { GL_INT_VEC4, UniformValue::INT_4 },
+      { GL_UNSIGNED_INT, UniformValue::UINT_1 },
+      { GL_UNSIGNED_INT_VEC2, UniformValue::UINT_2 },
+      { GL_UNSIGNED_INT_VEC3, UniformValue::UINT_3 },
+      { GL_UNSIGNED_INT_VEC4, UniformValue::UINT_4 },
+      { GL_BOOL, UniformValue::UINT_1 },
+      { GL_BOOL_VEC2, UniformValue::UINT_2 },
+      { GL_FLOAT_MAT2, UniformValue::MATRIX_2_V },
+      { GL_FLOAT_MAT2x3, UniformValue::MATRIX_2x3_V },
+      { GL_FLOAT_MAT2x4, UniformValue::MATRIX_2x4_V },
+      { GL_FLOAT_MAT3, UniformValue::MATRIX_3_V },
+      { GL_FLOAT_MAT3x2, UniformValue::MATRIX_3x2_V },
+      { GL_FLOAT_MAT3x4, UniformValue::MATRIX_3x4_V },
+      { GL_FLOAT_MAT4, UniformValue::MATRIX_4_V },
+      { GL_FLOAT_MAT4x2, UniformValue::MATRIX_4x2_V },
+      { GL_FLOAT_MAT4x3, UniformValue::MATRIX_4x3_V },
+      { GL_SAMPLER_1D, UniformValue::UINT_1 },
+      { GL_SAMPLER_1D_ARRAY, UniformValue::UINT_1 },
+      { GL_SAMPLER_1D_ARRAY_SHADOW, UniformValue::UINT_1 },
+      { GL_SAMPLER_1D_SHADOW, UniformValue::UINT_1 },
+      { GL_SAMPLER_2D, UniformValue::UINT_1 },
+      { GL_SAMPLER_2D_ARRAY, UniformValue::UINT_1 },
+      { GL_SAMPLER_2D_ARRAY_SHADOW, UniformValue::UINT_1 },
+      { GL_SAMPLER_2D_MULTISAMPLE, UniformValue::UINT_1 },
+      { GL_SAMPLER_2D_MULTISAMPLE_ARRAY, UniformValue::UINT_1 },
+      { GL_SAMPLER_2D_RECT, UniformValue::UINT_1 },
+      { GL_SAMPLER_2D_RECT_SHADOW, UniformValue::UINT_1 },
+      { GL_SAMPLER_2D_SHADOW, UniformValue::UINT_1 },
+      { GL_SAMPLER_3D, UniformValue::UINT_1 },
+      { GL_SAMPLER_BUFFER, UniformValue::UINT_1 },
+      { GL_SAMPLER_CUBE, UniformValue::UINT_1 },
+      { GL_SAMPLER_CUBE_SHADOW, UniformValue::UINT_1 },
+      { GL_INT_SAMPLER_1D, UniformValue::UINT_1 },
+      { GL_INT_SAMPLER_1D_ARRAY, UniformValue::UINT_1 },
+      { GL_INT_SAMPLER_2D, UniformValue::UINT_1 },
+      { GL_INT_SAMPLER_2D_ARRAY, UniformValue::UINT_1 },
+      { GL_INT_SAMPLER_2D_RECT, UniformValue::UINT_1 },
+      { GL_INT_SAMPLER_2D_MULTISAMPLE, UniformValue::UINT_1 },
+      { GL_INT_SAMPLER_2D_MULTISAMPLE_ARRAY, UniformValue::UINT_1 },
+      { GL_INT_SAMPLER_3D, UniformValue::UINT_1 },
+      { GL_INT_SAMPLER_BUFFER, UniformValue::UINT_1 },
+      { GL_INT_SAMPLER_CUBE, UniformValue::UINT_1 },
+      { GL_UNSIGNED_INT_SAMPLER_1D, UniformValue::UINT_1 },
+      { GL_UNSIGNED_INT_SAMPLER_1D_ARRAY, UniformValue::UINT_1 },
+      { GL_UNSIGNED_INT_SAMPLER_2D, UniformValue::UINT_1 },
+      { GL_UNSIGNED_INT_SAMPLER_2D_ARRAY, UniformValue::UINT_1 },
+      { GL_UNSIGNED_INT_SAMPLER_2D_MULTISAMPLE, UniformValue::UINT_1 },
+      { GL_UNSIGNED_INT_SAMPLER_2D_MULTISAMPLE_ARRAY, UniformValue::UINT_1 },
+      { GL_UNSIGNED_INT_SAMPLER_2D_RECT, UniformValue::UINT_1 },
+      { GL_UNSIGNED_INT_SAMPLER_3D, UniformValue::UINT_1 },
+      { GL_UNSIGNED_INT_SAMPLER_BUFFER, UniformValue::UINT_1 },
+      { GL_UNSIGNED_INT_SAMPLER_CUBE, UniformValue::UINT_1 },
+    };
+
+    const TypeTable tbl_v[] = {
+      { GL_FLOAT, UniformValue::FLOAT_1_V },
+      { GL_FLOAT_VEC2, UniformValue::FLOAT_2_V },
+      { GL_FLOAT_VEC3, UniformValue::FLOAT_3_V },
+      { GL_FLOAT_VEC4, UniformValue::FLOAT_4_V },
+      { GL_INT, UniformValue::INT_1_V },
+      { GL_INT_VEC2, UniformValue::INT_2_V },
+      { GL_INT_VEC3, UniformValue::INT_3_V },
+      { GL_INT_VEC4, UniformValue::INT_4_V },
+      { GL_UNSIGNED_INT, UniformValue::UINT_1_V },
+      { GL_UNSIGNED_INT_VEC2, UniformValue::UINT_2_V },
+      { GL_UNSIGNED_INT_VEC3, UniformValue::UINT_3_V },
+      { GL_UNSIGNED_INT_VEC4, UniformValue::UINT_4_V },
+      { GL_BOOL, UniformValue::UINT_1_V },
+      { GL_BOOL_VEC2, UniformValue::UINT_2_V },
+      { GL_FLOAT_MAT2, UniformValue::MATRIX_2_V },
+      { GL_FLOAT_MAT2x3, UniformValue::MATRIX_2x3_V },
+      { GL_FLOAT_MAT2x4, UniformValue::MATRIX_2x4_V },
+      { GL_FLOAT_MAT3, UniformValue::MATRIX_3_V },
+      { GL_FLOAT_MAT3x2, UniformValue::MATRIX_3x2_V },
+      { GL_FLOAT_MAT3x4, UniformValue::MATRIX_3x4_V },
+      { GL_FLOAT_MAT4, UniformValue::MATRIX_4_V },
+      { GL_FLOAT_MAT4x2, UniformValue::MATRIX_4x2_V },
+      { GL_FLOAT_MAT4x3, UniformValue::MATRIX_4x3_V },
+      { GL_SAMPLER_1D, UniformValue::UINT_1_V },
+      { GL_SAMPLER_1D_ARRAY, UniformValue::UINT_1_V },
+      { GL_SAMPLER_1D_ARRAY_SHADOW, UniformValue::UINT_1_V },
+      { GL_SAMPLER_1D_SHADOW, UniformValue::UINT_1_V },
+      { GL_SAMPLER_2D, UniformValue::UINT_1_V },
+      { GL_SAMPLER_2D_ARRAY, UniformValue::UINT_1_V },
+      { GL_SAMPLER_2D_ARRAY_SHADOW, UniformValue::UINT_1_V },
+      { GL_SAMPLER_2D_MULTISAMPLE, UniformValue::UINT_1_V },
+      { GL_SAMPLER_2D_MULTISAMPLE_ARRAY, UniformValue::UINT_1_V },
+      { GL_SAMPLER_2D_RECT, UniformValue::UINT_1_V },
+      { GL_SAMPLER_2D_RECT_SHADOW, UniformValue::UINT_1_V },
+      { GL_SAMPLER_2D_SHADOW, UniformValue::UINT_1_V },
+      { GL_SAMPLER_3D, UniformValue::UINT_1_V },
+      { GL_SAMPLER_BUFFER, UniformValue::UINT_1_V },
+      { GL_SAMPLER_CUBE, UniformValue::UINT_1_V },
+      { GL_SAMPLER_CUBE_SHADOW, UniformValue::UINT_1_V },
+      { GL_INT_SAMPLER_1D, UniformValue::UINT_1_V },
+      { GL_INT_SAMPLER_1D_ARRAY, UniformValue::UINT_1_V },
+      { GL_INT_SAMPLER_2D, UniformValue::UINT_1_V },
+      { GL_INT_SAMPLER_2D_ARRAY, UniformValue::UINT_1_V },
+      { GL_INT_SAMPLER_2D_RECT, UniformValue::UINT_1_V },
+      { GL_INT_SAMPLER_2D_MULTISAMPLE, UniformValue::UINT_1_V },
+      { GL_INT_SAMPLER_2D_MULTISAMPLE_ARRAY, UniformValue::UINT_1_V },
+      { GL_INT_SAMPLER_3D, UniformValue::UINT_1_V },
+      { GL_INT_SAMPLER_BUFFER, UniformValue::UINT_1_V },
+      { GL_INT_SAMPLER_CUBE, UniformValue::UINT_1_V },
+      { GL_UNSIGNED_INT_SAMPLER_1D, UniformValue::UINT_1_V },
+      { GL_UNSIGNED_INT_SAMPLER_1D_ARRAY, UniformValue::UINT_1_V },
+      { GL_UNSIGNED_INT_SAMPLER_2D, UniformValue::UINT_1_V },
+      { GL_UNSIGNED_INT_SAMPLER_2D_ARRAY, UniformValue::UINT_1_V },
+      { GL_UNSIGNED_INT_SAMPLER_2D_MULTISAMPLE, UniformValue::UINT_1_V },
+      { GL_UNSIGNED_INT_SAMPLER_2D_MULTISAMPLE_ARRAY, UniformValue::UINT_1_V },
+      { GL_UNSIGNED_INT_SAMPLER_2D_RECT, UniformValue::UINT_1_V },
+      { GL_UNSIGNED_INT_SAMPLER_3D, UniformValue::UINT_1_V },
+      { GL_UNSIGNED_INT_SAMPLER_BUFFER, UniformValue::UINT_1_V },
+      { GL_UNSIGNED_INT_SAMPLER_CUBE, UniformValue::UINT_1_V },
+    };
+
+    const ui32 num = sizeof(tbl) / sizeof(TypeTable);
+    for(ui32 ui = 0; ui < num; ui++) {
+      if(tbl[ui].gl == type) {
+        if(size > 1)
+          return tbl_v[ui].type;
+        else
+          return tbl[ui].type;
+      }
+    }
+    NU_ASSERT(false, "Invalid GL type.\n");
+    return UniformValue::FLOAT_1;
+  };
+
   struct ProgramObject {
     nuShaderProgram* p_shader_program;
     ui32 uniform_num;
@@ -332,7 +474,7 @@ private:
     return mCurrentTag;
   }
 
-  void setUniform(ui32 index, UniformValue::TYPE type, ui32 size, bool transpose, const void* p_data);
+  void setUniform(ui32 index, UniformValue::TYPE type, GLint size, bool transpose, const void* p_data);
 
 public:
   nuGContext(nuGContextBuffer& ctx_buffer);
@@ -372,117 +514,8 @@ public:
   void setElementBuffer(nude::ElementBuffer& buffer);
   void drawElements(nude::PRIMITIVE_MODE primitive_mode, ui32 element_num);
 
-  void setUniform1(ui32 index, f32 data) {
-    f32 val = data;
-    setUniform(index, UniformValue::FLOAT_1, 1, false, &val);
-  }
-  void setUniform2(ui32 index, const f32* p_data) {
-    setUniform(index, UniformValue::FLOAT_2, 1, false, p_data);
-  }
-  void setUniform3(ui32 index, const f32* p_data) {
-    setUniform(index, UniformValue::FLOAT_3, 1, false, p_data);
-  }
-  void setUniform4(ui32 index, const f32* p_data) {
-    setUniform(index, UniformValue::FLOAT_4, 1, false, p_data);
-  }
-
-  void setUniform1(ui32 index, i32 data) {
-    i32 val = data;
-    setUniform(index, UniformValue::INT_1, 1, false, &val);
-  }
-  void setUniform2(ui32 index, const i32* p_data) {
-    setUniform(index, UniformValue::INT_2, 1, false, p_data);
-  }
-  void setUniform3(ui32 index, const i32* p_data) {
-    setUniform(index, UniformValue::INT_3, 1, false, p_data);
-  }
-  void setUniform4(ui32 index, const i32* p_data) {
-    setUniform(index, UniformValue::INT_4, 1, false, p_data);
-  }
-
-  void setUniform1(ui32 index, ui32 data) {
-    ui32 val = data;
-    setUniform(index, UniformValue::UINT_1, 1, false, &val);
-  }
-  void setUniform2(ui32 index, const ui32* p_data) {
-    setUniform(index, UniformValue::UINT_2, 1, false, p_data);
-  }
-  void setUniform3(ui32 index, const ui32* p_data) {
-    setUniform(index, UniformValue::UINT_3, 1, false, p_data);
-  }
-  void setUniform4(ui32 index, const ui32* p_data) {
-    setUniform(index, UniformValue::UINT_4, 1, false, p_data);
-  }
-
-  void setUniform1(ui32 index, ui32 count, const f32* p_data) {
-    setUniform(index, UniformValue::FLOAT_1_V, count, false, p_data);
-  }
-  void setUniform2(ui32 index, ui32 count, const f32* p_data) {
-    setUniform(index, UniformValue::FLOAT_2_V, count, false, p_data);
-  }
-  void setUniform3(ui32 index, ui32 count, const f32* p_data) {
-    setUniform(index, UniformValue::FLOAT_3_V, count, false, p_data);
-  }
-  void setUniform4(ui32 index, ui32 count, const f32* p_data) {
-    setUniform(index, UniformValue::FLOAT_4_V, count, false, p_data);
-  }
-
-  void setUniform1(ui32 index, ui32 count, const i32* p_data) {
-    setUniform(index, UniformValue::INT_1_V, count, false, p_data);
-  }
-  void setUniform2(ui32 index, ui32 count, const i32* p_data) {
-    setUniform(index, UniformValue::INT_2_V, count, false, p_data);
-  }
-  void setUniform3(ui32 index, ui32 count, const i32* p_data) {
-    setUniform(index, UniformValue::INT_3_V, count, false, p_data);
-  }
-  void setUniform4(ui32 index, ui32 count, const i32* p_data) {
-    setUniform(index, UniformValue::INT_4_V, count, false, p_data);
-  }
-
-  void setUniform1(ui32 index, ui32 count, const ui32* p_data) {
-    setUniform(index, UniformValue::UINT_1_V, count, false, p_data);
-  }
-  void setUniform2(ui32 index, ui32 count, const ui32* p_data) {
-    setUniform(index, UniformValue::UINT_2_V, count, false, p_data);
-  }
-  void setUniform3(ui32 index, ui32 count, const ui32* p_data) {
-    setUniform(index, UniformValue::UINT_3_V, count, false, p_data);
-  }
-  void setUniform4(ui32 index, ui32 count, const ui32* p_data) {
-    setUniform(index, UniformValue::UINT_4_V, count, false, p_data);
-  }
-
-  void setUniformMatrix2(ui32 index, ui32 count, bool transpose, const f32* p_data) {
-    setUniform(index, UniformValue::MATRIX_2_V, count, transpose, p_data);
-  }
-  void setUniformMatrix3(ui32 index, ui32 count, bool transpose, const f32* p_data) {
-    setUniform(index, UniformValue::MATRIX_3_V, count, transpose, p_data);
-  }
-  void setUniformMatrix4(ui32 index, ui32 count, bool transpose, const f32* p_data) {
-    setUniform(index, UniformValue::MATRIX_4_V, count, transpose, p_data);
-  }
-
-  void setUniformMatrix2x3(ui32 index, ui32 count, bool transpose, const f32* p_data) {
-    setUniform(index, UniformValue::MATRIX_2x3_V, count, transpose, p_data);
-  }
-  void setUniformMatrix3x2(ui32 index, ui32 count, bool transpose, const f32* p_data) {
-    setUniform(index, UniformValue::MATRIX_3x2_V, count, transpose, p_data);
-  }
-
-  void setUniformMatrix2x4(ui32 index, ui32 count, bool transpose, const f32* p_data) {
-    setUniform(index, UniformValue::MATRIX_2x4_V, count, transpose, p_data);
-  }
-  void setUniformMatrix4x2(ui32 index, ui32 count, bool transpose, const f32* p_data) {
-    setUniform(index, UniformValue::MATRIX_4x2_V, count, transpose, p_data);
-  }
-
-  void setUniformMatrix3x4(ui32 index, ui32 count, bool transpose, const f32* p_data) {
-    setUniform(index, UniformValue::MATRIX_3x4_V, count, transpose, p_data);
-  }
-  void setUniformMatrix4x3(ui32 index, ui32 count, bool transpose, const f32* p_data) {
-    setUniform(index, UniformValue::MATRIX_4x3_V, count, transpose, p_data);
-  }
+  void setUniform(ui32 index, void* p_data);
+  void setUniformMatrix(ui32 index, bool transpose, void* p_data);
 
 };
 

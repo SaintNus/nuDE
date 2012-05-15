@@ -255,16 +255,12 @@ void nuGContext::drawElements(nude::PRIMITIVE_MODE primitive_mode, ui32 element_
   if(mCurrentTag >= mTagNum)
     return;
 
-  if(!mCurrentDrawElements.program_object.p_shader_program)
-    return;
-  if(!mCurrentDrawElements.p_vertex_buffer)
-    return;
-  if(!mCurrentDrawElements.p_element_buffer)
-    return;
-  if(!mCurrentDrawElements.p_vertex_array)
-    return;
-
+  NU_ASSERT_C(mCurrentDrawElements.program_object.p_shader_program);
+  NU_ASSERT_C(mCurrentDrawElements.p_vertex_buffer);
+  NU_ASSERT_C(mCurrentDrawElements.p_element_buffer);
+  NU_ASSERT_C(mCurrentDrawElements.p_vertex_array);
   NU_ASSERT_C(mpTag != nullptr);
+
   DrawCmd< DrawElements >* p_draw = mBuffer.allocBuffer< DrawCmd< DrawElements > >();
   if(p_draw) {
     Tag& tag = mpTag[mCurrentTag];
@@ -296,14 +292,9 @@ void nuGContext::drawElements(nude::PRIMITIVE_MODE primitive_mode, ui32 element_
   }
 }
 
-void nuGContext::setUniform(ui32 index, UniformValue::TYPE type, ui32 size, bool transpose, const void* p_data)
+void nuGContext::setUniform(ui32 index, UniformValue::TYPE type, GLint size, bool transpose, const void* p_data)
 {
   ProgramObject& program_object = mCurrentDrawElements.program_object;
-
-  if(!program_object.p_shader_program)
-    return;
-  if(index >= program_object.p_shader_program->getUniformNum())
-    return;
 
   if(program_object.p_shader_program->getUniformNum() > mUniformValueNum) {
     ui32 num = program_object.p_shader_program->getUniformNum() / EXPAND_UNIFORM_VALUE;
@@ -326,4 +317,32 @@ void nuGContext::setUniform(ui32 index, UniformValue::TYPE type, ui32 size, bool
     memcpy(value.p_data, p_data, usz);
     mCurrentUniformValue++;
   }
+}
+
+void nuGContext::setUniform(ui32 index, void* p_data)
+{
+  ProgramObject& program_object = mCurrentDrawElements.program_object;
+
+  NU_ASSERT_C(program_object.p_shader_program);
+  NU_ASSERT_C(index < program_object.p_shader_program->getUniformNum());
+
+  const nude::Program& prog = program_object.p_shader_program->getGlslProgram();
+  UniformValue::TYPE type = convertToUniformValueType(prog.uniforms[index].type,
+                                                      prog.uniforms[index].size);
+
+  setUniform(index, type, prog.uniforms[index].size, false, p_data);
+}
+
+void nuGContext::setUniformMatrix(ui32 index, bool transpose, void* p_data)
+{
+  ProgramObject& program_object = mCurrentDrawElements.program_object;
+
+  NU_ASSERT_C(program_object.p_shader_program);
+  NU_ASSERT_C(index < program_object.p_shader_program->getUniformNum());
+
+  const nude::Program& prog = program_object.p_shader_program->getGlslProgram();
+  UniformValue::TYPE type = convertToUniformValueType(prog.uniforms[index].type,
+                                                      prog.uniforms[index].size);
+
+  setUniform(index, type, prog.uniforms[index].size, transpose, p_data);
 }
