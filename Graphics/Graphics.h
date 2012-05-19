@@ -26,6 +26,7 @@
 #include "nuVertexBuffer.h"
 #include "nuElementBuffer.h"
 #include "nuShaderProgram.h"
+#include "nuUniformBuffer.h"
 #include "nuShaderList.h"
 
 #include "nuShaderInfo.h"

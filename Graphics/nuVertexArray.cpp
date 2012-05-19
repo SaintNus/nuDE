@@ -53,7 +53,7 @@ void nuVertexArray::update(void)
   CHECK_GL_ERROR(glBindVertexArray(0));
 }
 
-void nuVertexArray::beginDeclaration(ui32 array_num)
+void nuVertexArray::begin(ui32 array_num)
 {
   if(mpArray) {
     if(mArrayNum < array_num) {
@@ -74,7 +74,7 @@ void nuVertexArray::declare(ui32 index, const Array& array)
     mpArray[index] = array;
 }
 
-void nuVertexArray::endDeclaration(void)
+void nuVertexArray::end(void)
 {
   setUpdate(true);
 }

@@ -52,6 +52,8 @@ class nuRenderGL : public nuObject
   void executeDrawElements(RenderContext& context, void* draw_cmd);
 
   void setShaderProgram(RenderContext& context, nuGContext::ProgramObject& program);
+  void setUniformValue(RenderContext& context, nuGContext::ProgramObject& program);
+  void setUniformBlock(RenderContext& context, nuGContext::ProgramObject& program);
 
 public:
   nuRenderGL();

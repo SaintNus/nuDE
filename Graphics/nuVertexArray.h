@@ -93,9 +93,9 @@ public:
     return mHandle;
   }
 
-  void beginDeclaration(ui32 array_num);
+  void begin(ui32 array_num);
   void declare(ui32 index, const Array& array);
-  void endDeclaration(void);
+  void end(void);
 
 };
 

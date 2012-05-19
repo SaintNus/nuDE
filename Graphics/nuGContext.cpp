@@ -18,12 +18,12 @@ nuGContext::nuGContext(nuGContextBuffer& ctx_buffer)
       mTempTagNum(0),
       mpUniformValue(nullptr),
       mUniformValueNum(0),
-      mCurrentUniformValue(0)
+      mCurrentUniformValue(0),
+      mpUniformBlock(nullptr),
+      mUniformBlockNum(0),
+      mCurrentUniformBlock(0)
 {
   mCurrentPriority.value = 0;
-  mpUniformValue = new UniformValue[EXPAND_UNIFORM_VALUE];
-  if(mpUniformValue)
-    mUniformValueNum = EXPAND_UNIFORM_VALUE;
 }
 
 nuGContext::~nuGContext()
@@ -36,6 +36,11 @@ nuGContext::~nuGContext()
   if(mpUniformValue) {
     delete[] mpUniformValue;
     mpUniformValue = nullptr;
+  }
+
+  if(mpUniformBlock) {
+    delete[] mpUniformBlock;
+    mpUniformBlock = nullptr;
   }
 }
 
@@ -68,7 +73,6 @@ void nuGContext::begin(i64 frame_id, Tag* p_tag, ui32 tag_num)
   mCurrentClear.depth_value = 1.0f;
 
   mCurrentDrawElements.program_object.p_shader_program = nullptr;
-  mCurrentDrawElements.program_object.uniform_num = 0;
   mCurrentDrawElements.program_object.p_value = nullptr;
 
   mCurrentDrawElements.p_vertex_array = nullptr;
@@ -219,33 +223,18 @@ void nuGContext::clear(ui32 clear_bit)
 
 void nuGContext::setVertexArray(nude::VertexArray& array)
 {
-  if(!array.isValid()) {
-    mCurrentDrawElements.p_vertex_array = nullptr;
-    return;
-  }
-
   array->protect(mFrameID);
   mCurrentDrawElements.p_vertex_array = &array;
 }
 
 void nuGContext::setVertexBuffer(nude::VertexBuffer& buffer)
 {
-  if(!buffer.isValid()) {
-    mCurrentDrawElements.p_vertex_buffer = nullptr;
-    return;
-  }
-
   buffer->protect(mFrameID);
   mCurrentDrawElements.p_vertex_buffer = &buffer;
 }
 
 void nuGContext::setElementBuffer(nude::ElementBuffer& buffer)
 {
-  if(!buffer.isValid()) {
-    mCurrentDrawElements.p_element_buffer = 0;
-    return;
-  }
-
   buffer->protect(mFrameID);
   mCurrentDrawElements.p_element_buffer = &buffer;
 }
@@ -269,15 +258,24 @@ void nuGContext::drawElements(nude::PRIMITIVE_MODE primitive_mode, ui32 element_
     tag.mpCommand = p_draw;
     p_draw->type = DRAW_ELEMENTS;
 
-    size_t uv_sz = sizeof(UniformValue) * mCurrentUniformValue;
+    ProgramObject& po = p_draw->data.program_object;
+    po.p_shader_program = mCurrentDrawElements.program_object.p_shader_program;
 
-    p_draw->data.program_object.p_shader_program = mCurrentDrawElements.program_object.p_shader_program;
-    p_draw->data.program_object.uniform_num = mCurrentUniformValue;
-    if(p_draw->data.program_object.uniform_num > 0) {
-      p_draw->data.program_object.p_value = static_cast< UniformValue* >(mBuffer.allocBuffer(uv_sz));
-      memcpy(p_draw->data.program_object.p_value, mpUniformValue, uv_sz);
+    if(mCurrentUniformValue > 0) {
+      size_t uv_sz = sizeof(UniformValue) * po.p_shader_program->getUniformNum();
+      po.p_value = static_cast< UniformValue* >(mBuffer.allocBuffer(uv_sz));
+      memcpy(po.p_value, mpUniformValue, uv_sz);
+      po.p_shader_program->mpCurrentUniformValue = po.p_value;
     } else {
-      p_draw->data.program_object.p_value = nullptr;
+      po.p_value = static_cast< UniformValue* >(po.p_shader_program->mpCurrentUniformValue);
+    }
+
+    if(mCurrentUniformBlock > 0) {
+      size_t ub_sz = sizeof(UniformBlock) * po.p_shader_program->getUniformBlockNum();
+      po.p_block = static_cast< UniformBlock* >(mBuffer.allocBuffer(ub_sz));
+      memcpy(po.p_block, mpUniformBlock, ub_sz);
+    } else {
+      po.p_block = static_cast< UniformBlock* >(po.p_shader_program->mpCurrentUniformBlock);
     }
 
     p_draw->data.p_vertex_array = mCurrentDrawElements.p_vertex_array;
@@ -294,20 +292,7 @@ void nuGContext::drawElements(nude::PRIMITIVE_MODE primitive_mode, ui32 element_
 
 void nuGContext::setUniform(ui32 index, UniformValue::TYPE type, GLint size, bool transpose, const void* p_data)
 {
-  ProgramObject& program_object = mCurrentDrawElements.program_object;
-
-  if(program_object.p_shader_program->getUniformNum() > mUniformValueNum) {
-    ui32 num = program_object.p_shader_program->getUniformNum() / EXPAND_UNIFORM_VALUE;
-    num = (num + 1) * EXPAND_UNIFORM_VALUE;
-    if(mpUniformValue)
-      delete[] mpUniformValue;
-    mpUniformValue = new UniformValue[num];
-    mUniformValueNum = num;
-  }
-
-  UniformValue& value = mpUniformValue[mCurrentUniformValue];
-  nuShaderProgram* p_program = program_object.p_shader_program;
-  value.location = p_program->getUniformLocation(index);
+  UniformValue& value = mpUniformValue[index];
   value.type = type;
   value.transpose = transpose ? 1 : 0;
   value.count = size;
@@ -345,4 +330,14 @@ void nuGContext::setUniformMatrix(ui32 index, bool transpose, void* p_data)
                                                       prog.uniforms[index].size);
 
   setUniform(index, type, prog.uniforms[index].size, transpose, p_data);
+}
+
+void nuGContext::setUniformBlock(ui32 index, nude::UniformBuffer& buffer)
+{
+  NU_ASSERT_C(index < mCurrentDrawElements.program_object.p_shader_program->getUniformBlockNum());
+
+  buffer->protect(mFrameID);
+
+  mpUniformBlock[index].p_buffer = &buffer;
+  mCurrentUniformBlock++;
 }

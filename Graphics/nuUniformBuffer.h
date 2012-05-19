@@ -1,38 +1,36 @@
 /*!
- * \file nuVertexBuffer.h
- * \brief Vertex buffer.
+ * \file nuUniformBuffer.h
+ * \brief Uniform buffer.
  * \author Nus
- * \date 2012/03/23 12:28
+ * \date 2012/05/16 22:15
  */
 
-#ifndef __NUVERTEXBUFFER_H__
-#define __NUVERTEXBUFFER_H__
+#ifndef __NUUNIFORMBUFFER_H__
+#define __NUUNIFORMBUFFER_H__
 
 #include "nuGResource.h"
 
-class nuVertexBuffer : public nuGResource
+class nuUniformBuffer : public nuGResource
 {
   DECLARE_TYPE_INFO;
   friend class nuGResManager;
   friend class nuGSetupContext;
-  friend nude::Handle< nuVertexBuffer >;
+  friend nude::Handle< nuUniformBuffer >;
 
   enum EXTENSION_FLAG {
     MAPPED = 1 << 0,
   };
 
   void* mpBuffer;
+  GLuint mUniformBufferID;
   size_t mSize;
-  GLuint mVertexBufferID;
 
   void update(void);
 
-  void releaseBuffer(void) {
-    if(!isInitialized() && mpBuffer) {
-      nude::Dealloc(mpBuffer);
-      mpBuffer = nullptr;
-    }
-  }
+  nuUniformBuffer();
+
+  nuUniformBuffer(size_t size);
+  ~nuUniformBuffer();
 
   void setMapped(bool mapped) {
     ui32 ext = getExtension();
@@ -47,10 +45,12 @@ class nuVertexBuffer : public nuGResource
     return (getExtension() & MAPPED) ? true : false;
   }
 
-  nuVertexBuffer();
-
-  nuVertexBuffer(size_t size, nuGResource::RESOURCE_USAGE usage);
-  ~nuVertexBuffer();
+  void releaseBuffer(void) {
+    if(!isInitialized() && mpBuffer) {
+      nude::Dealloc(mpBuffer);
+      mpBuffer = nullptr;
+    }
+  }
 
 public:
   void initialize(void) {
@@ -62,7 +62,7 @@ public:
   void* beginInitialize(void) {
     if(!isInitialized()) {
       if(!mpBuffer)
-        mpBuffer = nude::Alloc(mSize);
+        mpBuffer = nude::Alloc(0);
       return mpBuffer;
     }
     return nullptr;
@@ -75,21 +75,17 @@ public:
   }
 
   GLuint getHandle(void) const {
-    return mVertexBufferID;
+    return mUniformBufferID;
   }
 
   void* getBuffer(void) const {
     return mpBuffer;
   }
 
-  size_t getSize(void) const {
-    return mSize;
-  }
-
 };
 
 namespace nude {
-  typedef Handle< nuVertexBuffer > VertexBuffer;
+  typedef Handle< nuUniformBuffer > UniformBuffer;
 }
 
 #endif

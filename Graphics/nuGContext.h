@@ -14,6 +14,7 @@
 #include "nuVertexBuffer.h"
 #include "nuElementBuffer.h"
 #include "nuShaderProgram.h"
+#include "nuUniformBuffer.h"
 
 /*!
  * \class nuGContext
@@ -220,11 +221,14 @@ private:
       MATRIX_3x4_V,
       MATRIX_4x3_V,
     };
-    GLuint location;
     ui32 type: 6;
     ui32 transpose: 1;
     ui32 count: 25;
     void* p_data;
+  };
+
+  struct UniformBlock {
+    nuUniformBuffer* p_buffer;
   };
 
   size_t getUniformSize(UniformValue::TYPE type) const {
@@ -417,8 +421,9 @@ private:
 
   struct ProgramObject {
     nuShaderProgram* p_shader_program;
-    ui32 uniform_num;
     UniformValue* p_value;
+    ui32 uniform_block;
+    UniformBlock* p_block;
   };
 
   template< class T >
@@ -445,7 +450,7 @@ private:
   typedef DrawCmd< DrawElements > DrawElementsCmd;
 
   static const ui32 EXPAND_TEMP_TAG_NUM = 256;
-  static const ui32 EXPAND_UNIFORM_VALUE = 64;
+  static const ui32 EXPAND_UNIFORM = 64;
 
   i64 mFrameID;
   Buffer mBuffer;
@@ -458,9 +463,14 @@ private:
 
   Clear mCurrentClear;
   DrawElements mCurrentDrawElements;
+
   UniformValue* mpUniformValue;
   ui32 mUniformValueNum;
   ui32 mCurrentUniformValue;
+
+  UniformBlock* mpUniformBlock;
+  ui32 mUniformBlockNum;
+  ui32 mCurrentUniformBlock;
 
   nuGContext();
 
@@ -488,11 +498,41 @@ public:
     mCurrentPriority.priority = priority;
   }
 
-  void beginDraw(nude::PASS pass, ui32 priority, const nude::ShaderProgram& program) {
-    setPriority(pass, priority);
-    program->protect(mFrameID);
-    mCurrentDrawElements.program_object.p_shader_program = &program;
+  void beginDraw(const nude::ShaderProgram& program) {
+    ProgramObject& po = mCurrentDrawElements.program_object;
+
+    if(program->protect(mFrameID)) {
+      program->mpCurrentUniformValue = nullptr;
+      program->mpCurrentUniformBlock = nullptr;
+    }
+
+    po.p_shader_program = &program;
+
+    if(po.p_shader_program->getUniformNum() > mUniformValueNum) {
+      ui32 num = po.p_shader_program->getUniformNum() / EXPAND_UNIFORM;
+      num = (num + 1) * EXPAND_UNIFORM;
+      if(mpUniformValue)
+        delete[] mpUniformValue;
+      mpUniformValue = new UniformValue[num];
+      mUniformValueNum = num;
+    }
+
     mCurrentUniformValue = 0;
+    if(po.p_shader_program->getUniformNum() > 0)
+      memset(mpUniformValue, 0x00, sizeof(UniformValue) * po.p_shader_program->getUniformNum());
+
+    if(po.p_shader_program->getUniformBlockNum() > mUniformBlockNum) {
+      ui32 num = po.p_shader_program->getUniformBlockNum() / EXPAND_UNIFORM;
+      num = (num + 1) * EXPAND_UNIFORM;
+      if(mpUniformBlock)
+        delete[] mpUniformBlock;
+      mpUniformBlock = new UniformBlock[num];
+      mUniformBlockNum = num;
+    }
+
+    mCurrentUniformBlock = 0;
+    if(po.p_shader_program->getUniformBlockNum() > 0)
+      memset(mpUniformBlock, 0x00, sizeof(UniformBlock) * po.p_shader_program->getUniformBlockNum());
   }
 
   void endDraw(void) {
@@ -516,6 +556,7 @@ public:
 
   void setUniform(ui32 index, void* p_data);
   void setUniformMatrix(ui32 index, bool transpose, void* p_data);
+  void setUniformBlock(ui32 index, nude::UniformBuffer& buffer);
 
 };
 

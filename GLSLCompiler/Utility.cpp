@@ -585,7 +585,15 @@ int BuildGLSLProgram(ShaderObject::Program* p_program, FILE* vsh_file, FILE* fsh
       GLsizei len;
       GLint size;
       GLenum type;
+      GLint offset;
+      GLint array_stride;
+      GLint matrix_stride;
+      GLint row_major;
       glGetActiveUniform(prog_id, ui, uniform_len, &len, &size, &type, p_uniform);
+      glGetActiveUniformsiv(prog_id, 1, &ui, GL_UNIFORM_OFFSET, &offset);
+      glGetActiveUniformsiv(prog_id, 1, &ui, GL_UNIFORM_ARRAY_STRIDE, &array_stride);
+      glGetActiveUniformsiv(prog_id, 1, &ui, GL_UNIFORM_MATRIX_STRIDE, &matrix_stride);
+      glGetActiveUniformsiv(prog_id, 1, &ui, GL_UNIFORM_IS_ROW_MAJOR, &row_major);
       int str_idx = StringTable::addString(0, p_uniform);
       if(str_idx < 0) {
         fprintf(stderr, "Error: Not enough memory for uniform \"%s\".\n", p_uniform);
@@ -597,6 +605,10 @@ int BuildGLSLProgram(ShaderObject::Program* p_program, FILE* vsh_file, FILE* fsh
         var.name = StringTable::getString(str_idx)->string();
         var.size = size;
         var.type = type;
+        var.offset = offset;
+        var.array_stride = array_stride;
+        var.matrix_stride = matrix_stride;
+        var.row_major = row_major;
         p_program->uniform.push_back(var);
       }
     }

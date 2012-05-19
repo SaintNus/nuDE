@@ -18,6 +18,7 @@ class nuDEEntityTest : public nuEntity
 
   f32 mPosX;
   f32 mDir;
+  bool mInit;
 
   nude::VertexBuffer mVertexBuffer;
   nude::ElementBuffer mElementBuffer;

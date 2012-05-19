@@ -198,169 +198,202 @@ void nuRenderGL::executeDrawElements(RenderContext& context, void* draw_cmd)
 
 void nuRenderGL::setShaderProgram(RenderContext& context, nuGContext::ProgramObject& program)
 {
-  if(context.p_shader_program == program.p_shader_program)
-    return;
+  if(context.p_shader_program != program.p_shader_program) {
+    context.p_shader_program = program.p_shader_program;
+    CHECK_GL_ERROR(glUseProgram(context.p_shader_program->getHandle()));
+  }
 
-  context.p_shader_program = program.p_shader_program;
-  CHECK_GL_ERROR(glUseProgram(context.p_shader_program->getHandle()));
-  for(ui32 ui = 0; ui < program.uniform_num; ui++) {
+  if(program.p_value && context.p_shader_program->mpRenderedUniformValue != program.p_value)
+    setUniformValue(context, program);
+
+  if(program.p_block && context.p_shader_program->mpRenderedUniformBlock != program.p_block)
+    setUniformBlock(context, program);
+}
+
+void nuRenderGL::setUniformValue(RenderContext& context, nuGContext::ProgramObject& program)
+{
+  context.p_shader_program->setRenderedUniformValue(program.p_value);
+
+  for(ui32 ui = 0; ui < context.p_shader_program->getUniformNum(); ui++) {
     nuGContext::UniformValue& uniform = program.p_value[ui];
+
+    if(!uniform.p_data)
+      continue;
+
+    GLuint location = context.p_shader_program->getUniformLocation(ui);
+
     switch(uniform.type) {
     case nuGContext::UniformValue::FLOAT_1:
-      CHECK_GL_ERROR(glUniform1f(uniform.location, *static_cast< f32* >(uniform.p_data)));
+      CHECK_GL_ERROR(glUniform1f(location, *static_cast< f32* >(uniform.p_data)));
       break;
     case nuGContext::UniformValue::FLOAT_2:
       {
         f32* val = static_cast< f32* >(uniform.p_data);
-        CHECK_GL_ERROR(glUniform2f(uniform.location, val[0], val[1]));
+        CHECK_GL_ERROR(glUniform2f(location, val[0], val[1]));
       }
       break;
     case nuGContext::UniformValue::FLOAT_3:
       {
         f32* val = static_cast< f32* >(uniform.p_data);
-        CHECK_GL_ERROR(glUniform3f(uniform.location, val[0], val[1], val[2]));
+        CHECK_GL_ERROR(glUniform3f(location, val[0], val[1], val[2]));
       }
       break;
     case nuGContext::UniformValue::FLOAT_4:
       {
         f32* val = static_cast< f32* >(uniform.p_data);
-        CHECK_GL_ERROR(glUniform4f(uniform.location, val[0], val[1], val[2], val[3]));
+        CHECK_GL_ERROR(glUniform4f(location, val[0], val[1], val[2], val[3]));
       }
       break;
     case nuGContext::UniformValue::INT_1:
-      CHECK_GL_ERROR(glUniform1i(uniform.location, *static_cast< i32* >(uniform.p_data)));
+      CHECK_GL_ERROR(glUniform1i(location, *static_cast< i32* >(uniform.p_data)));
       break;
     case nuGContext::UniformValue::INT_2:
       {
         i32* val = static_cast< i32* >(uniform.p_data);
-        CHECK_GL_ERROR(glUniform2i(uniform.location, val[0], val[1]));
+        CHECK_GL_ERROR(glUniform2i(location, val[0], val[1]));
       }
       break;
     case nuGContext::UniformValue::INT_3:
       {
         i32* val = static_cast< i32* >(uniform.p_data);
-        CHECK_GL_ERROR(glUniform3i(uniform.location, val[0], val[1], val[2]));
+        CHECK_GL_ERROR(glUniform3i(location, val[0], val[1], val[2]));
       }
       break;
     case nuGContext::UniformValue::INT_4:
       {
         i32* val = static_cast< i32* >(uniform.p_data);
-        CHECK_GL_ERROR(glUniform4i(uniform.location, val[0], val[1], val[2], val[3]));
+        CHECK_GL_ERROR(glUniform4i(location, val[0], val[1], val[2], val[3]));
       }
       break;
     case nuGContext::UniformValue::UINT_1:
-      CHECK_GL_ERROR(glUniform1ui(uniform.location, *static_cast< ui32* >(uniform.p_data)));
+      CHECK_GL_ERROR(glUniform1ui(location, *static_cast< ui32* >(uniform.p_data)));
       break;
     case nuGContext::UniformValue::UINT_2:
       {
         ui32* val = static_cast< ui32* >(uniform.p_data);
-        CHECK_GL_ERROR(glUniform2ui(uniform.location, val[0], val[1]));
+        CHECK_GL_ERROR(glUniform2ui(location, val[0], val[1]));
       }
       break;
     case nuGContext::UniformValue::UINT_3:
       {
         ui32* val = static_cast< ui32* >(uniform.p_data);
-        CHECK_GL_ERROR(glUniform3ui(uniform.location, val[0], val[1], val[2]));
+        CHECK_GL_ERROR(glUniform3ui(location, val[0], val[1], val[2]));
       }
       break;
     case nuGContext::UniformValue::UINT_4:
       {
         ui32* val = static_cast< ui32* >(uniform.p_data);
-        CHECK_GL_ERROR(glUniform4ui(uniform.location, val[0], val[1], val[2], val[3]));
+        CHECK_GL_ERROR(glUniform4ui(location, val[0], val[1], val[2], val[3]));
       }
       break;
     case nuGContext::UniformValue::FLOAT_1_V:
-      CHECK_GL_ERROR(glUniform1fv(uniform.location, uniform.count, static_cast< f32* >(uniform.p_data)));
+      CHECK_GL_ERROR(glUniform1fv(location, uniform.count, static_cast< f32* >(uniform.p_data)));
       break;
     case nuGContext::UniformValue::FLOAT_2_V:
-      CHECK_GL_ERROR(glUniform2fv(uniform.location, uniform.count, static_cast< f32* >(uniform.p_data)));
+      CHECK_GL_ERROR(glUniform2fv(location, uniform.count, static_cast< f32* >(uniform.p_data)));
       break;
     case nuGContext::UniformValue::FLOAT_3_V:
-      CHECK_GL_ERROR(glUniform3fv(uniform.location, uniform.count, static_cast< f32* >(uniform.p_data)));
+      CHECK_GL_ERROR(glUniform3fv(location, uniform.count, static_cast< f32* >(uniform.p_data)));
       break;
     case nuGContext::UniformValue::FLOAT_4_V:
-      CHECK_GL_ERROR(glUniform4fv(uniform.location, uniform.count, static_cast< f32* >(uniform.p_data)));
+      CHECK_GL_ERROR(glUniform4fv(location, uniform.count, static_cast< f32* >(uniform.p_data)));
       break;
     case nuGContext::UniformValue::INT_1_V:
-      CHECK_GL_ERROR(glUniform1iv(uniform.location, uniform.count, static_cast< i32* >(uniform.p_data)));
+      CHECK_GL_ERROR(glUniform1iv(location, uniform.count, static_cast< i32* >(uniform.p_data)));
       break;
     case nuGContext::UniformValue::INT_2_V:
-      CHECK_GL_ERROR(glUniform2iv(uniform.location, uniform.count, static_cast< i32* >(uniform.p_data)));
+      CHECK_GL_ERROR(glUniform2iv(location, uniform.count, static_cast< i32* >(uniform.p_data)));
       break;
     case nuGContext::UniformValue::INT_3_V:
-      CHECK_GL_ERROR(glUniform3iv(uniform.location, uniform.count, static_cast< i32* >(uniform.p_data)));
+      CHECK_GL_ERROR(glUniform3iv(location, uniform.count, static_cast< i32* >(uniform.p_data)));
       break;
     case nuGContext::UniformValue::INT_4_V:
-      CHECK_GL_ERROR(glUniform4iv(uniform.location, uniform.count, static_cast< i32* >(uniform.p_data)));
+      CHECK_GL_ERROR(glUniform4iv(location, uniform.count, static_cast< i32* >(uniform.p_data)));
       break;
     case nuGContext::UniformValue::UINT_1_V:
-      CHECK_GL_ERROR(glUniform1uiv(uniform.location, uniform.count, static_cast< ui32* >(uniform.p_data)));
+      CHECK_GL_ERROR(glUniform1uiv(location, uniform.count, static_cast< ui32* >(uniform.p_data)));
       break;
     case nuGContext::UniformValue::UINT_2_V:
-      CHECK_GL_ERROR(glUniform2uiv(uniform.location, uniform.count, static_cast< ui32* >(uniform.p_data)));
+      CHECK_GL_ERROR(glUniform2uiv(location, uniform.count, static_cast< ui32* >(uniform.p_data)));
       break;
     case nuGContext::UniformValue::UINT_3_V:
-      CHECK_GL_ERROR(glUniform3uiv(uniform.location, uniform.count, static_cast< ui32* >(uniform.p_data)));
+      CHECK_GL_ERROR(glUniform3uiv(location, uniform.count, static_cast< ui32* >(uniform.p_data)));
       break;
     case nuGContext::UniformValue::UINT_4_V:
-      CHECK_GL_ERROR(glUniform4uiv(uniform.location, uniform.count, static_cast< ui32* >(uniform.p_data)));
+      CHECK_GL_ERROR(glUniform4uiv(location, uniform.count, static_cast< ui32* >(uniform.p_data)));
       break;
     case nuGContext::UniformValue::MATRIX_2_V:
-      CHECK_GL_ERROR(glUniformMatrix2fv(uniform.location,
+      CHECK_GL_ERROR(glUniformMatrix2fv(location,
                                         uniform.count,
                                         uniform.transpose ? GL_TRUE : GL_FALSE,
                                         static_cast< f32* >(uniform.p_data)));
       break;
     case nuGContext::UniformValue::MATRIX_3_V:
-      CHECK_GL_ERROR(glUniformMatrix3fv(uniform.location,
+      CHECK_GL_ERROR(glUniformMatrix3fv(location,
                                         uniform.count,
                                         uniform.transpose ? GL_TRUE : GL_FALSE,
                                         static_cast< f32* >(uniform.p_data)));
       break;
     case nuGContext::UniformValue::MATRIX_4_V:
-      CHECK_GL_ERROR(glUniformMatrix4fv(uniform.location,
+      CHECK_GL_ERROR(glUniformMatrix4fv(location,
                                         uniform.count,
                                         uniform.transpose ? GL_TRUE : GL_FALSE,
                                         static_cast< f32* >(uniform.p_data)));
       break;
     case nuGContext::UniformValue::MATRIX_2x3_V:
-      CHECK_GL_ERROR(glUniformMatrix2x3fv(uniform.location,
+      CHECK_GL_ERROR(glUniformMatrix2x3fv(location,
                                           uniform.count,
                                           uniform.transpose ? GL_TRUE : GL_FALSE,
                                           static_cast< f32* >(uniform.p_data)));
       break;
     case nuGContext::UniformValue::MATRIX_3x2_V:
-      CHECK_GL_ERROR(glUniformMatrix3x2fv(uniform.location,
+      CHECK_GL_ERROR(glUniformMatrix3x2fv(location,
                                           uniform.count,
                                           uniform.transpose ? GL_TRUE : GL_FALSE,
                                           static_cast< f32* >(uniform.p_data)));
       break;
     case nuGContext::UniformValue::MATRIX_2x4_V:
-      CHECK_GL_ERROR(glUniformMatrix2x4fv(uniform.location,
+      CHECK_GL_ERROR(glUniformMatrix2x4fv(location,
                                           uniform.count,
                                           uniform.transpose ? GL_TRUE : GL_FALSE,
                                           static_cast< f32* >(uniform.p_data)));
       break;
     case nuGContext::UniformValue::MATRIX_4x2_V:
-      CHECK_GL_ERROR(glUniformMatrix4x2fv(uniform.location,
+      CHECK_GL_ERROR(glUniformMatrix4x2fv(location,
                                           uniform.count,
                                           uniform.transpose ? GL_TRUE : GL_FALSE,
                                           static_cast< f32* >(uniform.p_data)));
       break;
     case nuGContext::UniformValue::MATRIX_3x4_V:
-      CHECK_GL_ERROR(glUniformMatrix3x4fv(uniform.location,
+      CHECK_GL_ERROR(glUniformMatrix3x4fv(location,
                                           uniform.count,
                                           uniform.transpose ? GL_TRUE : GL_FALSE,
                                           static_cast< f32* >(uniform.p_data)));
       break;
     case nuGContext::UniformValue::MATRIX_4x3_V:
-      CHECK_GL_ERROR(glUniformMatrix4x3fv(uniform.location,
+      CHECK_GL_ERROR(glUniformMatrix4x3fv(location,
                                           uniform.count,
                                           uniform.transpose ? GL_TRUE : GL_FALSE,
                                           static_cast< f32* >(uniform.p_data)));
       break;
     default:
       NU_ASSERT_C(false);
+    }
+  }
+}
+
+void nuRenderGL::setUniformBlock(RenderContext& context, nuGContext::ProgramObject& program)
+{
+  context.p_shader_program->setRenderedUniformBlock(program.p_block);
+
+  for(ui32 ui = 0; ui < context.p_shader_program->getUniformBlockNum(); ui++) {
+    nuGContext::UniformBlock& ub = program.p_block[ui];
+
+    if(ub.p_buffer) {
+      CHECK_GL_ERROR(glUniformBlockBinding(context.p_shader_program->getHandle(),
+                                           context.p_shader_program->getUniformBlockIndex(ui),
+                                           ui));
+      CHECK_GL_ERROR(glBindBufferBase(GL_UNIFORM_BUFFER, ui, ub.p_buffer->getHandle()))
     }
   }
 }

@@ -15,6 +15,9 @@ class nuShaderProgram : public nuGResource
 {
   DECLARE_TYPE_INFO;
   friend class nuGResManager;
+  friend class nuGResManager;
+  friend class nuRenderGL;
+  friend class nuGContext;
   friend nude::Handle< nuShaderProgram >;
 
   struct Uniform {
@@ -24,7 +27,6 @@ class nuShaderProgram : public nuGResource
 
   struct UniformBlock {
     GLuint index;
-    GLuint binding;
   };
 
   nuShaderProgram();
@@ -39,9 +41,25 @@ class nuShaderProgram : public nuGResource
   Uniform* mpUniform;
   UniformBlock* mpUniformBlock;
 
+  void* mpCurrentUniformValue;
+  void* mpRenderedUniformValue;
+
+  void* mpCurrentUniformBlock;
+  void* mpRenderedUniformBlock;
+
   void update(void);
 
   size_t getSize(GLenum type);
+
+  void setRenderedUniformValue(void* p_uniform) {
+    mpRenderedUniformValue = p_uniform;
+    setUpdate(true);
+  }
+
+  void setRenderedUniformBlock(void* p_block) {
+    mpRenderedUniformBlock = p_block;
+    setUpdate(true);
+  }
 
 public:
   GLuint getHandle(void) const {
@@ -66,6 +84,12 @@ public:
     if(!mpUniform || index >= mGlslProgram.uniform_num)
       return 0;
     return mpUniform[index].location;
+  }
+
+  GLuint getUniformBlockIndex(ui32 index) const {
+    if(!mpUniformBlock || index >= mGlslProgram.uniform_block_num)
+      return 0;
+    return mpUniformBlock[index].index;
   }
 
   const nude::Program& getGlslProgram(void) const {

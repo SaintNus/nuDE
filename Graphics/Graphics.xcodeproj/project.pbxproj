@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C725FCB61563DFDA0023831E /* nuUniformBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C725FCB41563DFDA0023831E /* nuUniformBuffer.cpp */; };
+		C725FCB71563DFDA0023831E /* nuUniformBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = C725FCB51563DFDA0023831E /* nuUniformBuffer.h */; };
 		C77E29ED155520F500627CAA /* nuVertexArray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C77E29EB155520F500627CAA /* nuVertexArray.cpp */; };
 		C77E29EE155520F500627CAA /* nuVertexArray.h in Headers */ = {isa = PBXBuildFile; fileRef = C77E29EC155520F500627CAA /* nuVertexArray.h */; settings = {ATTRIBUTES = (); }; };
 		C780FBAB1556DA5D000B013E /* NudeGraphics-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = C785D082145D433000E64F10 /* NudeGraphics-Prefix.pch */; };
@@ -42,6 +44,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C725FCB41563DFDA0023831E /* nuUniformBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuUniformBuffer.cpp; sourceTree = "<group>"; };
+		C725FCB51563DFDA0023831E /* nuUniformBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuUniformBuffer.h; sourceTree = "<group>"; };
 		C77E29EB155520F500627CAA /* nuVertexArray.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuVertexArray.cpp; sourceTree = "<group>"; };
 		C77E29EC155520F500627CAA /* nuVertexArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuVertexArray.h; sourceTree = "<group>"; };
 		C785D06C145D418E00E64F10 /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = ../Configurations/Debug.xcconfig; sourceTree = "<group>"; };
@@ -130,15 +134,17 @@
 				C7AB761B14DE7DFD00A42A8C /* nuGResource.h */,
 				C7DDD81C1550012F002B4D5A /* nuGSetupContext.cpp */,
 				C7DDD81D1550012F002B4D5A /* nuGSetupContext.h */,
-				C7BECCE815556976006FA080 /* nuShaderList.cpp */,
-				C7BECCE915556976006FA080 /* nuShaderList.h */,
 				C79E4D6C14E2D1F0001E60BF /* nuRenderBuffer.cpp */,
 				C79E4D6D14E2D1F0001E60BF /* nuRenderBuffer.h */,
 				C785D085145D44D300E64F10 /* nuRenderGL.cpp */,
 				C785D086145D44D300E64F10 /* nuRenderGL.h */,
 				C7BECCEA15556977006FA080 /* nuShaderInfo.h */,
+				C7BECCE815556976006FA080 /* nuShaderList.cpp */,
+				C7BECCE915556976006FA080 /* nuShaderList.h */,
 				C7BECCE615556976006FA080 /* nuShaderProgram.cpp */,
 				C7BECCE715556976006FA080 /* nuShaderProgram.h */,
+				C725FCB41563DFDA0023831E /* nuUniformBuffer.cpp */,
+				C725FCB51563DFDA0023831E /* nuUniformBuffer.h */,
 				C77E29EB155520F500627CAA /* nuVertexArray.cpp */,
 				C77E29EC155520F500627CAA /* nuVertexArray.h */,
 				C79DFF1C151A3E0400A1FA32 /* nuVertexBuffer.cpp */,
@@ -172,6 +178,7 @@
 				C7BECCEF15556977006FA080 /* nuShaderInfo.h in Headers */,
 				C7ACC9BE155E62B600090E4D /* GraphicsInclude.h in Headers */,
 				C7C62D33155F57720002DDA6 /* nuGDebug.h in Headers */,
+				C725FCB71563DFDA0023831E /* nuUniformBuffer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -258,6 +265,7 @@
 				C7BECCEB15556977006FA080 /* nuShaderProgram.cpp in Sources */,
 				C7BECCED15556977006FA080 /* nuShaderList.cpp in Sources */,
 				C7C62D32155F57720002DDA6 /* nuGDebug.cpp in Sources */,
+				C725FCB61563DFDA0023831E /* nuUniformBuffer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

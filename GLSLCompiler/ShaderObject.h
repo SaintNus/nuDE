@@ -18,11 +18,19 @@ public:
     const char* name;
     GLenum type;
     GLint size;
+    GLint offset;
+    GLint array_stride;
+    GLint matrix_stride;
+    GLint row_major;
 
     Variable() {
       name = nullptr;
       type = static_cast< GLenum >(0);
       size = 0;
+      offset = -1;
+      array_stride = -1;
+      matrix_stride = -1;
+      row_major = GL_FALSE;
     }
   };
 

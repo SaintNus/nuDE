@@ -60,12 +60,25 @@ int ShaderObject::writeToFile(FILE* output_h, const char* name_space)
         std::vector< Variable >::const_iterator vit;
         char buffer[256];
         for(vit = p_program->attribute.begin(); vit != p_program->attribute.end(); vit++) {
-          snprintf(buffer, 256, "%s", vit->name);
-          buffer[255] = 0x00;
-          for(char* pc = buffer; *pc != 0x00; pc++) {
-            if(*pc == '.' || *pc == '[' || *pc == ']')
-              *pc = '_';
+          const char* sc = vit->name;
+          char* dc = buffer;
+          int count = 256;
+          while(*sc != 0x00 && count > 1) {
+            if(*sc == '.' || *sc == '[') {
+              *dc = '_';
+              sc++;
+              dc++;
+              count--;
+            } else if(*sc == ']') {
+              sc++;
+            } else {
+              *dc = *sc;
+              sc++;
+              dc++;
+              count--;
+            }
           }
+          *dc = 0x00;
           WRITE_FILE(output_h, "    %s_%s,\n", p_program->program_name, buffer);
         }
         WRITE_FILE(output_h, "    %sAttribute_Num,\n", p_program->program_name);
@@ -86,12 +99,25 @@ int ShaderObject::writeToFile(FILE* output_h, const char* name_space)
         std::vector< Variable >::const_iterator vit;
         char buffer[256];
         for(vit = p_program->uniform.begin(); vit != p_program->uniform.end(); vit++) {
-          snprintf(buffer, 256, "%s", vit->name);
-          buffer[255] = 0x00;
-          for(char* pc = buffer; *pc != 0x00; pc++) {
-            if(*pc == '.' || *pc == '[' || *pc == ']')
-              *pc = '_';
+          const char* sc = vit->name;
+          char* dc = buffer;
+          int count = 256;
+          while(*sc != 0x00 && count > 1) {
+            if(*sc == '.' || *sc == '[') {
+              *dc = '_';
+              sc++;
+              dc++;
+              count--;
+            } else if(*sc == ']') {
+              sc++;
+            } else {
+              *dc = *sc;
+              sc++;
+              dc++;
+              count--;
+            }
           }
+          *dc = 0x00;
           WRITE_FILE(output_h, "    %s_%s,\n", p_program->program_name, buffer);
         }
         WRITE_FILE(output_h, "    %sUniform_Num,\n", p_program->program_name);
@@ -112,12 +138,25 @@ int ShaderObject::writeToFile(FILE* output_h, const char* name_space)
         std::vector< Variable >::const_iterator vit;
         char buffer[256];
         for(vit = p_program->uniform_block.begin(); vit != p_program->uniform_block.end(); vit++) {
-          snprintf(buffer, 256, "%s", vit->name);
-          buffer[255] = 0x00;
-          for(char* pc = buffer; *pc != 0x00; pc++) {
-            if(*pc == '.' || *pc == '[' || *pc == ']')
-              *pc = '_';
+          const char* sc = vit->name;
+          char* dc = buffer;
+          int count = 256;
+          while(*sc != 0x00 && count > 1) {
+            if(*sc == '.' || *sc == '[') {
+              *dc = '_';
+              sc++;
+              dc++;
+              count--;
+            } else if(*sc == ']') {
+              sc++;
+            } else {
+              *dc = *sc;
+              sc++;
+              dc++;
+              count--;
+            }
           }
+          *dc = 0x00;
           WRITE_FILE(output_h, "    %s_%s,\n", p_program->program_name, buffer);
         }
         WRITE_FILE(output_h, "    %sUniformBlock_Num,\n", p_program->program_name);
@@ -130,10 +169,20 @@ int ShaderObject::writeToFile(FILE* output_h, const char* name_space)
   WRITE_FILE(output_h, "   * Structures.\n");
   WRITE_FILE(output_h, "   */\n\n");
 
+  WRITE_FILE(output_h, "  struct Attribute {\n");
+  WRITE_FILE(output_h, "    const GLchar* name;\n");
+  WRITE_FILE(output_h, "    GLenum type;\n");
+  WRITE_FILE(output_h, "    GLint size;\n");
+  WRITE_FILE(output_h, "  };\n\n");
+
   WRITE_FILE(output_h, "  struct Variable {\n");
   WRITE_FILE(output_h, "    const GLchar* name;\n");
   WRITE_FILE(output_h, "    GLenum type;\n");
   WRITE_FILE(output_h, "    GLint size;\n");
+  WRITE_FILE(output_h, "    GLint offset;\n");
+  WRITE_FILE(output_h, "    GLint array_stride;\n");
+  WRITE_FILE(output_h, "    GLint matrix_stride;\n");
+  WRITE_FILE(output_h, "    GLboolean row_major;\n");
   WRITE_FILE(output_h, "  };\n\n");
 
   WRITE_FILE(output_h, "  struct Structure {\n");
@@ -145,7 +194,7 @@ int ShaderObject::writeToFile(FILE* output_h, const char* name_space)
   WRITE_FILE(output_h, "    const GLchar* vsh_file; // Vertex shader file name.\n");
   WRITE_FILE(output_h, "    const GLchar* fsh_file; // Fragment shader file name.\n");
   WRITE_FILE(output_h, "    const GLuint attribute_num; // Number of program attribute.\n");
-  WRITE_FILE(output_h, "    const Variable* attributes; // Program attributes.\n");
+  WRITE_FILE(output_h, "    const Attribute* attributes; // Program attributes.\n");
   WRITE_FILE(output_h, "    const GLuint uniform_num; // Number of program uniform.\n");
   WRITE_FILE(output_h, "    const Variable* uniforms; // Program uniforms.\n");
   WRITE_FILE(output_h, "    const GLuint uniform_block_num; // Number of uniform block.\n");
@@ -160,7 +209,7 @@ int ShaderObject::writeToFile(FILE* output_h, const char* name_space)
     ProgramListConstIterator it;
     for(it = mProgramList.begin(); it != mProgramList.end(); it++) {
       if((*it)->attribute.size() > 0) {
-        WRITE_FILE(output_h, "  static const Variable %sAttributes[%sAttribute_Num] = {\n",
+        WRITE_FILE(output_h, "  static const Attribute %sAttributes[%sAttribute_Num] = {\n",
                    (*it)->program_name,
                    (*it)->program_name);
         {
@@ -184,10 +233,14 @@ int ShaderObject::writeToFile(FILE* output_h, const char* name_space)
           std::vector< Variable >::const_iterator vit;
           for(vit = (*it)->uniform.begin(); vit != (*it)->uniform.end(); vit++) {
             WRITE_FILE(output_h,
-                       "    { \"%s\", %s, %d },\n",
+                       "    { \"%s\", %s, %d, %d, %d, %d, %s },\n",
                        vit->name,
                        getVarTypeString(vit->type),
-                       vit->size);
+                       vit->size,
+                       vit->offset,
+                       vit->array_stride,
+                       vit->matrix_stride,
+                       vit->row_major == GL_TRUE ? "GL_TRUE" : "GL_FALSE");
           }
         }
         WRITE_FILE(output_h, "  };\n\n");

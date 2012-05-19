@@ -50,7 +50,8 @@ struct Vertex {
 
 nuDEEntityTest::nuDEEntityTest()
     : mPosX(0.0f),
-      mDir(1.0f)
+      mDir(1.0f),
+      mInit(false)
 {
   nuApplication::resourceManager().createResource("res://Resources/resource_test.rtst");
 
@@ -60,10 +61,12 @@ nuDEEntityTest::nuDEEntityTest()
   mVertexBuffer->initialize();
 
   mVertexArray = nuApplication::renderGL().createVertexArray();
-  mVertexArray->beginDeclaration(2);
-  mVertexArray->declare(0, nuVertexArray::Array(3, nuVertexArray::FLOAT, false, sizeof(Vertex), 0));
-  mVertexArray->declare(1, nuVertexArray::Array(4, nuVertexArray::UNSIGNED_INT_8, true, sizeof(Vertex), sizeof(f32) * 3));
-  mVertexArray->endDeclaration();
+  mVertexArray->begin(nude::DebugAttribute_Num);
+  mVertexArray->declare(nude::Debug_inPosition,
+                        nuVertexArray::Array(3, nuVertexArray::FLOAT, false, sizeof(Vertex), 0));
+  mVertexArray->declare(nude::Debug_inColor,
+                        nuVertexArray::Array(4, nuVertexArray::UNSIGNED_INT_8, true, sizeof(Vertex), sizeof(f32) * 3));
+  mVertexArray->end();
 
   ui16 idx[3] = { 0, 1, 2 };
   mElementBuffer = nuApplication::renderGL().createElementBuffer(nuElementBuffer::UNSIGNED_INT_16,
@@ -139,16 +142,22 @@ void nuDEEntityTest::draw(nuGContext& context)
   context.setPriority(nude::PASS_OPAQUE, 0);
   context.clear(nuGContext::CLEAR_COLOR | nuGContext::CLEAR_DEPTH, nuColor(0), 1.0f);
 
-  context.beginDraw(nude::PASS_TRANSPARENCY, 0, mShaderProgram);
+  context.beginDraw(mShaderProgram);
   {
     f32 vv[4] = { 0.5f, 0.5f, 0.5f, 1.0f };
+
     f32 vvv[3][4] = {
       { 1.0f, 0.0f, 0.0f, 1.0f },
       { 0.0f, 1.0f, 0.0f, 1.0f },
       { 0.0f, 0.0f, 1.0f, 1.0f },
     };
-    context.setUniform(nude::Debug_uniTest, vv);
-    context.setUniform(nude::Debug_uniColor_0_, vvv);
+
+    context.setPriority(nude::PASS_TRANSPARENCY, 0);
+    if(!mInit) {
+      context.setUniform(nude::Debug_uniTest, vv);
+      context.setUniform(nude::Debug_uniColor_0, vvv);
+      mInit = true;
+    }
     context.setVertexArray(mVertexArray);
     context.setVertexBuffer(mVertexBuffer);
     context.setElementBuffer(mElementBuffer);

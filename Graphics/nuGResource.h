@@ -22,12 +22,21 @@ public:
     VERTEX_ARRAY,
     TEXTURE,
     SHADER_PROGRAM,
+    UNIFORM_BUFFER,
   };
 
   enum RESOURCE_USAGE {
     STATIC_RESOURCE = 0,
     DYNAMIC_RESOURCE,
   };
+
+  GLenum getResourceUsage(void) const {
+    const GLenum usage_tbl[] = {
+      GL_STATIC_DRAW,
+      GL_DYNAMIC_DRAW,
+    };
+    return usage_tbl[mUsage];
+  }
 
   virtual void release(void) {
     decRefCount();
@@ -41,7 +50,7 @@ public:
     return mUsage;
   }
 
-  void protect(i64 frame_id) {
+  bool protect(i64 frame_id) {
     i64 sfid = mFrameID;
     i64 dfid = frame_id;
 
@@ -51,9 +60,10 @@ public:
         sfid = mFrameID;
         dfid = frame_id;
       } else {
-        return;
+        return true;
       }
     }
+    return false;
   }
 
 protected:

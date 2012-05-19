@@ -20,7 +20,11 @@ nuShaderProgram::nuShaderProgram(nude::ProgramList program)
       mGlslProgram(nude::GLSLPrograms[program]),
       mProgramID(0),
       mpUniform(nullptr),
-      mpUniformBlock(nullptr)
+      mpUniformBlock(nullptr),
+      mpCurrentUniformValue(nullptr),
+      mpRenderedUniformValue(nullptr),
+      mpCurrentUniformBlock(nullptr),
+      mpRenderedUniformBlock(nullptr)
 {
   if(mGlslProgram.uniform_num > 0) {
     mpUniform = new Uniform[mGlslProgram.uniform_num];
@@ -35,10 +39,7 @@ nuShaderProgram::nuShaderProgram(nude::ProgramList program)
   if(mGlslProgram.uniform_block_num > 0) {
     mpUniformBlock = new UniformBlock[mGlslProgram.uniform_block_num];
     NU_ASSERT_C(mpUniformBlock != nullptr);
-    for(ui32 ui = 0; ui < mGlslProgram.uniform_block_num; ui++) {
-      mpUniformBlock[ui].index = 0;
-      mpUniformBlock[ui].binding = 0;
-    }
+    memset(mpUniformBlock, 0x00, sizeof(mGlslProgram.uniform_block_num));
   }
 
   setUpdate(true);
@@ -64,6 +65,9 @@ nuShaderProgram::~nuShaderProgram()
 
 void nuShaderProgram::update(void)
 {
+  mpRenderedUniformValue = nullptr;
+  mpRenderedUniformBlock = nullptr;
+
   if(!isInitialized()) {
     const nuShaderList::Data& data = getGResManager().getShaderList()->getData(mProgram);
     CHECK_GL_ERROR(mProgramID = glCreateProgram());
