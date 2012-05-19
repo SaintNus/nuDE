@@ -389,11 +389,11 @@ void nuRenderGL::setUniformBlock(RenderContext& context, nuGContext::ProgramObje
   for(ui32 ui = 0; ui < context.p_shader_program->getUniformBlockNum(); ui++) {
     nuGContext::UniformBlock& ub = program.p_block[ui];
 
-    if(ub.p_buffer) {
+    if(ub.p_buffer && ub.p_buffer->getHandle() > 0) {
       CHECK_GL_ERROR(glUniformBlockBinding(context.p_shader_program->getHandle(),
                                            context.p_shader_program->getUniformBlockIndex(ui),
                                            ui));
-      CHECK_GL_ERROR(glBindBufferBase(GL_UNIFORM_BUFFER, ui, ub.p_buffer->getHandle()))
+      CHECK_GL_ERROR(glBindBufferBase(GL_UNIFORM_BUFFER, ui, ub.p_buffer->getHandle()));
     }
   }
 }

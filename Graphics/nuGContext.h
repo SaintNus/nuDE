@@ -110,7 +110,7 @@ public:
     ~SortTagContext() {}
 
     bool initialize(nuGContext* p_ctx) {
-      if(mpContext->getTagNum() == 0)
+      if(p_ctx->getTagNum() == 0)
         return false;
       mpContext = p_ctx;
       mTagNum = mpContext->getTagNum();
