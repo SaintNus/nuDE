@@ -26,6 +26,7 @@ nuRenderGL::~nuRenderGL()
 
 void nuRenderGL::initialize(nuResourceManager& resource_mgr, ccstr shader_list)
 {
+  mCapabilities.initialize();
   mResourceManager.initializeShaderList(resource_mgr, shader_list);
 
   // Initialize render context.

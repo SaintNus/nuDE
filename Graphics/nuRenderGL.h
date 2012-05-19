@@ -15,6 +15,7 @@
 #include "nuElementBuffer.h"
 #include "nuShaderProgram.h"
 #include "nuUniformBuffer.h"
+#include "nuOpenGLCaps.h"
 
 /*!
  * \class nuRenderGL
@@ -48,6 +49,8 @@ class nuRenderGL : public nuObject
 
   GLint mVertexLoc;
   GLint mColorLoc;
+
+  nuOpenGLCaps mCapabilities;
 
   void executeClear(RenderContext& context, void* clear_cmd);
   void executeDrawElements(RenderContext& context, void* draw_cmd);
@@ -101,6 +104,10 @@ public:
 
   nude::UniformBuffer createUniformBuffer(nude::ProgramList program, ui32 ubo_id) {
     return nude::UniformBuffer(mResourceManager.createUniformBuffer(program, ubo_id));
+  }
+
+  const nuOpenGLCaps& getCapabilities(void) const {
+    return mCapabilities;
   }
 
 };

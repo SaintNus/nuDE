@@ -15,6 +15,7 @@
 
 #include "nuGraphics.h"
 
+#include "nuOpenGLCaps.h"
 #include "nuRenderGL.h"
 #include "nuGResource.h"
 #include "nuGResManager.h"
