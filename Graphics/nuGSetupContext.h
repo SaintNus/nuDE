@@ -21,6 +21,7 @@ public:
 
   void map(class nuVertexBuffer& vertex_buffer);
   void map(class nuElementBuffer& element_buffer);
+  void map(class nuUniformBuffer& uniform_buffer);
 
 };
 

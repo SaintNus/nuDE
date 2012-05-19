@@ -14,6 +14,7 @@
 #include "nuVertexBuffer.h"
 #include "nuElementBuffer.h"
 #include "nuShaderProgram.h"
+#include "nuUniformBuffer.h"
 
 /*!
  * \class nuRenderGL
@@ -96,6 +97,10 @@ public:
 
   nude::ShaderProgram createShaderProgram(nude::ProgramList program) {
     return nude::ShaderProgram(mResourceManager.createShaderProgram(program));
+  }
+
+  nude::UniformBuffer createUniformBuffer(nude::ProgramList program, ui32 ubo_id) {
+    return nude::UniformBuffer(mResourceManager.createUniformBuffer(program, ubo_id));
   }
 
 };

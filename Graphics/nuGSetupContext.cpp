@@ -9,6 +9,7 @@
 #include "nuVertexBuffer.h"
 #include "nuElementBuffer.h"
 #include "nuShaderProgram.h"
+#include "nuUniformBuffer.h"
 #include "nuGSetupContext.h"
 
 nuGSetupContext::nuGSetupContext()
@@ -58,6 +59,21 @@ void nuGSetupContext::map(nuElementBuffer& element_buffer)
     if(element_buffer.mpBuffer) {
       element_buffer.setMapped(true);
       element_buffer.setUpdate(true);
+    }
+  }
+}
+
+void nuGSetupContext::map(class nuUniformBuffer& uniform_buffer)
+{
+  if(uniform_buffer.isMapped())
+    return;
+
+  if(uniform_buffer.isInitialized() && uniform_buffer.getHandle()) {
+    CHECK_GL_ERROR(glBindBuffer(GL_UNIFORM_BUFFER, uniform_buffer.getHandle()));
+    CHECK_GL_ERROR(uniform_buffer.mpBuffer = glMapBuffer(GL_UNIFORM_BUFFER, GL_WRITE_ONLY));
+    if(uniform_buffer.mpBuffer) {
+      uniform_buffer.setMapped(true);
+      uniform_buffer.setUpdate(true);
     }
   }
 }

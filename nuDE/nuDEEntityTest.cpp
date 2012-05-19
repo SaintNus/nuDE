@@ -51,11 +51,22 @@ struct Vertex {
 nuDEEntityTest::nuDEEntityTest()
     : mPosX(0.0f),
       mDir(1.0f),
-      mInit(false)
+      mInit(false),
+      mIdx(0)
 {
   nuApplication::resourceManager().createResource("res://Resources/resource_test.rtst");
 
   mShaderProgram = nuApplication::renderGL().createShaderProgram(nude::Program_Debug);
+  mUniformBuffer = nuApplication::renderGL().createUniformBuffer(nude::Program_Debug,
+                                                                 nude::Debug_uniColorXform);
+  f32 ubo[4] = { 1.0f, 0.0f, 1.0f, 0.0f };
+  mUniformBuffer->beginInitialize();
+  {
+    void* p_buffer = mUniformBuffer->getBuffer();
+    memcpy(p_buffer, ubo, sizeof(ubo));
+  }
+  mUniformBuffer->endInitialize();
+
   mVertexBuffer = nuApplication::renderGL().createVertexBuffer(sizeof(Vertex) * 3,
                                                                nuGResource::DYNAMIC_RESOURCE);
   mVertexBuffer->initialize();
@@ -72,8 +83,10 @@ nuDEEntityTest::nuDEEntityTest()
   mElementBuffer = nuApplication::renderGL().createElementBuffer(nuElementBuffer::UNSIGNED_INT_16,
                                                                  3,
                                                                  nuGResource::nuGResource::STATIC_RESOURCE);
-  void* p_buffer = mElementBuffer->beginInitialize();
-  memcpy(p_buffer, idx, sizeof(idx));
+  {
+    void* p_buffer = mElementBuffer->beginInitialize();
+    memcpy(p_buffer, idx, sizeof(idx));
+  }
   mElementBuffer->endInitialize();
 
   {
@@ -102,6 +115,8 @@ void nuDEEntityTest::setup(nuGSetupContext& setup)
 {
   if(mVertexBuffer.isValid())
     setup.map(*mVertexBuffer);
+  if(mUniformBuffer.isValid())
+    setup.map(*mUniformBuffer);
 }
 
 void nuDEEntityTest::update(void)
@@ -130,6 +145,23 @@ void nuDEEntityTest::update(void)
       memcpy(p_buffer, vtx, sizeof(vtx));
   }
 
+  if(mUniformBuffer.isValid()) {
+    f32 adder[4][4] = {
+      { 1.0f, 0.0f, 0.0f, 0.0f },
+      { 0.0f, 1.0f, 0.0f, 0.0f },
+      { 0.0f, 0.0f, 1.0f, 0.0f },
+      { 0.0f, 0.0f, 0.0f, 0.0f },
+    };
+
+    ui32 test = mIdx / 100;
+    void* p_buffer = mUniformBuffer->getBuffer();
+    if(p_buffer)
+      memcpy(p_buffer, adder[test], sizeof(f32) * 4);
+
+    mIdx++;
+    mIdx %= 400;
+  }
+
   mPosX += 0.01f * mDir * nuApplication::instance()->getFrameTime();
   if(fabsf(mPosX) > 0.2f) {
     mPosX = mDir * 0.2f;
@@ -144,18 +176,19 @@ void nuDEEntityTest::draw(nuGContext& context)
 
   context.beginDraw(mShaderProgram);
   {
-    f32 vv[4] = { 0.5f, 0.5f, 0.5f, 1.0f };
+    f32 vv[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
 
     f32 vvv[3][4] = {
-      { 1.0f, 0.0f, 0.0f, 1.0f },
-      { 0.0f, 1.0f, 0.0f, 1.0f },
-      { 0.0f, 0.0f, 1.0f, 1.0f },
+      { 0.1f, 0.0f, 0.0f, 1.0f },
+      { 0.0f, 0.1f, 0.1f, 1.0f },
+      { 0.0f, 0.0f, 0.0f, 1.0f },
     };
 
     context.setPriority(nude::PASS_TRANSPARENCY, 0);
     if(!mInit) {
       context.setUniform(nude::Debug_uniTest, vv);
       context.setUniform(nude::Debug_uniColor_0, vvv);
+      context.setUniformBlock(nude::Debug_uniColorXform, mUniformBuffer);
       mInit = true;
     }
     context.setVertexArray(mVertexArray);

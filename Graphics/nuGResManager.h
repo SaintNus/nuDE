@@ -12,6 +12,7 @@
 #include "nuVertexArray.h"
 #include "nuVertexBuffer.h"
 #include "nuElementBuffer.h"
+#include "nuUniformBuffer.h"
 #include "nuShaderList.h"
 #include "nuShaderProgram.h"
 
@@ -75,6 +76,7 @@ public:
                                           ui32 size,
                                           nuGResource::RESOURCE_USAGE usage);
   nude::ShaderProgram createShaderProgram(nude::ProgramList program);
+  nude::UniformBuffer createUniformBuffer(nude::ProgramList program_id, ui32 ubo_id);
 
   void updateStaticResource(i64 frame_id);
   void updateDynamicResource(i64 frame_id);

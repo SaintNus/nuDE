@@ -82,6 +82,10 @@ public:
     return mpBuffer;
   }
 
+  size_t getSize(void) const {
+    return mSize;
+  }
+
 };
 
 namespace nude {

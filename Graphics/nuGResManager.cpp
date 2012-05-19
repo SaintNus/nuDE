@@ -7,6 +7,7 @@
 
 #include "GraphicsInclude.h"
 
+#include "nuShaderInfo.h"
 #include "nuGResManager.h"
 #include "nuVertexBuffer.h"
 #include "nuElementBuffer.h"
@@ -138,4 +139,15 @@ void nuGResManager::initializeShaderList(nuResourceManager& resource_mgr, ccstr 
 
   nuResHandle res = resource_mgr.createResource(shader_list);
   mShaderList = res.cast< nuShaderList >();
+}
+
+UniformBuffer nuGResManager::createUniformBuffer(nude::ProgramList program_id, ui32 ubo_id)
+{
+  NU_ASSERT_C(ubo_id < GLSLPrograms[program_id].uniform_block_num);
+
+  size_t size = GLSLPrograms[program_id].uniform_blocks[ubo_id].size;
+  nuUniformBuffer* p_ub = new nuUniformBuffer(size);
+  registerResource(*p_ub);
+
+  return UniformBuffer(p_ub);
 }
