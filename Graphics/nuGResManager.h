@@ -65,7 +65,7 @@ public:
   nuGResManager();
   ~nuGResManager();
 
-  void initializeShaderList(nuResourceManager& resource_mgr, ccstr shader_list);
+  void setShaderList(nude::ShaderList& shader_list);
   const nude::ShaderList& getShaderList(void) const {
     return mShaderList;
   }

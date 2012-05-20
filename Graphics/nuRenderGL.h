@@ -39,6 +39,7 @@ class nuRenderGL : public nuObject
     nuVertexBuffer* p_vertex_buffer;
     nuElementBuffer* p_element_buffer;
     const nuGContext::Viewport* p_viewport;
+    nuGContext::FragmentOps fragment_ops;
   };
 
   nuGResManager mResourceManager;
@@ -61,6 +62,7 @@ class nuRenderGL : public nuObject
   void setUniformValue(RenderContext& context, nuGContext::ProgramObject& program);
   void setUniformBlock(RenderContext& context, nuGContext::ProgramObject& program);
   void setViewport(RenderContext& context, const nuGContext::Viewport* p_viewport);
+  void setFragmentOps(RenderContext& context, nuGContext::FragmentOps& fragment_ops);
 
 public:
   nuRenderGL();
@@ -84,7 +86,7 @@ public:
   i64 synchronize(void);
   bool isCommandSubmitted(void);
 
-  void initialize(nuResourceManager& resource_mgr, ccstr shader_list);
+  void initialize(nude::ShaderList& shader_list);
   void terminate(void);
 
   nude::VertexArray createVertexArray() {

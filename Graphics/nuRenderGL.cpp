@@ -24,10 +24,10 @@ nuRenderGL::~nuRenderGL()
   // None...
 }
 
-void nuRenderGL::initialize(nuResourceManager& resource_mgr, ccstr shader_list)
+void nuRenderGL::initialize(nude::ShaderList& shader_list)
 {
   mCapabilities.initialize();
-  mResourceManager.initializeShaderList(resource_mgr, shader_list);
+  mResourceManager.setShaderList(shader_list);
 
   // Initialize render context.
   mRenderContext.clear_color = nuColor(0);
@@ -120,6 +120,7 @@ void nuRenderGL::executeClear(RenderContext& context, void* clear_cmd)
   nuColor clear_color(p_clear->data.clear_color);
 
   setViewport(context, p_clear->p_viewport);
+  setFragmentOps(context, p_clear->fragment_ops);
 
   if(context.clear_color != clear_color)
     CHECK_GL_ERROR(glClearColor(clear_color.fr(), clear_color.fg(), clear_color.fb(), clear_color.fa()));
@@ -144,6 +145,8 @@ void nuRenderGL::executeDrawElements(RenderContext& context, void* draw_cmd)
     return;
 
   setViewport(context, p_draw->p_viewport);
+  setFragmentOps(context, p_draw->fragment_ops);
+
   setShaderProgram(context, p_draw->data.program_object);
 
   if(context.p_vertex_array != p_draw->data.p_vertex_array)
@@ -411,6 +414,21 @@ void nuRenderGL::setViewport(RenderContext& context, const nuGContext::Viewport*
     CHECK_GL_ERROR(glViewport(context.p_viewport->origin_x,
                               context.p_viewport->origin_y,
                               context.p_viewport->width,
-                              context.p_viewport->height))
+                              context.p_viewport->height));
+  }
+}
+
+void nuRenderGL::setFragmentOps(RenderContext& context, nuGContext::FragmentOps& fragment_ops)
+{
+  if(fragment_ops.p_scissor && fragment_ops.p_scissor != context.fragment_ops.p_scissor) {
+    context.fragment_ops.p_scissor = fragment_ops.p_scissor;
+    if(context.fragment_ops.p_scissor->enable)
+      CHECK_GL_ERROR(glEnable(GL_SCISSOR_TEST));
+    else
+      CHECK_GL_ERROR(glDisable(GL_SCISSOR_TEST));
+    CHECK_GL_ERROR(glScissor(context.fragment_ops.p_scissor->left,
+                             context.fragment_ops.p_scissor->bottom,
+                             context.fragment_ops.p_scissor->width,
+                             context.fragment_ops.p_scissor->height));
   }
 }

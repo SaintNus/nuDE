@@ -132,13 +132,11 @@ void nuGResManager::updateResources(ResList& resource_list, nuMutex& mutex)
   }
 }
 
-void nuGResManager::initializeShaderList(nuResourceManager& resource_mgr, ccstr shader_list)
+void nuGResManager::setShaderList(nude::ShaderList& shader_list)
 {
   if(mShaderList.isValid())
     return;
-
-  nuResHandle res = resource_mgr.createResource(shader_list);
-  mShaderList = res.cast< nuShaderList >();
+  mShaderList = shader_list;
 }
 
 UniformBuffer nuGResManager::createUniformBuffer(nude::ProgramList program_id, ui32 ubo_id)

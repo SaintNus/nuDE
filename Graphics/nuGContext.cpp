@@ -23,7 +23,8 @@ nuGContext::nuGContext(nuGContextBuffer& ctx_buffer)
       mUniformBlockNum(0),
       mCurrentUniformBlock(0),
       mAttributes(0),
-      mpViewport(nullptr)
+      mpViewport(nullptr),
+      mpScissor(nullptr)
 {
   mCurrentPriority.value = 0;
 }
@@ -86,6 +87,9 @@ void nuGContext::begin(i64 frame_id, Tag* p_tag, ui32 tag_num)
 
   mpViewport = nullptr;
   mViewportChanged = 0;
+
+  mpScissor = nullptr;
+  mScissorChanged = 0;
 }
 
 void nuGContext::end(void)
@@ -220,6 +224,7 @@ void nuGContext::clear(ui32 clear_bit)
     tag.mPriority = mCurrentPriority;
     tag.mpCommand = p_clear;
     p_clear->type = CLEAR;
+    initializeFragmentOps(p_clear->fragment_ops);
     p_clear->p_viewport = getViewport();
     p_clear->data.clear_bit = clear_bit;
     p_clear->data.clear_color = mCurrentClear.clear_color;
@@ -265,6 +270,7 @@ void nuGContext::drawElements(nude::PRIMITIVE_MODE primitive_mode, ui32 element_
     p_draw->type = DRAW_ELEMENTS;
     p_draw->p_viewport = getViewport();
 
+    initializeFragmentOps(p_draw->fragment_ops);
     setProgramObject(p_draw->data.program_object);
 
     p_draw->data.p_vertex_array = mCurrentDrawElements.p_vertex_array;
@@ -404,4 +410,15 @@ nuGContext::Viewport* nuGContext::getViewport(void)
     mViewportChanged = 0;
   }
   return mpViewport;
+}
+
+void nuGContext::initializeFragmentOps(FragmentOps& fragment_ops)
+{
+  if(mScissorChanged) {
+    mpScissor = mBuffer.allocBuffer< Scissor >();
+    *mpScissor = mCurrentScissor;
+    mScissorChanged = 0;
+  }
+
+  fragment_ops.p_scissor = mpScissor;
 }

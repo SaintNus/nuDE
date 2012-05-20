@@ -425,7 +425,15 @@ private:
     GLsizei width;
     GLsizei height;
 
-    Viewport() {}
+    Viewport()
+        : origin_x(0),
+          origin_y(0),
+          width(0),
+          height(0)
+    {
+      // None...
+    }
+
     Viewport(const nuRect& rect) {
       origin_x = static_cast< GLint >(rect.origin().x());
       origin_y = static_cast< GLint >(rect.origin().y());
@@ -446,6 +454,45 @@ private:
 
   };
 
+  struct Scissor {
+    bool enable;
+    GLint left;
+    GLint bottom;
+    GLsizei width;
+    GLsizei height;
+
+    Scissor()
+        : enable(false),
+          left(0),
+          bottom(0),
+          width(0),
+          height(0)
+    {
+      // None...
+    }
+
+    Scissor(bool en, const nuRect& rect) {
+      enable = en;
+      left = static_cast< GLint >(rect.origin().x());
+      bottom = static_cast< GLint >(rect.origin().y());
+      width = static_cast< GLsizei >(rect.size().w());
+      height = static_cast< GLsizei >(rect.size().h());
+    }
+
+    bool operator == (const Scissor& scissor) {
+      if(left == scissor.left && bottom == scissor.bottom &&
+         width == scissor.width && height == scissor.height &&
+         enable == scissor.enable)
+        return true;
+      return false;
+    }
+
+    bool operator != (const Scissor& scissor) {
+      return !(*this == scissor);
+    }
+
+  };
+
   struct ProgramObject {
     nuShaderProgram* p_shader_program;
     UniformValue* p_value;
@@ -453,10 +500,15 @@ private:
     UniformBlock* p_block;
   };
 
+  struct FragmentOps {
+    const Scissor* p_scissor;
+  };
+
   template< class T >
   struct DrawCmd {
     TYPE type;
     Viewport* p_viewport;
+    FragmentOps fragment_ops;
     T data;
   };
 
@@ -472,7 +524,6 @@ private:
     nuVertexArray* p_vertex_array;
     nuVertexBuffer* p_vertex_buffer;
     nuElementBuffer* p_element_buffer;
-    Viewport* p_viewport;
     ui32 primitive_mode: 4;
     ui32 element_num: 28;
   };
@@ -505,12 +556,15 @@ private:
     ui32 mAttributes;
     struct {
       ui32 mViewportChanged: 1;
-      ui32 mReserved: 31;
+      ui32 mScissorChanged: 1;
+      ui32 mReserved: 30;
     };
   };
 
   Viewport mCurrentViewport;
   Viewport* mpViewport;
+  Scissor mCurrentScissor;
+  Scissor* mpScissor;
 
   nuGContext();
 
@@ -527,6 +581,7 @@ private:
   void setUniform(ui32 index, UniformValue::TYPE type, GLint size, bool transpose, const void* p_data);
   void setProgramObject(ProgramObject& po);
   Viewport* getViewport(void);
+  void initializeFragmentOps(FragmentOps& fragment_ops);
 
 public:
   nuGContext(nuGContextBuffer& ctx_buffer);
@@ -568,6 +623,30 @@ public:
       mCurrentViewport = vp;
       mViewportChanged = 1;
     }
+  }
+
+  nuRect getViewport(void) const {
+    nuRect rect(nuPoint(mCurrentViewport.origin_x, mCurrentViewport.origin_y),
+                nuSize(mCurrentViewport.width, mCurrentViewport.height));
+    return rect;
+  }
+
+  void setScissor(bool enable, const nuRect& rect) {
+    Scissor sc(enable, rect);
+    if(sc != mCurrentScissor) {
+      mCurrentScissor = sc;
+      mScissorChanged = 1;
+    }
+  }
+
+  bool isScissorEnabled(void) const {
+    return mCurrentScissor.enable;
+  }
+
+  nuRect getScissorRect(void) const {
+    nuRect rect(nuPoint(mCurrentScissor.left, mCurrentScissor.bottom),
+                nuSize(mCurrentScissor.width, mCurrentScissor.height));
+    return rect;
   }
 
 };
