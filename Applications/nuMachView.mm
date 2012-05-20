@@ -98,12 +98,6 @@ static CVReturn DisplayLinkCallback(CVDisplayLinkRef display_link,
 - (void) reshape
 { 
   [super reshape];
-#if !NDEBUG
-  {
-    NSSize frame_size = [self frame].size;
-    NU_TRACE("Resizing to %.1f x %.1f\n", frame_size.width, frame_size.height);
-  }
-#endif
 }
 
 - (void) dealloc
@@ -122,6 +116,12 @@ static CVReturn DisplayLinkCallback(CVDisplayLinkRef display_link,
       const f64 min_ftime = 0.5;
       const f64 max_ftime = 5.0;
 
+      NSRect content_rect = [self bounds];
+      nuRect rect(nuPoint(static_cast< f32 >(content_rect.origin.x),
+                          static_cast< f32 >(content_rect.origin.y)),
+                  nuSize(static_cast< f32 >(content_rect.size.width),
+                         static_cast< f32 >(content_rect.size.height)));
+      nuApplication::renderGL().setViewport(rect);
       i64 frame_id = nuApplication::renderGL().updateGraphicResources();
 
       i64 v_time = time_stamp->videoTime;

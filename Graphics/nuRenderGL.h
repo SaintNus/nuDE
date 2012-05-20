@@ -38,6 +38,7 @@ class nuRenderGL : public nuObject
     nuVertexArray* p_vertex_array;
     nuVertexBuffer* p_vertex_buffer;
     nuElementBuffer* p_element_buffer;
+    const nuGContext::Viewport* p_viewport;
   };
 
   nuGResManager mResourceManager;
@@ -51,6 +52,7 @@ class nuRenderGL : public nuObject
   GLint mColorLoc;
 
   nuOpenGLCaps mCapabilities;
+  nuRect mViewport;
 
   void executeClear(RenderContext& context, void* clear_cmd);
   void executeDrawElements(RenderContext& context, void* draw_cmd);
@@ -58,6 +60,7 @@ class nuRenderGL : public nuObject
   void setShaderProgram(RenderContext& context, nuGContext::ProgramObject& program);
   void setUniformValue(RenderContext& context, nuGContext::ProgramObject& program);
   void setUniformBlock(RenderContext& context, nuGContext::ProgramObject& program);
+  void setViewport(RenderContext& context, const nuGContext::Viewport* p_viewport);
 
 public:
   nuRenderGL();
@@ -108,6 +111,14 @@ public:
 
   const nuOpenGLCaps& getCapabilities(void) const {
     return mCapabilities;
+  }
+
+  const nuRect& getViewport(void) const {
+    return mViewport;
+  }
+
+  void setViewport(const nuRect& viewport) {
+    mViewport = viewport;
   }
 
 };

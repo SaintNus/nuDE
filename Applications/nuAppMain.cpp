@@ -153,8 +153,10 @@ void nuAppMain::draw(void)
 
   ui32 tag_num = mTagNum / nuThreadPool::MAX_WORKER;
 
+  nuRect view_rect = mpRenderGL->getViewport();
   for(ui32 ui = 0; ui < nuThreadPool::MAX_WORKER; ui++) {
     mpGraphicContext[ui]->begin(mFrameID, &mpTag[ui * tag_num], tag_num);
+    mpGraphicContext[ui]->setViewport(view_rect);
   }
 
   {

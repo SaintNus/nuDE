@@ -21,7 +21,9 @@ nuGContext::nuGContext(nuGContextBuffer& ctx_buffer)
       mCurrentUniformValue(0),
       mpUniformBlock(nullptr),
       mUniformBlockNum(0),
-      mCurrentUniformBlock(0)
+      mCurrentUniformBlock(0),
+      mAttributes(0),
+      mpViewport(nullptr)
 {
   mCurrentPriority.value = 0;
 }
@@ -81,6 +83,9 @@ void nuGContext::begin(i64 frame_id, Tag* p_tag, ui32 tag_num)
 
   mCurrentDrawElements.primitive_mode = 0;
   mCurrentDrawElements.element_num = 0;
+
+  mpViewport = nullptr;
+  mViewportChanged = 0;
 }
 
 void nuGContext::end(void)
@@ -215,6 +220,7 @@ void nuGContext::clear(ui32 clear_bit)
     tag.mPriority = mCurrentPriority;
     tag.mpCommand = p_clear;
     p_clear->type = CLEAR;
+    p_clear->p_viewport = getViewport();
     p_clear->data.clear_bit = clear_bit;
     p_clear->data.clear_color = mCurrentClear.clear_color;
     p_clear->data.depth_value = mCurrentClear.depth_value;
@@ -257,26 +263,9 @@ void nuGContext::drawElements(nude::PRIMITIVE_MODE primitive_mode, ui32 element_
     tag.mPriority = mCurrentPriority;
     tag.mpCommand = p_draw;
     p_draw->type = DRAW_ELEMENTS;
+    p_draw->p_viewport = getViewport();
 
-    ProgramObject& po = p_draw->data.program_object;
-    po.p_shader_program = mCurrentDrawElements.program_object.p_shader_program;
-
-    if(mCurrentUniformValue > 0) {
-      size_t uv_sz = sizeof(UniformValue) * po.p_shader_program->getUniformNum();
-      po.p_value = static_cast< UniformValue* >(mBuffer.allocBuffer(uv_sz));
-      memcpy(po.p_value, mpUniformValue, uv_sz);
-      po.p_shader_program->mpCurrentUniformValue = po.p_value;
-    } else {
-      po.p_value = static_cast< UniformValue* >(po.p_shader_program->mpCurrentUniformValue);
-    }
-
-    if(mCurrentUniformBlock > 0) {
-      size_t ub_sz = sizeof(UniformBlock) * po.p_shader_program->getUniformBlockNum();
-      po.p_block = static_cast< UniformBlock* >(mBuffer.allocBuffer(ub_sz));
-      memcpy(po.p_block, mpUniformBlock, ub_sz);
-    } else {
-      po.p_block = static_cast< UniformBlock* >(po.p_shader_program->mpCurrentUniformBlock);
-    }
+    setProgramObject(p_draw->data.program_object);
 
     p_draw->data.p_vertex_array = mCurrentDrawElements.p_vertex_array;
     p_draw->data.p_vertex_buffer = mCurrentDrawElements.p_vertex_buffer;
@@ -340,4 +329,79 @@ void nuGContext::setUniformBlock(ui32 index, nude::UniformBuffer& buffer)
 
   mpUniformBlock[index].p_buffer = &buffer;
   mCurrentUniformBlock++;
+}
+
+void nuGContext::beginDraw(const nude::ShaderProgram& program)
+{
+  ProgramObject& po = mCurrentDrawElements.program_object;
+
+  if(program->protect(mFrameID)) {
+    program->mpCurrentUniformValue = nullptr;
+    program->mpCurrentUniformBlock = nullptr;
+  }
+
+  po.p_shader_program = &program;
+
+  if(po.p_shader_program->getUniformNum() > mUniformValueNum) {
+    ui32 num = po.p_shader_program->getUniformNum() / EXPAND_UNIFORM;
+    num = (num + 1) * EXPAND_UNIFORM;
+    if(mpUniformValue)
+      delete[] mpUniformValue;
+    mpUniformValue = new UniformValue[num];
+    mUniformValueNum = num;
+  }
+
+  mCurrentUniformValue = 0;
+  if(po.p_shader_program->getUniformNum() > 0)
+    memset(mpUniformValue, 0x00, sizeof(UniformValue) * po.p_shader_program->getUniformNum());
+
+  if(po.p_shader_program->getUniformBlockNum() > mUniformBlockNum) {
+    ui32 num = po.p_shader_program->getUniformBlockNum() / EXPAND_UNIFORM;
+    num = (num + 1) * EXPAND_UNIFORM;
+    if(mpUniformBlock)
+      delete[] mpUniformBlock;
+    mpUniformBlock = new UniformBlock[num];
+    mUniformBlockNum = num;
+  }
+
+  mCurrentUniformBlock = 0;
+  if(po.p_shader_program->getUniformBlockNum() > 0)
+    memset(mpUniformBlock, 0x00, sizeof(UniformBlock) * po.p_shader_program->getUniformBlockNum());
+}
+
+void nuGContext::endDraw(void)
+{
+  mCurrentDrawElements.program_object.p_shader_program = nullptr;
+}
+
+void nuGContext::setProgramObject(ProgramObject& po)
+{
+  po.p_shader_program = mCurrentDrawElements.program_object.p_shader_program;
+
+  if(mCurrentUniformValue > 0) {
+    size_t uv_sz = sizeof(UniformValue) * po.p_shader_program->getUniformNum();
+    po.p_value = static_cast< UniformValue* >(mBuffer.allocBuffer(uv_sz));
+    memcpy(po.p_value, mpUniformValue, uv_sz);
+    po.p_shader_program->mpCurrentUniformValue = po.p_value;
+  } else {
+    po.p_value = static_cast< UniformValue* >(po.p_shader_program->mpCurrentUniformValue);
+  }
+
+  if(mCurrentUniformBlock > 0) {
+    size_t ub_sz = sizeof(UniformBlock) * po.p_shader_program->getUniformBlockNum();
+    po.p_block = static_cast< UniformBlock* >(mBuffer.allocBuffer(ub_sz));
+    memcpy(po.p_block, mpUniformBlock, ub_sz);
+  } else {
+    po.p_block = static_cast< UniformBlock* >(po.p_shader_program->mpCurrentUniformBlock);
+  }
+}
+
+nuGContext::Viewport* nuGContext::getViewport(void)
+{
+  if(mViewportChanged) {
+    mpViewport = mBuffer.allocBuffer< Viewport >();
+    *mpViewport = mCurrentViewport;
+    mViewportChanged = 0;
+  }
+  return mpViewport;
 }

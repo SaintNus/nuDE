@@ -16,7 +16,7 @@
   i64 videoTime;
 }
 
-@property (nonatomic, readonly) bool displayLinkStarted;
+@property (nonatomic, readonly, getter = isDisplayLinkStarted) bool displayLinkStarted;
 
 //! \brief Initialize with NSWindow.
 - (id) initWithWindow: (NSWindow*) window;

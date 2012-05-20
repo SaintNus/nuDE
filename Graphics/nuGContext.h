@@ -419,6 +419,33 @@ private:
     return UniformValue::FLOAT_1;
   };
 
+  struct Viewport {
+    GLint origin_x;
+    GLint origin_y;
+    GLsizei width;
+    GLsizei height;
+
+    Viewport() {}
+    Viewport(const nuRect& rect) {
+      origin_x = static_cast< GLint >(rect.origin().x());
+      origin_y = static_cast< GLint >(rect.origin().y());
+      width = static_cast< GLsizei >(rect.size().w());
+      height = static_cast< GLsizei >(rect.size().h());
+    }
+
+    bool operator == (const Viewport& viewport) {
+      if(origin_x == viewport.origin_x && origin_y == viewport.origin_y &&
+         width == viewport.width && height == viewport.height)
+        return true;
+      return false;
+    }
+
+    bool operator != (const Viewport& viewport) {
+      return !(*this == viewport);
+    }
+
+  };
+
   struct ProgramObject {
     nuShaderProgram* p_shader_program;
     UniformValue* p_value;
@@ -429,6 +456,7 @@ private:
   template< class T >
   struct DrawCmd {
     TYPE type;
+    Viewport* p_viewport;
     T data;
   };
 
@@ -444,6 +472,7 @@ private:
     nuVertexArray* p_vertex_array;
     nuVertexBuffer* p_vertex_buffer;
     nuElementBuffer* p_element_buffer;
+    Viewport* p_viewport;
     ui32 primitive_mode: 4;
     ui32 element_num: 28;
   };
@@ -472,6 +501,17 @@ private:
   ui32 mUniformBlockNum;
   ui32 mCurrentUniformBlock;
 
+  union {
+    ui32 mAttributes;
+    struct {
+      ui32 mViewportChanged: 1;
+      ui32 mReserved: 31;
+    };
+  };
+
+  Viewport mCurrentViewport;
+  Viewport* mpViewport;
+
   nuGContext();
 
   void sortTag(void);
@@ -485,6 +525,8 @@ private:
   }
 
   void setUniform(ui32 index, UniformValue::TYPE type, GLint size, bool transpose, const void* p_data);
+  void setProgramObject(ProgramObject& po);
+  Viewport* getViewport(void);
 
 public:
   nuGContext(nuGContextBuffer& ctx_buffer);
@@ -498,46 +540,8 @@ public:
     mCurrentPriority.priority = priority;
   }
 
-  void beginDraw(const nude::ShaderProgram& program) {
-    ProgramObject& po = mCurrentDrawElements.program_object;
-
-    if(program->protect(mFrameID)) {
-      program->mpCurrentUniformValue = nullptr;
-      program->mpCurrentUniformBlock = nullptr;
-    }
-
-    po.p_shader_program = &program;
-
-    if(po.p_shader_program->getUniformNum() > mUniformValueNum) {
-      ui32 num = po.p_shader_program->getUniformNum() / EXPAND_UNIFORM;
-      num = (num + 1) * EXPAND_UNIFORM;
-      if(mpUniformValue)
-        delete[] mpUniformValue;
-      mpUniformValue = new UniformValue[num];
-      mUniformValueNum = num;
-    }
-
-    mCurrentUniformValue = 0;
-    if(po.p_shader_program->getUniformNum() > 0)
-      memset(mpUniformValue, 0x00, sizeof(UniformValue) * po.p_shader_program->getUniformNum());
-
-    if(po.p_shader_program->getUniformBlockNum() > mUniformBlockNum) {
-      ui32 num = po.p_shader_program->getUniformBlockNum() / EXPAND_UNIFORM;
-      num = (num + 1) * EXPAND_UNIFORM;
-      if(mpUniformBlock)
-        delete[] mpUniformBlock;
-      mpUniformBlock = new UniformBlock[num];
-      mUniformBlockNum = num;
-    }
-
-    mCurrentUniformBlock = 0;
-    if(po.p_shader_program->getUniformBlockNum() > 0)
-      memset(mpUniformBlock, 0x00, sizeof(UniformBlock) * po.p_shader_program->getUniformBlockNum());
-  }
-
-  void endDraw(void) {
-    mCurrentDrawElements.program_object.p_shader_program = nullptr;
-  }
+  void beginDraw(const nude::ShaderProgram& program);
+  void endDraw(void);
 
   void setClearColor(const nuColor& color);
   void setClearDepth(f32 depth);
@@ -557,6 +561,14 @@ public:
   void setUniform(ui32 index, void* p_data);
   void setUniformMatrix(ui32 index, bool transpose, void* p_data);
   void setUniformBlock(ui32 index, nude::UniformBuffer& buffer);
+
+  void setViewport(const nuRect& rect) {
+    Viewport vp(rect);
+    if(vp != mCurrentViewport) {
+      mCurrentViewport = vp;
+      mViewportChanged = 1;
+    }
+  }
 
 };
 

@@ -57,4 +57,6 @@
 #include "nuHandle.h"
 #include "nuRingBuffer.h"
 
+#include "nuGeometry.h"
+
 #endif
