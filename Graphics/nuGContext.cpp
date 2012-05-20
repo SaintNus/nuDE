@@ -25,7 +25,8 @@ nuGContext::nuGContext(nuGContextBuffer& ctx_buffer)
       mAttributes(0),
       mpViewport(nullptr),
       mpScissor(nullptr),
-      mpDepthTest(nullptr)
+      mpDepthTest(nullptr),
+      mpStencilTest(nullptr)
 {
   mCurrentPriority.value = 0;
 }
@@ -94,6 +95,9 @@ void nuGContext::begin(i64 frame_id, Tag* p_tag, ui32 tag_num)
 
   mpDepthTest = nullptr;
   mDepthTestChanged = 1;
+
+  mpStencilTest = nullptr;
+  mStencilTestChanged = 1;
 }
 
 void nuGContext::end(void)
@@ -429,8 +433,15 @@ void nuGContext::initializeFragmentOps(FragmentOps& fragment_ops)
     mDepthTestChanged = 0;
   }
 
+  if(mStencilTestChanged) {
+    mpStencilTest = mBuffer.allocBuffer< StencilTest >();
+    *mpStencilTest = mCurrentStencilTest;
+    mStencilTestChanged = 0;
+  }
+
   fragment_ops.p_scissor = mpScissor;
   fragment_ops.p_depth_test = mpDepthTest;
+  fragment_ops.p_stencil_test = mpStencilTest;
 }
 
 void nuGContext::clear(ui32 clear_bit, const nuColor& color, f32 depth)
@@ -449,13 +460,6 @@ void nuGContext::setViewport(const nuRect& rect)
   }
 }
 
-nuRect nuGContext::getViewport(void) const
-{
-  nuRect rect(nuPoint(mCurrentViewport.origin_x, mCurrentViewport.origin_y),
-              nuSize(mCurrentViewport.width, mCurrentViewport.height));
-  return rect;
-}
-
 void nuGContext::setScissor(bool enable, const nuRect& rect)
 {
   Scissor sc(enable, rect);
@@ -463,18 +467,6 @@ void nuGContext::setScissor(bool enable, const nuRect& rect)
     mCurrentScissor = sc;
     mScissorChanged = 1;
   }
-}
-
-bool nuGContext::isScissorEnabled(void) const
-{
-  return mCurrentScissor.enable;
-}
-
-nuRect nuGContext::getScissorRect(void) const
-{
-  nuRect rect(nuPoint(mCurrentScissor.left, mCurrentScissor.bottom),
-              nuSize(mCurrentScissor.width, mCurrentScissor.height));
-  return rect;
 }
 
 void nuGContext::setDepthTest(bool enable, DEPTHSTENCIL_FUNC func)
@@ -486,12 +478,23 @@ void nuGContext::setDepthTest(bool enable, DEPTHSTENCIL_FUNC func)
   }
 }
 
-bool nuGContext::isDepthTestEnabled(void) const
+void nuGContext::setStencilTest(bool enable, DEPTHSTENCIL_FUNC func)
 {
-  return mCurrentDepthTest.enable;
+  if(mCurrentStencilTest.enable != enable || mCurrentStencilTest.function != func) {
+    mCurrentStencilTest.enable = enable;
+    mCurrentStencilTest.function = func;
+    mStencilTestChanged = 1;
+  }
 }
 
-nuGContext::DEPTHSTENCIL_FUNC nuGContext::getDepthTestFunc(void) const
+void nuGContext::setStencilOp(STENCIL_OP stencil_fail, STENCIL_OP depth_fail, STENCIL_OP depth_pass)
 {
-  return mCurrentDepthTest.function;
+  if(mCurrentStencilTest.stencil_fail != stencil_fail ||
+     mCurrentStencilTest.depth_fail != depth_fail ||
+     mCurrentStencilTest.depth_pass != depth_pass) {
+    mCurrentStencilTest.stencil_fail = stencil_fail;
+    mCurrentStencilTest.depth_fail = depth_fail;
+    mCurrentStencilTest.depth_pass = depth_pass;
+    mStencilTestChanged = 1;
+  }
 }

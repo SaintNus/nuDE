@@ -39,6 +39,44 @@ void nuRenderGL::initialize(nude::ShaderList& shader_list)
 
   mRenderContext.reset();
 
+  mRenderContext.viewport.origin_x = static_cast< GLint >(mViewport.origin().x());
+  mRenderContext.viewport.origin_y = static_cast< GLint >(mViewport.origin().y());
+  mRenderContext.viewport.width = static_cast< GLsizei >(mViewport.size().w());
+  mRenderContext.viewport.height = static_cast< GLsizei >(mViewport.size().h());
+  CHECK_GL_ERROR(glViewport(mRenderContext.viewport.origin_x,
+                            mRenderContext.viewport.origin_y,
+                            mRenderContext.viewport.width,
+                            mRenderContext.viewport.height));
+
+  mRenderContext.scissor = nuGContext::Scissor();
+  if(mRenderContext.scissor.enable)
+    CHECK_GL_ERROR(glEnable(GL_SCISSOR_TEST));
+  else
+    CHECK_GL_ERROR(glDisable(GL_SCISSOR_TEST));
+  CHECK_GL_ERROR(glScissor(mRenderContext.scissor.left,
+                           mRenderContext.scissor.bottom,
+                           mRenderContext.scissor.width,
+                           mRenderContext.scissor.height));
+
+  mRenderContext.depth_test = nuGContext::DepthTest();
+  if(mRenderContext.depth_test.enable)
+    CHECK_GL_ERROR(glEnable(GL_DEPTH_TEST));
+  else
+    CHECK_GL_ERROR(glDisable(GL_DEPTH_TEST));
+  CHECK_GL_ERROR(glDepthFunc(mRenderContext.depth_test.function));
+
+  mRenderContext.stencil_test = nuGContext::StencilTest();
+  if(mRenderContext.stencil_test.enable)
+    CHECK_GL_ERROR(glEnable(GL_STENCIL_TEST));
+  else
+    CHECK_GL_ERROR(glDisable(GL_STENCIL_TEST));
+  CHECK_GL_ERROR(glStencilFunc(mRenderContext.stencil_test.function,
+                               mRenderContext.stencil_test.reference,
+                               mRenderContext.stencil_test.mask));
+  CHECK_GL_ERROR(glStencilOp(mRenderContext.stencil_test.stencil_fail,
+                             mRenderContext.stencil_test.depth_fail,
+                             mRenderContext.stencil_test.depth_pass));
+
   CHECK_GL_ERROR(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 }
 
@@ -435,5 +473,22 @@ void nuRenderGL::setFragmentOps(RenderContext& context, nuGContext::FragmentOps&
       CHECK_GL_ERROR(glDisable(GL_DEPTH_TEST));
 
     CHECK_GL_ERROR(glDepthFunc(context.depth_test.function));
+  }
+
+  if(*fragment_ops.p_stencil_test != context.stencil_test) {
+    context.stencil_test = *fragment_ops.p_stencil_test;
+
+    if(context.stencil_test.enable)
+      CHECK_GL_ERROR(glEnable(GL_STENCIL_TEST));
+    else
+      CHECK_GL_ERROR(glDisable(GL_STENCIL_TEST));
+
+    CHECK_GL_ERROR(glStencilFunc(context.stencil_test.function,
+                                 context.stencil_test.reference,
+                                 context.stencil_test.mask));
+
+    CHECK_GL_ERROR(glStencilOp(context.stencil_test.stencil_fail,
+                               context.stencil_test.depth_fail,
+                               context.stencil_test.depth_pass));
   }
 }

@@ -55,6 +55,23 @@ public:
     DEPTHSTENCIL_NOTEQUAL = GL_NOTEQUAL,
   };
 
+  enum POLYGON_FACE {
+    POLYGON_FRONT = GL_FRONT,
+    POLYGON_BACK = GL_BACK,
+    POLYGON_FRONT_AND_BACK = GL_FRONT_AND_BACK,
+  };
+
+  enum STENCIL_OP {
+    STENCIL_KEEP = GL_KEEP,
+    STENCIL_ZERO = GL_ZERO,
+    STENCIL_REPLACE = GL_REPLACE,
+    STENCIL_INCR = GL_INCR,
+    STENCIL_DECR = GL_DECR,
+    STENCIL_INVERT = GL_INVERT,
+    STENCIL_INCR_WRAP = GL_INCR_WRAP,
+    STENCIL_DECR_WRAP = GL_DECR_WRAP,
+  };
+
   class Tag {
     friend class nuGContext;
     friend class nuRenderGL;
@@ -510,7 +527,7 @@ private:
 
     DepthTest()
         : enable(false),
-          function(static_cast< DEPTHSTENCIL_FUNC >(0))
+          function(DEPTHSTENCIL_ALWAYS)
     {
       // None...
     }
@@ -534,6 +551,63 @@ private:
 
   };
 
+  struct StencilTest {
+    bool enable;
+    DEPTHSTENCIL_FUNC function;
+    GLint reference;
+    GLuint mask;
+    STENCIL_OP stencil_fail;
+    STENCIL_OP depth_fail;
+    STENCIL_OP depth_pass;
+
+    StencilTest()
+        : enable(false),
+          function(DEPTHSTENCIL_ALWAYS),
+          reference(0),
+          mask(0),
+          stencil_fail(STENCIL_KEEP),
+          depth_fail(STENCIL_KEEP),
+          depth_pass(STENCIL_KEEP)
+    {
+      // None...
+    }
+
+    StencilTest(bool en,
+                DEPTHSTENCIL_FUNC func,
+                GLint ref,
+                GLuint smask,
+                STENCIL_OP sfail,
+                STENCIL_OP zfail,
+                STENCIL_OP zpass)
+        : enable(en),
+          function(func),
+          reference(ref),
+          mask(smask),
+          stencil_fail(sfail),
+          depth_fail(zfail),
+          depth_pass(zpass)
+    {
+      // None...
+    }
+
+    bool operator == (const StencilTest& stencil_test) const {
+      if(enable == stencil_test.enable &&
+         function == stencil_test.function &&
+         reference == stencil_test.reference &&
+         mask == stencil_test.mask &&
+         stencil_fail == stencil_test.stencil_fail &&
+         depth_fail == stencil_test.depth_fail &&
+         depth_pass == stencil_test.depth_pass)
+        return true;
+      return false;
+    }
+
+    bool operator != (const StencilTest& stencil_test) const {
+      return !(*this == stencil_test);
+    }
+
+  };
+
   struct ProgramObject {
     nuShaderProgram* p_shader_program;
     UniformValue* p_value;
@@ -544,6 +618,7 @@ private:
   struct FragmentOps {
     const Scissor* p_scissor;
     const DepthTest* p_depth_test;
+    const StencilTest* p_stencil_test;
   };
 
   template< class T >
@@ -600,7 +675,8 @@ private:
       ui32 mViewportChanged: 1;
       ui32 mScissorChanged: 1;
       ui32 mDepthTestChanged: 1;
-      ui32 mReserved: 29;
+      ui32 mStencilTestChanged: 1;
+      ui32 mReserved: 28;
     };
   };
 
@@ -610,6 +686,8 @@ private:
   Scissor* mpScissor;
   DepthTest mCurrentDepthTest;
   DepthTest* mpDepthTest;
+  StencilTest mCurrentStencilTest;
+  StencilTest* mpStencilTest;
 
   nuGContext();
 
@@ -659,15 +737,11 @@ public:
   void setUniformBlock(ui32 index, nude::UniformBuffer& buffer);
 
   void setViewport(const nuRect& rect);
-  nuRect getViewport(void) const;
 
   void setScissor(bool enable, const nuRect& rect);
-  bool isScissorEnabled(void) const;
-  nuRect getScissorRect(void) const;
-
   void setDepthTest(bool enable, DEPTHSTENCIL_FUNC func);
-  bool isDepthTestEnabled(void) const;
-  DEPTHSTENCIL_FUNC getDepthTestFunc(void) const;
+  void setStencilTest(bool enable, DEPTHSTENCIL_FUNC func);
+  void setStencilOp(STENCIL_OP stencil_fail, STENCIL_OP depth_fail, STENCIL_OP depth_pass);
 
 };
 

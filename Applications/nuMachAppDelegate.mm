@@ -54,6 +54,13 @@ static nuMachAppDelegate* gpAppDelegate = nil;
     nuSingleton< nuApplication >::createInstance();
     nuApplication::instance()->initialize([self appMain]);
 
+    NSRect content_rect = [view bounds];
+    nuRect rect(nuPoint(static_cast< f32 >(content_rect.origin.x),
+                        static_cast< f32 >(content_rect.origin.y)),
+                nuSize(static_cast< f32 >(content_rect.size.width),
+                       static_cast< f32 >(content_rect.size.height)));
+    nuApplication::renderGL().setViewport(rect);
+
     CGLContextObj ctx = [view lockContext];
     nuResHandle res = nuApplication::resourceManager().createResource("res://Resources/Shader.shlst");
     nude::ShaderList shader_list(res.cast< nuShaderList >());
