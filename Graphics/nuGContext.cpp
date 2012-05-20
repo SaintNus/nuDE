@@ -24,7 +24,8 @@ nuGContext::nuGContext(nuGContextBuffer& ctx_buffer)
       mCurrentUniformBlock(0),
       mAttributes(0),
       mpViewport(nullptr),
-      mpScissor(nullptr)
+      mpScissor(nullptr),
+      mpDepthTest(nullptr)
 {
   mCurrentPriority.value = 0;
 }
@@ -86,10 +87,13 @@ void nuGContext::begin(i64 frame_id, Tag* p_tag, ui32 tag_num)
   mCurrentDrawElements.element_num = 0;
 
   mpViewport = nullptr;
-  mViewportChanged = 0;
+  mViewportChanged = 1;
 
   mpScissor = nullptr;
-  mScissorChanged = 0;
+  mScissorChanged = 1;
+
+  mpDepthTest = nullptr;
+  mDepthTestChanged = 1;
 }
 
 void nuGContext::end(void)
@@ -224,7 +228,6 @@ void nuGContext::clear(ui32 clear_bit)
     tag.mPriority = mCurrentPriority;
     tag.mpCommand = p_clear;
     p_clear->type = CLEAR;
-    initializeFragmentOps(p_clear->fragment_ops);
     p_clear->p_viewport = getViewport();
     p_clear->data.clear_bit = clear_bit;
     p_clear->data.clear_color = mCurrentClear.clear_color;
@@ -270,7 +273,7 @@ void nuGContext::drawElements(nude::PRIMITIVE_MODE primitive_mode, ui32 element_
     p_draw->type = DRAW_ELEMENTS;
     p_draw->p_viewport = getViewport();
 
-    initializeFragmentOps(p_draw->fragment_ops);
+    initializeFragmentOps(p_draw->data.fragment_ops);
     setProgramObject(p_draw->data.program_object);
 
     p_draw->data.p_vertex_array = mCurrentDrawElements.p_vertex_array;
@@ -420,5 +423,75 @@ void nuGContext::initializeFragmentOps(FragmentOps& fragment_ops)
     mScissorChanged = 0;
   }
 
+  if(mDepthTestChanged) {
+    mpDepthTest = mBuffer.allocBuffer< DepthTest >();
+    *mpDepthTest = mCurrentDepthTest;
+    mDepthTestChanged = 0;
+  }
+
   fragment_ops.p_scissor = mpScissor;
+  fragment_ops.p_depth_test = mpDepthTest;
+}
+
+void nuGContext::clear(ui32 clear_bit, const nuColor& color, f32 depth)
+{
+  setClearColor(color);
+  setClearDepth(depth);
+  clear(clear_bit);
+}
+
+void nuGContext::setViewport(const nuRect& rect)
+{
+  Viewport vp(rect);
+  if(vp != mCurrentViewport) {
+    mCurrentViewport = vp;
+    mViewportChanged = 1;
+  }
+}
+
+nuRect nuGContext::getViewport(void) const
+{
+  nuRect rect(nuPoint(mCurrentViewport.origin_x, mCurrentViewport.origin_y),
+              nuSize(mCurrentViewport.width, mCurrentViewport.height));
+  return rect;
+}
+
+void nuGContext::setScissor(bool enable, const nuRect& rect)
+{
+  Scissor sc(enable, rect);
+  if(sc != mCurrentScissor) {
+    mCurrentScissor = sc;
+    mScissorChanged = 1;
+  }
+}
+
+bool nuGContext::isScissorEnabled(void) const
+{
+  return mCurrentScissor.enable;
+}
+
+nuRect nuGContext::getScissorRect(void) const
+{
+  nuRect rect(nuPoint(mCurrentScissor.left, mCurrentScissor.bottom),
+              nuSize(mCurrentScissor.width, mCurrentScissor.height));
+  return rect;
+}
+
+void nuGContext::setDepthTest(bool enable, DEPTHSTENCIL_FUNC func)
+{
+  DepthTest depth_test(enable, func);
+  if(mCurrentDepthTest != depth_test) {
+    mCurrentDepthTest = depth_test;
+    mDepthTestChanged = 1;
+  }
+}
+
+bool nuGContext::isDepthTestEnabled(void) const
+{
+  return mCurrentDepthTest.enable;
+}
+
+nuGContext::DEPTHSTENCIL_FUNC nuGContext::getDepthTestFunc(void) const
+{
+  return mCurrentDepthTest.function;
 }

@@ -44,6 +44,17 @@ public:
     CLEAR_STENCIL = GL_STENCIL_BUFFER_BIT,
   };
 
+  enum DEPTHSTENCIL_FUNC {
+    DEPTHSTENCIL_NEVER = GL_NEVER,
+    DEPTHSTENCIL_ALWAYS = GL_ALWAYS,
+    DEPTHSTENCIL_LESS = GL_LESS,
+    DEPTHSTENCIL_LEQUAL = GL_LEQUAL,
+    DEPTHSTENCIL_EQUAL = GL_EQUAL,
+    DEPTHSTENCIL_GREATER = GL_GREATER,
+    DEPTHSTENCIL_GEQUAL = GL_GEQUAL,
+    DEPTHSTENCIL_NOTEQUAL = GL_NOTEQUAL,
+  };
+
   class Tag {
     friend class nuGContext;
     friend class nuRenderGL;
@@ -441,14 +452,14 @@ private:
       height = static_cast< GLsizei >(rect.size().h());
     }
 
-    bool operator == (const Viewport& viewport) {
+    bool operator == (const Viewport& viewport) const {
       if(origin_x == viewport.origin_x && origin_y == viewport.origin_y &&
          width == viewport.width && height == viewport.height)
         return true;
       return false;
     }
 
-    bool operator != (const Viewport& viewport) {
+    bool operator != (const Viewport& viewport) const {
       return !(*this == viewport);
     }
 
@@ -479,7 +490,7 @@ private:
       height = static_cast< GLsizei >(rect.size().h());
     }
 
-    bool operator == (const Scissor& scissor) {
+    bool operator == (const Scissor& scissor) const {
       if(left == scissor.left && bottom == scissor.bottom &&
          width == scissor.width && height == scissor.height &&
          enable == scissor.enable)
@@ -487,8 +498,38 @@ private:
       return false;
     }
 
-    bool operator != (const Scissor& scissor) {
+    bool operator != (const Scissor& scissor) const {
       return !(*this == scissor);
+    }
+
+  };
+
+  struct DepthTest {
+    bool enable;
+    DEPTHSTENCIL_FUNC function;
+
+    DepthTest()
+        : enable(false),
+          function(static_cast< DEPTHSTENCIL_FUNC >(0))
+    {
+      // None...
+    }
+
+    DepthTest(bool en, DEPTHSTENCIL_FUNC func)
+        : enable(en),
+          function(func)
+    {
+      // None...
+    }
+
+    bool operator == (const DepthTest& depth_test) const {
+      if(enable == depth_test.enable && function == depth_test.function)
+        return true;
+      return false;
+    }
+
+    bool operator != (const DepthTest& depth_test) const {
+      return !(*this == depth_test);
     }
 
   };
@@ -502,13 +543,13 @@ private:
 
   struct FragmentOps {
     const Scissor* p_scissor;
+    const DepthTest* p_depth_test;
   };
 
   template< class T >
   struct DrawCmd {
     TYPE type;
     Viewport* p_viewport;
-    FragmentOps fragment_ops;
     T data;
   };
 
@@ -521,6 +562,7 @@ private:
 
   struct DrawElements {
     ProgramObject program_object;
+    FragmentOps fragment_ops;
     nuVertexArray* p_vertex_array;
     nuVertexBuffer* p_vertex_buffer;
     nuElementBuffer* p_element_buffer;
@@ -557,7 +599,8 @@ private:
     struct {
       ui32 mViewportChanged: 1;
       ui32 mScissorChanged: 1;
-      ui32 mReserved: 30;
+      ui32 mDepthTestChanged: 1;
+      ui32 mReserved: 29;
     };
   };
 
@@ -565,6 +608,8 @@ private:
   Viewport* mpViewport;
   Scissor mCurrentScissor;
   Scissor* mpScissor;
+  DepthTest mCurrentDepthTest;
+  DepthTest* mpDepthTest;
 
   nuGContext();
 
@@ -602,11 +647,7 @@ public:
   void setClearDepth(f32 depth);
   void clear(ui32 clear_bit);
 
-  void clear(ui32 clear_bit, const nuColor& color, f32 depth) {
-    setClearColor(color);
-    setClearDepth(depth);
-    clear(clear_bit);
-  }
+  void clear(ui32 clear_bit, const nuColor& color, f32 depth);
 
   void setVertexArray(nude::VertexArray& array);
   void setVertexBuffer(nude::VertexBuffer& buffer);
@@ -617,37 +658,16 @@ public:
   void setUniformMatrix(ui32 index, bool transpose, void* p_data);
   void setUniformBlock(ui32 index, nude::UniformBuffer& buffer);
 
-  void setViewport(const nuRect& rect) {
-    Viewport vp(rect);
-    if(vp != mCurrentViewport) {
-      mCurrentViewport = vp;
-      mViewportChanged = 1;
-    }
-  }
+  void setViewport(const nuRect& rect);
+  nuRect getViewport(void) const;
 
-  nuRect getViewport(void) const {
-    nuRect rect(nuPoint(mCurrentViewport.origin_x, mCurrentViewport.origin_y),
-                nuSize(mCurrentViewport.width, mCurrentViewport.height));
-    return rect;
-  }
+  void setScissor(bool enable, const nuRect& rect);
+  bool isScissorEnabled(void) const;
+  nuRect getScissorRect(void) const;
 
-  void setScissor(bool enable, const nuRect& rect) {
-    Scissor sc(enable, rect);
-    if(sc != mCurrentScissor) {
-      mCurrentScissor = sc;
-      mScissorChanged = 1;
-    }
-  }
-
-  bool isScissorEnabled(void) const {
-    return mCurrentScissor.enable;
-  }
-
-  nuRect getScissorRect(void) const {
-    nuRect rect(nuPoint(mCurrentScissor.left, mCurrentScissor.bottom),
-                nuSize(mCurrentScissor.width, mCurrentScissor.height));
-    return rect;
-  }
+  void setDepthTest(bool enable, DEPTHSTENCIL_FUNC func);
+  bool isDepthTestEnabled(void) const;
+  DEPTHSTENCIL_FUNC getDepthTestFunc(void) const;
 
 };
 

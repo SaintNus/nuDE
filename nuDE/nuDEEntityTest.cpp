@@ -191,6 +191,7 @@ void nuDEEntityTest::draw(nuGContext& context)
       context.setUniformBlock(nude::Debug_uniColorXform, mUniformBuffer);
       mInit = true;
     }
+    context.setDepthTest(true, nuGContext::DEPTHSTENCIL_LEQUAL);
     context.setVertexArray(mVertexArray);
     context.setVertexBuffer(mVertexBuffer);
     context.setElementBuffer(mElementBuffer);

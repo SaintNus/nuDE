@@ -34,12 +34,21 @@ class nuRenderGL : public nuObject
   struct RenderContext {
     nuColor clear_color;
     f32 depth_value;
+
     nuShaderProgram* p_shader_program;
     nuVertexArray* p_vertex_array;
     nuVertexBuffer* p_vertex_buffer;
     nuElementBuffer* p_element_buffer;
-    const nuGContext::Viewport* p_viewport;
-    nuGContext::FragmentOps fragment_ops;
+    nuGContext::Viewport viewport;
+    nuGContext::Scissor scissor;
+    nuGContext::DepthTest depth_test;
+
+    void reset(void) {
+      p_shader_program = nullptr;
+      p_vertex_array = nullptr;
+      p_vertex_buffer = nullptr;
+      p_element_buffer = nullptr;
+    }
   };
 
   nuGResManager mResourceManager;
@@ -61,7 +70,7 @@ class nuRenderGL : public nuObject
   void setShaderProgram(RenderContext& context, nuGContext::ProgramObject& program);
   void setUniformValue(RenderContext& context, nuGContext::ProgramObject& program);
   void setUniformBlock(RenderContext& context, nuGContext::ProgramObject& program);
-  void setViewport(RenderContext& context, const nuGContext::Viewport* p_viewport);
+  void setViewport(RenderContext& context, const nuGContext::Viewport& viewport);
   void setFragmentOps(RenderContext& context, nuGContext::FragmentOps& fragment_ops);
 
 public:

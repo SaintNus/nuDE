@@ -37,10 +37,7 @@ void nuRenderGL::initialize(nude::ShaderList& shader_list)
   mRenderContext.depth_value = 1.0f;
   CHECK_GL_ERROR(glClearDepth(1.0f));
 
-  mRenderContext.p_vertex_array = nullptr;
-  mRenderContext.p_vertex_buffer = nullptr;
-  mRenderContext.p_element_buffer = nullptr;
-  mRenderContext.p_viewport = nullptr;
+  mRenderContext.reset();
 
   CHECK_GL_ERROR(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 }
@@ -61,11 +58,7 @@ bool nuRenderGL::render(void)
     if(mpCurrentTagList->mTagNum > 0) {
       nuGContext::Tag* p_tag = mpCurrentTagList->mpTagList;
 
-      mRenderContext.p_shader_program = nullptr;
-      mRenderContext.p_vertex_array = nullptr;
-      mRenderContext.p_vertex_buffer = nullptr;
-      mRenderContext.p_element_buffer = nullptr;
-      mRenderContext.p_viewport = nullptr;
+      mRenderContext.reset();
 
       for(ui32 ui = 0; ui < mpCurrentTagList->mTagNum; ui++) {
         DummyCmd* p_dummy = static_cast< DummyCmd* >(p_tag[ui].mpCommand);
@@ -119,8 +112,7 @@ void nuRenderGL::executeClear(RenderContext& context, void* clear_cmd)
   nuGContext::ClearCmd* p_clear = static_cast< nuGContext::ClearCmd* >(clear_cmd);
   nuColor clear_color(p_clear->data.clear_color);
 
-  setViewport(context, p_clear->p_viewport);
-  setFragmentOps(context, p_clear->fragment_ops);
+  setViewport(context, *p_clear->p_viewport);
 
   if(context.clear_color != clear_color)
     CHECK_GL_ERROR(glClearColor(clear_color.fr(), clear_color.fg(), clear_color.fb(), clear_color.fa()));
@@ -144,8 +136,8 @@ void nuRenderGL::executeDrawElements(RenderContext& context, void* draw_cmd)
   if(p_draw->data.p_element_buffer->getHandle() == 0)
     return;
 
-  setViewport(context, p_draw->p_viewport);
-  setFragmentOps(context, p_draw->fragment_ops);
+  setViewport(context, *p_draw->p_viewport);
+  setFragmentOps(context, p_draw->data.fragment_ops);
 
   setShaderProgram(context, p_draw->data.program_object);
 
@@ -407,28 +399,41 @@ void nuRenderGL::setUniformBlock(RenderContext& context, nuGContext::ProgramObje
   }
 }
 
-void nuRenderGL::setViewport(RenderContext& context, const nuGContext::Viewport* p_viewport)
+void nuRenderGL::setViewport(RenderContext& context, const nuGContext::Viewport& viewport)
 {
-  if(p_viewport && p_viewport != context.p_viewport) {
-    context.p_viewport = p_viewport;
-    CHECK_GL_ERROR(glViewport(context.p_viewport->origin_x,
-                              context.p_viewport->origin_y,
-                              context.p_viewport->width,
-                              context.p_viewport->height));
+  if(viewport != context.viewport) {
+    context.viewport = viewport;
+    CHECK_GL_ERROR(glViewport(context.viewport.origin_x,
+                              context.viewport.origin_y,
+                              context.viewport.width,
+                              context.viewport.height));
   }
 }
 
 void nuRenderGL::setFragmentOps(RenderContext& context, nuGContext::FragmentOps& fragment_ops)
 {
-  if(fragment_ops.p_scissor && fragment_ops.p_scissor != context.fragment_ops.p_scissor) {
-    context.fragment_ops.p_scissor = fragment_ops.p_scissor;
-    if(context.fragment_ops.p_scissor->enable)
+  if(*fragment_ops.p_scissor != context.scissor) {
+    context.scissor = *fragment_ops.p_scissor;
+
+    if(context.scissor.enable)
       CHECK_GL_ERROR(glEnable(GL_SCISSOR_TEST));
     else
       CHECK_GL_ERROR(glDisable(GL_SCISSOR_TEST));
-    CHECK_GL_ERROR(glScissor(context.fragment_ops.p_scissor->left,
-                             context.fragment_ops.p_scissor->bottom,
-                             context.fragment_ops.p_scissor->width,
-                             context.fragment_ops.p_scissor->height));
+
+    CHECK_GL_ERROR(glScissor(context.scissor.left,
+                             context.scissor.bottom,
+                             context.scissor.width,
+                             context.scissor.height));
+  }
+
+  if(*fragment_ops.p_depth_test != context.depth_test) {
+    context.depth_test = *fragment_ops.p_depth_test;
+
+    if(context.depth_test.enable)
+      CHECK_GL_ERROR(glEnable(GL_DEPTH_TEST));
+    else
+      CHECK_GL_ERROR(glDisable(GL_DEPTH_TEST));
+
+    CHECK_GL_ERROR(glDepthFunc(context.depth_test.function));
   }
 }
