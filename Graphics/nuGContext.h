@@ -32,46 +32,12 @@ class nuGContext
     };
   };
 
-public:
   enum TYPE {
     CLEAR = 0,
     DRAW_ELEMENTS,
   };
     
-  enum CLEAR_BIT {
-    CLEAR_COLOR = GL_COLOR_BUFFER_BIT,
-    CLEAR_DEPTH = GL_DEPTH_BUFFER_BIT,
-    CLEAR_STENCIL = GL_STENCIL_BUFFER_BIT,
-  };
-
-  enum DEPTHSTENCIL_FUNC {
-    DEPTHSTENCIL_NEVER = GL_NEVER,
-    DEPTHSTENCIL_ALWAYS = GL_ALWAYS,
-    DEPTHSTENCIL_LESS = GL_LESS,
-    DEPTHSTENCIL_LEQUAL = GL_LEQUAL,
-    DEPTHSTENCIL_EQUAL = GL_EQUAL,
-    DEPTHSTENCIL_GREATER = GL_GREATER,
-    DEPTHSTENCIL_GEQUAL = GL_GEQUAL,
-    DEPTHSTENCIL_NOTEQUAL = GL_NOTEQUAL,
-  };
-
-  enum POLYGON_FACE {
-    POLYGON_FRONT = GL_FRONT,
-    POLYGON_BACK = GL_BACK,
-    POLYGON_FRONT_AND_BACK = GL_FRONT_AND_BACK,
-  };
-
-  enum STENCIL_OP {
-    STENCIL_KEEP = GL_KEEP,
-    STENCIL_ZERO = GL_ZERO,
-    STENCIL_REPLACE = GL_REPLACE,
-    STENCIL_INCR = GL_INCR,
-    STENCIL_DECR = GL_DECR,
-    STENCIL_INVERT = GL_INVERT,
-    STENCIL_INCR_WRAP = GL_INCR_WRAP,
-    STENCIL_DECR_WRAP = GL_DECR_WRAP,
-  };
-
+public:
   class Tag {
     friend class nuGContext;
     friend class nuRenderGL;
@@ -523,16 +489,16 @@ private:
 
   struct DepthTest {
     bool enable;
-    DEPTHSTENCIL_FUNC function;
+    nude::DEPTHSTENCIL_FUNC function;
 
     DepthTest()
         : enable(false),
-          function(DEPTHSTENCIL_ALWAYS)
+          function(nude::DEPTHSTENCIL_ALWAYS)
     {
       // None...
     }
 
-    DepthTest(bool en, DEPTHSTENCIL_FUNC func)
+    DepthTest(bool en, nude::DEPTHSTENCIL_FUNC func)
         : enable(en),
           function(func)
     {
@@ -553,32 +519,32 @@ private:
 
   struct StencilTest {
     bool enable;
-    DEPTHSTENCIL_FUNC function;
+    nude::DEPTHSTENCIL_FUNC function;
     GLint reference;
     GLuint mask;
-    STENCIL_OP stencil_fail;
-    STENCIL_OP depth_fail;
-    STENCIL_OP depth_pass;
+    nude::STENCIL_OP stencil_fail;
+    nude::STENCIL_OP depth_fail;
+    nude::STENCIL_OP depth_pass;
 
     StencilTest()
         : enable(false),
-          function(DEPTHSTENCIL_ALWAYS),
+          function(nude::DEPTHSTENCIL_ALWAYS),
           reference(0),
           mask(0),
-          stencil_fail(STENCIL_KEEP),
-          depth_fail(STENCIL_KEEP),
-          depth_pass(STENCIL_KEEP)
+          stencil_fail(nude::STENCIL_KEEP),
+          depth_fail(nude::STENCIL_KEEP),
+          depth_pass(nude::STENCIL_KEEP)
     {
       // None...
     }
 
     StencilTest(bool en,
-                DEPTHSTENCIL_FUNC func,
+                nude::DEPTHSTENCIL_FUNC func,
                 GLint ref,
                 GLuint smask,
-                STENCIL_OP sfail,
-                STENCIL_OP zfail,
-                STENCIL_OP zpass)
+                nude::STENCIL_OP sfail,
+                nude::STENCIL_OP zfail,
+                nude::STENCIL_OP zpass)
         : enable(en),
           function(func),
           reference(ref),
@@ -608,6 +574,53 @@ private:
 
   };
 
+  struct Blending {
+    bool enable;
+    nude::BLEND_EQ_FUNC equation;
+    nude::BLEND_FUNC source;
+    nude::BLEND_FUNC destination;
+    ui32 color;
+
+    Blending()
+        : enable(false),
+          equation(nude::BLEND_EQ_ADD),
+          source(nude::BLEND_SRC_ALPHA),
+          destination(nude::BLEND_ONE_MINUS_SRC_ALPHA),
+          color(0)
+    {
+      // None...
+    }
+
+    Blending(bool en,
+             nude::BLEND_EQ_FUNC eq,
+             nude::BLEND_FUNC src,
+             nude::BLEND_FUNC dest,
+             ui32 clr)
+        : enable(en),
+          equation(eq),
+          source(src),
+          destination(dest),
+          color(clr)
+    {
+      // None...
+    }
+
+    bool operator == (const Blending& blending) const {
+      if(enable == blending.enable &&
+         equation == blending.equation &&
+         source == blending.source &&
+         destination == blending.destination &&
+         color == blending.color)
+        return true;
+      return false;
+    }
+
+    bool operator != (const Blending& blending) const {
+      return !(*this == blending);
+    }
+
+  };
+
   struct ProgramObject {
     nuShaderProgram* p_shader_program;
     UniformValue* p_value;
@@ -619,6 +632,7 @@ private:
     const Scissor* p_scissor;
     const DepthTest* p_depth_test;
     const StencilTest* p_stencil_test;
+    const Blending* p_blending;
   };
 
   template< class T >
@@ -676,18 +690,25 @@ private:
       ui32 mScissorChanged: 1;
       ui32 mDepthTestChanged: 1;
       ui32 mStencilTestChanged: 1;
-      ui32 mReserved: 28;
+      ui32 mBlendingChanged: 1;
+      ui32 mReserved: 27;
     };
   };
 
   Viewport mCurrentViewport;
   Viewport* mpViewport;
+
   Scissor mCurrentScissor;
   Scissor* mpScissor;
+
   DepthTest mCurrentDepthTest;
   DepthTest* mpDepthTest;
+
   StencilTest mCurrentStencilTest;
   StencilTest* mpStencilTest;
+
+  Blending mCurrentBlending;
+  Blending* mpBlending;
 
   nuGContext();
 
@@ -739,9 +760,16 @@ public:
   void setViewport(const nuRect& rect);
 
   void setScissor(bool enable, const nuRect& rect);
-  void setDepthTest(bool enable, DEPTHSTENCIL_FUNC func);
-  void setStencilTest(bool enable, DEPTHSTENCIL_FUNC func);
-  void setStencilOp(STENCIL_OP stencil_fail, STENCIL_OP depth_fail, STENCIL_OP depth_pass);
+  void setDepthTest(bool enable, nude::DEPTHSTENCIL_FUNC func);
+  void setStencilTest(bool enable, nude::DEPTHSTENCIL_FUNC func);
+  void setStencilOp(nude::STENCIL_OP stencil_fail,
+                    nude::STENCIL_OP depth_fail,
+                    nude::STENCIL_OP depth_pass);
+  void setBlending(bool enable,
+                   nude::BLEND_EQ_FUNC equation,
+                   nude::BLEND_FUNC source,
+                   nude::BLEND_FUNC destination);
+  void setBlendColor(const nuColor& color);
 
 };
 

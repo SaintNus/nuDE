@@ -172,11 +172,11 @@ void nuDEEntityTest::update(void)
 void nuDEEntityTest::draw(nuGContext& context)
 {
   context.setPriority(nude::PASS_OPAQUE, 0);
-  context.clear(nuGContext::CLEAR_COLOR | nuGContext::CLEAR_DEPTH, nuColor(0), 1.0f);
+  context.clear(nude::CLEAR_COLOR | nude::CLEAR_DEPTH, nuColor::Black, 1.0f);
 
   context.beginDraw(mShaderProgram);
   {
-    f32 vv[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+    f32 vv[4] = { 1.0f, 1.0f, 1.0f, 0.5f };
 
     f32 vvv[3][4] = {
       { 0.1f, 0.0f, 0.0f, 1.0f },
@@ -191,7 +191,8 @@ void nuDEEntityTest::draw(nuGContext& context)
       context.setUniformBlock(nude::Debug_uniColorXform, mUniformBuffer);
       mInit = true;
     }
-    context.setDepthTest(true, nuGContext::DEPTHSTENCIL_LEQUAL);
+    context.setDepthTest(true, nude::DEPTHSTENCIL_LEQUAL);
+    context.setBlending(true, nude::BLEND_EQ_ADD, nude::BLEND_SRC_ALPHA, nude::BLEND_ONE_MINUS_SRC_ALPHA);
     context.setVertexArray(mVertexArray);
     context.setVertexBuffer(mVertexBuffer);
     context.setElementBuffer(mElementBuffer);

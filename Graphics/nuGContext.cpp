@@ -26,7 +26,8 @@ nuGContext::nuGContext(nuGContextBuffer& ctx_buffer)
       mpViewport(nullptr),
       mpScissor(nullptr),
       mpDepthTest(nullptr),
-      mpStencilTest(nullptr)
+      mpStencilTest(nullptr),
+      mpBlending(nullptr)
 {
   mCurrentPriority.value = 0;
 }
@@ -98,6 +99,9 @@ void nuGContext::begin(i64 frame_id, Tag* p_tag, ui32 tag_num)
 
   mpStencilTest = nullptr;
   mStencilTestChanged = 1;
+
+  mpBlending = nullptr;
+  mBlendingChanged = 1;
 }
 
 void nuGContext::end(void)
@@ -439,9 +443,16 @@ void nuGContext::initializeFragmentOps(FragmentOps& fragment_ops)
     mStencilTestChanged = 0;
   }
 
+  if(mBlendingChanged) {
+    mpBlending = mBuffer.allocBuffer< Blending >();
+    *mpBlending = mCurrentBlending;
+    mBlendingChanged = 0;
+  }
+
   fragment_ops.p_scissor = mpScissor;
   fragment_ops.p_depth_test = mpDepthTest;
   fragment_ops.p_stencil_test = mpStencilTest;
+  fragment_ops.p_blending = mpBlending;
 }
 
 void nuGContext::clear(ui32 clear_bit, const nuColor& color, f32 depth)
@@ -469,7 +480,7 @@ void nuGContext::setScissor(bool enable, const nuRect& rect)
   }
 }
 
-void nuGContext::setDepthTest(bool enable, DEPTHSTENCIL_FUNC func)
+void nuGContext::setDepthTest(bool enable, nude::DEPTHSTENCIL_FUNC func)
 {
   DepthTest depth_test(enable, func);
   if(mCurrentDepthTest != depth_test) {
@@ -478,7 +489,7 @@ void nuGContext::setDepthTest(bool enable, DEPTHSTENCIL_FUNC func)
   }
 }
 
-void nuGContext::setStencilTest(bool enable, DEPTHSTENCIL_FUNC func)
+void nuGContext::setStencilTest(bool enable, nude::DEPTHSTENCIL_FUNC func)
 {
   if(mCurrentStencilTest.enable != enable || mCurrentStencilTest.function != func) {
     mCurrentStencilTest.enable = enable;
@@ -487,7 +498,9 @@ void nuGContext::setStencilTest(bool enable, DEPTHSTENCIL_FUNC func)
   }
 }
 
-void nuGContext::setStencilOp(STENCIL_OP stencil_fail, STENCIL_OP depth_fail, STENCIL_OP depth_pass)
+void nuGContext::setStencilOp(nude::STENCIL_OP stencil_fail,
+                              nude::STENCIL_OP depth_fail,
+                              nude::STENCIL_OP depth_pass)
 {
   if(mCurrentStencilTest.stencil_fail != stencil_fail ||
      mCurrentStencilTest.depth_fail != depth_fail ||
@@ -496,5 +509,30 @@ void nuGContext::setStencilOp(STENCIL_OP stencil_fail, STENCIL_OP depth_fail, ST
     mCurrentStencilTest.depth_fail = depth_fail;
     mCurrentStencilTest.depth_pass = depth_pass;
     mStencilTestChanged = 1;
+  }
+}
+
+void nuGContext::setBlending(bool enable,
+                             nude::BLEND_EQ_FUNC equation,
+                             nude::BLEND_FUNC source,
+                             nude::BLEND_FUNC destination)
+{
+  if(mCurrentBlending.enable != enable ||
+     mCurrentBlending.equation != equation ||
+     mCurrentBlending.source != source ||
+     mCurrentBlending.destination != destination) {
+    mCurrentBlending.enable = enable;
+    mCurrentBlending.equation = equation;
+    mCurrentBlending.source = source;
+    mCurrentBlending.destination = destination;
+    mBlendingChanged = 1;
+  }
+}
+
+void nuGContext::setBlendColor(const nuColor& color)
+{
+  if(mCurrentBlending.color != color.rgba) {
+    mCurrentBlending.color = color.rgba;
+    mBlendingChanged = 1;
   }
 }

@@ -49,33 +49,47 @@ void nuRenderGL::initialize(nude::ShaderList& shader_list)
                             mRenderContext.viewport.height));
 
   mRenderContext.scissor = nuGContext::Scissor();
-  if(mRenderContext.scissor.enable)
+  if(mRenderContext.scissor.enable) {
     CHECK_GL_ERROR(glEnable(GL_SCISSOR_TEST));
-  else
+  } else {
     CHECK_GL_ERROR(glDisable(GL_SCISSOR_TEST));
+  }
   CHECK_GL_ERROR(glScissor(mRenderContext.scissor.left,
                            mRenderContext.scissor.bottom,
                            mRenderContext.scissor.width,
                            mRenderContext.scissor.height));
 
   mRenderContext.depth_test = nuGContext::DepthTest();
-  if(mRenderContext.depth_test.enable)
+  if(mRenderContext.depth_test.enable) {
     CHECK_GL_ERROR(glEnable(GL_DEPTH_TEST));
-  else
+  } else {
     CHECK_GL_ERROR(glDisable(GL_DEPTH_TEST));
+  }
   CHECK_GL_ERROR(glDepthFunc(mRenderContext.depth_test.function));
 
   mRenderContext.stencil_test = nuGContext::StencilTest();
-  if(mRenderContext.stencil_test.enable)
+  if(mRenderContext.stencil_test.enable) {
     CHECK_GL_ERROR(glEnable(GL_STENCIL_TEST));
-  else
+  } else {
     CHECK_GL_ERROR(glDisable(GL_STENCIL_TEST));
+  }
   CHECK_GL_ERROR(glStencilFunc(mRenderContext.stencil_test.function,
                                mRenderContext.stencil_test.reference,
                                mRenderContext.stencil_test.mask));
   CHECK_GL_ERROR(glStencilOp(mRenderContext.stencil_test.stencil_fail,
                              mRenderContext.stencil_test.depth_fail,
                              mRenderContext.stencil_test.depth_pass));
+
+  mRenderContext.blending = nuGContext::Blending();
+  if(mRenderContext.blending.enable) {
+    CHECK_GL_ERROR(glEnable(GL_BLEND));
+  } else {
+    CHECK_GL_ERROR(glDisable(GL_BLEND));
+  }
+  CHECK_GL_ERROR(glBlendEquation(mRenderContext.blending.equation));
+  CHECK_GL_ERROR(glBlendFunc(mRenderContext.blending.source, mRenderContext.blending.destination));
+  nuColor color(mRenderContext.blending.color);
+  CHECK_GL_ERROR(glBlendColor(color.fr(), color.fg(), color.fb(), color.fa()));
 
   CHECK_GL_ERROR(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 }
@@ -450,45 +464,100 @@ void nuRenderGL::setViewport(RenderContext& context, const nuGContext::Viewport&
 
 void nuRenderGL::setFragmentOps(RenderContext& context, nuGContext::FragmentOps& fragment_ops)
 {
-  if(*fragment_ops.p_scissor != context.scissor) {
-    context.scissor = *fragment_ops.p_scissor;
-
-    if(context.scissor.enable)
+  if(context.scissor.enable != fragment_ops.p_scissor->enable) {
+    if(fragment_ops.p_scissor->enable) {
       CHECK_GL_ERROR(glEnable(GL_SCISSOR_TEST));
-    else
+    } else {
       CHECK_GL_ERROR(glDisable(GL_SCISSOR_TEST));
-
-    CHECK_GL_ERROR(glScissor(context.scissor.left,
-                             context.scissor.bottom,
-                             context.scissor.width,
-                             context.scissor.height));
+    }
+    context.scissor.enable = fragment_ops.p_scissor->enable;
   }
 
-  if(*fragment_ops.p_depth_test != context.depth_test) {
-    context.depth_test = *fragment_ops.p_depth_test;
+  if(fragment_ops.p_scissor->left != context.scissor.left ||
+     fragment_ops.p_scissor->bottom != context.scissor.bottom ||
+     fragment_ops.p_scissor->width != context.scissor.width ||
+     fragment_ops.p_scissor->height != context.scissor.height) {
+    CHECK_GL_ERROR(glScissor(fragment_ops.p_scissor->left,
+                             fragment_ops.p_scissor->bottom,
+                             fragment_ops.p_scissor->width,
+                             fragment_ops.p_scissor->height));
 
-    if(context.depth_test.enable)
+    context.scissor.left = fragment_ops.p_scissor->left;
+    context.scissor.bottom = fragment_ops.p_scissor->bottom;
+    context.scissor.width = fragment_ops.p_scissor->width;
+    context.scissor.height = fragment_ops.p_scissor->height;
+  }
+
+  if(context.depth_test.enable != fragment_ops.p_depth_test->enable) {
+    if(fragment_ops.p_depth_test->enable) {
       CHECK_GL_ERROR(glEnable(GL_DEPTH_TEST));
-    else
+    } else {
       CHECK_GL_ERROR(glDisable(GL_DEPTH_TEST));
-
-    CHECK_GL_ERROR(glDepthFunc(context.depth_test.function));
+    }
+    context.depth_test.enable = fragment_ops.p_depth_test->enable;
   }
 
-  if(*fragment_ops.p_stencil_test != context.stencil_test) {
-    context.stencil_test = *fragment_ops.p_stencil_test;
+  if(context.depth_test.function != fragment_ops.p_depth_test->function) {
+    CHECK_GL_ERROR(glDepthFunc(fragment_ops.p_depth_test->function));
+    context.depth_test.function = fragment_ops.p_depth_test->function;
+  }
 
-    if(context.stencil_test.enable)
+  if(context.stencil_test.enable != fragment_ops.p_stencil_test->enable) {
+    if(fragment_ops.p_stencil_test->enable) {
       CHECK_GL_ERROR(glEnable(GL_STENCIL_TEST));
-    else
+    } else {
       CHECK_GL_ERROR(glDisable(GL_STENCIL_TEST));
+    }
+    context.stencil_test.enable = fragment_ops.p_stencil_test->enable;
+  }
 
-    CHECK_GL_ERROR(glStencilFunc(context.stencil_test.function,
-                                 context.stencil_test.reference,
-                                 context.stencil_test.mask));
+  if(context.stencil_test.function != fragment_ops.p_stencil_test->function ||
+     context.stencil_test.reference != fragment_ops.p_stencil_test->reference ||
+     context.stencil_test.mask != fragment_ops.p_stencil_test->mask) {
+    CHECK_GL_ERROR(glStencilFunc(fragment_ops.p_stencil_test->function,
+                                 fragment_ops.p_stencil_test->reference,
+                                 fragment_ops.p_stencil_test->mask));
+    context.stencil_test.function = fragment_ops.p_stencil_test->function;
+    context.stencil_test.reference = fragment_ops.p_stencil_test->reference;
+    context.stencil_test.mask = fragment_ops.p_stencil_test->mask;
+  }
 
-    CHECK_GL_ERROR(glStencilOp(context.stencil_test.stencil_fail,
-                               context.stencil_test.depth_fail,
-                               context.stencil_test.depth_pass));
+  if(context.stencil_test.stencil_fail != fragment_ops.p_stencil_test->stencil_fail ||
+     context.stencil_test.depth_fail != fragment_ops.p_stencil_test->depth_fail ||
+     context.stencil_test.depth_pass != fragment_ops.p_stencil_test->depth_pass) {
+    CHECK_GL_ERROR(glStencilOp(fragment_ops.p_stencil_test->stencil_fail,
+                               fragment_ops.p_stencil_test->depth_fail,
+                               fragment_ops.p_stencil_test->depth_pass));
+    context.stencil_test.stencil_fail = fragment_ops.p_stencil_test->stencil_fail;
+    context.stencil_test.depth_fail = fragment_ops.p_stencil_test->depth_fail;
+    context.stencil_test.depth_pass = fragment_ops.p_stencil_test->depth_pass;
+  }
+
+  if(context.blending.enable != fragment_ops.p_blending->enable) {
+    if(fragment_ops.p_blending->enable) {
+      CHECK_GL_ERROR(glEnable(GL_BLEND));
+    } else {
+      CHECK_GL_ERROR(glDisable(GL_BLEND));
+    }
+    context.blending.enable = fragment_ops.p_blending->enable;
+  }
+
+  if(context.blending.equation != fragment_ops.p_blending->equation) {
+    CHECK_GL_ERROR(glBlendEquation(fragment_ops.p_blending->equation));
+    context.blending.equation = fragment_ops.p_blending->equation;
+  }
+
+  if(context.blending.source != fragment_ops.p_blending->source ||
+     context.blending.destination != fragment_ops.p_blending->destination) {
+    CHECK_GL_ERROR(glBlendFunc(fragment_ops.p_blending->source,
+                               fragment_ops.p_blending->destination));
+    context.blending.source = fragment_ops.p_blending->source;
+    context.blending.destination = fragment_ops.p_blending->destination;
+  }
+
+  if(context.blending.color != fragment_ops.p_blending->color) {
+    nuColor color(fragment_ops.p_blending->color);
+    CHECK_GL_ERROR(glBlendColor(color.fr(), color.fg(), color.fb(), color.fa()));
+    context.blending.color = fragment_ops.p_blending->color;
   }
 }

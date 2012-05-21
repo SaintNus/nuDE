@@ -43,6 +43,7 @@ class nuRenderGL : public nuObject
     nuGContext::Scissor scissor;
     nuGContext::DepthTest depth_test;
     nuGContext::StencilTest stencil_test;
+    nuGContext::Blending blending;
 
     void reset(void) {
       p_shader_program = nullptr;
