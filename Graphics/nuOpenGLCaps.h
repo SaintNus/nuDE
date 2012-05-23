@@ -15,6 +15,8 @@ class nuOpenGLCaps
   GLint mMajorVersion;
   GLint mMinorVersion;
 
+  GLint mMaxAttributes;
+
   GLint mMaxCombinedUniformBlocks;
   GLint mMaxVertexUniformBlocks;
   GLint mMaxGeometryUniformBlocks;
@@ -70,6 +72,10 @@ public:
 
   GLint getMaxCombinedFragmentUniformComponents(void) const {
     return mMaxCombinedFragmentUniformComponents;
+  }
+
+  GLint getMaxAttributes(void) const {
+    return mMaxAttributes;
   }
 
 };

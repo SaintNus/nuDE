@@ -84,9 +84,11 @@ void nuGContext::begin(i64 frame_id, Tag* p_tag, ui32 tag_num)
   mCurrentDrawElements.p_vertex_array = nullptr;
   mCurrentDrawElements.p_vertex_buffer = nullptr;
   mCurrentDrawElements.p_element_buffer = nullptr;
+  mCurrentDrawElements.p_immediate_array = nullptr;
 
   mCurrentDrawElements.primitive_mode = 0;
   mCurrentDrawElements.element_num = 0;
+  mCurrentDrawElements.immediate_num = 0;
 
   mpViewport = nullptr;
   mViewportChanged = 1;
@@ -269,7 +271,7 @@ void nuGContext::drawElements(nude::PRIMITIVE_MODE primitive_mode, ui32 element_
   NU_ASSERT_C(mCurrentDrawElements.program_object.p_shader_program);
   NU_ASSERT_C(mCurrentDrawElements.p_vertex_buffer);
   NU_ASSERT_C(mCurrentDrawElements.p_element_buffer);
-  NU_ASSERT_C(mCurrentDrawElements.p_vertex_array);
+  NU_ASSERT_C(mCurrentDrawElements.p_vertex_array || mCurrentDrawElements.p_immediate_array);
   NU_ASSERT_C(mpTag != nullptr);
 
   DrawCmd< DrawElements >* p_draw = mBuffer.allocBuffer< DrawCmd< DrawElements > >();
@@ -284,7 +286,17 @@ void nuGContext::drawElements(nude::PRIMITIVE_MODE primitive_mode, ui32 element_
     initializeFragmentOps(p_draw->data.fragment_ops);
     setProgramObject(p_draw->data.program_object);
 
-    p_draw->data.p_vertex_array = mCurrentDrawElements.p_vertex_array;
+    if(mCurrentDrawElements.p_vertex_array) {
+      p_draw->data.p_vertex_array = mCurrentDrawElements.p_vertex_array;
+      p_draw->data.p_immediate_array = nullptr;
+      p_draw->data.immediate_num = 0;
+    } else {
+      NU_ASSERT_C(mCurrentDrawElements.p_immediate_array && mCurrentDrawElements.immediate_num > 0);
+      p_draw->data.p_vertex_array = nullptr;
+      p_draw->data.p_immediate_array = mCurrentDrawElements.p_immediate_array;
+      p_draw->data.immediate_num = mCurrentDrawElements.immediate_num;
+    }
+
     p_draw->data.p_vertex_buffer = mCurrentDrawElements.p_vertex_buffer;
     p_draw->data.p_element_buffer = mCurrentDrawElements.p_element_buffer;
 
@@ -535,4 +547,20 @@ void nuGContext::setBlendColor(const nuColor& color)
     mCurrentBlending.color = color.rgba;
     mBlendingChanged = 1;
   }
+}
+
+nuGContext::ArrayDeclaration nuGContext::declareArray(ui32 array_num)
+{
+  nuGContext::ArrayDeclaration decl;
+  void* p_buffer = mBuffer.allocBuffer(sizeof(nuVertexArray::Array) * array_num);
+
+  decl.mpVertexArray = new(p_buffer) nuVertexArray::Array[array_num];
+  mCurrentDrawElements.p_immediate_array = decl.mpVertexArray;
+
+  decl.mCount = array_num;
+  mCurrentDrawElements.immediate_num = decl.mCount;
+
+  mCurrentDrawElements.p_vertex_array = nullptr;
+
+  return decl;
 }

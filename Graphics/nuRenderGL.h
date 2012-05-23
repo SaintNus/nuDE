@@ -39,6 +39,9 @@ class nuRenderGL : public nuObject
     nuVertexArray* p_vertex_array;
     nuVertexBuffer* p_vertex_buffer;
     nuElementBuffer* p_element_buffer;
+    nuVertexArray::Array* p_immediate_array;
+    ui32 immediate_num;
+
     nuGContext::Viewport viewport;
     nuGContext::Scissor scissor;
     nuGContext::DepthTest depth_test;
@@ -50,6 +53,8 @@ class nuRenderGL : public nuObject
       p_vertex_array = nullptr;
       p_vertex_buffer = nullptr;
       p_element_buffer = nullptr;
+      p_immediate_array = nullptr;
+      immediate_num = 0;
     }
   };
 
@@ -66,6 +71,11 @@ class nuRenderGL : public nuObject
   nuOpenGLCaps mCapabilities;
   nuRect mViewport;
 
+  GLuint mDefaultVertexArray;
+  nuVertexArray::Array mVertexArray[nuVertexArray::MAX_VERTEX_ATTRIBUTE];
+  GLuint mDefaultVertexBufferBinding;
+  ui32 mCurrentVertexArray;
+
   void executeClear(RenderContext& context, void* clear_cmd);
   void executeDrawElements(RenderContext& context, void* draw_cmd);
 
@@ -78,6 +88,10 @@ class nuRenderGL : public nuObject
 public:
   nuRenderGL();
   ~nuRenderGL();
+  
+  GLuint getDefaultVertexArray(void) const {
+    return mDefaultVertexArray;
+  }
 
   void setNextTagList(nuGContext::TagList& next) {
     mpNextTagList = &next;

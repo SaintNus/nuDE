@@ -14,7 +14,10 @@ nuRenderGL::nuRenderGL()
     : mFrameID(0),
       mLock(INIT_PHASE),
       mpNextTagList(nullptr),
-      mpCurrentTagList(nullptr)
+      mpCurrentTagList(nullptr),
+      mDefaultVertexArray(0),
+      mCurrentVertexArray(0),
+      mDefaultVertexBufferBinding(0)
 {
   // None...
 }
@@ -26,6 +29,12 @@ nuRenderGL::~nuRenderGL()
 
 void nuRenderGL::initialize(nude::ShaderList& shader_list)
 {
+  CHECK_GL_ERROR(glGenVertexArrays(1, &mDefaultVertexArray));
+  CHECK_GL_ERROR(glBindVertexArray(mDefaultVertexArray));
+
+  for(ui32 ui = 0; ui < nuVertexArray::MAX_VERTEX_ATTRIBUTE; ui++)
+    CHECK_GL_ERROR(glDisableVertexAttribArray(static_cast< GLuint >(ui)));
+
   mCapabilities.initialize();
   mResourceManager.setShaderList(shader_list);
 
@@ -98,6 +107,9 @@ void nuRenderGL::terminate(void)
 {
   mLock.lockWhenCondition(SETUP_PHASE);
   mLock.unlockWithCondition(EXECUTE_PHASE);
+
+  if(mDefaultVertexArray)
+    CHECK_GL_ERROR(glDeleteVertexArrays(1, &mDefaultVertexArray));
 }
 
 bool nuRenderGL::render(void)
@@ -137,8 +149,10 @@ bool nuRenderGL::render(void)
 i64 nuRenderGL::updateGraphicResources(void)
 {
   mFrameID++;
+
   mResourceManager.updateStaticResource(mFrameID);
   mResourceManager.updateDynamicResource(mFrameID);
+
   return mFrameID;
 }
 
@@ -181,7 +195,7 @@ void nuRenderGL::executeDrawElements(RenderContext& context, void* draw_cmd)
 
   if(p_draw->data.program_object.p_shader_program->getHandle() == 0)
     return;
-  if(p_draw->data.p_vertex_array->getHandle() == 0)
+  if(p_draw->data.p_vertex_array && p_draw->data.p_vertex_array->getHandle() == 0)
     return;
   if(p_draw->data.p_vertex_buffer->getHandle() == 0)
     return;
@@ -199,10 +213,50 @@ void nuRenderGL::executeDrawElements(RenderContext& context, void* draw_cmd)
   if(context.p_vertex_buffer != p_draw->data.p_vertex_buffer)
     context.p_vertex_buffer = p_draw->data.p_vertex_buffer;
 
-  if(context.p_vertex_array->getVertexHandle() != context.p_vertex_buffer->getHandle())
-    context.p_vertex_array->reset(context.p_vertex_buffer->getHandle());
-  else
-    CHECK_GL_ERROR(glBindVertexArray(context.p_vertex_array->getHandle()));
+  if(context.p_vertex_array) {
+    if(context.p_vertex_array->getVertexHandle() != context.p_vertex_buffer->getHandle())
+      context.p_vertex_array->reset(context.p_vertex_buffer->getHandle());
+    else
+      CHECK_GL_ERROR(glBindVertexArray(context.p_vertex_array->getHandle()));
+  } else {
+    ui32 count = mCurrentVertexArray < p_draw->data.immediate_num ? p_draw->data.immediate_num : mCurrentVertexArray;
+    NU_ASSERT_C(count < nuVertexArray::MAX_VERTEX_ATTRIBUTE);
+
+    CHECK_GL_ERROR(glBindVertexArray(mDefaultVertexArray));
+    if(mDefaultVertexBufferBinding != context.p_vertex_buffer->getHandle()) {
+      CHECK_GL_ERROR(glBindBuffer(GL_ARRAY_BUFFER, context.p_vertex_buffer->getHandle()));
+      mDefaultVertexBufferBinding = context.p_vertex_buffer->getHandle();
+    }
+
+    for(ui32 ui = 0; ui < count; ui++) {
+      if(ui < p_draw->data.immediate_num) {
+        if(ui < mCurrentVertexArray) {
+          if(mVertexArray[ui] != p_draw->data.p_immediate_array[ui]) {
+            mVertexArray[ui] = p_draw->data.p_immediate_array[ui];
+            nuVertexArray::Array& va = mVertexArray[ui];
+            CHECK_GL_ERROR(glVertexAttribPointer(static_cast< GLuint>(ui),
+                                                 static_cast< GLint >(va.size),
+                                                 nuVertexArray::getAttributeType(va.type),
+                                                 va.normalized ? GL_TRUE : GL_FALSE,
+                                                 static_cast< GLsizei >(va.stride),
+                                                 reinterpret_cast< GLvoid* >(va.offset)));
+          }
+        } else {
+          CHECK_GL_ERROR(glEnableVertexAttribArray(static_cast< GLuint >(ui)));
+          nuVertexArray::Array& va = p_draw->data.p_immediate_array[ui];
+          CHECK_GL_ERROR(glVertexAttribPointer(static_cast< GLuint>(ui),
+                                               static_cast< GLint >(va.size),
+                                               nuVertexArray::getAttributeType(va.type),
+                                               va.normalized ? GL_TRUE : GL_FALSE,
+                                               static_cast< GLsizei >(va.stride),
+                                               reinterpret_cast< GLvoid* >(va.offset)));
+        }
+      } else {
+        CHECK_GL_ERROR(glDisableVertexAttribArray(static_cast< GLuint >(ui)));
+      }
+    }
+    mCurrentVertexArray = p_draw->data.immediate_num;
+  }
 
   if(context.p_element_buffer != p_draw->data.p_element_buffer) {
     const GLuint restart_idx[] = {

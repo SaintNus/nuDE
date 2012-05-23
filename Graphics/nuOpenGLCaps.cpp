@@ -26,4 +26,6 @@ void nuOpenGLCaps::initialize(void)
                                &mMaxCombinedGeometryUniformComponents));
   CHECK_GL_ERROR(glGetIntegerv(GL_MAX_COMBINED_FRAGMENT_UNIFORM_COMPONENTS,
                                &mMaxCombinedFragmentUniformComponents));
+
+  CHECK_GL_ERROR(glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &mMaxAttributes));
 }

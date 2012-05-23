@@ -115,6 +115,33 @@ public:
 
   };
 
+  class ArrayDeclaration {
+    friend nuGContext;
+
+    nuVertexArray::Array* mpVertexArray;
+    ui32 mCount;
+
+  public:
+    ArrayDeclaration()
+        : mpVertexArray(nullptr),
+          mCount(0)
+    {
+      // None...
+    }
+
+    ~ArrayDeclaration() {}
+    
+    ui32 getCount(void) const {
+      return mCount;
+    }
+
+    nuVertexArray::Array& getDeclaration(ui32 index) {
+      NU_ASSERT_C(mCount > 0 && index < mCount);
+      return mpVertexArray[index];
+    }
+
+  };
+
 private:
   class Buffer {
     nuGContextBuffer& mContextBuffer;
@@ -655,8 +682,12 @@ private:
     nuVertexArray* p_vertex_array;
     nuVertexBuffer* p_vertex_buffer;
     nuElementBuffer* p_element_buffer;
+    nuVertexArray::Array* p_immediate_array;
+
     ui32 primitive_mode: 4;
     ui32 element_num: 28;
+    ui32 immediate_num: 8;
+    ui32 reserved: 24;
   };
   typedef DrawCmd< DrawElements > DrawElementsCmd;
 
@@ -770,6 +801,8 @@ public:
                    nude::BLEND_FUNC source,
                    nude::BLEND_FUNC destination);
   void setBlendColor(const nuColor& color);
+
+  ArrayDeclaration declareArray(ui32 array_num);
 
 };
 

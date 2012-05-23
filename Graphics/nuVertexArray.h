@@ -51,6 +51,18 @@ public:
       // None...
     }
     ~Array() {}
+
+    bool operator == (const Array& array) const {
+      if(size == array.size && type == array.type && normalized == array.normalized &&
+         offset == array.offset && stride == array.stride)
+        return true;
+      return false;
+    }
+
+    bool operator != (const Array& array) const {
+      return !(*this == array);
+    }
+
   };
 
 private:                    
@@ -66,7 +78,7 @@ private:
 
   void update(void);
 
-  GLenum getAttributeType(ATTRIBUTE_TYPE type) const {
+  static GLenum getAttributeType(ATTRIBUTE_TYPE type) {
     const GLenum attr_table[] = {
       GL_BYTE,
       GL_UNSIGNED_BYTE,

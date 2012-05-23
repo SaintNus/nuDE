@@ -49,7 +49,7 @@ struct Vertex {
 
 
 nuDEEntityTest::nuDEEntityTest()
-    : mPosX(0.0f),
+    : mPosX(-0.2f),
       mDir(1.0f),
       mInit(false),
       mIdx(0)
@@ -67,7 +67,7 @@ nuDEEntityTest::nuDEEntityTest()
   }
   mUniformBuffer->endInitialize();
 
-  mVertexBuffer = nuApplication::renderGL().createVertexBuffer(sizeof(Vertex) * 3,
+  mVertexBuffer = nuApplication::renderGL().createVertexBuffer(sizeof(Vertex) * 4,
                                                                nuGResource::DYNAMIC_RESOURCE);
   mVertexBuffer->initialize();
 
@@ -79,9 +79,9 @@ nuDEEntityTest::nuDEEntityTest()
                         nuVertexArray::Array(4, nuVertexArray::UNSIGNED_INT_8, true, sizeof(Vertex), sizeof(f32) * 3));
   mVertexArray->end();
 
-  ui16 idx[3] = { 0, 1, 2 };
+  ui16 idx[4] = { 0, 1, 2, 3 };
   mElementBuffer = nuApplication::renderGL().createElementBuffer(nuElementBuffer::UNSIGNED_INT_16,
-                                                                 3,
+                                                                 4,
                                                                  nuGResource::nuGResource::STATIC_RESOURCE);
   {
     void* p_buffer = mElementBuffer->beginInitialize();
@@ -121,15 +121,20 @@ void nuDEEntityTest::setup(nuGSetupContext& setup)
 
 void nuDEEntityTest::update(void)
 {
-  Vertex vtx[3] = {
+  Vertex vtx[4] = {
     {
-      { mPosX, 0.6f, 0.0f },
+      { mPosX, 0.3f, 0.0f },
       // 0xff0000ff,
       0xffffffff,
     },
     {
       { -0.2f, -0.3f, 0.0f },
       // 0xff00ff00,
+      0xffffffff,
+    },
+    {
+      { mPosX + 0.4f, 0.3f, 0.0f },
+      // 0xff0000ff,
       0xffffffff,
     },
     {
@@ -163,8 +168,8 @@ void nuDEEntityTest::update(void)
   }
 
   mPosX += 0.01f * mDir * nuApplication::instance()->getFrameTime();
-  if(fabsf(mPosX) > 0.2f) {
-    mPosX = mDir * 0.2f;
+  if(fabsf(mPosX + 0.2f) > 0.2f) {
+    mPosX = -0.2f + mDir * 0.2f;
     mDir *= -1.0f;
   }
 }
@@ -193,10 +198,17 @@ void nuDEEntityTest::draw(nuGContext& context)
     }
     context.setDepthTest(true, nude::DEPTHSTENCIL_LEQUAL);
     context.setBlending(true, nude::BLEND_EQ_ADD, nude::BLEND_SRC_ALPHA, nude::BLEND_ONE_MINUS_SRC_ALPHA);
-    context.setVertexArray(mVertexArray);
+    // context.setVertexArray(mVertexArray);
     context.setVertexBuffer(mVertexBuffer);
     context.setElementBuffer(mElementBuffer);
-    context.drawElements(nude::TRIANGLES, 3);
+
+    nuGContext::ArrayDeclaration decl = context.declareArray(nude::DebugAttribute_Num);
+    decl.getDeclaration(nude::Debug_inPosition) =
+        nuVertexArray::Array(3, nuVertexArray::FLOAT, false, sizeof(Vertex), 0);
+    decl.getDeclaration(nude::Debug_inColor) =
+        nuVertexArray::Array(4, nuVertexArray::UNSIGNED_INT_8, true, sizeof(Vertex), sizeof(f32) * 3);
+
+    context.drawElements(nude::TRIANGLE_STRIP, 4);
   }
   context.endDraw();
 }

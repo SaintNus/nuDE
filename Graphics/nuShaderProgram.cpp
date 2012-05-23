@@ -76,8 +76,9 @@ void nuShaderProgram::update(void)
     CHECK_GL_ERROR(glAttachShader(mProgramID, data.fsh_id));
 
     if(mGlslProgram.attributes) {
-      for(GLuint ui = 0; ui < mGlslProgram.attribute_num; ui++)
+      for(GLuint ui = 0; ui < mGlslProgram.attribute_num; ui++) {
         CHECK_GL_ERROR(glBindAttribLocation(mProgramID, ui, mGlslProgram.attributes[ui].name));
+      }
     }
 
     CHECK_GL_ERROR(glLinkProgram(mProgramID));

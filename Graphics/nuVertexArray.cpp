@@ -49,8 +49,6 @@ void nuVertexArray::update(void)
 
   for(ui32 ui = mArrayNum; ui < MAX_VERTEX_ATTRIBUTE; ui++)
     CHECK_GL_ERROR(glDisableVertexAttribArray(static_cast< GLuint >(ui)));
-
-  CHECK_GL_ERROR(glBindVertexArray(0));
 }
 
 void nuVertexArray::begin(ui32 array_num)
