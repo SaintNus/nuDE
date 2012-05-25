@@ -20,8 +20,9 @@ class nuDEEntityTest : public nuEntity
   f32 mDir;
   bool mInit;
   ui32 mIdx;
+  uint mVBIdx;
 
-  nude::VertexBuffer mVertexBuffer;
+  nude::VertexBuffer mVertexBuffer[2];
   nude::ElementBuffer mElementBuffer;
   nude::VertexArray mVertexArray;
   nude::ShaderProgram mShaderProgram;

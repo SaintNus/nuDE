@@ -655,6 +655,24 @@ private:
     UniformBlock* p_block;
   };
 
+  struct Rasterizer {
+    bool culling;
+    bool line_smooth;
+    f32 line_width;
+    nude::CULL_FACE cull_face;
+    nude::FRONT_FACE front_face;
+
+    Rasterizer()
+        : culling(false),
+          line_smooth(false),
+          line_width(1.0f),
+          cull_face(nude::CULL_BACK),
+          front_face(nude::FRONT_COUNTER_CLOCKWISE)
+    {
+      // None...
+    }
+  };
+
   struct FragmentOps {
     const Scissor* p_scissor;
     const DepthTest* p_depth_test;
@@ -679,6 +697,7 @@ private:
   struct DrawElements {
     ProgramObject program_object;
     FragmentOps fragment_ops;
+    Rasterizer* p_rasterizer;
     nuVertexArray* p_vertex_array;
     nuVertexBuffer* p_vertex_buffer;
     nuElementBuffer* p_element_buffer;
@@ -722,7 +741,8 @@ private:
       ui32 mDepthTestChanged: 1;
       ui32 mStencilTestChanged: 1;
       ui32 mBlendingChanged: 1;
-      ui32 mReserved: 27;
+      ui32 mRasterizerChanged: 1;
+      ui32 mReserved: 26;
     };
   };
 
@@ -741,6 +761,9 @@ private:
   Blending mCurrentBlending;
   Blending* mpBlending;
 
+  Rasterizer mCurrentRasterizer;
+  Rasterizer* mpRasterizer;
+
   nuGContext();
 
   void sortTag(void);
@@ -757,6 +780,7 @@ private:
   void setProgramObject(ProgramObject& po);
   Viewport* getViewport(void);
   void initializeFragmentOps(FragmentOps& fragment_ops);
+  Rasterizer* getRasterizer(void);
 
 public:
   nuGContext(nuGContextBuffer& ctx_buffer);
@@ -803,6 +827,10 @@ public:
   void setBlendColor(const nuColor& color);
 
   ArrayDeclaration declareArray(ui32 array_num);
+
+  void setLineDraw(bool smooth, f32 width);
+  void setFrontFace(nude::FRONT_FACE front_face);
+  void setCulling(bool enable, nude::CULL_FACE cull_face);
 
 };
 

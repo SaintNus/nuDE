@@ -24,8 +24,8 @@
 		C79DFF1F151A3E0500A1FA32 /* nuElementBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = C79DFF1B151A3E0400A1FA32 /* nuElementBuffer.h */; settings = {ATTRIBUTES = (); }; };
 		C79DFF20151A3E0500A1FA32 /* nuVertexBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C79DFF1C151A3E0400A1FA32 /* nuVertexBuffer.cpp */; };
 		C79DFF21151A3E0500A1FA32 /* nuVertexBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = C79DFF1D151A3E0500A1FA32 /* nuVertexBuffer.h */; settings = {ATTRIBUTES = (); }; };
-		C79E4D6E14E2D1F0001E60BF /* nuRenderBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C79E4D6C14E2D1F0001E60BF /* nuRenderBuffer.cpp */; };
-		C79E4D6F14E2D1F0001E60BF /* nuRenderBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = C79E4D6D14E2D1F0001E60BF /* nuRenderBuffer.h */; settings = {ATTRIBUTES = (); }; };
+		C79E4D6E14E2D1F0001E60BF /* nuFrameBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C79E4D6C14E2D1F0001E60BF /* nuFrameBuffer.cpp */; };
+		C79E4D6F14E2D1F0001E60BF /* nuFrameBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = C79E4D6D14E2D1F0001E60BF /* nuFrameBuffer.h */; settings = {ATTRIBUTES = (); }; };
 		C7A2C49F145D7D0F00ACDC27 /* nuGContext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7A2C49D145D7D0F00ACDC27 /* nuGContext.cpp */; };
 		C7A2C4A0145D7D0F00ACDC27 /* nuGContext.h in Headers */ = {isa = PBXBuildFile; fileRef = C7A2C49E145D7D0F00ACDC27 /* nuGContext.h */; settings = {ATTRIBUTES = (); }; };
 		C7AB761C14DE7DFD00A42A8C /* nuGResource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7AB761A14DE7DFD00A42A8C /* nuGResource.cpp */; };
@@ -67,8 +67,8 @@
 		C79DFF1B151A3E0400A1FA32 /* nuElementBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuElementBuffer.h; sourceTree = "<group>"; };
 		C79DFF1C151A3E0400A1FA32 /* nuVertexBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuVertexBuffer.cpp; sourceTree = "<group>"; };
 		C79DFF1D151A3E0500A1FA32 /* nuVertexBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuVertexBuffer.h; sourceTree = "<group>"; };
-		C79E4D6C14E2D1F0001E60BF /* nuRenderBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuRenderBuffer.cpp; sourceTree = "<group>"; };
-		C79E4D6D14E2D1F0001E60BF /* nuRenderBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuRenderBuffer.h; sourceTree = "<group>"; };
+		C79E4D6C14E2D1F0001E60BF /* nuFrameBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuFrameBuffer.cpp; sourceTree = "<group>"; };
+		C79E4D6D14E2D1F0001E60BF /* nuFrameBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuFrameBuffer.h; sourceTree = "<group>"; };
 		C7A2C49D145D7D0F00ACDC27 /* nuGContext.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuGContext.cpp; sourceTree = "<group>"; };
 		C7A2C49E145D7D0F00ACDC27 /* nuGContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuGContext.h; sourceTree = "<group>"; };
 		C7AB761A14DE7DFD00A42A8C /* nuGResource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuGResource.cpp; sourceTree = "<group>"; };
@@ -140,8 +140,8 @@
 				C7DDD81D1550012F002B4D5A /* nuGSetupContext.h */,
 				C729CC7A1567C58200E55BF9 /* nuOpenGLCaps.cpp */,
 				C729CC7B1567C58300E55BF9 /* nuOpenGLCaps.h */,
-				C79E4D6C14E2D1F0001E60BF /* nuRenderBuffer.cpp */,
-				C79E4D6D14E2D1F0001E60BF /* nuRenderBuffer.h */,
+				C79E4D6C14E2D1F0001E60BF /* nuFrameBuffer.cpp */,
+				C79E4D6D14E2D1F0001E60BF /* nuFrameBuffer.h */,
 				C785D085145D44D300E64F10 /* nuRenderGL.cpp */,
 				C785D086145D44D300E64F10 /* nuRenderGL.h */,
 				C7BECCEA15556977006FA080 /* nuShaderInfo.h */,
@@ -172,7 +172,7 @@
 				C7AB761D14DE7DFD00A42A8C /* nuGResource.h in Headers */,
 				C7AB762714DE8A7E00A42A8C /* nuGResManager.h in Headers */,
 				C7AB762B14DEDF9400A42A8C /* Graphics.h in Headers */,
-				C79E4D6F14E2D1F0001E60BF /* nuRenderBuffer.h in Headers */,
+				C79E4D6F14E2D1F0001E60BF /* nuFrameBuffer.h in Headers */,
 				C79DFF1F151A3E0500A1FA32 /* nuElementBuffer.h in Headers */,
 				C79DFF21151A3E0500A1FA32 /* nuVertexBuffer.h in Headers */,
 				C7DDD81F1550012F002B4D5A /* nuGSetupContext.h in Headers */,
@@ -262,7 +262,7 @@
 				C7A2C49F145D7D0F00ACDC27 /* nuGContext.cpp in Sources */,
 				C7AB761C14DE7DFD00A42A8C /* nuGResource.cpp in Sources */,
 				C7AB762614DE8A7E00A42A8C /* nuGResManager.cpp in Sources */,
-				C79E4D6E14E2D1F0001E60BF /* nuRenderBuffer.cpp in Sources */,
+				C79E4D6E14E2D1F0001E60BF /* nuFrameBuffer.cpp in Sources */,
 				C79DFF1E151A3E0500A1FA32 /* nuElementBuffer.cpp in Sources */,
 				C79DFF20151A3E0500A1FA32 /* nuVertexBuffer.cpp in Sources */,
 				C7DDD81E1550012F002B4D5A /* nuGSetupContext.cpp in Sources */,

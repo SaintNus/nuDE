@@ -47,6 +47,7 @@ class nuRenderGL : public nuObject
     nuGContext::DepthTest depth_test;
     nuGContext::StencilTest stencil_test;
     nuGContext::Blending blending;
+    nuGContext::Rasterizer rasterizer;
 
     void reset(void) {
       p_shader_program = nullptr;
@@ -84,6 +85,7 @@ class nuRenderGL : public nuObject
   void setUniformBlock(RenderContext& context, nuGContext::ProgramObject& program);
   void setViewport(RenderContext& context, const nuGContext::Viewport& viewport);
   void setFragmentOps(RenderContext& context, nuGContext::FragmentOps& fragment_ops);
+  void setRasterizer(RenderContext& context, nuGContext::Rasterizer& rasterizer);
 
 public:
   nuRenderGL();

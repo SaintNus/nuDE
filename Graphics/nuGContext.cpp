@@ -27,7 +27,8 @@ nuGContext::nuGContext(nuGContextBuffer& ctx_buffer)
       mpScissor(nullptr),
       mpDepthTest(nullptr),
       mpStencilTest(nullptr),
-      mpBlending(nullptr)
+      mpBlending(nullptr),
+      mpRasterizer(nullptr)
 {
   mCurrentPriority.value = 0;
 }
@@ -104,6 +105,9 @@ void nuGContext::begin(i64 frame_id, Tag* p_tag, ui32 tag_num)
 
   mpBlending = nullptr;
   mBlendingChanged = 1;
+
+  mpRasterizer = nullptr;
+  mRasterizerChanged = 1;
 }
 
 void nuGContext::end(void)
@@ -285,6 +289,7 @@ void nuGContext::drawElements(nude::PRIMITIVE_MODE primitive_mode, ui32 element_
 
     initializeFragmentOps(p_draw->data.fragment_ops);
     setProgramObject(p_draw->data.program_object);
+    p_draw->data.p_rasterizer = getRasterizer();
 
     if(mCurrentDrawElements.p_vertex_array) {
       p_draw->data.p_vertex_array = mCurrentDrawElements.p_vertex_array;
@@ -563,4 +568,40 @@ nuGContext::ArrayDeclaration nuGContext::declareArray(ui32 array_num)
   mCurrentDrawElements.p_vertex_array = nullptr;
 
   return decl;
+}
+
+void nuGContext::setLineDraw(bool smooth, f32 width)
+{
+  if(smooth != mCurrentRasterizer.line_smooth || width != mCurrentRasterizer.line_width) {
+    mCurrentRasterizer.line_smooth = smooth;
+    mCurrentRasterizer.line_width = width;
+    mRasterizerChanged = 1;
+  }
+}
+
+void nuGContext::setFrontFace(nude::FRONT_FACE front_face)
+{
+  if(front_face != mCurrentRasterizer.front_face) {
+    mCurrentRasterizer.front_face = front_face;
+    mRasterizerChanged = 1;
+  }
+}
+
+void nuGContext::setCulling(bool enable, nude::CULL_FACE cull_face)
+{
+  if(enable != mCurrentRasterizer.culling || cull_face != mCurrentRasterizer.cull_face) {
+    mCurrentRasterizer.culling = enable;
+    mCurrentRasterizer.cull_face = cull_face;
+    mRasterizerChanged = 1;
+  }
+}
+
+nuGContext::Rasterizer* nuGContext::getRasterizer(void)
+{
+  if(mRasterizerChanged) {
+    mpRasterizer = mBuffer.allocBuffer< Rasterizer >();
+    *mpRasterizer = mCurrentRasterizer;
+    mRasterizerChanged = 0;
+  }
+  return mpRasterizer;
 }

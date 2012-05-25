@@ -100,6 +100,27 @@ void nuRenderGL::initialize(nude::ShaderList& shader_list)
   nuColor color(mRenderContext.blending.color);
   CHECK_GL_ERROR(glBlendColor(color.fr(), color.fg(), color.fb(), color.fa()));
 
+  mRenderContext.rasterizer.culling = false;
+  if(mRenderContext.rasterizer.culling) {
+    CHECK_GL_ERROR(glEnable(GL_CULL_FACE));
+  } else {
+    CHECK_GL_ERROR(glDisable(GL_CULL_FACE));
+  }
+
+  mRenderContext.rasterizer.line_smooth = false;
+  if(mRenderContext.rasterizer.line_smooth) {
+    CHECK_GL_ERROR(glEnable(GL_LINE_SMOOTH));
+  } else {
+    CHECK_GL_ERROR(glDisable(GL_LINE_SMOOTH));
+  }
+
+  mRenderContext.rasterizer.line_width = 1.0f;
+  CHECK_GL_ERROR(glLineWidth(mRenderContext.rasterizer.line_width));
+  mRenderContext.rasterizer.cull_face = nude::CULL_BACK;
+  CHECK_GL_ERROR(glCullFace(mRenderContext.rasterizer.cull_face));
+  mRenderContext.rasterizer.front_face = nude::FRONT_COUNTER_CLOCKWISE;
+  CHECK_GL_ERROR(glFrontFace(mRenderContext.rasterizer.front_face));
+
   CHECK_GL_ERROR(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 }
 
@@ -204,6 +225,7 @@ void nuRenderGL::executeDrawElements(RenderContext& context, void* draw_cmd)
 
   setViewport(context, *p_draw->p_viewport);
   setFragmentOps(context, p_draw->data.fragment_ops);
+  setRasterizer(context, *p_draw->data.p_rasterizer);
 
   setShaderProgram(context, p_draw->data.program_object);
 
@@ -613,5 +635,41 @@ void nuRenderGL::setFragmentOps(RenderContext& context, nuGContext::FragmentOps&
     nuColor color(fragment_ops.p_blending->color);
     CHECK_GL_ERROR(glBlendColor(color.fr(), color.fg(), color.fb(), color.fa()));
     context.blending.color = fragment_ops.p_blending->color;
+  }
+}
+
+void nuRenderGL::setRasterizer(RenderContext& context, nuGContext::Rasterizer& rasterizer)
+{
+  if(context.rasterizer.line_smooth != rasterizer.line_smooth) {
+    context.rasterizer.line_smooth = rasterizer.line_smooth;
+    if(context.rasterizer.line_smooth) {
+      CHECK_GL_ERROR(glEnable(GL_LINE_SMOOTH));
+    } else {
+      CHECK_GL_ERROR(glDisable(GL_LINE_SMOOTH));
+    }
+  }
+
+  if(context.rasterizer.line_width != rasterizer.line_width) {
+    context.rasterizer.line_width = rasterizer.line_width;
+    CHECK_GL_ERROR(glLineWidth(context.rasterizer.line_width));
+  }
+
+  if(context.rasterizer.culling != rasterizer.culling) {
+    context.rasterizer.culling = rasterizer.culling;
+    if(context.rasterizer.culling) {
+      CHECK_GL_ERROR(glEnable(GL_CULL_FACE));
+    } else {
+      CHECK_GL_ERROR(glDisable(GL_CULL_FACE));
+    }
+  }
+
+  if(context.rasterizer.cull_face != rasterizer.cull_face) {
+    context.rasterizer.cull_face = rasterizer.cull_face;
+    CHECK_GL_ERROR(glCullFace(context.rasterizer.cull_face));
+  }
+
+  if(context.rasterizer.front_face != rasterizer.front_face) {
+    context.rasterizer.front_face = rasterizer.front_face;
+    CHECK_GL_ERROR(glFrontFace(context.rasterizer.front_face));
   }
 }

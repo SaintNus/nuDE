@@ -52,7 +52,8 @@ nuDEEntityTest::nuDEEntityTest()
     : mPosX(-0.2f),
       mDir(1.0f),
       mInit(false),
-      mIdx(0)
+      mIdx(0),
+      mVBIdx(0)
 {
   nuApplication::resourceManager().createResource("res://Resources/resource_test.rtst");
 
@@ -67,9 +68,12 @@ nuDEEntityTest::nuDEEntityTest()
   }
   mUniformBuffer->endInitialize();
 
-  mVertexBuffer = nuApplication::renderGL().createVertexBuffer(sizeof(Vertex) * 4,
-                                                               nuGResource::DYNAMIC_RESOURCE);
-  mVertexBuffer->initialize();
+  mVertexBuffer[0] = nuApplication::renderGL().createVertexBuffer(sizeof(Vertex) * 4,
+                                                                  nuGResource::DYNAMIC_RESOURCE);
+  mVertexBuffer[0]->initialize();
+  mVertexBuffer[1] = nuApplication::renderGL().createVertexBuffer(sizeof(Vertex) * 4,
+                                                                  nuGResource::DYNAMIC_RESOURCE);
+  mVertexBuffer[1]->initialize();
 
   mVertexArray = nuApplication::renderGL().createVertexArray();
   mVertexArray->begin(nude::DebugAttribute_Num);
@@ -106,15 +110,17 @@ nuDEEntityTest::nuDEEntityTest()
 
 nuDEEntityTest::~nuDEEntityTest()
 {
-  mVertexBuffer.release();
+  mVertexBuffer[0].release();
+  mVertexBuffer[1].release();
   mElementBuffer.release();
   mVertexArray.release();
 }
 
 void nuDEEntityTest::setup(nuGSetupContext& setup)
 {
-  if(mVertexBuffer.isValid())
-    setup.map(*mVertexBuffer);
+  mVBIdx ^= 1;
+  if(mVertexBuffer[mVBIdx].isValid())
+    setup.map(*mVertexBuffer[mVBIdx]);
   if(mUniformBuffer.isValid())
     setup.map(*mUniformBuffer);
 }
@@ -144,8 +150,8 @@ void nuDEEntityTest::update(void)
     },
   };
 
-  if(mVertexBuffer.isValid()) {
-    void* p_buffer = mVertexBuffer->getBuffer();
+  if(mVertexBuffer[mVBIdx].isValid()) {
+    void* p_buffer = mVertexBuffer[mVBIdx]->getBuffer();
     if(p_buffer)
       memcpy(p_buffer, vtx, sizeof(vtx));
   }
@@ -181,7 +187,7 @@ void nuDEEntityTest::draw(nuGContext& context)
 
   context.beginDraw(mShaderProgram);
   {
-    f32 vv[4] = { 1.0f, 1.0f, 1.0f, 0.5f };
+    f32 vv[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
 
     f32 vvv[3][4] = {
       { 0.1f, 0.0f, 0.0f, 1.0f },
@@ -199,8 +205,10 @@ void nuDEEntityTest::draw(nuGContext& context)
     context.setDepthTest(true, nude::DEPTHSTENCIL_LEQUAL);
     context.setBlending(true, nude::BLEND_EQ_ADD, nude::BLEND_SRC_ALPHA, nude::BLEND_ONE_MINUS_SRC_ALPHA);
     // context.setVertexArray(mVertexArray);
-    context.setVertexBuffer(mVertexBuffer);
+    context.setVertexBuffer(mVertexBuffer[mVBIdx]);
     context.setElementBuffer(mElementBuffer);
+    context.setFrontFace(nude::FRONT_COUNTER_CLOCKWISE);
+    context.setCulling(true, nude::CULL_BACK);
 
     nuGContext::ArrayDeclaration decl = context.declareArray(nude::DebugAttribute_Num);
     decl.getDeclaration(nude::Debug_inPosition) =

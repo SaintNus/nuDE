@@ -28,4 +28,7 @@ void nuOpenGLCaps::initialize(void)
                                &mMaxCombinedFragmentUniformComponents));
 
   CHECK_GL_ERROR(glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &mMaxAttributes));
+  CHECK_GL_ERROR(glGetFloatv(GL_ALIASED_LINE_WIDTH_RANGE, &mAliasedLineWidthRange));
+  CHECK_GL_ERROR(glGetFloatv(GL_SMOOTH_LINE_WIDTH_RANGE, &mSmoothLineWidthRange));
+  CHECK_GL_ERROR(glGetFloatv(GL_SMOOTH_LINE_WIDTH_GRANULARITY, &mSmoothLineWidthGranularity));
 }

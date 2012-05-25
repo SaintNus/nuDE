@@ -27,6 +27,9 @@ class nuOpenGLCaps
   GLint mMaxCombinedVertexUniformComponents;
   GLint mMaxCombinedGeometryUniformComponents;
   GLint mMaxCombinedFragmentUniformComponents;
+  GLfloat mAliasedLineWidthRange;
+  GLfloat mSmoothLineWidthRange;
+  GLfloat mSmoothLineWidthGranularity;
 
   nuOpenGLCaps() {}
   ~nuOpenGLCaps() {}
@@ -76,6 +79,18 @@ public:
 
   GLint getMaxAttributes(void) const {
     return mMaxAttributes;
+  }
+
+  GLfloat getAliasedLineWidthRange(void) const {
+    return mAliasedLineWidthRange;
+  }
+
+  GLfloat getSmoothLineWidthRange(void) const {
+    return mSmoothLineWidthRange;
+  }
+
+  GLfloat getSmoothLineWidthGranularity(void) const {
+    return mSmoothLineWidthGranularity;
   }
 
 };
