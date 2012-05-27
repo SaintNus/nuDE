@@ -41,6 +41,8 @@
 		C7BECCEF15556977006FA080 /* nuShaderInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = C7BECCEA15556977006FA080 /* nuShaderInfo.h */; settings = {ATTRIBUTES = (); }; };
 		C7C62D32155F57720002DDA6 /* nuGDebug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7C62D30155F57720002DDA6 /* nuGDebug.cpp */; };
 		C7C62D33155F57720002DDA6 /* nuGDebug.h in Headers */ = {isa = PBXBuildFile; fileRef = C7C62D31155F57720002DDA6 /* nuGDebug.h */; };
+		C7CF23E6156FDF9F006FE95A /* nuTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7CF23E4156FDF9F006FE95A /* nuTexture.cpp */; };
+		C7CF23E7156FDF9F006FE95A /* nuTexture.h in Headers */ = {isa = PBXBuildFile; fileRef = C7CF23E5156FDF9F006FE95A /* nuTexture.h */; };
 		C7DDD81E1550012F002B4D5A /* nuGSetupContext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7DDD81C1550012F002B4D5A /* nuGSetupContext.cpp */; };
 		C7DDD81F1550012F002B4D5A /* nuGSetupContext.h in Headers */ = {isa = PBXBuildFile; fileRef = C7DDD81D1550012F002B4D5A /* nuGSetupContext.h */; settings = {ATTRIBUTES = (); }; };
 /* End PBXBuildFile section */
@@ -84,6 +86,8 @@
 		C7BECCEA15556977006FA080 /* nuShaderInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuShaderInfo.h; sourceTree = "<group>"; };
 		C7C62D30155F57720002DDA6 /* nuGDebug.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuGDebug.cpp; sourceTree = "<group>"; };
 		C7C62D31155F57720002DDA6 /* nuGDebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuGDebug.h; sourceTree = "<group>"; };
+		C7CF23E4156FDF9F006FE95A /* nuTexture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuTexture.cpp; sourceTree = "<group>"; };
+		C7CF23E5156FDF9F006FE95A /* nuTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuTexture.h; sourceTree = "<group>"; };
 		C7DDD81C1550012F002B4D5A /* nuGSetupContext.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuGSetupContext.cpp; sourceTree = "<group>"; };
 		C7DDD81D1550012F002B4D5A /* nuGSetupContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuGSetupContext.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -124,6 +128,8 @@
 				C7ACC9BD155E62B600090E4D /* GraphicsInclude.h */,
 				C79DFF1A151A3E0400A1FA32 /* nuElementBuffer.cpp */,
 				C79DFF1B151A3E0400A1FA32 /* nuElementBuffer.h */,
+				C79E4D6C14E2D1F0001E60BF /* nuFrameBuffer.cpp */,
+				C79E4D6D14E2D1F0001E60BF /* nuFrameBuffer.h */,
 				C7A2C49D145D7D0F00ACDC27 /* nuGContext.cpp */,
 				C7A2C49E145D7D0F00ACDC27 /* nuGContext.h */,
 				C7987C66155143FC00A98D46 /* nuGContextBuffer.cpp */,
@@ -140,8 +146,6 @@
 				C7DDD81D1550012F002B4D5A /* nuGSetupContext.h */,
 				C729CC7A1567C58200E55BF9 /* nuOpenGLCaps.cpp */,
 				C729CC7B1567C58300E55BF9 /* nuOpenGLCaps.h */,
-				C79E4D6C14E2D1F0001E60BF /* nuFrameBuffer.cpp */,
-				C79E4D6D14E2D1F0001E60BF /* nuFrameBuffer.h */,
 				C785D085145D44D300E64F10 /* nuRenderGL.cpp */,
 				C785D086145D44D300E64F10 /* nuRenderGL.h */,
 				C7BECCEA15556977006FA080 /* nuShaderInfo.h */,
@@ -149,6 +153,8 @@
 				C7BECCE915556976006FA080 /* nuShaderList.h */,
 				C7BECCE615556976006FA080 /* nuShaderProgram.cpp */,
 				C7BECCE715556976006FA080 /* nuShaderProgram.h */,
+				C7CF23E4156FDF9F006FE95A /* nuTexture.cpp */,
+				C7CF23E5156FDF9F006FE95A /* nuTexture.h */,
 				C725FCB41563DFDA0023831E /* nuUniformBuffer.cpp */,
 				C725FCB51563DFDA0023831E /* nuUniformBuffer.h */,
 				C77E29EB155520F500627CAA /* nuVertexArray.cpp */,
@@ -186,6 +192,7 @@
 				C7C62D33155F57720002DDA6 /* nuGDebug.h in Headers */,
 				C725FCB71563DFDA0023831E /* nuUniformBuffer.h in Headers */,
 				C729CC7D1567C58300E55BF9 /* nuOpenGLCaps.h in Headers */,
+				C7CF23E7156FDF9F006FE95A /* nuTexture.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -274,6 +281,7 @@
 				C7C62D32155F57720002DDA6 /* nuGDebug.cpp in Sources */,
 				C725FCB61563DFDA0023831E /* nuUniformBuffer.cpp in Sources */,
 				C729CC7C1567C58300E55BF9 /* nuOpenGLCaps.cpp in Sources */,
+				C7CF23E6156FDF9F006FE95A /* nuTexture.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

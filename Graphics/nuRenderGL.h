@@ -86,6 +86,7 @@ class nuRenderGL : public nuObject
   void setViewport(RenderContext& context, const nuGContext::Viewport& viewport);
   void setFragmentOps(RenderContext& context, nuGContext::FragmentOps& fragment_ops);
   void setRasterizer(RenderContext& context, nuGContext::Rasterizer& rasterizer);
+  void setTexture(nuGContext::TextureEntity* p_textures, ui32 tex_num);
 
 public:
   nuRenderGL();
@@ -136,6 +137,10 @@ public:
 
   nude::UniformBuffer createUniformBuffer(nude::ProgramList program, ui32 ubo_id) {
     return nude::UniformBuffer(mResourceManager.createUniformBuffer(program, ubo_id));
+  }
+
+  nude::Texture createTexture(nuGResource::RESOURCE_USAGE usage) {
+    return nude::Texture(mResourceManager.createTexture(usage));
   }
 
   const nuOpenGLCaps& getCapabilities(void) const {

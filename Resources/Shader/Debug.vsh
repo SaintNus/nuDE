@@ -7,9 +7,11 @@
 
 in vec3 inPosition;
 in vec4 inColor;
+in vec2 inUV;
 
 out vec4 varTest;
 out vec4 varColor;
+out vec2 varUV;
 
 uniform vec4 uniTest;
 uniform vec4 uniColor[3];
@@ -25,4 +27,5 @@ void main(void)
   varTest = uniTest;
   vec4 tc = inColor * vec4(uniColor[0].x, uniColor[1].y, uniColor[2].z, 1.0);
   varColor = tc + color_xform.adder;
+  varUV = inUV;
 }

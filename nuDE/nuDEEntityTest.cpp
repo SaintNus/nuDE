@@ -45,6 +45,7 @@ IMPLEMENT_TYPE_INFO(nuDEEntityTest, nuEntity);
 struct Vertex {
   f32 pos[3];
   ui32 abgr;
+  f32 uv[2];
 };
 
 
@@ -81,6 +82,8 @@ nuDEEntityTest::nuDEEntityTest()
                         nuVertexArray::Array(3, nuVertexArray::FLOAT, false, sizeof(Vertex), 0));
   mVertexArray->declare(nude::Debug_inColor,
                         nuVertexArray::Array(4, nuVertexArray::UNSIGNED_INT_8, true, sizeof(Vertex), sizeof(f32) * 3));
+  mVertexArray->declare(nude::Debug_inUV,
+                        nuVertexArray::Array(2, nuVertexArray::FLOAT, false, sizeof(Vertex), sizeof(f32) * 3 + sizeof(ui32)));
   mVertexArray->end();
 
   ui16 idx[4] = { 0, 1, 2, 3 };
@@ -90,8 +93,28 @@ nuDEEntityTest::nuDEEntityTest()
   {
     void* p_buffer = mElementBuffer->beginInitialize();
     memcpy(p_buffer, idx, sizeof(idx));
+    mElementBuffer->endInitialize();
   }
-  mElementBuffer->endInitialize();
+
+  ui32 texture[4] = {
+    0xffff0000,
+    0xff00ff00,
+    0xff0000ff,
+    0xffffff00,
+  };
+
+  mTexture = nuApplication::renderGL().createTexture(nuGResource::nuGResource::STATIC_RESOURCE);
+  {
+    nuTexture::Texture2D tex_2d(2, 2, nude::PIXEL_OPTIMAL_HIGH_PRECISION, false, false);
+    nuTexture::Parameter param(nude::WRAP_CLAMP_TO_EDGE,
+                               nude::WRAP_CLAMP_TO_EDGE,
+                               nude::WRAP_CLAMP_TO_EDGE,
+                               nude::FILTER_NEAREST,
+                               nude::FILTER_NEAREST);
+    void* p_buffer = mTexture->beginInitialize(tex_2d, param);
+    memcpy(p_buffer, texture, sizeof(texture));
+    mTexture->endInitialize();
+  }
 
   {
     ccstr str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -110,10 +133,7 @@ nuDEEntityTest::nuDEEntityTest()
 
 nuDEEntityTest::~nuDEEntityTest()
 {
-  mVertexBuffer[0].release();
-  mVertexBuffer[1].release();
-  mElementBuffer.release();
-  mVertexArray.release();
+  // None...
 }
 
 void nuDEEntityTest::setup(nuGSetupContext& setup)
@@ -132,21 +152,25 @@ void nuDEEntityTest::update(void)
       { mPosX, 0.3f, 0.0f },
       // 0xff0000ff,
       0xffffffff,
+      { 0.0f, 1.0f },
     },
     {
       { -0.2f, -0.3f, 0.0f },
       // 0xff00ff00,
       0xffffffff,
+      { 0.0f, 0.0f },
     },
     {
       { mPosX + 0.4f, 0.3f, 0.0f },
       // 0xff0000ff,
       0xffffffff,
+      { 1.0f, 1.0f },
     },
     {
       { 0.2f, -0.3f, 0.0f },
       // 0xffff0000,
       0xffffffff,
+      { 1.0f, 0.0f },
     },
   };
 
@@ -161,10 +185,10 @@ void nuDEEntityTest::update(void)
       { 1.0f, 0.0f, 0.0f, 0.0f },
       { 0.0f, 1.0f, 0.0f, 0.0f },
       { 0.0f, 0.0f, 1.0f, 0.0f },
-      { 0.0f, 0.0f, 0.0f, 0.0f },
+      { 1.0f, 1.0f, 1.0f, 1.0f },
     };
 
-    ui32 test = mIdx / 100;
+    ui32 test = 3;
     void* p_buffer = mUniformBuffer->getBuffer();
     if(p_buffer)
       memcpy(p_buffer, adder[test], sizeof(f32) * 4);
@@ -196,25 +220,31 @@ void nuDEEntityTest::draw(nuGContext& context)
     };
 
     context.setPriority(nude::PASS_TRANSPARENCY, 0);
+    ui32 tex = context.setTexture(mTexture);
+
     if(!mInit) {
       context.setUniform(nude::Debug_uniTest, vv);
       context.setUniform(nude::Debug_uniColor_0, vvv);
+      context.setUniform(nude::Debug_uniTexture, &tex);
       context.setUniformBlock(nude::Debug_uniColorXform, mUniformBuffer);
+
       mInit = true;
     }
     context.setDepthTest(true, nude::DEPTHSTENCIL_LEQUAL);
     context.setBlending(true, nude::BLEND_EQ_ADD, nude::BLEND_SRC_ALPHA, nude::BLEND_ONE_MINUS_SRC_ALPHA);
-    // context.setVertexArray(mVertexArray);
+    context.setVertexArray(mVertexArray);
     context.setVertexBuffer(mVertexBuffer[mVBIdx]);
     context.setElementBuffer(mElementBuffer);
     context.setFrontFace(nude::FRONT_COUNTER_CLOCKWISE);
     context.setCulling(true, nude::CULL_BACK);
 
+    /*
     nuGContext::ArrayDeclaration decl = context.declareArray(nude::DebugAttribute_Num);
     decl.getDeclaration(nude::Debug_inPosition) =
         nuVertexArray::Array(3, nuVertexArray::FLOAT, false, sizeof(Vertex), 0);
     decl.getDeclaration(nude::Debug_inColor) =
         nuVertexArray::Array(4, nuVertexArray::UNSIGNED_INT_8, true, sizeof(Vertex), sizeof(f32) * 3);
+     */
 
     context.drawElements(nude::TRIANGLE_STRIP, 4);
   }

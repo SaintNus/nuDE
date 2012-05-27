@@ -31,6 +31,8 @@ class nuOpenGLCaps
   GLfloat mSmoothLineWidthRange;
   GLfloat mSmoothLineWidthGranularity;
 
+  GLint mMaxCombinedTextureImageUnits;
+
   nuOpenGLCaps() {}
   ~nuOpenGLCaps() {}
 
@@ -91,6 +93,10 @@ public:
 
   GLfloat getSmoothLineWidthGranularity(void) const {
     return mSmoothLineWidthGranularity;
+  }
+
+  GLint getMaxCombinedTextureImageUnits(void) const {
+    return mMaxCombinedTextureImageUnits;
   }
 
 };

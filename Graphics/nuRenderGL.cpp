@@ -673,3 +673,49 @@ void nuRenderGL::setRasterizer(RenderContext& context, nuGContext::Rasterizer& r
     CHECK_GL_ERROR(glFrontFace(context.rasterizer.front_face));
   }
 }
+
+void nuRenderGL::setTexture(nuGContext::TextureEntity* p_textures, ui32 tex_num)
+{
+  for(ui32 ui = 0; ui < tex_num; ui++) {
+    nuGContext::TextureEntity& texture = p_textures[ui];
+    CHECK_GL_ERROR(glActiveTexture(GL_TEXTURE0 + ui));
+    CHECK_GL_ERROR(glBindTexture(static_cast< GLenum >(texture.p_texture->mTextureType),
+                                 texture.p_texture->mHandle));
+    if(texture.p_parameter) {
+      if(texture.p_texture->mWrapS != texture.p_parameter->wrap_s) {
+        texture.p_texture->mWrapS = texture.p_parameter->wrap_s;
+        CHECK_GL_ERROR(glTexParameteri(static_cast< GLenum >(texture.p_texture->mTextureType),
+                                       GL_TEXTURE_WRAP_S,
+                                       static_cast< GLint >(texture.p_texture->mWrapS)));
+      }
+
+      if(texture.p_texture->mWrapT != texture.p_parameter->wrap_t) {
+        texture.p_texture->mWrapT = texture.p_parameter->wrap_t;
+        CHECK_GL_ERROR(glTexParameteri(static_cast< GLenum >(texture.p_texture->mTextureType),
+                                       GL_TEXTURE_WRAP_T,
+                                       static_cast< GLint >(texture.p_texture->mWrapT)));
+      }
+
+      if(texture.p_texture->mWrapR != texture.p_parameter->wrap_r) {
+        texture.p_texture->mWrapR = texture.p_parameter->wrap_r;
+        CHECK_GL_ERROR(glTexParameteri(static_cast< GLenum >(texture.p_texture->mTextureType),
+                                       GL_TEXTURE_WRAP_R,
+                                       static_cast< GLint >(texture.p_texture->mWrapR)));
+      }
+
+      if(texture.p_texture->mMinFilter != texture.p_parameter->min_filter) {
+        texture.p_texture->mMinFilter = texture.p_parameter->min_filter;
+        CHECK_GL_ERROR(glTexParameteri(static_cast< GLenum >(texture.p_texture->mTextureType),
+                                       GL_TEXTURE_MIN_FILTER,
+                                       static_cast< GLint >(texture.p_texture->mMinFilter)));
+      }
+
+      if(texture.p_texture->mMagFilter != texture.p_parameter->mag_filter) {
+        texture.p_texture->mMagFilter = texture.p_parameter->mag_filter;
+        CHECK_GL_ERROR(glTexParameteri(static_cast< GLenum >(texture.p_texture->mTextureType),
+                                       GL_TEXTURE_MAG_FILTER,
+                                       static_cast< GLint >(texture.p_texture->mMagFilter)));
+      }
+    }
+  }
+}

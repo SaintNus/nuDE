@@ -31,4 +31,7 @@ void nuOpenGLCaps::initialize(void)
   CHECK_GL_ERROR(glGetFloatv(GL_ALIASED_LINE_WIDTH_RANGE, &mAliasedLineWidthRange));
   CHECK_GL_ERROR(glGetFloatv(GL_SMOOTH_LINE_WIDTH_RANGE, &mSmoothLineWidthRange));
   CHECK_GL_ERROR(glGetFloatv(GL_SMOOTH_LINE_WIDTH_GRANULARITY, &mSmoothLineWidthGranularity));
+
+  CHECK_GL_ERROR(glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS,
+                               &mMaxCombinedTextureImageUnits));
 }

@@ -7,10 +7,16 @@
 
 in vec4 varTest;
 in vec4 varColor;
+in vec2 varUV;
 
 out vec4 fragColor;
 
+uniform sampler2D uniTexture;
+
 void main(void)
 {
-  fragColor = varColor * varTest;
+  vec4 tex_color = texture(uniTexture, varUV);
+  vec4 color = varColor * varTest;
+  color = clamp(color, vec4(0.0, 0.0, 0.0, 0.0), vec4(1.0, 1.0, 1.0, 1.0));
+  fragColor = color * tex_color;
 }

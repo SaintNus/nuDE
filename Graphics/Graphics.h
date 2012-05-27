@@ -29,6 +29,7 @@
 #include "nuShaderProgram.h"
 #include "nuUniformBuffer.h"
 #include "nuShaderList.h"
+#include "nuTexture.h"
 
 #include "nuShaderInfo.h"
 

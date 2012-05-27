@@ -15,6 +15,7 @@
 #include "nuElementBuffer.h"
 #include "nuShaderProgram.h"
 #include "nuUniformBuffer.h"
+#include "nuTexture.h"
 
 /*!
  * \class nuGContext
@@ -680,6 +681,11 @@ private:
     const Blending* p_blending;
   };
 
+  struct TextureEntity {
+    nuTexture* p_texture;
+    nuTexture::Parameter* p_parameter;
+  };
+
   template< class T >
   struct DrawCmd {
     TYPE type;
@@ -702,16 +708,19 @@ private:
     nuVertexBuffer* p_vertex_buffer;
     nuElementBuffer* p_element_buffer;
     nuVertexArray::Array* p_immediate_array;
+    TextureEntity* p_texture;
 
     ui32 primitive_mode: 4;
     ui32 element_num: 28;
     ui32 immediate_num: 8;
-    ui32 reserved: 24;
+    ui32 texture_num: 6;
+    ui32 reserved: 18;
   };
   typedef DrawCmd< DrawElements > DrawElementsCmd;
 
   static const ui32 EXPAND_TEMP_TAG_NUM = 256;
   static const ui32 EXPAND_UNIFORM = 64;
+  static const ui32 EXPAND_TEXTURE = 16;
 
   i64 mFrameID;
   Buffer mBuffer;
@@ -732,6 +741,10 @@ private:
   UniformBlock* mpUniformBlock;
   ui32 mUniformBlockNum;
   ui32 mCurrentUniformBlock;
+
+  TextureEntity* mpTextureTable;
+  ui32 mTextureTableNum;
+  ui32 mCurrentTextureTable;
 
   union {
     ui32 mAttributes;
@@ -782,6 +795,8 @@ private:
   void initializeFragmentOps(FragmentOps& fragment_ops);
   Rasterizer* getRasterizer(void);
 
+  ui32 registerTexture(nuTexture* p_texture, nuTexture::Parameter* p_parameter);
+
 public:
   nuGContext(nuGContextBuffer& ctx_buffer);
   ~nuGContext();
@@ -831,6 +846,9 @@ public:
   void setLineDraw(bool smooth, f32 width);
   void setFrontFace(nude::FRONT_FACE front_face);
   void setCulling(bool enable, nude::CULL_FACE cull_face);
+
+  ui32 setTexture(nude::Texture& texture);
+  ui32 setTexture(nude::Texture& texture, const nuTexture::Parameter& parameter);
 
 };
 

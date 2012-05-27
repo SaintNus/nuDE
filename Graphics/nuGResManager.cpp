@@ -149,3 +149,10 @@ UniformBuffer nuGResManager::createUniformBuffer(nude::ProgramList program_id, u
 
   return UniformBuffer(p_ub);
 }
+
+nude::Texture nuGResManager::createTexture(nuGResource::RESOURCE_USAGE usage)
+{
+  nuTexture* p_tex = new nuTexture(usage);
+  registerResource(*p_tex);
+  return nude::Texture(p_tex);
+}

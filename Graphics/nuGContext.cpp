@@ -28,7 +28,10 @@ nuGContext::nuGContext(nuGContextBuffer& ctx_buffer)
       mpDepthTest(nullptr),
       mpStencilTest(nullptr),
       mpBlending(nullptr),
-      mpRasterizer(nullptr)
+      mpRasterizer(nullptr),
+      mpTextureTable(nullptr),
+      mTextureTableNum(0),
+      mCurrentTextureTable(0)
 {
   mCurrentPriority.value = 0;
 }
@@ -48,6 +51,11 @@ nuGContext::~nuGContext()
   if(mpUniformBlock) {
     delete[] mpUniformBlock;
     mpUniformBlock = nullptr;
+  }
+
+  if(mpTextureTable) {
+    delete[] mpTextureTable;
+    mpTextureTable = nullptr;
   }
 }
 
@@ -291,6 +299,16 @@ void nuGContext::drawElements(nude::PRIMITIVE_MODE primitive_mode, ui32 element_
     setProgramObject(p_draw->data.program_object);
     p_draw->data.p_rasterizer = getRasterizer();
 
+    if(mCurrentTextureTable > 0) {
+      p_draw->data.texture_num = mCurrentTextureTable;
+      size_t sz = sizeof(TextureEntity) * p_draw->data.texture_num;
+      p_draw->data.p_texture = static_cast< TextureEntity* >(mBuffer.allocBuffer(sz));
+      memcpy(p_draw->data.p_texture, mpTextureTable, sz);
+    } else {
+      p_draw->data.p_texture = nullptr;
+      p_draw->data.texture_num = 0;
+    }
+
     if(mCurrentDrawElements.p_vertex_array) {
       p_draw->data.p_vertex_array = mCurrentDrawElements.p_vertex_array;
       p_draw->data.p_immediate_array = nullptr;
@@ -401,6 +419,8 @@ void nuGContext::beginDraw(const nude::ShaderProgram& program)
   mCurrentUniformBlock = 0;
   if(po.p_shader_program->getUniformBlockNum() > 0)
     memset(mpUniformBlock, 0x00, sizeof(UniformBlock) * po.p_shader_program->getUniformBlockNum());
+
+  mCurrentTextureTable = 0;
 }
 
 void nuGContext::endDraw(void)
@@ -605,3 +625,43 @@ nuGContext::Rasterizer* nuGContext::getRasterizer(void)
   }
   return mpRasterizer;
 }
+
+ui32 nuGContext::setTexture(nude::Texture& texture)
+{
+  return registerTexture(&texture, nullptr);
+}
+
+ui32 nuGContext::setTexture(nude::Texture& texture, const nuTexture::Parameter& parameter)
+{
+  nuTexture::Parameter* p_param = mBuffer.allocBuffer< nuTexture::Parameter >();
+  if(p_param)
+    *p_param = parameter;
+  return registerTexture(&texture, p_param);
+}
+
+ui32 nuGContext::registerTexture(nuTexture* p_texture, nuTexture::Parameter* p_parameter)
+{
+  if(mTextureTableNum == mCurrentTextureTable) {
+    ui32 new_table_num = mTextureTableNum + EXPAND_TEXTURE;
+    TextureEntity* new_table = new TextureEntity[new_table_num];
+
+    NU_ASSERT(new_table_num, "Insufficient memory!\n");
+
+    if(mpTextureTable) {
+      memcpy(new_table, mpTextureTable, sizeof(TextureEntity) * mTextureTableNum);
+      delete[] mpTextureTable;
+    }
+    mpTextureTable = new_table;
+
+    mTextureTableNum = new_table_num;
+  }
+
+  ui32 ret = mCurrentTextureTable;
+  mCurrentTextureTable++;
+  p_texture->protect(mFrameID);
+  mpTextureTable[ret].p_texture = p_texture;
+  mpTextureTable[ret].p_parameter = p_parameter;
+
+  return ret;
+}
+
