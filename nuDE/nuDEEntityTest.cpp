@@ -96,23 +96,28 @@ nuDEEntityTest::nuDEEntityTest()
     mElementBuffer->endInitialize();
   }
 
-  ui32 texture[4] = {
-    0xffff0000,
-    0xff00ff00,
-    0xff0000ff,
-    0xffffff00,
+  ui32 texture[2][2] = {
+    { 0xffff0000, 0xff00ff00 },
+    { 0xff0000ff, 0xffffff00 },
   };
 
   mTexture = nuApplication::renderGL().createTexture(nuGResource::nuGResource::STATIC_RESOURCE);
   {
-    nuTexture::Texture2D tex_2d(2, 2, nude::PIXEL_OPTIMAL_HIGH_PRECISION, false, false);
+    nuTexture::Texture2D tex_2d(64, 64, nude::PIXEL_OPTIMAL_HIGH_PRECISION, true, true);
     nuTexture::Parameter param(nude::WRAP_CLAMP_TO_EDGE,
                                nude::WRAP_CLAMP_TO_EDGE,
                                nude::WRAP_CLAMP_TO_EDGE,
-                               nude::FILTER_NEAREST,
+                               nude::FILTER_NEAREST_MIPMAP_NEAREST,
                                nude::FILTER_NEAREST);
-    void* p_buffer = mTexture->beginInitialize(tex_2d, param);
-    memcpy(p_buffer, texture, sizeof(texture));
+    ui32* p_buffer = static_cast< ui32* >(mTexture->beginInitialize(tex_2d, param));
+    for(ui32 ui = 0; ui < 64; ui++) {
+      for(ui32 uj = 0; uj < 64; uj++) {
+        ui32 ii = ui / 32;
+        ui32 jj = uj / 32;
+        *p_buffer = texture[ii][jj];
+        p_buffer++;
+      }
+    }
     mTexture->endInitialize();
   }
 

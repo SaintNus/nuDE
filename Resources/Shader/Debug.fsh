@@ -17,6 +17,6 @@ void main(void)
 {
   vec4 tex_color = texture(uniTexture, varUV);
   vec4 color = varColor * varTest;
-  color = clamp(color, vec4(0.0, 0.0, 0.0, 0.0), vec4(1.0, 1.0, 1.0, 1.0));
+  color = clamp(color, 0.0, 1.0);
   fragColor = color * tex_color;
 }

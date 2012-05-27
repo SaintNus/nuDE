@@ -88,26 +88,30 @@ void nuTexture::update(void)
 
     CHECK_GL_ERROR(glTexParameteri(static_cast< GLenum >(mTextureType),
                                    GL_TEXTURE_WRAP_S,
-                                   static_cast< GLint >(mWrapS)));
+                                   mWrapS));
     CHECK_GL_ERROR(glTexParameteri(static_cast< GLenum >(mTextureType),
                                    GL_TEXTURE_WRAP_T,
-                                   static_cast< GLint >(mWrapT)));
+                                   mWrapT));
     CHECK_GL_ERROR(glTexParameteri(static_cast< GLenum >(mTextureType),
                                    GL_TEXTURE_WRAP_R,
-                                   static_cast< GLint >(mWrapR)));
+                                   mWrapR));
 
     CHECK_GL_ERROR(glTexParameteri(static_cast< GLenum >(mTextureType),
                                    GL_TEXTURE_MIN_FILTER,
-                                   static_cast< GLint >(mMinFilter)));
+                                   mMinFilter));
     CHECK_GL_ERROR(glTexParameteri(static_cast< GLenum >(mTextureType),
                                    GL_TEXTURE_MAG_FILTER,
-                                   static_cast< GLint >(mMagFilter)));
+                                   mMagFilter));
 
     GLenum internal_format;
     if(isCompressed())
       internal_format = mPixelFormatTable[mFormat].compressed_format;
     else
       internal_format = mPixelFormatTable[mFormat].internal_format;
+
+    GLint alignment = mPixelFormatTable[mFormat].element_size % 4 == 0 ? 4 : 1;
+    CHECK_GL_ERROR(glPixelStorei(GL_UNPACK_ALIGNMENT, alignment));
+
     switch(mTextureType) {
     case TEXTURE_1D:
       CHECK_GL_ERROR(glTexImage1D(static_cast< GLenum >(mTextureType),
@@ -156,6 +160,10 @@ void nuTexture::update(void)
     setInitialized(true);
   } else if(mpBuffer) {
     CHECK_GL_ERROR(glBindTexture(static_cast< GLenum >(mTextureType), mHandle));
+
+    GLint alignment = mPixelFormatTable[mFormat].element_size % 4 == 0 ? 4 : 1;
+    CHECK_GL_ERROR(glPixelStorei(GL_UNPACK_ALIGNMENT, alignment));
+
     switch(mTextureType) {
     case TEXTURE_1D:
       CHECK_GL_ERROR(glTexSubImage1D(static_cast< GLenum >(mTextureType),

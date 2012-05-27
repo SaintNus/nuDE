@@ -11,6 +11,8 @@
 		C725FCB71563DFDA0023831E /* nuUniformBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = C725FCB51563DFDA0023831E /* nuUniformBuffer.h */; };
 		C729CC7C1567C58300E55BF9 /* nuOpenGLCaps.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C729CC7A1567C58200E55BF9 /* nuOpenGLCaps.cpp */; };
 		C729CC7D1567C58300E55BF9 /* nuOpenGLCaps.h in Headers */ = {isa = PBXBuildFile; fileRef = C729CC7B1567C58300E55BF9 /* nuOpenGLCaps.h */; };
+		C765213F157258500010F3A9 /* nuDrawString.h in Headers */ = {isa = PBXBuildFile; fileRef = C765213D157258500010F3A9 /* nuDrawString.h */; };
+		C7652140157258500010F3A9 /* nuDrawString.mm in Sources */ = {isa = PBXBuildFile; fileRef = C765213E157258500010F3A9 /* nuDrawString.mm */; };
 		C77E29ED155520F500627CAA /* nuVertexArray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C77E29EB155520F500627CAA /* nuVertexArray.cpp */; };
 		C77E29EE155520F500627CAA /* nuVertexArray.h in Headers */ = {isa = PBXBuildFile; fileRef = C77E29EC155520F500627CAA /* nuVertexArray.h */; settings = {ATTRIBUTES = (); }; };
 		C780FBAB1556DA5D000B013E /* NudeGraphics-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = C785D082145D433000E64F10 /* NudeGraphics-Prefix.pch */; };
@@ -52,6 +54,8 @@
 		C725FCB51563DFDA0023831E /* nuUniformBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuUniformBuffer.h; sourceTree = "<group>"; };
 		C729CC7A1567C58200E55BF9 /* nuOpenGLCaps.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuOpenGLCaps.cpp; sourceTree = "<group>"; };
 		C729CC7B1567C58300E55BF9 /* nuOpenGLCaps.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuOpenGLCaps.h; sourceTree = "<group>"; };
+		C765213D157258500010F3A9 /* nuDrawString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuDrawString.h; sourceTree = "<group>"; };
+		C765213E157258500010F3A9 /* nuDrawString.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = nuDrawString.mm; sourceTree = "<group>"; };
 		C77E29EB155520F500627CAA /* nuVertexArray.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuVertexArray.cpp; sourceTree = "<group>"; };
 		C77E29EC155520F500627CAA /* nuVertexArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuVertexArray.h; sourceTree = "<group>"; };
 		C785D06C145D418E00E64F10 /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = ../Configurations/Debug.xcconfig; sourceTree = "<group>"; };
@@ -126,6 +130,8 @@
 			isa = PBXGroup;
 			children = (
 				C7ACC9BD155E62B600090E4D /* GraphicsInclude.h */,
+				C765213D157258500010F3A9 /* nuDrawString.h */,
+				C765213E157258500010F3A9 /* nuDrawString.mm */,
 				C79DFF1A151A3E0400A1FA32 /* nuElementBuffer.cpp */,
 				C79DFF1B151A3E0400A1FA32 /* nuElementBuffer.h */,
 				C79E4D6C14E2D1F0001E60BF /* nuFrameBuffer.cpp */,
@@ -193,6 +199,7 @@
 				C725FCB71563DFDA0023831E /* nuUniformBuffer.h in Headers */,
 				C729CC7D1567C58300E55BF9 /* nuOpenGLCaps.h in Headers */,
 				C7CF23E7156FDF9F006FE95A /* nuTexture.h in Headers */,
+				C765213F157258500010F3A9 /* nuDrawString.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -282,6 +289,7 @@
 				C725FCB61563DFDA0023831E /* nuUniformBuffer.cpp in Sources */,
 				C729CC7C1567C58300E55BF9 /* nuOpenGLCaps.cpp in Sources */,
 				C7CF23E6156FDF9F006FE95A /* nuTexture.cpp in Sources */,
+				C7652140157258500010F3A9 /* nuDrawString.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

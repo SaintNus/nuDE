@@ -52,7 +52,7 @@ public:
           height(hh),
           format(fmt),
           compress(comp),
-          generate_mipmap(false)
+          generate_mipmap(mipmap)
     {
       // None...
     }
@@ -72,7 +72,7 @@ public:
           depth(dd),
           format(fmt),
           compress(comp),
-          generate_mipmap(false)
+          generate_mipmap(mipmap)
     {
       // None...
     }
