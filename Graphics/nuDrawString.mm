@@ -44,7 +44,6 @@
 - (id) initWithString: (const c8*) cString withFrame: (const NSRect&) frame fontSize: (f32) size;
 - (id) initWithString: (const c8 *) cString withMargin: (const NSSize&) marginSize fontSize: (f32) size;
 - (void) update;
-- (void) drawAtPoint: (const NSPoint&) point;
 - (void) terminate;
 
 - (void) setCString: (const c8*) cString;
@@ -70,7 +69,7 @@
   image = nil;
 
   textureID = 0;
-  antiAlias = YES;
+  antiAlias = NO;
   textureWidth = 0;
   textureHeight = 0;
 
@@ -237,12 +236,6 @@
   updateString = NO;
 }
 
-- (void) drawAtPoint: (const NSPoint&) point
-{
-  if(textureID == 0)
-    return;
-}
-
 - (void) terminate
 {
   if(textureID != 0) {
@@ -316,16 +309,15 @@ public:
     CHECK_GL_ERROR(glBindVertexArray(mArrayID));
 
     CHECK_GL_ERROR(glBindBuffer(GL_ARRAY_BUFFER, mVertexID));
-    const i32 vertex_idx[4] = { 0, 1, 2, 3 };
-    CHECK_GL_ERROR(glBufferData(GL_ARRAY_BUFFER, sizeof(vertex_idx), vertex_idx, GL_STATIC_DRAW));
-
     CHECK_GL_ERROR(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mElementID));
-    const ui16 element[4] = { 0, 1, 2, 3 };
-    CHECK_GL_ERROR(glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(element), element, GL_STATIC_DRAW));
-
     CHECK_GL_ERROR(glEnableVertexAttribArray(nude::DrawString_inVertexIndex));
     CHECK_GL_ERROR(glVertexAttribIPointer(nude::DrawString_inVertexIndex, 1, GL_INT,
                                           sizeof(i32), nullptr));
+
+    const i32 vertex_idx[4] = { 0, 1, 2, 3 };
+    CHECK_GL_ERROR(glBufferData(GL_ARRAY_BUFFER, sizeof(vertex_idx), vertex_idx, GL_STATIC_DRAW));
+    const ui16 element[4] = { 0, 1, 2, 3 };
+    CHECK_GL_ERROR(glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(element), element, GL_STATIC_DRAW));
   }
 
   ~_DrawStringResource() {
@@ -403,6 +395,11 @@ public:
       CHECK_GL_ERROR(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, render_context.current_element_buffer));
     }
 
+    if(render_context.restart_index != 0xffff) {
+      render_context.restart_index = 0xffff;
+      CHECK_GL_ERROR(glPrimitiveRestartIndex(render_context.restart_index));
+    }
+
     GLint origin_x = static_cast< GLint >(vp.lb().x());
     GLint origin_y = static_cast< GLint >(vp.lb().y());
     GLsizei width = static_cast< GLint >(vp.size().w());
@@ -444,6 +441,11 @@ public:
     if(render_context.depth_test.enable == true) {
       render_context.depth_test.enable = false;
       CHECK_GL_ERROR(glDisable(GL_DEPTH_TEST));
+    }
+
+    if(render_context.depth_test.function != nude::DEPTHSTENCIL_LEQUAL) {
+      render_context.depth_test.function = nude::DEPTHSTENCIL_LEQUAL;
+      CHECK_GL_ERROR(glDepthFunc(GL_LEQUAL));
     }
 
     if(render_context.stencil_test.enable == true) {
@@ -513,6 +515,9 @@ public:
 
       CHECK_GL_ERROR(glUniform2fv(u_loc, 4, reinterpret_cast< f32* >(temp)));
 
+      u_loc = mShaderProgram.cast< nuShaderProgram >()->getUniformLocation(nude::DrawString_uniPosOffset);
+      CHECK_GL_ERROR(glUniform2f(u_loc, p_drawstr->mDrawPoint.x(), p_drawstr->mDrawPoint.y()));
+
       u_loc = mShaderProgram.cast< nuShaderProgram >()->getUniformLocation(nude::DrawString_uniColor);
       CHECK_GL_ERROR(glUniform4f(u_loc,
                                  p_drawstr->mDrawColor.fr(),
@@ -520,7 +525,7 @@ public:
                                  p_drawstr->mDrawColor.fb(),
                                  p_drawstr->mDrawColor.fa()));
 
-      CHECK_GL_ERROR(glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_SHORT, nullptr))
+      CHECK_GL_ERROR(glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_SHORT, nullptr));
     }
   }
 };
@@ -562,7 +567,9 @@ nuDrawString::nuDrawString(const nuRect& rect, f32 size)
       mReserved(0),
       mRefCount(0),
       mColor(nuColor::White),
-      mDrawColor(nuColor::White)
+      mDrawColor(nuColor::White),
+      mPoint(0.0f, 0.0f),
+      mDrawPoint(0.0f, 0.0f)
 {
   NSRect frame = NSMakeRect(rect.lb().x(), rect.lb().y(), rect.size().w(), rect.size().h());
   _MachDrawString* draw_string = [[_MachDrawString alloc] initWithFrame: frame fontSize: size];
@@ -578,7 +585,9 @@ nuDrawString::nuDrawString(const c8* str, f32 size)
       mReserved(0),
       mRefCount(0),
       mColor(nuColor::White),
-      mDrawColor(nuColor::White)
+      mDrawColor(nuColor::White),
+      mPoint(0.0f, 0.0f),
+      mDrawPoint(0.0f, 0.0f)
 {
   _MachDrawString* draw_string = [[_MachDrawString alloc] initWithString: str fontSize: size];
   mpDrawString = draw_string;
@@ -593,7 +602,9 @@ nuDrawString::nuDrawString(const c8* str, const nuRect& rect, f32 size)
       mReserved(0),
       mRefCount(0),
       mColor(nuColor::White),
-      mDrawColor(nuColor::White)
+      mDrawColor(nuColor::White),
+      mPoint(0.0f, 0.0f),
+      mDrawPoint(0.0f, 0.0f)
 {
   NSRect frame = NSMakeRect(rect.lb().x(), rect.lb().y(), rect.size().w(), rect.size().h());
   _MachDrawString* draw_string = [[_MachDrawString alloc] initWithString: str withFrame: frame fontSize: size];
@@ -609,7 +620,9 @@ nuDrawString::nuDrawString(const c8* str, const nuSize& margin, f32 size)
       mReserved(0),
       mRefCount(0),
       mColor(nuColor::White),
-      mDrawColor(nuColor::White)
+      mDrawColor(nuColor::White),
+      mPoint(0.0f, 0.0f),
+      mDrawPoint(0.0f, 0.0f)
 {
   NSSize sz = NSMakeSize(margin.w(), margin.h());
   _MachDrawString* draw_string = [[_MachDrawString alloc] initWithString: str withMargin: sz fontSize: size];
@@ -629,8 +642,8 @@ void nuDrawString::update(void)
 {
   _MachDrawString* draw_string = static_cast< _MachDrawString* >(mpDrawString);
   [draw_string update];
-  if(mDrawColor != mColor)
-    mDrawColor = mColor;
+  mDrawColor = mColor;
+  mDrawPoint = mPoint;
 }
 
 bool nuDrawString::isAntiAliased(void) const
@@ -683,8 +696,7 @@ void nuDrawString::setColor(const nuColor& color)
 
 void nuDrawString::drawAt(const nuPoint& pos)
 {
-  _MachDrawString* draw_string = static_cast< _MachDrawString* >(mpDrawString);
-  [draw_string drawAtPoint: NSMakePoint(pos.x(), pos.y())];
+  mPoint = pos;
   mDrawString = 1;
 }
 

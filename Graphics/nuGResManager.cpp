@@ -31,9 +31,11 @@ nuGResManager::~nuGResManager()
 {
   deleteResources(mStaticResource, mStaticResMutex, 0x7fffffffffffffffL);
   deleteResources(mDynamicResource, mDynamicResMutex, 0x7fffffffffffffffL);
+  deleteResources(mStreamResource, mStreamResMutex, 0x7fffffffffffffffL);
 
   NU_ASSERT(mStaticResource.size() == 0, "Static GL resource is leaking.\n");
   NU_ASSERT(mDynamicResource.size() == 0, "Dynamic GL resource is leaking.\n");
+  NU_ASSERT(mStreamResource.size() == 0, "Stream GL resource is leaking.\n");
 
   if(mpUpdateTable) {
     delete[] mpUpdateTable;
@@ -81,6 +83,12 @@ void nuGResManager::updateDynamicResource(i64 frame_id)
 {
   deleteResources(mDynamicResource, mDynamicResMutex, frame_id);
   updateResources(mDynamicResource, mDynamicResMutex);
+}
+
+void nuGResManager::updateStreamResource(i64 frame_id)
+{
+  deleteResources(mStreamResource, mStreamResMutex, frame_id);
+  updateResources(mStreamResource, mStreamResMutex);
 }
 
 void nuGResManager::deleteResources(ResList& resource_list, nuMutex& mutex, i64 frame_id)

@@ -83,6 +83,8 @@ class nuDrawString : public nuObject
   ui32 mReserved: 30;
   nuColor mDrawColor;
   nuColor mColor;
+  nuPoint mDrawPoint;
+  nuPoint mPoint;
 
 public:
   bool isAntiAliased(void) const;

@@ -70,10 +70,10 @@ nuDEEntityTest::nuDEEntityTest()
   mUniformBuffer->endInitialize();
 
   mVertexBuffer[0] = nuApplication::renderGL().createVertexBuffer(sizeof(Vertex) * 4,
-                                                                  nuGResource::DYNAMIC_RESOURCE);
+                                                                  nuGResource::STREAM_RESOURCE);
   mVertexBuffer[0]->initialize();
   mVertexBuffer[1] = nuApplication::renderGL().createVertexBuffer(sizeof(Vertex) * 4,
-                                                                  nuGResource::DYNAMIC_RESOURCE);
+                                                                  nuGResource::STREAM_RESOURCE);
   mVertexBuffer[1]->initialize();
 
   mVertexArray = nuApplication::renderGL().createVertexArray();
@@ -221,6 +221,7 @@ void nuDEEntityTest::draw(nuGContext& context)
   context.setPriority(nude::PASS_OPAQUE, 0);
   context.clear(nude::CLEAR_COLOR | nude::CLEAR_DEPTH, nuColor::Black, 1.0f);
 
+#if 1
   context.beginDraw(mShaderProgram);
   {
     f32 vv[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
@@ -260,6 +261,7 @@ void nuDEEntityTest::draw(nuGContext& context)
     context.drawElements(nude::TRIANGLE_STRIP, 4);
   }
   context.endDraw();
+#endif
 
-  mDrawString->drawAt(nuPoint(0, 0));
+  mDrawString->drawAt(nuPoint(10.0f, 10.0f));
 }

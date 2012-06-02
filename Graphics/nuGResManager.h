@@ -33,6 +33,9 @@ class nuGResManager : public nuObject
   nuMutex mDynamicResMutex;
   ResList mDynamicResource;
 
+  nuMutex mStreamResMutex;
+  ResList mStreamResource;
+
   nuGResource** mpUpdateTable;
   ui32 mUpdateTableNum;
 
@@ -55,6 +58,12 @@ class nuGResManager : public nuObject
       {
         nuMutex::Autolock mutex(mDynamicResMutex);
         mDynamicResource.push_back(&resource);
+      }
+      break;
+    case nuGResource::STREAM_RESOURCE:
+      {
+        nuMutex::Autolock mutex(mStreamResMutex);
+        mStreamResource.push_back(&resource);
       }
       break;
     default:
@@ -92,6 +101,7 @@ public:
 
   void updateStaticResource(i64 frame_id);
   void updateDynamicResource(i64 frame_id);
+  void updateStreamResource(i64 frame_id);
 
 };
 

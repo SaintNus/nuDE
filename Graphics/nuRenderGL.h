@@ -39,6 +39,7 @@ public:
     GLuint current_array_buffer;
     GLuint current_element_buffer;
     GLuint current_vertex_array;
+    GLuint restart_index;
 
     nuGContext::Viewport viewport;
     nuGContext::Scissor scissor;

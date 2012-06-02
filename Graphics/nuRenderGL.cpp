@@ -43,6 +43,7 @@ void nuRenderGL::initialize(nude::ShaderList& shader_list)
     CHECK_GL_ERROR(glDisableVertexAttribArray(static_cast< GLuint >(ui)));
 
   CHECK_GL_ERROR(glEnable(GL_PRIMITIVE_RESTART));
+  CHECK_GL_ERROR(glPrimitiveRestartIndex(0xffffffff));
 
   mRenderContext.clear_color = nuColor(0);
   mRenderContext.depth_value = 1.0f;
@@ -66,6 +67,7 @@ void nuRenderGL::initialize(nude::ShaderList& shader_list)
   mRenderContext.current_array_buffer = 0;
   mRenderContext.current_element_buffer = 0;
   mRenderContext.current_vertex_array = mDefaultVertexArray;
+  mRenderContext.restart_index = 0xffffffff;
 
   initializeStates();
 }
@@ -90,6 +92,9 @@ bool nuRenderGL::render(void)
       nuGContext::Tag* p_tag = mpCurrentTagList->mpTagList;
 
       mRenderContext.reset();
+      mRenderContext.current_array_buffer = 0;
+      mRenderContext.current_element_buffer = 0;
+      mRenderContext.current_vertex_array = mDefaultVertexArray;
 
       for(ui32 ui = 0; ui < mpCurrentTagList->mTagNum; ui++) {
         DummyCmd* p_dummy = static_cast< DummyCmd* >(p_tag[ui].mpCommand);
@@ -121,6 +126,7 @@ i64 nuRenderGL::updateGraphicResources(void)
 
   mResourceManager.updateStaticResource(mFrameID);
   mResourceManager.updateDynamicResource(mFrameID);
+  mResourceManager.updateStreamResource(mFrameID);
 
   nuDrawString::updateResource();
 
@@ -249,12 +255,10 @@ void nuRenderGL::executeDrawElements(RenderContext& context, void* draw_cmd)
       0xffff,
       0xffffffff,
     };
-    if(context.p_element_buffer) {
-      nuElementBuffer::ELEMENT_TYPE prev_type = context.p_element_buffer->getElementType();
-      if(prev_type != p_draw->data.p_element_buffer->getElementType())
-        CHECK_GL_ERROR(glPrimitiveRestartIndex(restart_idx[p_draw->data.p_element_buffer->getElementType()]));
-    } else {
-      CHECK_GL_ERROR(glPrimitiveRestartIndex(restart_idx[p_draw->data.p_element_buffer->getElementType()]));
+    GLuint dr_idx = restart_idx[p_draw->data.p_element_buffer->getElementType()];
+    if(context.restart_index != dr_idx) {
+      context.restart_index = dr_idx;
+      CHECK_GL_ERROR(glPrimitiveRestartIndex(context.restart_index));
     }
 
     context.p_element_buffer = p_draw->data.p_element_buffer;
