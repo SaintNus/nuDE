@@ -37,6 +37,7 @@ class nuGResManager : public nuObject
   ui32 mUpdateTableNum;
 
   nude::ShaderList mShaderList;
+  class nuRenderGL* mpRenderGL;
 
   void deleteResources(ResList& resource_list, nuMutex& mutex, i64 frame_id);
   void updateResources(ResList& resource_list, nuMutex& mutex);
@@ -65,6 +66,14 @@ class nuGResManager : public nuObject
 public:
   nuGResManager();
   ~nuGResManager();
+
+  void setRenderGL(class nuRenderGL& render_gl) {
+    mpRenderGL = &render_gl;
+  }
+
+  class nuRenderGL& getRenderGL(void) const {
+    return *mpRenderGL;
+  }
 
   void setShaderList(nude::ShaderList& shader_list);
   const nude::ShaderList& getShaderList(void) const {

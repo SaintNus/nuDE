@@ -6,6 +6,7 @@
  */
 
 #include "GraphicsInclude.h"
+#include "nuDrawString.h"
 #include "nuRenderGL.h"
 
 IMPLEMENT_TYPE_INFO(nuRenderGL, nuObject);
@@ -16,112 +17,57 @@ nuRenderGL::nuRenderGL()
       mpNextTagList(nullptr),
       mpCurrentTagList(nullptr),
       mDefaultVertexArray(0),
-      mCurrentVertexArray(0),
-      mDefaultVertexBufferBinding(0)
+      mCurrentVertexArray(0)
 {
-  // None...
+  mResourceManager.setRenderGL(*this);
 }
 
 nuRenderGL::~nuRenderGL()
 {
-  // None...
+  nuDrawString::terminate();
 }
 
 void nuRenderGL::initialize(nude::ShaderList& shader_list)
 {
+  mResourceManager.setShaderList(shader_list);  
+  mCapabilities.initialize();
+  nuDrawString::initialize(*this);
+
   CHECK_GL_ERROR(glGenVertexArrays(1, &mDefaultVertexArray));
+
   CHECK_GL_ERROR(glBindVertexArray(mDefaultVertexArray));
+  CHECK_GL_ERROR(glBindBuffer(GL_ARRAY_BUFFER, 0));
+  CHECK_GL_ERROR(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
 
   for(ui32 ui = 0; ui < nuVertexArray::MAX_VERTEX_ATTRIBUTE; ui++)
     CHECK_GL_ERROR(glDisableVertexAttribArray(static_cast< GLuint >(ui)));
 
-  mCapabilities.initialize();
-  mResourceManager.setShaderList(shader_list);
-
-  // Initialize render context.
-  mRenderContext.clear_color = nuColor(0);
-  CHECK_GL_ERROR(glClearColor(0.0f, 0.0f, 0.0f, 0.0f));
   CHECK_GL_ERROR(glEnable(GL_PRIMITIVE_RESTART));
 
+  mRenderContext.clear_color = nuColor(0);
   mRenderContext.depth_value = 1.0f;
-  CHECK_GL_ERROR(glClearDepth(1.0f));
-
-  mRenderContext.reset();
+  mRenderContext.stencil_test = nuGContext::StencilTest();
 
   mRenderContext.viewport.origin_x = static_cast< GLint >(mViewport.origin().x());
   mRenderContext.viewport.origin_y = static_cast< GLint >(mViewport.origin().y());
   mRenderContext.viewport.width = static_cast< GLsizei >(mViewport.size().w());
   mRenderContext.viewport.height = static_cast< GLsizei >(mViewport.size().h());
-  CHECK_GL_ERROR(glViewport(mRenderContext.viewport.origin_x,
-                            mRenderContext.viewport.origin_y,
-                            mRenderContext.viewport.width,
-                            mRenderContext.viewport.height));
 
   mRenderContext.scissor = nuGContext::Scissor();
-  if(mRenderContext.scissor.enable) {
-    CHECK_GL_ERROR(glEnable(GL_SCISSOR_TEST));
-  } else {
-    CHECK_GL_ERROR(glDisable(GL_SCISSOR_TEST));
-  }
-  CHECK_GL_ERROR(glScissor(mRenderContext.scissor.left,
-                           mRenderContext.scissor.bottom,
-                           mRenderContext.scissor.width,
-                           mRenderContext.scissor.height));
-
   mRenderContext.depth_test = nuGContext::DepthTest();
-  if(mRenderContext.depth_test.enable) {
-    CHECK_GL_ERROR(glEnable(GL_DEPTH_TEST));
-  } else {
-    CHECK_GL_ERROR(glDisable(GL_DEPTH_TEST));
-  }
-  CHECK_GL_ERROR(glDepthFunc(mRenderContext.depth_test.function));
-
-  mRenderContext.stencil_test = nuGContext::StencilTest();
-  if(mRenderContext.stencil_test.enable) {
-    CHECK_GL_ERROR(glEnable(GL_STENCIL_TEST));
-  } else {
-    CHECK_GL_ERROR(glDisable(GL_STENCIL_TEST));
-  }
-  CHECK_GL_ERROR(glStencilFunc(mRenderContext.stencil_test.function,
-                               mRenderContext.stencil_test.reference,
-                               mRenderContext.stencil_test.mask));
-  CHECK_GL_ERROR(glStencilOp(mRenderContext.stencil_test.stencil_fail,
-                             mRenderContext.stencil_test.depth_fail,
-                             mRenderContext.stencil_test.depth_pass));
-
   mRenderContext.blending = nuGContext::Blending();
-  if(mRenderContext.blending.enable) {
-    CHECK_GL_ERROR(glEnable(GL_BLEND));
-  } else {
-    CHECK_GL_ERROR(glDisable(GL_BLEND));
-  }
-  CHECK_GL_ERROR(glBlendEquation(mRenderContext.blending.equation));
-  CHECK_GL_ERROR(glBlendFunc(mRenderContext.blending.source, mRenderContext.blending.destination));
-  nuColor color(mRenderContext.blending.color);
-  CHECK_GL_ERROR(glBlendColor(color.fr(), color.fg(), color.fb(), color.fa()));
 
   mRenderContext.rasterizer.culling = false;
-  if(mRenderContext.rasterizer.culling) {
-    CHECK_GL_ERROR(glEnable(GL_CULL_FACE));
-  } else {
-    CHECK_GL_ERROR(glDisable(GL_CULL_FACE));
-  }
-
   mRenderContext.rasterizer.line_smooth = false;
-  if(mRenderContext.rasterizer.line_smooth) {
-    CHECK_GL_ERROR(glEnable(GL_LINE_SMOOTH));
-  } else {
-    CHECK_GL_ERROR(glDisable(GL_LINE_SMOOTH));
-  }
-
   mRenderContext.rasterizer.line_width = 1.0f;
-  CHECK_GL_ERROR(glLineWidth(mRenderContext.rasterizer.line_width));
   mRenderContext.rasterizer.cull_face = nude::CULL_BACK;
-  CHECK_GL_ERROR(glCullFace(mRenderContext.rasterizer.cull_face));
   mRenderContext.rasterizer.front_face = nude::FRONT_COUNTER_CLOCKWISE;
-  CHECK_GL_ERROR(glFrontFace(mRenderContext.rasterizer.front_face));
 
-  CHECK_GL_ERROR(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+  mRenderContext.current_array_buffer = 0;
+  mRenderContext.current_element_buffer = 0;
+  mRenderContext.current_vertex_array = mDefaultVertexArray;
+
+  initializeStates();
 }
 
 void nuRenderGL::terminate(void)
@@ -159,7 +105,9 @@ bool nuRenderGL::render(void)
           NU_ASSERT(false, "Logical error.\n");
         }
       }
-      
+
+      nuDrawString::draw(mRenderContext);
+
       return true;
     }
   }
@@ -173,6 +121,8 @@ i64 nuRenderGL::updateGraphicResources(void)
 
   mResourceManager.updateStaticResource(mFrameID);
   mResourceManager.updateDynamicResource(mFrameID);
+
+  nuDrawString::updateResource();
 
   return mFrameID;
 }
@@ -229,6 +179,8 @@ void nuRenderGL::executeDrawElements(RenderContext& context, void* draw_cmd)
 
   setShaderProgram(context, p_draw->data.program_object);
 
+  setTexture(p_draw->data.p_texture, p_draw->data.texture_num);
+
   if(context.p_vertex_array != p_draw->data.p_vertex_array)
     context.p_vertex_array = p_draw->data.p_vertex_array;
 
@@ -236,18 +188,30 @@ void nuRenderGL::executeDrawElements(RenderContext& context, void* draw_cmd)
     context.p_vertex_buffer = p_draw->data.p_vertex_buffer;
 
   if(context.p_vertex_array) {
-    if(context.p_vertex_array->getVertexHandle() != context.p_vertex_buffer->getHandle())
+    if(context.p_vertex_array->getVertexHandle() != context.p_vertex_buffer->getHandle()) {
       context.p_vertex_array->reset(context.p_vertex_buffer->getHandle());
-    else
-      CHECK_GL_ERROR(glBindVertexArray(context.p_vertex_array->getHandle()));
+    } else {
+      if(context.current_vertex_array != context.p_vertex_array->getHandle()) {
+        CHECK_GL_ERROR(glBindVertexArray(context.p_vertex_array->getHandle()));
+      }
+      if(context.current_array_buffer != context.p_vertex_buffer->getHandle()) {
+        CHECK_GL_ERROR(glBindBuffer(GL_ARRAY_BUFFER, context.p_vertex_buffer->getHandle()));
+      }
+    }
+    context.current_vertex_array = context.p_vertex_array->getHandle();
+    context.current_array_buffer = context.p_vertex_buffer->getHandle();
   } else {
     ui32 count = mCurrentVertexArray < p_draw->data.immediate_num ? p_draw->data.immediate_num : mCurrentVertexArray;
     NU_ASSERT_C(count < nuVertexArray::MAX_VERTEX_ATTRIBUTE);
 
-    CHECK_GL_ERROR(glBindVertexArray(mDefaultVertexArray));
-    if(mDefaultVertexBufferBinding != context.p_vertex_buffer->getHandle()) {
+    if(context.current_vertex_array != mDefaultVertexArray) {
+      context.current_vertex_array = mDefaultVertexArray;
+      CHECK_GL_ERROR(glBindVertexArray(context.current_vertex_array));
+    }
+
+    if(context.current_array_buffer != context.p_vertex_buffer->getHandle()) {
       CHECK_GL_ERROR(glBindBuffer(GL_ARRAY_BUFFER, context.p_vertex_buffer->getHandle()));
-      mDefaultVertexBufferBinding = context.p_vertex_buffer->getHandle();
+      context.current_array_buffer = context.p_vertex_buffer->getHandle();
     }
 
     for(ui32 ui = 0; ui < count; ui++) {
@@ -294,7 +258,10 @@ void nuRenderGL::executeDrawElements(RenderContext& context, void* draw_cmd)
     }
 
     context.p_element_buffer = p_draw->data.p_element_buffer;
-    CHECK_GL_ERROR(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, context.p_element_buffer->getHandle()));
+    if(context.current_element_buffer != context.p_element_buffer->getHandle()) {
+      context.current_element_buffer = context.p_element_buffer->getHandle();
+      CHECK_GL_ERROR(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, context.current_element_buffer));
+    }
   }
 
   const GLenum primitive_mode[] = {
@@ -684,38 +651,115 @@ void nuRenderGL::setTexture(nuGContext::TextureEntity* p_textures, ui32 tex_num)
     if(texture.p_parameter) {
       if(texture.p_texture->mWrapS != texture.p_parameter->wrap_s) {
         texture.p_texture->mWrapS = texture.p_parameter->wrap_s;
-        CHECK_GL_ERROR(glTexParameteri(static_cast< GLenum >(texture.p_texture->mTextureType),
-                                       GL_TEXTURE_WRAP_S,
-                                       texture.p_texture->mWrapS));
       }
 
       if(texture.p_texture->mWrapT != texture.p_parameter->wrap_t) {
         texture.p_texture->mWrapT = texture.p_parameter->wrap_t;
-        CHECK_GL_ERROR(glTexParameteri(static_cast< GLenum >(texture.p_texture->mTextureType),
-                                       GL_TEXTURE_WRAP_T,
-                                       texture.p_texture->mWrapT));
       }
 
       if(texture.p_texture->mWrapR != texture.p_parameter->wrap_r) {
         texture.p_texture->mWrapR = texture.p_parameter->wrap_r;
-        CHECK_GL_ERROR(glTexParameteri(static_cast< GLenum >(texture.p_texture->mTextureType),
-                                       GL_TEXTURE_WRAP_R,
-                                       texture.p_texture->mWrapR));
       }
 
       if(texture.p_texture->mMinFilter != texture.p_parameter->min_filter) {
         texture.p_texture->mMinFilter = texture.p_parameter->min_filter;
-        CHECK_GL_ERROR(glTexParameteri(static_cast< GLenum >(texture.p_texture->mTextureType),
-                                       GL_TEXTURE_MIN_FILTER,
-                                       texture.p_texture->mMinFilter));
       }
 
       if(texture.p_texture->mMagFilter != texture.p_parameter->mag_filter) {
         texture.p_texture->mMagFilter = texture.p_parameter->mag_filter;
-        CHECK_GL_ERROR(glTexParameteri(static_cast< GLenum >(texture.p_texture->mTextureType),
-                                       GL_TEXTURE_MAG_FILTER,
-                                       texture.p_texture->mMagFilter));
       }
     }
+    CHECK_GL_ERROR(glTexParameteri(static_cast< GLenum >(texture.p_texture->mTextureType),
+                                   GL_TEXTURE_WRAP_S,
+                                   texture.p_texture->mWrapS));
+    CHECK_GL_ERROR(glTexParameteri(static_cast< GLenum >(texture.p_texture->mTextureType),
+                                   GL_TEXTURE_WRAP_T,
+                                   texture.p_texture->mWrapT));
+    CHECK_GL_ERROR(glTexParameteri(static_cast< GLenum >(texture.p_texture->mTextureType),
+                                   GL_TEXTURE_WRAP_R,
+                                   texture.p_texture->mWrapR));
+    CHECK_GL_ERROR(glTexParameteri(static_cast< GLenum >(texture.p_texture->mTextureType),
+                                   GL_TEXTURE_MIN_FILTER,
+                                   texture.p_texture->mMinFilter));
+    CHECK_GL_ERROR(glTexParameteri(static_cast< GLenum >(texture.p_texture->mTextureType),
+                                   GL_TEXTURE_MAG_FILTER,
+                                   texture.p_texture->mMagFilter));
   }
+}
+
+void nuRenderGL::initializeStates(void)
+{
+  mRenderContext.reset();
+
+  // Initialize render context.
+  CHECK_GL_ERROR(glClearColor(mRenderContext.clear_color.fr(),
+                              mRenderContext.clear_color.fg(),
+                              mRenderContext.clear_color.fb(),
+                              mRenderContext.clear_color.fa()));
+
+  CHECK_GL_ERROR(glClearDepth(mRenderContext.depth_value));
+
+  CHECK_GL_ERROR(glViewport(mRenderContext.viewport.origin_x,
+                            mRenderContext.viewport.origin_y,
+                            mRenderContext.viewport.width,
+                            mRenderContext.viewport.height));
+
+  if(mRenderContext.scissor.enable) {
+    CHECK_GL_ERROR(glEnable(GL_SCISSOR_TEST));
+  } else {
+    CHECK_GL_ERROR(glDisable(GL_SCISSOR_TEST));
+  }
+  CHECK_GL_ERROR(glScissor(mRenderContext.scissor.left,
+                           mRenderContext.scissor.bottom,
+                           mRenderContext.scissor.width,
+                           mRenderContext.scissor.height));
+
+  if(mRenderContext.depth_test.enable) {
+    CHECK_GL_ERROR(glEnable(GL_DEPTH_TEST));
+  } else {
+    CHECK_GL_ERROR(glDisable(GL_DEPTH_TEST));
+  }
+  CHECK_GL_ERROR(glDepthFunc(mRenderContext.depth_test.function));
+
+  if(mRenderContext.stencil_test.enable) {
+    CHECK_GL_ERROR(glEnable(GL_STENCIL_TEST));
+  } else {
+    CHECK_GL_ERROR(glDisable(GL_STENCIL_TEST));
+  }
+  CHECK_GL_ERROR(glStencilFunc(mRenderContext.stencil_test.function,
+                               mRenderContext.stencil_test.reference,
+                               mRenderContext.stencil_test.mask));
+  CHECK_GL_ERROR(glStencilOp(mRenderContext.stencil_test.stencil_fail,
+                             mRenderContext.stencil_test.depth_fail,
+                             mRenderContext.stencil_test.depth_pass));
+
+  if(mRenderContext.blending.enable) {
+    CHECK_GL_ERROR(glEnable(GL_BLEND));
+  } else {
+    CHECK_GL_ERROR(glDisable(GL_BLEND));
+  }
+  CHECK_GL_ERROR(glBlendEquation(mRenderContext.blending.equation));
+  CHECK_GL_ERROR(glBlendFunc(mRenderContext.blending.source, mRenderContext.blending.destination));
+  nuColor color(mRenderContext.blending.color);
+  CHECK_GL_ERROR(glBlendColor(color.fr(), color.fg(), color.fb(), color.fa()));
+
+  if(mRenderContext.rasterizer.culling) {
+    CHECK_GL_ERROR(glEnable(GL_CULL_FACE));
+  } else {
+    CHECK_GL_ERROR(glDisable(GL_CULL_FACE));
+  }
+
+  mRenderContext.rasterizer.line_smooth = false;
+  if(mRenderContext.rasterizer.line_smooth) {
+    CHECK_GL_ERROR(glEnable(GL_LINE_SMOOTH));
+  } else {
+    CHECK_GL_ERROR(glDisable(GL_LINE_SMOOTH));
+  }
+
+  mRenderContext.rasterizer.line_width = 1.0f;
+  CHECK_GL_ERROR(glLineWidth(mRenderContext.rasterizer.line_width));
+  mRenderContext.rasterizer.cull_face = nude::CULL_BACK;
+  CHECK_GL_ERROR(glCullFace(mRenderContext.rasterizer.cull_face));
+  mRenderContext.rasterizer.front_face = nude::FRONT_COUNTER_CLOCKWISE;
+  CHECK_GL_ERROR(glFrontFace(mRenderContext.rasterizer.front_face));
 }

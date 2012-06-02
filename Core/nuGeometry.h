@@ -237,19 +237,19 @@ public:
   }
 
   nuPoint lt(void) const {
-    return mOrigin;
+    return nuPoint(mOrigin.x(), mOrigin.y() + mSize.h());
   }
 
   nuPoint rb(void) const {
-    return nuPoint(mOrigin.x() + mSize.w(), mOrigin.y() + mSize.h());
-  }
-
-  nuPoint rt(void) const {
     return nuPoint(mOrigin.x() + mSize.w(), mOrigin.y());
   }
 
+  nuPoint rt(void) const {
+    return nuPoint(mOrigin.x() + mSize.w(), mOrigin.y() + mSize.h());
+  }
+
   nuPoint lb(void) const {
-    return nuPoint(mOrigin.x(), mOrigin.y() + mSize.h());
+    return mOrigin;
   }
 
 };

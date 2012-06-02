@@ -86,23 +86,6 @@ void nuTexture::update(void)
 
     CHECK_GL_ERROR(glBindTexture(static_cast< GLenum >(mTextureType), mHandle));
 
-    CHECK_GL_ERROR(glTexParameteri(static_cast< GLenum >(mTextureType),
-                                   GL_TEXTURE_WRAP_S,
-                                   mWrapS));
-    CHECK_GL_ERROR(glTexParameteri(static_cast< GLenum >(mTextureType),
-                                   GL_TEXTURE_WRAP_T,
-                                   mWrapT));
-    CHECK_GL_ERROR(glTexParameteri(static_cast< GLenum >(mTextureType),
-                                   GL_TEXTURE_WRAP_R,
-                                   mWrapR));
-
-    CHECK_GL_ERROR(glTexParameteri(static_cast< GLenum >(mTextureType),
-                                   GL_TEXTURE_MIN_FILTER,
-                                   mMinFilter));
-    CHECK_GL_ERROR(glTexParameteri(static_cast< GLenum >(mTextureType),
-                                   GL_TEXTURE_MAG_FILTER,
-                                   mMagFilter));
-
     GLenum internal_format;
     if(isCompressed())
       internal_format = mPixelFormatTable[mFormat].compressed_format;

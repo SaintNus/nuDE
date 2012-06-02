@@ -31,6 +31,8 @@
 #include "nuShaderList.h"
 #include "nuTexture.h"
 
+#include "nuDrawString.h"
+
 #include "nuShaderInfo.h"
 
 #endif

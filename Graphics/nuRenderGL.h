@@ -25,12 +25,7 @@ class nuRenderGL : public nuObject
 {
   DECLARE_TYPE_INFO;
 
-  enum RENDERER_PHASE {
-    INIT_PHASE = 0,
-    SETUP_PHASE,
-    EXECUTE_PHASE,
-  };
-
+public:
   struct RenderContext {
     nuColor clear_color;
     f32 depth_value;
@@ -41,6 +36,9 @@ class nuRenderGL : public nuObject
     nuElementBuffer* p_element_buffer;
     nuVertexArray::Array* p_immediate_array;
     ui32 immediate_num;
+    GLuint current_array_buffer;
+    GLuint current_element_buffer;
+    GLuint current_vertex_array;
 
     nuGContext::Viewport viewport;
     nuGContext::Scissor scissor;
@@ -59,6 +57,13 @@ class nuRenderGL : public nuObject
     }
   };
 
+private:
+  enum RENDERER_PHASE {
+    INIT_PHASE = 0,
+    SETUP_PHASE,
+    EXECUTE_PHASE,
+  };
+
   nuGResManager mResourceManager;
   i64 mFrameID;
   nuConditionLock mLock;
@@ -74,7 +79,6 @@ class nuRenderGL : public nuObject
 
   GLuint mDefaultVertexArray;
   nuVertexArray::Array mVertexArray[nuVertexArray::MAX_VERTEX_ATTRIBUTE];
-  GLuint mDefaultVertexBufferBinding;
   ui32 mCurrentVertexArray;
 
   void executeClear(RenderContext& context, void* clear_cmd);
@@ -87,6 +91,8 @@ class nuRenderGL : public nuObject
   void setFragmentOps(RenderContext& context, nuGContext::FragmentOps& fragment_ops);
   void setRasterizer(RenderContext& context, nuGContext::Rasterizer& rasterizer);
   void setTexture(nuGContext::TextureEntity* p_textures, ui32 tex_num);
+
+  void initializeStates(void);
 
 public:
   nuRenderGL();

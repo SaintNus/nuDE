@@ -15,6 +15,12 @@ Program(Debug)
   // Preprocessor: _LOCAL1_ = 1.0, _LOCAL2_ = 2;
 }
 
+Program(DrawString)
+{
+  VertexShader: "DrawString.vsh";
+  FragmentShader: "DrawString.fsh";
+}
+
 Program(Test)
 {
   VertexShader: "test/Test.vsh";

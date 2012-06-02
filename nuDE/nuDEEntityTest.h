@@ -29,6 +29,8 @@ class nuDEEntityTest : public nuEntity
   nude::UniformBuffer mUniformBuffer;
   nude::Texture mTexture;
 
+  nude::DrawString mDrawString;
+
 public:
   nuDEEntityTest();
   ~nuDEEntityTest();

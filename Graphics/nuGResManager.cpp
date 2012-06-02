@@ -18,7 +18,8 @@ IMPLEMENT_TYPE_INFO(nuGResManager, nuObject);
 
 nuGResManager::nuGResManager()
     : mpUpdateTable(nullptr),
-      mUpdateTableNum(EXPANDABLE_TABLE_NUM)
+      mUpdateTableNum(EXPANDABLE_TABLE_NUM),
+      mpRenderGL(nullptr)
 {
   nuShaderList shd;
 

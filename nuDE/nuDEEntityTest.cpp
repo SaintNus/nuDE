@@ -134,6 +134,9 @@ nuDEEntityTest::nuDEEntityTest()
       test.read< ui8 >(buffer, 4);
     }
   }
+
+  mDrawString = nuDrawString::create("ヌス", nuSize(256.0f, 0.0f));
+  mDrawString->setMargin(nuSize(0.0f, 0.0f));
 }
 
 nuDEEntityTest::~nuDEEntityTest()
@@ -206,6 +209,10 @@ void nuDEEntityTest::update(void)
   if(fabsf(mPosX + 0.2f) > 0.2f) {
     mPosX = -0.2f + mDir * 0.2f;
     mDir *= -1.0f;
+    if(mDir > 0.0f)
+      mDrawString->setString("竹達彩奈");
+    else
+      mDrawString->setString("ヌス");
   }
 }
 
@@ -232,7 +239,6 @@ void nuDEEntityTest::draw(nuGContext& context)
       context.setUniform(nude::Debug_uniColor_0, vvv);
       context.setUniform(nude::Debug_uniTexture, &tex);
       context.setUniformBlock(nude::Debug_uniColorXform, mUniformBuffer);
-
       mInit = true;
     }
     context.setDepthTest(true, nude::DEPTHSTENCIL_LEQUAL);
@@ -254,4 +260,6 @@ void nuDEEntityTest::draw(nuGContext& context)
     context.drawElements(nude::TRIANGLE_STRIP, 4);
   }
   context.endDraw();
+
+  mDrawString->drawAt(nuPoint(0, 0));
 }
