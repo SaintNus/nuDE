@@ -87,7 +87,7 @@ nuResource::ERROR_CODE nuShaderList::setup(const nuStream &stream)
               uj++;
               remain--;
             }
-            if(pc[-1] != '/') {
+            if(pc != shader_path && pc[-1] != '/') {
               *pc = '/';
               pc++;
             }

@@ -8,12 +8,15 @@
 #include "GraphicsInclude.h"
 #include "nuElementBuffer.h"
 
+#define ELEMENT_BUFFER_MAP_THRESHOLD (32 * 1024)
+
 IMPLEMENT_TYPE_INFO_INST(nuElementBuffer, nuGResource, nullptr);
 
 nuElementBuffer::nuElementBuffer(ELEMENT_TYPE type, ui32 element_num, nuGResource::RESOURCE_USAGE usage)
     : nuGResource(nuGResource::ELEMENT_BUFFER, usage),
       mpBuffer(nullptr),
       mSize(0),
+      mCommitSize(0),
       mElementBufferID(0),
       mElementNum(element_num),
       mElementType(type)
@@ -36,14 +39,24 @@ void nuElementBuffer::update(void)
 
     CHECK_GL_ERROR(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mElementBufferID));
     CHECK_GL_ERROR(glBufferData(GL_ELEMENT_ARRAY_BUFFER, mSize, mpBuffer, getResourceUsage()));
-    releaseBuffer();
-    setInitialized(true);
-  }
 
-  if(isMapped()) {
+    if(getUsage() == nuGResource::STATIC_RESOURCE)
+      releaseBuffer();
+
+    mCommitSize = 0;
+    setInitialized(true);
+  } else {
     CHECK_GL_ERROR(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mElementBufferID));
-    CHECK_GL_ERROR(glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER));
-    mpBuffer = nullptr;
-    setMapped(false);
+
+    if(mCommitSize > ELEMENT_BUFFER_MAP_THRESHOLD) {
+      void* p_buffer;
+      CHECK_GL_ERROR(p_buffer = glMapBuffer(GL_ELEMENT_ARRAY_BUFFER, GL_WRITE_ONLY));
+      memcpy(p_buffer, mpBuffer, mCommitSize);
+      CHECK_GL_ERROR(glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER));
+    } else {
+      CHECK_GL_ERROR(glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, mCommitSize, mpBuffer));
+    }
+
+    mCommitSize = 0;
   }  
 }

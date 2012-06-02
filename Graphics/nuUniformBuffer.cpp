@@ -8,12 +8,15 @@
 #include "GraphicsInclude.h"
 #include "nuUniformBuffer.h"
 
+#define UNIFORM_BUFFER_MAP_THRESHOLD (32 * 1024)
+
 IMPLEMENT_TYPE_INFO_INST(nuUniformBuffer, nuGResource, nullptr);
 
 nuUniformBuffer::nuUniformBuffer(size_t size)
     : nuGResource(nuGResource::UNIFORM_BUFFER, nuGResource::DYNAMIC_RESOURCE),
       mpBuffer(nullptr),
       mSize(size),
+      mCommitSize(0),
       mUniformBufferID(0)
 {
   // None...
@@ -34,14 +37,21 @@ void nuUniformBuffer::update(void)
 
     CHECK_GL_ERROR(glBindBuffer(GL_UNIFORM_BUFFER, mUniformBufferID));
     CHECK_GL_ERROR(glBufferData(GL_UNIFORM_BUFFER, mSize, mpBuffer, getResourceUsage()));
-    releaseBuffer();
-    setInitialized(true);
-  }
 
-  if(isMapped()) {
+    mCommitSize = 0;
+    setInitialized(true);
+  } else {
     CHECK_GL_ERROR(glBindBuffer(GL_UNIFORM_BUFFER, mUniformBufferID));
-    CHECK_GL_ERROR(glUnmapBuffer(GL_UNIFORM_BUFFER));
-    mpBuffer = nullptr;
-    setMapped(false);
-  }  
+
+    if(mCommitSize > UNIFORM_BUFFER_MAP_THRESHOLD) {
+      void* p_buffer;
+      CHECK_GL_ERROR(p_buffer = glMapBuffer(GL_UNIFORM_BUFFER, GL_WRITE_ONLY));
+      memcpy(p_buffer, mpBuffer, mCommitSize);
+      CHECK_GL_ERROR(glUnmapBuffer(GL_UNIFORM_BUFFER));
+    } else {
+      CHECK_GL_ERROR(glBufferSubData(GL_UNIFORM_BUFFER, 0, mCommitSize, mpBuffer));
+    }
+
+    mCommitSize = 0;
+  }
 }

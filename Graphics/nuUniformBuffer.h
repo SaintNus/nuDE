@@ -17,13 +17,10 @@ class nuUniformBuffer : public nuGResource
   friend class nuGSetupContext;
   friend nude::Handle< nuUniformBuffer >;
 
-  enum EXTENSION_FLAG {
-    MAPPED = 1 << 0,
-  };
-
   void* mpBuffer;
   GLuint mUniformBufferID;
   size_t mSize;
+  size_t mCommitSize;
 
   void update(void);
 
@@ -31,19 +28,6 @@ class nuUniformBuffer : public nuGResource
 
   nuUniformBuffer(size_t size);
   ~nuUniformBuffer();
-
-  void setMapped(bool mapped) {
-    ui32 ext = getExtension();
-    if(mapped)
-      ext |= MAPPED;
-    else
-      ext &= ~MAPPED;
-    setExtension(ext);
-  }
-
-  bool isMapped(void) const {
-    return (getExtension() & MAPPED) ? true : false;
-  }
 
   void releaseBuffer(void) {
     if(!isInitialized() && mpBuffer) {
@@ -53,33 +37,25 @@ class nuUniformBuffer : public nuGResource
   }
 
 public:
-  void initialize(void) {
-    if(!isInitialized()) {
-      setUpdate(true);
-    }
-  }
-
-  void* beginInitialize(void) {
+  void* updateContent(void) {
     if(!isInitialized()) {
       if(!mpBuffer)
-        mpBuffer = nude::Alloc(0);
-      return mpBuffer;
+        mpBuffer = nude::Alloc(mSize);
     }
-    return nullptr;
+    return mpBuffer;
   }
 
-  void endInitialize(void) {
-    if(!isInitialized() && mpBuffer) {
+  bool commitContent(size_t size) {
+    if(size > 0 && mpBuffer) {
+      mCommitSize = size > mSize ? mSize : size;
       setUpdate(true);
+      return true;
     }
+    return false;
   }
 
   GLuint getHandle(void) const {
     return mUniformBufferID;
-  }
-
-  void* getBuffer(void) const {
-    return mpBuffer;
   }
 
   size_t getSize(void) const {

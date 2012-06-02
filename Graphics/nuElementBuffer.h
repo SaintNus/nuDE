@@ -24,10 +24,6 @@ public:
   };
 
 private:
-  enum EXTENSION_FLAG {
-    MAPPED = 1 << 0,
-  };
-
   size_t getElementSize(ELEMENT_TYPE type) const {
     const size_t sz_table[] = {
       2,
@@ -41,6 +37,7 @@ private:
 
   void* mpBuffer;
   size_t mSize;
+  size_t mCommitSize;
 
   GLuint mElementBufferID;
 
@@ -53,51 +50,30 @@ private:
     }
   }
 
-  void setMapped(bool mapped) {
-    ui32 ext = getExtension();
-    if(mapped)
-      ext |= MAPPED;
-    else
-      ext &= ~MAPPED;
-    setExtension(ext);
-  }
-
-  bool isMapped(void) const {
-    return (getExtension() & MAPPED) ? true : false;
-  }
-
   nuElementBuffer();
   nuElementBuffer(ELEMENT_TYPE type, ui32 element_num, nuGResource::RESOURCE_USAGE usage);
   ~nuElementBuffer();
 
 public:
-  void initialize(void) {
-    if(!isInitialized()) {
-      setUpdate(true);
-    }
-  }
-
-  void* beginInitialize(void) {
+  void* updateContent(void) {
     if(!isInitialized()) {
       if(!mpBuffer)
         mpBuffer = nude::Alloc(mSize);
-      return mpBuffer;
     }
-    return nullptr;
+    return mpBuffer;
   }
 
-  void endInitialize(void) {
-    if(!isInitialized() && mpBuffer) {
+  bool commitContent(size_t size) {
+    if(size > 0 && mpBuffer) {
+      mCommitSize = size > mSize ? mSize : size;
       setUpdate(true);
+      return true;
     }
+    return false;
   }
 
   GLuint getHandle(void) const {
     return mElementBufferID;
-  }
-
-  void* getBuffer(void) const {
-    return mpBuffer;
   }
 
   size_t getSize(void) const {

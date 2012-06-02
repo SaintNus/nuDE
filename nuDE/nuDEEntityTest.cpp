@@ -61,20 +61,19 @@ nuDEEntityTest::nuDEEntityTest()
   mShaderProgram = nuApplication::renderGL().createShaderProgram(nude::Program_Debug);
   mUniformBuffer = nuApplication::renderGL().createUniformBuffer(nude::Program_Debug,
                                                                  nude::Debug_uniColorXform);
-  f32 ubo[4] = { 1.0f, 0.0f, 1.0f, 0.0f };
-  mUniformBuffer->beginInitialize();
+  f32 ubo[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
   {
-    void* p_buffer = mUniformBuffer->getBuffer();
-    memcpy(p_buffer, ubo, sizeof(ubo));
+    void* p_buffer = mUniformBuffer->updateContent();
+    if(p_buffer) {
+      memcpy(p_buffer, ubo, sizeof(ubo));
+      mUniformBuffer->commitContent(sizeof(ubo));
+    }
   }
-  mUniformBuffer->endInitialize();
 
   mVertexBuffer[0] = nuApplication::renderGL().createVertexBuffer(sizeof(Vertex) * 4,
                                                                   nuGResource::STREAM_RESOURCE);
-  mVertexBuffer[0]->initialize();
   mVertexBuffer[1] = nuApplication::renderGL().createVertexBuffer(sizeof(Vertex) * 4,
                                                                   nuGResource::STREAM_RESOURCE);
-  mVertexBuffer[1]->initialize();
 
   mVertexArray = nuApplication::renderGL().createVertexArray();
   mVertexArray->begin(nude::DebugAttribute_Num);
@@ -91,9 +90,9 @@ nuDEEntityTest::nuDEEntityTest()
                                                                  4,
                                                                  nuGResource::nuGResource::STATIC_RESOURCE);
   {
-    void* p_buffer = mElementBuffer->beginInitialize();
+    void* p_buffer = mElementBuffer->updateContent();
     memcpy(p_buffer, idx, sizeof(idx));
-    mElementBuffer->endInitialize();
+    mElementBuffer->commitContent(sizeof(idx));
   }
 
   ui32 texture[2][2] = {
@@ -121,15 +120,17 @@ nuDEEntityTest::nuDEEntityTest()
     mTexture->endInitialize();
   }
 
-  ui32 small_tex[4] = {
+  ui32 small_tex[6] = {
     0xffff00ff,
     0xff00ffff,
     0xffffffff,
     0xff808080,
+    0xff800080,
+    0xff808000,
   };
   mSmallTexture = nuApplication::renderGL().createTexture(nuGResource::nuGResource::STATIC_RESOURCE);
   {
-    nuTexture::Texture2D tex_2d(2, 2, nude::PIXEL_OPTIMAL_HIGH_PRECISION, false, false);
+    nuTexture::Texture2D tex_2d(3, 2, nude::PIXEL_OPTIMAL_HIGH_PRECISION, false, false);
     nuTexture::Parameter param(nude::WRAP_CLAMP_TO_EDGE,
                                nude::WRAP_CLAMP_TO_EDGE,
                                nude::WRAP_CLAMP_TO_EDGE,
@@ -166,10 +167,6 @@ nuDEEntityTest::~nuDEEntityTest()
 void nuDEEntityTest::setup(nuGSetupContext& setup)
 {
   mVBIdx ^= 1;
-  if(mVertexBuffer[mVBIdx].isValid())
-    setup.map(*mVertexBuffer[mVBIdx]);
-  if(mUniformBuffer.isValid())
-    setup.map(*mUniformBuffer);
 }
 
 void nuDEEntityTest::update(void)
@@ -202,9 +199,11 @@ void nuDEEntityTest::update(void)
   };
 
   if(mVertexBuffer[mVBIdx].isValid()) {
-    void* p_buffer = mVertexBuffer[mVBIdx]->getBuffer();
-    if(p_buffer)
+    void* p_buffer = mVertexBuffer[mVBIdx]->updateContent();
+    if(p_buffer) {
       memcpy(p_buffer, vtx, sizeof(vtx));
+      mVertexBuffer[mVBIdx]->commitContent(sizeof(vtx));
+    }
   }
 
   if(mUniformBuffer.isValid()) {
@@ -215,10 +214,12 @@ void nuDEEntityTest::update(void)
       { 1.0f, 1.0f, 1.0f, 1.0f },
     };
 
-    ui32 test = 3;
-    void* p_buffer = mUniformBuffer->getBuffer();
-    if(p_buffer)
+    ui32 test = mIdx / 100;
+    void* p_buffer = mUniformBuffer->updateContent();
+    if(p_buffer) {
       memcpy(p_buffer, adder[test], sizeof(f32) * 4);
+      mUniformBuffer->commitContent(sizeof(f32) * 4);
+    }
 
     mIdx++;
     mIdx %= 400;
@@ -287,4 +288,5 @@ void nuDEEntityTest::draw(nuGContext& context)
 #endif
 
   mDrawString->drawAt(nuPoint(10.0f, 10.0f));
+  mDrawString->setColor(nuColor::Cyan);
 }
