@@ -107,8 +107,8 @@ nuDEEntityTest::nuDEEntityTest()
     nuTexture::Parameter param(nude::WRAP_CLAMP_TO_EDGE,
                                nude::WRAP_CLAMP_TO_EDGE,
                                nude::WRAP_CLAMP_TO_EDGE,
-                               nude::FILTER_NEAREST_MIPMAP_NEAREST,
-                               nude::FILTER_NEAREST);
+                               nude::FILTER_LINEAR_MIPMAP_LINEAR,
+                               nude::FILTER_LINEAR);
     ui32* p_buffer = static_cast< ui32* >(mTexture->beginInitialize(tex_2d, param));
     for(ui32 ui = 0; ui < 64; ui++) {
       for(ui32 uj = 0; uj < 64; uj++) {
@@ -119,6 +119,25 @@ nuDEEntityTest::nuDEEntityTest()
       }
     }
     mTexture->endInitialize();
+  }
+
+  ui32 small_tex[4] = {
+    0xffff00ff,
+    0xff00ffff,
+    0xffffffff,
+    0xff808080,
+  };
+  mSmallTexture = nuApplication::renderGL().createTexture(nuGResource::nuGResource::STATIC_RESOURCE);
+  {
+    nuTexture::Texture2D tex_2d(2, 2, nude::PIXEL_OPTIMAL_HIGH_PRECISION, false, false);
+    nuTexture::Parameter param(nude::WRAP_CLAMP_TO_EDGE,
+                               nude::WRAP_CLAMP_TO_EDGE,
+                               nude::WRAP_CLAMP_TO_EDGE,
+                               nude::FILTER_NEAREST,
+                               nude::FILTER_NEAREST);
+    ui32* p_buffer = static_cast< ui32* >(mSmallTexture->beginInitialize(tex_2d, param));
+    memcpy(p_buffer, small_tex, sizeof(small_tex));
+    mSmallTexture->endInitialize();
   }
 
   {
@@ -233,7 +252,11 @@ void nuDEEntityTest::draw(nuGContext& context)
     };
 
     context.setPriority(nude::PASS_TRANSPARENCY, 0);
-    ui32 tex = context.setTexture(mTexture);
+    ui32 tex;
+    if(mDir > 0.0f)
+      tex = context.setTexture(mTexture);
+    else
+      tex = context.setTexture(mSmallTexture);
 
     if(!mInit) {
       context.setUniform(nude::Debug_uniTest, vv);

@@ -28,6 +28,7 @@ class nuDEEntityTest : public nuEntity
   nude::ShaderProgram mShaderProgram;
   nude::UniformBuffer mUniformBuffer;
   nude::Texture mTexture;
+  nude::Texture mSmallTexture;
 
   nude::DrawString mDrawString;
 

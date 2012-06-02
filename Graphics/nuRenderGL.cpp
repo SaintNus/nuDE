@@ -655,39 +655,39 @@ void nuRenderGL::setTexture(nuGContext::TextureEntity* p_textures, ui32 tex_num)
     if(texture.p_parameter) {
       if(texture.p_texture->mWrapS != texture.p_parameter->wrap_s) {
         texture.p_texture->mWrapS = texture.p_parameter->wrap_s;
+        CHECK_GL_ERROR(glTexParameteri(static_cast< GLenum >(texture.p_texture->mTextureType),
+                                       GL_TEXTURE_WRAP_S,
+                                       texture.p_texture->mWrapS));
       }
 
       if(texture.p_texture->mWrapT != texture.p_parameter->wrap_t) {
         texture.p_texture->mWrapT = texture.p_parameter->wrap_t;
+        CHECK_GL_ERROR(glTexParameteri(static_cast< GLenum >(texture.p_texture->mTextureType),
+                                       GL_TEXTURE_WRAP_T,
+                                       texture.p_texture->mWrapT));
       }
 
       if(texture.p_texture->mWrapR != texture.p_parameter->wrap_r) {
         texture.p_texture->mWrapR = texture.p_parameter->wrap_r;
+        CHECK_GL_ERROR(glTexParameteri(static_cast< GLenum >(texture.p_texture->mTextureType),
+                                       GL_TEXTURE_WRAP_R,
+                                       texture.p_texture->mWrapR));
       }
 
       if(texture.p_texture->mMinFilter != texture.p_parameter->min_filter) {
         texture.p_texture->mMinFilter = texture.p_parameter->min_filter;
+        CHECK_GL_ERROR(glTexParameteri(static_cast< GLenum >(texture.p_texture->mTextureType),
+                                       GL_TEXTURE_MIN_FILTER,
+                                       texture.p_texture->mMinFilter));
       }
 
       if(texture.p_texture->mMagFilter != texture.p_parameter->mag_filter) {
         texture.p_texture->mMagFilter = texture.p_parameter->mag_filter;
+        CHECK_GL_ERROR(glTexParameteri(static_cast< GLenum >(texture.p_texture->mTextureType),
+                                       GL_TEXTURE_MAG_FILTER,
+                                       texture.p_texture->mMagFilter));
       }
     }
-    CHECK_GL_ERROR(glTexParameteri(static_cast< GLenum >(texture.p_texture->mTextureType),
-                                   GL_TEXTURE_WRAP_S,
-                                   texture.p_texture->mWrapS));
-    CHECK_GL_ERROR(glTexParameteri(static_cast< GLenum >(texture.p_texture->mTextureType),
-                                   GL_TEXTURE_WRAP_T,
-                                   texture.p_texture->mWrapT));
-    CHECK_GL_ERROR(glTexParameteri(static_cast< GLenum >(texture.p_texture->mTextureType),
-                                   GL_TEXTURE_WRAP_R,
-                                   texture.p_texture->mWrapR));
-    CHECK_GL_ERROR(glTexParameteri(static_cast< GLenum >(texture.p_texture->mTextureType),
-                                   GL_TEXTURE_MIN_FILTER,
-                                   texture.p_texture->mMinFilter));
-    CHECK_GL_ERROR(glTexParameteri(static_cast< GLenum >(texture.p_texture->mTextureType),
-                                   GL_TEXTURE_MAG_FILTER,
-                                   texture.p_texture->mMagFilter));
   }
 }
 

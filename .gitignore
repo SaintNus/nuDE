@@ -7,3 +7,5 @@ Resources/Shader/processed
 dbg_glslpc
 README.html
 Markdown.pl
+Resources/Shader/ShdList.h
+Resources/Shader/glsl.intermediate/
