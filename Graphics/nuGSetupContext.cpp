@@ -12,23 +12,15 @@
 #include "nuUniformBuffer.h"
 #include "nuGSetupContext.h"
 
-nuGSetupContext::nuGSetupContext()
-    : mFrameID(0)
+nuGSetupContext::nuGSetupContext(i64 frame_id, const nuRect& rect, bool resize)
+    : mFrameID(frame_id),
+      mViewport(rect),
+      mResizeView(resize)
 {
   // None...
 }
 
 nuGSetupContext::~nuGSetupContext()
-{
-
-}
-
-void nuGSetupContext::beginSetup(i64 frame_id)
-{
-  mFrameID = frame_id;
-}
-
-void nuGSetupContext::endSetup(void)
 {
   // None...
 }

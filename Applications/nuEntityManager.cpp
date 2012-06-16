@@ -75,22 +75,17 @@ void nuEntityManager::unregisterEntity(nuEntity& entity)
   entity.mRegistered = 0;
 }
 
-void nuEntityManager::setupEntity(i64 frame_id)
+void nuEntityManager::setupEntity(nuGSetupContext& setup_ctx)
 {
-  nuGSetupContext setup_ctx;
-  setup_ctx.beginSetup(frame_id + 1);
-  {
-    nuMutex::Autolock lock(mListMutex);
-    nuEntity* ptr = mpList;
+  nuMutex::Autolock lock(mListMutex);
+  nuEntity* ptr = mpList;
 
-    while(ptr) {
-      if(ptr->mSetup == 0)
-        ptr->mSetup = 1;
-      ptr->setup(setup_ctx);
-      ptr = ptr->mpNext;
-    }
+  while(ptr) {
+    if(ptr->mSetup == 0)
+      ptr->mSetup = 1;
+    ptr->setup(setup_ctx);
+    ptr = ptr->mpNext;
   }
-  setup_ctx.endSetup();
 }
 
 void nuEntityManager::createUpdateList(nuTaskSet& update_set, EntityTable& table)

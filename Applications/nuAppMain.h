@@ -60,6 +60,13 @@ public:
     return *mpResourceManager;
   }
 
+#if !NDEBUG
+  void updateRenderTimeAverage(f32 avg) {
+    mRenderTimeAverage = avg;
+    mRenderTimeChanged = true;
+  }
+#endif
+
 protected:
   static const size_t DEFAULT_RING_BUFFER_SIZE = 2 * 1024 * 1024;
   static const ui32 DEFAULT_TAG_NUM = 8 * 1024;
@@ -85,10 +92,25 @@ protected:
   nuGContext::TagList mTagList[2];
   ui32 mCurrentTagList;
 
+#if !NDEBUG
+  nude::DrawString mRenderPerformance;
+  nuPoint mRenderPerformaceDispPos;
+  f32 mRenderTimeAverage;
+  bool mRenderTimeChanged;
+
+  nude::DrawString mUpdatePerformance;
+  nuPoint mUpdatePerformaceDispPos;
+  f32 mUpdateTime[60];
+  ui32 mUpdateTimeIdx;
+  f32 mUpdateTimeAverage;
+
+  nuTimermSec mTimer;
+#endif
+
   virtual void update(void);
   virtual void draw(void);
-  virtual void begin(void) {}
-  virtual void end(void) {}
+  virtual void begin(void);
+  virtual void end(void);
 
   void executeDraw(void* param);
 

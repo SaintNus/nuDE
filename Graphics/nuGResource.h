@@ -12,6 +12,7 @@ class nuGResource : public nuObject
 {
   DECLARE_TYPE_INFO;
   friend class nuGResManager;
+  friend nude::Handle< nuGResource >;
 
 public:
   enum RESOURCE_TYPE {
@@ -22,6 +23,7 @@ public:
     TEXTURE,
     SHADER_PROGRAM,
     UNIFORM_BUFFER,
+    RENDER_BUFFER,
   };
 
   enum RESOURCE_USAGE {
@@ -174,5 +176,9 @@ private:
   nuGResource();
 
 };
+
+namespace nude {
+  typedef nude::Handle< nuGResource > GraphicResource;
+}
 
 #endif

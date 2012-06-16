@@ -15,6 +15,7 @@
 #include "nuElementBuffer.h"
 #include "nuShaderProgram.h"
 #include "nuUniformBuffer.h"
+#include "nuFrameBuffer.h"
 #include "nuTexture.h"
 
 /*!

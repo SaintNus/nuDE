@@ -11,17 +11,26 @@
 class nuGSetupContext
 {
   i64 mFrameID;
+  const nuRect& mViewport;
+  bool mResizeView;
+
+  nuGSetupContext();
 
 public:
-  nuGSetupContext();
+  nuGSetupContext(i64 frame_id, const nuRect& rect, bool resize);
   ~nuGSetupContext();
 
   i64 getFrameID(void) const {
     return mFrameID;
   }
 
-  void beginSetup(i64 frame_id);
-  void endSetup(void);
+  bool isResized(void) const {
+    return mResizeView;
+  }
+
+  const nuRect& getViewport(void) const {
+    return mViewport;
+  }
 
 };
 

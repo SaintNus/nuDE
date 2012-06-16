@@ -14,6 +14,11 @@
   CVDisplayLinkRef displayLink;
   bool displayLinkStarted;
   i64 videoTime;
+  bool resizeView;
+#if !NDEBUG
+  f32 mRenderPerformance[60];
+  ui32 mRenderTimeIdx;
+#endif
 }
 
 @property (nonatomic, readonly, getter = isDisplayLinkStarted) bool displayLinkStarted;

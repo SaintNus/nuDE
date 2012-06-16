@@ -28,6 +28,7 @@
 #include <map>
 
 #include <libkern/OSAtomic.h>
+#include <sys/time.h>
 
 #ifdef __OBJC__
 
@@ -59,5 +60,6 @@
 
 #include "nuGeometry.h"
 #include "nuMath.h"
+#include "nuTimer.h"
 
 #endif

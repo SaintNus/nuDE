@@ -46,14 +46,14 @@ nuGResManager::~nuGResManager()
 VertexArray nuGResManager::createVertexArray(void)
 {
   nuVertexArray* p_va = new nuVertexArray();
-  registerResource(*p_va);
+  registerResource(*p_va, true);
   return VertexArray(p_va);
 }
 
 VertexBuffer nuGResManager::createVertexBuffer(size_t size, nuGResource::RESOURCE_USAGE usage)
 {
   nuVertexBuffer* p_vb = new nuVertexBuffer(size, usage);
-  registerResource(*p_vb);
+  registerResource(*p_vb, true);
   return VertexBuffer(p_vb);
 }
 
@@ -62,14 +62,14 @@ ElementBuffer nuGResManager::createElementBuffer(nuElementBuffer::ELEMENT_TYPE t
                                                  nuGResource::RESOURCE_USAGE usage)
 {
   nuElementBuffer* p_eb = new nuElementBuffer(type, size, usage);
-  registerResource(*p_eb);
+  registerResource(*p_eb, true);
   return ElementBuffer(p_eb);
 }
 
 nude::ShaderProgram nuGResManager::createShaderProgram(nude::ProgramList program)
 {
   nuShaderProgram* p_prog = new nuShaderProgram(program);
-  registerResource(*p_prog);
+  registerResource(*p_prog, true);
   return ShaderProgram(p_prog);
 }
 
@@ -77,6 +77,7 @@ void nuGResManager::updateStaticResource(i64 frame_id)
 {
   deleteResources(mStaticResource, mStaticResMutex, frame_id);
   updateResources(mStaticResource, mStaticResMutex);
+  CHECK_GL_ERROR(glBindRenderbuffer(GL_RENDERBUFFER, 0));
 }
 
 void nuGResManager::updateDynamicResource(i64 frame_id)
@@ -154,7 +155,7 @@ UniformBuffer nuGResManager::createUniformBuffer(nude::ProgramList program_id, u
 
   size_t size = GLSLPrograms[program_id].uniform_blocks[ubo_id].size;
   nuUniformBuffer* p_ub = new nuUniformBuffer(size);
-  registerResource(*p_ub);
+  registerResource(*p_ub, true);
 
   return UniformBuffer(p_ub);
 }
@@ -162,6 +163,13 @@ UniformBuffer nuGResManager::createUniformBuffer(nude::ProgramList program_id, u
 nude::Texture nuGResManager::createTexture(nuGResource::RESOURCE_USAGE usage)
 {
   nuTexture* p_tex = new nuTexture(usage);
-  registerResource(*p_tex);
+  registerResource(*p_tex, true);
   return nude::Texture(p_tex);
+}
+
+nude::RenderBuffer nuGResManager::createRenderBuffer(void)
+{
+  nuRenderBuffer* p_rb = new nuRenderBuffer;
+  registerResource(*p_rb, true);
+  return nude::RenderBuffer(p_rb);
 }

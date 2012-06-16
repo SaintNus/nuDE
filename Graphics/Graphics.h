@@ -22,6 +22,7 @@
 
 #include "nuGContext.h"
 #include "nuGSetupContext.h"
+#include "nuGDebug.h"
 
 #include "nuVertexArray.h"
 #include "nuVertexBuffer.h"
@@ -30,6 +31,8 @@
 #include "nuUniformBuffer.h"
 #include "nuShaderList.h"
 #include "nuTexture.h"
+#include "nuFrameBuffer.h"
+#include "nuRenderBuffer.h"
 
 #include "nuDrawString.h"
 

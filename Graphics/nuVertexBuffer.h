@@ -14,7 +14,6 @@ class nuVertexBuffer : public nuGResource
 {
   DECLARE_TYPE_INFO;
   friend class nuGResManager;
-  friend class nuGSetupContext;
   friend nude::Handle< nuVertexBuffer >;
 
   void* mpBuffer;
@@ -25,7 +24,7 @@ class nuVertexBuffer : public nuGResource
   void update(void);
 
   void releaseBuffer(void) {
-    if(!isInitialized() && mpBuffer) {
+    if(mpBuffer) {
       nude::Dealloc(mpBuffer);
       mpBuffer = nullptr;
     }

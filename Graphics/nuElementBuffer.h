@@ -14,7 +14,6 @@ class nuElementBuffer : public nuGResource
 {
   DECLARE_TYPE_INFO;
   friend class nuGResManager;
-  friend class nuGSetupContext;
   friend nude::Handle< nuElementBuffer >;
 
 public:
@@ -44,7 +43,7 @@ private:
   void update(void);
 
   void releaseBuffer(void) {
-    if(!isInitialized() && mpBuffer) {
+    if(mpBuffer) {
       nude::Dealloc(mpBuffer);
       mpBuffer = nullptr;
     }

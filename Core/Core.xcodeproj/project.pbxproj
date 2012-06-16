@@ -72,6 +72,8 @@
 		C7EE1BA014D563FD00A9CF2B /* nuThread.h in Headers */ = {isa = PBXBuildFile; fileRef = C7EE1B8B14D563FD00A9CF2B /* nuThread.h */; settings = {ATTRIBUTES = (); }; };
 		C7EE1BA414D5973500A9CF2B /* nuHandle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7EE1BA214D5973400A9CF2B /* nuHandle.cpp */; };
 		C7EE1BA514D5973500A9CF2B /* nuHandle.h in Headers */ = {isa = PBXBuildFile; fileRef = C7EE1BA314D5973500A9CF2B /* nuHandle.h */; settings = {ATTRIBUTES = (); }; };
+		C7F142F3157B0EE100DC59F0 /* nuTimer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7F142F1157B0EE100DC59F0 /* nuTimer.cpp */; };
+		C7F142F4157B0EE100DC59F0 /* nuTimer.h in Headers */ = {isa = PBXBuildFile; fileRef = C7F142F2157B0EE100DC59F0 /* nuTimer.h */; };
 		C7FBC351155E678B009E03D2 /* CoreInclude.h in Headers */ = {isa = PBXBuildFile; fileRef = C7FBC350155E678B009E03D2 /* CoreInclude.h */; settings = {ATTRIBUTES = (Private, ); }; };
 /* End PBXBuildFile section */
 
@@ -145,6 +147,8 @@
 		C7EE1B8B14D563FD00A9CF2B /* nuThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuThread.h; sourceTree = "<group>"; };
 		C7EE1BA214D5973400A9CF2B /* nuHandle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuHandle.cpp; sourceTree = "<group>"; };
 		C7EE1BA314D5973500A9CF2B /* nuHandle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuHandle.h; sourceTree = "<group>"; };
+		C7F142F1157B0EE100DC59F0 /* nuTimer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nuTimer.cpp; sourceTree = "<group>"; };
+		C7F142F2157B0EE100DC59F0 /* nuTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nuTimer.h; sourceTree = "<group>"; };
 		C7FBC350155E678B009E03D2 /* CoreInclude.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreInclude.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -231,6 +235,8 @@
 				C7EE1B8B14D563FD00A9CF2B /* nuThread.h */,
 				C79E4D7114E811C3001E60BF /* nuThreadPool.cpp */,
 				C79E4D7214E811C3001E60BF /* nuThreadPool.h */,
+				C7F142F1157B0EE100DC59F0 /* nuTimer.cpp */,
+				C7F142F2157B0EE100DC59F0 /* nuTimer.h */,
 				C72BFEFB141CB0BB004F0E00 /* nuType.cpp */,
 				C72BFEFD141CB0D1004F0E00 /* nuType.h */,
 				C79FC5F4141E6F0D005C6C70 /* nuTypeInfo.cpp */,
@@ -291,6 +297,7 @@
 				C79D18B814FE6FC000D201C7 /* nuMachConditionLock.h in Headers */,
 				C7987C7F15516BC800A98D46 /* nuRingBuffer.h in Headers */,
 				C7FBC351155E678B009E03D2 /* CoreInclude.h in Headers */,
+				C7F142F4157B0EE100DC59F0 /* nuTimer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -375,6 +382,7 @@
 				C79D18B614FE6FC000D201C7 /* nuConditionLock.cpp in Sources */,
 				C79D18B914FE6FC000D201C7 /* nuMachConditionLock.mm in Sources */,
 				C7987C7E15516BC800A98D46 /* nuRingBuffer.cpp in Sources */,
+				C7F142F3157B0EE100DC59F0 /* nuTimer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

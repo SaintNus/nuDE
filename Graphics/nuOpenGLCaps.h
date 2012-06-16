@@ -32,6 +32,7 @@ class nuOpenGLCaps
   GLfloat mSmoothLineWidthGranularity;
 
   GLint mMaxCombinedTextureImageUnits;
+  GLint mMaxColorAttachments;
 
   nuOpenGLCaps() {}
   ~nuOpenGLCaps() {}
@@ -97,6 +98,10 @@ public:
 
   GLint getMaxCombinedTextureImageUnits(void) const {
     return mMaxCombinedTextureImageUnits;
+  }
+
+  GLint getMaxColorAttachments(void) const {
+    return mMaxColorAttachments;
   }
 
 };

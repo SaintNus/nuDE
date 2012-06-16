@@ -342,9 +342,8 @@ private:
                 return;
               }
             }
-          } else {
-            return;
           }
+          return;
         }
       }
     }

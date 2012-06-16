@@ -42,7 +42,7 @@
 - (id) initWithFrame: (const NSRect&) frame fontSize: (f32) size;
 - (id) initWithString: (const c8 *) cString fontSize: (f32) size;
 - (id) initWithString: (const c8*) cString withFrame: (const NSRect&) frame fontSize: (f32) size;
-- (id) initWithString: (const c8 *) cString withMargin: (const NSSize&) marginSize fontSize: (f32) size;
+- (id) initWithString: (const c8 *) cString withMargin: (const NSSize&) extent fontSize: (f32) size;
 - (void) update;
 - (void) terminate;
 
@@ -74,6 +74,7 @@
   textureHeight = 0;
 
   currentRect = NSMakeRect(0.0f, 0.0f, 0.0f, 0.0f);
+  margin = NSMakeSize(0.0f, 0.0f);
 }
 
 - (id) initWithFrame: (const NSRect&) frame fontSize: (f32) size
@@ -84,7 +85,6 @@
     bounds = frame;
     image = [[NSImage alloc] initWithSize: bounds.size];
 
-    margin = NSMakeSize(0.0f, 0.0f);
     fontSize = size;
     updateString = NO;
   }
@@ -107,7 +107,6 @@
     bounds = NSMakeRect(0.0f, 0.0f, str_size.width, str_size.height);
     image = [[NSImage alloc] initWithSize: bounds.size];
 
-    margin = NSMakeSize(0.0f, 0.0f);
     updateString = YES;
   }
 
@@ -128,14 +127,13 @@
     bounds = frame;
     image = [[NSImage alloc] initWithSize: bounds.size];
 
-    margin = NSMakeSize(0.0f, 0.0f);
     updateString = YES;
   }
 
   return self;
 }
 
-- (id) initWithString: (const c8 *) cString withMargin: (const NSSize&) marginSize fontSize: (f32) size
+- (id) initWithString: (const c8 *) cString withMargin: (const NSSize&) extent fontSize: (f32) size
 {
   self = [super init];
   if(self) {
@@ -147,8 +145,7 @@
     attributes = [[NSDictionary alloc] initWithObjectsAndKeys: font, NSFontAttributeName, nil];
 
     NSSize str_size = [string sizeWithAttributes: attributes];
-    margin = marginSize;
-    bounds = NSMakeRect(0.0f, 0.0f, str_size.width + margin.width, str_size.height + margin.height);
+    bounds = NSMakeRect(0.0f, 0.0f, str_size.width + extent.width, str_size.height + extent.height);
     image = [[NSImage alloc] initWithSize: bounds.size];
     updateString = YES;
   }
@@ -372,13 +369,11 @@ public:
       return;
 
     const nuRect& vp = mRenderGL.getViewport();
+    i32 current_vp = -1;
 
     CHECK_GL_ERROR(glUseProgram(mShaderProgram.cast< nuShaderProgram >()->getHandle()));
     GLuint u_loc = mShaderProgram.cast< nuShaderProgram >()->getUniformLocation(nude::DrawString_uniStringTex);
     CHECK_GL_ERROR(glUniform1i(u_loc, 0));
-    u_loc = mShaderProgram.cast< nuShaderProgram >()->getUniformLocation(nude::DrawString_uniViewport);
-    CHECK_GL_ERROR(glUniform4f(u_loc, vp.size().w(), vp.size().h(),
-                               1.0f / vp.size().w(), 1.0f / vp.size().h()));
 
     if(render_context.current_vertex_array != mArrayID) {
       render_context.current_vertex_array = mArrayID;
@@ -489,6 +484,22 @@ public:
 
       CHECK_GL_ERROR(glBindTexture(GL_TEXTURE_RECTANGLE, [draw_string textureID]));
 
+      i32 custom_vp = p_drawstr->mDrawViewport;
+      if(current_vp != custom_vp) {
+        current_vp = custom_vp;
+        u_loc = mShaderProgram.cast< nuShaderProgram >()->getUniformLocation(nude::DrawString_uniViewport);
+        if(current_vp == 0) {
+            CHECK_GL_ERROR(glUniform4f(u_loc, vp.size().w(), vp.size().h(),
+                                       1.0f / vp.size().w(), 1.0f / vp.size().h()));
+        } else {
+            CHECK_GL_ERROR(glUniform4f(u_loc,
+                                       p_drawstr->mDrawViewportRect.size().w(),
+                                       p_drawstr->mDrawViewportRect.size().h(),
+                                       1.0f / p_drawstr->mDrawViewportRect.size().w(),
+                                       1.0f / p_drawstr->mDrawViewportRect.size().h()));
+        }
+      }
+
       f32 temp[4][2];
 
       u_loc = mShaderProgram.cast< nuShaderProgram >()->getUniformLocation(nude::DrawString_uniPosition_0);
@@ -564,12 +575,16 @@ nuDrawString::nuDrawString(const nuRect& rect, f32 size)
     : mpDrawString(nullptr),
       mDrawString(0),
       mRegistered(0),
+      mViewport(0),
+      mDrawViewport(0),
       mReserved(0),
       mRefCount(0),
       mColor(nuColor::White),
       mDrawColor(nuColor::White),
       mPoint(0.0f, 0.0f),
-      mDrawPoint(0.0f, 0.0f)
+      mDrawPoint(0.0f, 0.0f),
+      mViewportRect(nuPoint(0.0f, 0.0f), nuSize(0.0f, 0.0f)),
+      mDrawViewportRect(nuPoint(0.0f, 0.0f), nuSize(0.0f, 0.0f))
 {
   NSRect frame = NSMakeRect(rect.lb().x(), rect.lb().y(), rect.size().w(), rect.size().h());
   _MachDrawString* draw_string = [[_MachDrawString alloc] initWithFrame: frame fontSize: size];
@@ -582,12 +597,16 @@ nuDrawString::nuDrawString(const c8* str, f32 size)
     : mpDrawString(nullptr),
       mDrawString(0),
       mRegistered(0),
+      mViewport(0),
+      mDrawViewport(0),
       mReserved(0),
       mRefCount(0),
       mColor(nuColor::White),
       mDrawColor(nuColor::White),
       mPoint(0.0f, 0.0f),
-      mDrawPoint(0.0f, 0.0f)
+      mDrawPoint(0.0f, 0.0f),
+      mViewportRect(nuPoint(0.0f, 0.0f), nuSize(0.0f, 0.0f)),
+      mDrawViewportRect(nuPoint(0.0f, 0.0f), nuSize(0.0f, 0.0f))
 {
   _MachDrawString* draw_string = [[_MachDrawString alloc] initWithString: str fontSize: size];
   mpDrawString = draw_string;
@@ -599,12 +618,16 @@ nuDrawString::nuDrawString(const c8* str, const nuRect& rect, f32 size)
     : mpDrawString(nullptr),
       mDrawString(0),
       mRegistered(0),
+      mViewport(0),
+      mDrawViewport(0),
       mReserved(0),
       mRefCount(0),
       mColor(nuColor::White),
       mDrawColor(nuColor::White),
       mPoint(0.0f, 0.0f),
-      mDrawPoint(0.0f, 0.0f)
+      mDrawPoint(0.0f, 0.0f),
+      mViewportRect(nuPoint(0.0f, 0.0f), nuSize(0.0f, 0.0f)),
+      mDrawViewportRect(nuPoint(0.0f, 0.0f), nuSize(0.0f, 0.0f))
 {
   NSRect frame = NSMakeRect(rect.lb().x(), rect.lb().y(), rect.size().w(), rect.size().h());
   _MachDrawString* draw_string = [[_MachDrawString alloc] initWithString: str withFrame: frame fontSize: size];
@@ -617,12 +640,16 @@ nuDrawString::nuDrawString(const c8* str, const nuSize& margin, f32 size)
     : mpDrawString(nullptr),
       mDrawString(0),
       mRegistered(0),
+      mViewport(0),
+      mDrawViewport(0),
       mReserved(0),
       mRefCount(0),
       mColor(nuColor::White),
       mDrawColor(nuColor::White),
       mPoint(0.0f, 0.0f),
-      mDrawPoint(0.0f, 0.0f)
+      mDrawPoint(0.0f, 0.0f),
+      mViewportRect(nuPoint(0.0f, 0.0f), nuSize(0.0f, 0.0f)),
+      mDrawViewportRect(nuPoint(0.0f, 0.0f), nuSize(0.0f, 0.0f))
 {
   NSSize sz = NSMakeSize(margin.w(), margin.h());
   _MachDrawString* draw_string = [[_MachDrawString alloc] initWithString: str withMargin: sz fontSize: size];
@@ -644,6 +671,9 @@ void nuDrawString::update(void)
   [draw_string update];
   mDrawColor = mColor;
   mDrawPoint = mPoint;
+  mDrawViewport = mViewport;
+  if(mDrawViewport == 1)
+    mDrawViewportRect = mViewportRect;
 }
 
 bool nuDrawString::isAntiAliased(void) const
@@ -718,8 +748,8 @@ nude::DrawString nuDrawString::create(const c8* string, const nuRect& rect, f32 
   return nude::DrawString(p_drawstr);
 }
 
-nude::DrawString nuDrawString::create(const c8* string, const nuSize& margin, f32 size)
+nude::DrawString nuDrawString::create(const c8* string, const nuSize& extent, f32 size)
 {
-  nuDrawString* p_drawstr = new nuDrawString(string, margin, size);
+  nuDrawString* p_drawstr = new nuDrawString(string, extent, size);
   return nude::DrawString(p_drawstr);
 }

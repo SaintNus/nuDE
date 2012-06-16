@@ -156,7 +156,6 @@ nuDEEntityTest::nuDEEntityTest()
   }
 
   mDrawString = nuDrawString::create("ヌス", nuSize(256.0f, 0.0f));
-  mDrawString->setMargin(nuSize(0.0f, 0.0f));
 }
 
 nuDEEntityTest::~nuDEEntityTest()
@@ -287,6 +286,6 @@ void nuDEEntityTest::draw(nuGContext& context)
   context.endDraw();
 #endif
 
-  mDrawString->drawAt(nuPoint(10.0f, 10.0f));
+  mDrawString->drawAt(nuPoint(100.0f, 100.0f));
   mDrawString->setColor(nuColor::Cyan);
 }

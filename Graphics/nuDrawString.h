@@ -80,11 +80,15 @@ class nuDrawString : public nuObject
   volatile i32 mRefCount;
   ui32 mDrawString: 1;
   ui32 mRegistered: 1;
-  ui32 mReserved: 30;
+  ui32 mViewport: 1;
+  ui32 mDrawViewport: 1;
+  ui32 mReserved: 28;
   nuColor mDrawColor;
   nuColor mColor;
   nuPoint mDrawPoint;
   nuPoint mPoint;
+  nuRect mDrawViewportRect;
+  nuRect mViewportRect;
 
 public:
   bool isAntiAliased(void) const;
@@ -99,12 +103,25 @@ public:
   void setString(const c8* string);
   void setColor(const nuColor& color);
 
+  void setViewport(const nuRect& viewport) {
+    mViewportRect = viewport;
+  }
+  void enableViewport(bool enable) {
+    mViewport = enable ? 1 : 0;
+  }
+  const nuRect& getViewport(void) const {
+    return mViewportRect;
+  }
+  bool isViewportEnabled(void) const {
+    return mViewport == 1;
+  }
+
   void drawAt(const nuPoint& pos);
 
   static nude::Handle< nuDrawString > create(const nuRect& rect, f32 size = 12.0f);
   static nude::Handle< nuDrawString > create(const c8* string, f32 size = 12.0f);
   static nude::Handle< nuDrawString > create(const c8* string, const nuRect& rect, f32 size = 12.0f);
-  static nude::Handle< nuDrawString > create(const c8* string, const nuSize& margin, f32 size = 12.0f);
+  static nude::Handle< nuDrawString > create(const c8* string, const nuSize& extent, f32 size = 12.0f);
 
 };
 

@@ -28,6 +28,19 @@ nuAppMain::nuAppMain()
   for(ui32 ui = 0; ui < nuThreadPool::MAX_WORKER; ui++) {
     mpGraphicContext[ui] = nullptr;
   }
+
+#if !NDEBUG
+  mRenderPerformaceDispPos = nuPoint(10.0f, 10.0f);
+  mRenderTimeAverage = 16.666f;
+  mRenderTimeChanged = false;
+
+  mUpdatePerformaceDispPos = nuPoint(10.0f, 25.0f);
+  const f32 ftime = 1.0f / 60.0f;
+  for(ui32 ui = 0; ui < 60; ui++)
+    mUpdateTime[ui] = ftime;
+  mUpdateTimeAverage = 0.0f;
+  mUpdateTimeIdx = 0;
+#endif
 }
 
 nuAppMain::~nuAppMain()
@@ -78,18 +91,57 @@ nuAppMain::~nuAppMain()
   }
 }
 
+void nuAppMain::begin(void)
+{
+#if !NDEBUG
+  mRenderPerformance = nuDrawString::create("Render thread: 8888.888 ms");
+  mUpdatePerformance = nuDrawString::create("Update thread: 8888.888 ms");
+#endif
+}
+
+void nuAppMain::end(void)
+{
+#if !NDEBUG
+  mRenderPerformance.release();
+  mUpdatePerformance.release();
+#endif
+}
+
 i32 nuAppMain::main(void)
 {
   mState = RUNNING;
   mpRenderGL->acquire();
 
   NU_TRACE("Main loop is up and running.\n");
+
   begin();
 
   while(mState != TERMINATING) {
+#if !NDEBUG
+    if(mUpdateTimeIdx == 0) {
+      f32 sum = 0.0f;
+      for(ui32 ui = 0; ui < 60; ui++)
+        sum += mUpdateTime[ui];
+      mUpdateTimeAverage = sum / 60.0f;
+      c8 buffer[128];
+      snprintf(buffer, 128, "Update thread: %.3f ms", mUpdateTimeAverage);
+      buffer[127] = 0x00;
+      mUpdatePerformance->setString(buffer);
+    }
+#endif
+
     nuAutoReleasePool pool;
     update();
     draw();
+
+#if !NDEBUG
+    mUpdatePerformance->drawAt(mUpdatePerformaceDispPos);
+    mUpdateTime[mUpdateTimeIdx] = mTimer.getElapsedTime();
+    if(mUpdateTime[mUpdateTimeIdx] > 1000.0f)
+      mUpdateTime[mUpdateTimeIdx] = 1000.0f;
+    mUpdateTimeIdx++;
+    mUpdateTimeIdx %= 60;
+#endif
   }
 
   end();
@@ -136,6 +188,18 @@ void nuAppMain::update(void)
   mpRenderGL->setNextTagList(mTagList[mCurrentTagList]);
   mFrameID = mpRenderGL->synchronize();
 
+#if !NDEBUG
+  mTimer.reset();
+
+  if(mRenderTimeChanged) {
+    c8 buffer[128];
+    snprintf(buffer, 128, "Render thread: %.3f ms", mRenderTimeAverage);
+    buffer[127] = 0x00;
+    mRenderPerformance->setString(buffer);
+    mRenderTimeChanged = false;
+  }
+#endif
+
   if(mpEntityManager->getEntityNum()) {
     nuTaskSet update_set(mpEntityManager->getEntityNum());
     mpEntityManager->createUpdateList(update_set, mEntityTable);
@@ -150,6 +214,10 @@ void nuAppMain::draw(void)
 {
   if(mEntityTableIterator.initialize(mEntityTable) == 0)
     return;
+
+#if !NDEBUG
+    mRenderPerformance->drawAt(mRenderPerformaceDispPos);
+#endif  
 
   ui32 tag_num = mTagNum / nuThreadPool::MAX_WORKER;
 

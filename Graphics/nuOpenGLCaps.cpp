@@ -34,4 +34,7 @@ void nuOpenGLCaps::initialize(void)
 
   CHECK_GL_ERROR(glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS,
                                &mMaxCombinedTextureImageUnits));
+
+  CHECK_GL_ERROR(glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS,
+                               &mMaxColorAttachments));
 }

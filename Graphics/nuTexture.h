@@ -27,15 +27,27 @@ public:
 
   struct Texture1D {
     ui32 width;
-    nude::PIXEL_FORMAT format;
-    ui32 border;
+    union {
+      nude::PIXEL_FORMAT format;
+      nude::TEXTUREBUFFER_FORMAT buffer_format;
+    };
     bool compress;
     bool generate_mipmap;
+    bool target_texture;
     Texture1D(ui32 ww, nude::PIXEL_FORMAT fmt, bool comp, bool mipmap)
         : width(ww),
           format(fmt),
           compress(comp),
-          generate_mipmap(mipmap)
+          generate_mipmap(mipmap),
+          target_texture(false)
+    {
+      // None...
+    }
+    Texture1D(ui32 ww, nude::TEXTUREBUFFER_FORMAT fmt, bool mipmap)
+        : width(ww),
+          buffer_format(fmt),
+          generate_mipmap(mipmap),
+          target_texture(true)
     {
       // None...
     }
@@ -44,15 +56,29 @@ public:
   struct Texture2D {
     ui32 width;
     ui32 height;
-    nude::PIXEL_FORMAT format;
+    union {
+      nude::PIXEL_FORMAT format;
+      nude::TEXTUREBUFFER_FORMAT buffer_format;
+    };
     bool compress;
     bool generate_mipmap;
+    bool target_texture;
     Texture2D(ui32 ww, ui32 hh, nude::PIXEL_FORMAT fmt, bool comp, bool mipmap)
         : width(ww),
           height(hh),
           format(fmt),
           compress(comp),
-          generate_mipmap(mipmap)
+          generate_mipmap(mipmap),
+          target_texture(false)
+    {
+      // None...
+    }
+    Texture2D(ui32 ww, ui32 hh, nude::TEXTUREBUFFER_FORMAT fmt, bool mipmap)
+        : width(ww),
+          height(hh),
+          buffer_format(fmt),
+          generate_mipmap(mipmap),
+          target_texture(true)
     {
       // None...
     }
@@ -62,17 +88,32 @@ public:
     ui32 width;
     ui32 height;
     ui32 depth;
-    nude::PIXEL_FORMAT format;
+    union {
+      nude::PIXEL_FORMAT format;
+      nude::TEXTUREBUFFER_FORMAT buffer_format;
+    };
     ui32 border;
     bool compress;
     bool generate_mipmap;
+    bool target_texture;
     Texture3D(ui32 ww, ui32 hh, ui32 dd, nude::PIXEL_FORMAT fmt, bool comp, bool mipmap)
         : width(ww),
           height(hh),
           depth(dd),
           format(fmt),
           compress(comp),
-          generate_mipmap(mipmap)
+          generate_mipmap(mipmap),
+          target_texture(false)
+    {
+      // None...
+    }
+    Texture3D(ui32 ww, ui32 hh, ui32 dd, nude::TEXTUREBUFFER_FORMAT fmt, bool mipmap)
+        : width(ww),
+          height(hh),
+          depth(dd),
+          buffer_format(fmt),
+          generate_mipmap(mipmap),
+          target_texture(true)
     {
       // None...
     }
@@ -111,6 +152,7 @@ private:
   enum EXTENSION_FLAG {
     COMPRESSED = 1 << 0,
     GENERATE_MIPMAP = 1 << 1,
+    TARGET_TEXTURE = 1 << 2,
   };
 
   struct PixelFormat {
@@ -122,7 +164,16 @@ private:
     GLenum compressed_format;
   };
 
+  struct TargetFormat {
+    GLenum type;
+    size_t element_size;
+    ui32 component;
+    GLenum format;
+    GLenum internal_format;
+  };
+
   static const PixelFormat mPixelFormatTable[nude::PIXEL_FORMAT_NUM];
+  static const TargetFormat mTextureBufferFormat[nude::TEXTUREBUFFER_FORMAT_NUM];
 
   GLuint mHandle;
   void* mpBuffer;
@@ -133,7 +184,11 @@ private:
   ui32 mWidth;
   ui32 mHeight;
   ui32 mDepth;
-  nude::PIXEL_FORMAT mFormat;
+
+  union {
+    nude::PIXEL_FORMAT mFormat;
+    nude::TEXTUREBUFFER_FORMAT mBufferFormat;
+  };
 
   nude::WRAP_TEXTURE mWrapS;
   nude::WRAP_TEXTURE mWrapT;
@@ -175,6 +230,27 @@ private:
     return (getExtension() & GENERATE_MIPMAP) ? true : false;
   }
 
+  void setTargetTexture(bool target_texture) {
+    ui32 ext = getExtension();
+    if(target_texture)
+      ext |= TARGET_TEXTURE;
+    else
+      ext &= ~TARGET_TEXTURE;
+    setExtension(ext);
+  }
+
+  void createBuffer(size_t size, bool init_zero = false) {
+    if(isTargetTexture())
+      return;
+
+    NU_ASSERT_C(mpBuffer == nullptr);
+    mpBuffer = nude::Alloc(size);
+    NU_ASSERT(mpBuffer, "Insufficient memory to initialize texture.\n");
+
+    if(init_zero)
+      memset(mpBuffer, 0x00, mSize);
+  }
+
   nuTexture();
   nuTexture(nuGResource::RESOURCE_USAGE usage);
   ~nuTexture();
@@ -206,6 +282,39 @@ public:
 
   bool isMipMapped(void) const {
     return isGenerateMipMap();
+  }
+
+  ui32 getWidth(void) const {
+    return mWidth;
+  }
+  ui32 getHeight(void) const {
+    return mHeight;
+  }
+  ui32 getDepth(void) const {
+    return mDepth;
+  }
+  nude::PIXEL_FORMAT getFromat(void) const {
+    return mFormat;
+  }
+
+  nude::WRAP_TEXTURE getWrapS(void) const {
+    return mWrapS;
+  }
+  nude::WRAP_TEXTURE getWrapT(void) const {
+    return mWrapT;
+  }
+  nude::WRAP_TEXTURE getWrapR(void) const {
+    return mWrapR;
+  }
+  nude::FILTER_TEXTURE getMinFilter(void) const {
+    return mMinFilter;
+  }
+  nude::FILTER_TEXTURE getMagFilter(void) const {
+    return mMagFilter;
+  }
+
+  bool isTargetTexture(void) const {
+    return (getExtension() & TARGET_TEXTURE) ? true : false;
   }
 
 };

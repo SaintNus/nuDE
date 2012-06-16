@@ -142,7 +142,7 @@ public:
     return mEntityNum;
   }
 
-  void setupEntity(i64 frame_id);
+  void setupEntity(nuGSetupContext& setup_ctx);
   void createUpdateList(nuTaskSet& update_set, EntityTable& table);
   void drawEntity(nuGContext& context, nuEntity& entity);
 

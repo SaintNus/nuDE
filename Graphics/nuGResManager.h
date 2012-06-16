@@ -16,6 +16,7 @@
 #include "nuShaderList.h"
 #include "nuShaderProgram.h"
 #include "nuTexture.h"
+#include "nuRenderBuffer.h"
 
 class nuGResManager : public nuObject
 {
@@ -45,25 +46,34 @@ class nuGResManager : public nuObject
   void deleteResources(ResList& resource_list, nuMutex& mutex, i64 frame_id);
   void updateResources(ResList& resource_list, nuMutex& mutex);
 
-  void registerResource(nuGResource& resource) {
+  void registerResource(nuGResource& resource, bool add_front) {
     resource.mpGResManager = this;
     switch (resource.getUsage()) {
     case nuGResource::STATIC_RESOURCE:
       {
         nuMutex::Autolock mutex(mStaticResMutex);
-        mStaticResource.push_back(&resource);
+        if(add_front)
+          mStaticResource.push_front(&resource);
+        else
+          mStaticResource.push_back(&resource);
       }
       break;
     case nuGResource::DYNAMIC_RESOURCE:
       {
         nuMutex::Autolock mutex(mDynamicResMutex);
-        mDynamicResource.push_back(&resource);
+        if(add_front)
+          mDynamicResource.push_front(&resource);
+        else
+          mDynamicResource.push_back(&resource);
       }
       break;
     case nuGResource::STREAM_RESOURCE:
       {
         nuMutex::Autolock mutex(mStreamResMutex);
-        mStreamResource.push_back(&resource);
+        if(add_front)
+          mStreamResource.push_front(&resource);
+        else
+          mStreamResource.push_back(&resource);
       }
       break;
     default:
@@ -98,6 +108,7 @@ public:
   nude::UniformBuffer createUniformBuffer(nude::ProgramList program_id, ui32 ubo_id);
 
   nude::Texture createTexture(nuGResource::RESOURCE_USAGE usage);
+  nude::RenderBuffer createRenderBuffer(void);
 
   void updateStaticResource(i64 frame_id);
   void updateDynamicResource(i64 frame_id);

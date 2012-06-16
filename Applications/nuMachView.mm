@@ -56,6 +56,17 @@ static CVReturn DisplayLinkCallback(CVDisplayLinkRef display_link,
   }
   [pf release];
   pf = nil;
+
+  resizeView = true;
+
+#if !NDEBUG
+  const f32 ftime = 1.0f / 60.0f;
+  for(ui32 ui = 0; ui < 60; ui++) {
+    mRenderPerformance[ui] = ftime;
+  }
+  mRenderTimeIdx = 0;
+#endif
+
   return self;
 }
 
@@ -96,7 +107,8 @@ static CVReturn DisplayLinkCallback(CVDisplayLinkRef display_link,
 }
 
 - (void) reshape
-{ 
+{
+  resizeView = true;
   [super reshape];
 }
 
@@ -139,11 +151,35 @@ static CVReturn DisplayLinkCallback(CVDisplayLinkRef display_link,
         frame_time = max_ftime;
 
       nuApplication::instance()->setFrameTime(static_cast< f32 >(frame_time * frame_scale));
-      // NU_TRACE("Frame time: %f\n", nuApplication::instance()->getFrameTime());
-      nuApplication::entityManager().setupEntity(frame_id);      
+
+      // Setup entity.
+      {
+        nuGSetupContext setup_ctx(frame_id, rect, resizeView);
+        nuApplication::entityManager().setupEntity(setup_ctx);
+        resizeView = false;
+      }
+
+#if !NDEBUG
+      if(mRenderTimeIdx == 0) {
+        f32 sum = 0.0f;
+        for(ui32 ui = 0; ui < 60; ui++)
+          sum += mRenderPerformance[ui];
+        nuApplication::appMain()->updateRenderTimeAverage(sum / 60.0f);
+      }
+
+      nuTimermSec timer;
+#endif
 
       if(nuApplication::renderGL().render())
         CGLFlushDrawable(ctx);
+
+#if !NDEBUG
+      mRenderPerformance[mRenderTimeIdx] = timer.getElapsedTime();
+      if(mRenderPerformance[mRenderTimeIdx] > 1000.0f)
+        mRenderPerformance[mRenderTimeIdx] = 1000.0f;
+      mRenderTimeIdx++;
+      mRenderTimeIdx %= 60;
+#endif
     }
   }
 }
